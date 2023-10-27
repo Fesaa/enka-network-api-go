@@ -78,17 +78,20 @@ func (e *EnkaNetworkAPI) SetDebug(debug bool) {
 //	success: A function to call on success, with the HonkaiUser as the first parameter
 //	failure: A function to call on failure, with the error as the first parameter
 //
-// Use a goroutine to call this function asynchronously
 // See FetchHonkaiUserAndReturn for a synchronous version
 func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success func(*RawHonkaiUser), failure func(error)) {
 
-	user, err := e.FetchHonkaiUserAndReturn(uid)
-	if err != nil {
-		failure(err)
-		return
-	}
+	go func() {
 
-	success(user)
+		user, err := e.FetchHonkaiUserAndReturn(uid)
+		if err != nil {
+			failure(err)
+			return
+		}
+
+		success(user)
+	}()
+
 }
 
 // FetchHonkaiUserAndReturn fetches a Honkai User from the Enka Network API
