@@ -80,7 +80,7 @@ func (e *EnkaNetworkAPI) SetDebug(debug bool) {
 //
 // Use a goroutine to call this function asynchronously
 // See FetchHonkaiUserAndReturn for a synchronous version
-func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success func(*HonkaiUser), failure func(error)) {
+func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success func(*RawHonkaiUser), failure func(error)) {
 
 	user, err := e.FetchHonkaiUserAndReturn(uid)
 	if err != nil {
@@ -103,7 +103,7 @@ func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success func(*HonkaiUser), 
 //	The HonkaiUser, or nil if an error occurred
 //
 // See FetchHonkaiUser for an asynchronous version
-func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*HonkaiUser, error) {
+func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*RawHonkaiUser, error) {
 
 	e.log.Debugf("Fetching Honkai User with UID %s", uid)
 	// TODO: return from cache
@@ -123,7 +123,7 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*HonkaiUser, erro
 		return nil, err
 	}
 
-	var user HonkaiUser
+	var user RawHonkaiUser
 	err = json.Unmarshal(data, &user)
 	if err != nil {
 		return nil, err

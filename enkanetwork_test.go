@@ -10,7 +10,7 @@ func TestFetchHonkaiUser(t *testing.T) {
 	api.SetDebug(true)
 
 	api.FetchHonkaiUser("714656501",
-		func(hu *HonkaiUser) {
+		func(hu *RawHonkaiUser) {
 			t.Log(hu)
 		},
 		func(err error) {
