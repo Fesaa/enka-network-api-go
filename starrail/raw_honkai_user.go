@@ -1,4 +1,4 @@
-package enkanetworkapigo
+package starrail
 
 type RawHonkaiUser struct {
 	DetailInfo RawDetailInfo `json:"detailInfo"`

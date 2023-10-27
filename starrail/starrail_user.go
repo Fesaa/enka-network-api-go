@@ -1,16 +1,16 @@
-package enkanetworkapigo
+package starrail
 
-type StarRailPlatform string
+type Platform string
 
 const (
-	WINDOWS StarRailPlatform = "Windows"
-	ANDROID                  = "Android"
-	IOS                      = "IOS"
-	PS4                      = "PS4"
-	PS5                      = "PS5"
+	WINDOWS Platform = "Windows"
+	ANDROID          = "Android"
+	IOS              = "IOS"
+	PS4              = "PS4"
+	PS5              = "PS5"
 )
 
-type StarRailUser struct {
+type User struct {
 	NickName string
 	// Between 1 and 70
 	Level            int
@@ -20,15 +20,15 @@ type StarRailUser struct {
 	EquilibriumLevel int
 	// The highest planet(?) the user has unlocked in the simulated universe
 	SimulatedUniverse int
-	Platform          StarRailPlatform
-	Characters        []StarRailUserCharacter
+	Platform          Platform
+	Characters        []UserCharacter
 }
 
-func StarRailUserFromRaw(rawUser *RawHonkaiUser) *StarRailUser {
+func UserFromRaw(rawUser *RawHonkaiUser) *User {
 	var detailInfo RawDetailInfo = rawUser.DetailInfo
 	var recordInfo RawRecordInfo = detailInfo.RecordInfo
 
-	var user StarRailUser = StarRailUser{
+	var user User = User{
 		NickName:          detailInfo.NickName,
 		Level:             detailInfo.Level,
 		Signature:         detailInfo.Signature,
@@ -36,15 +36,15 @@ func StarRailUserFromRaw(rawUser *RawHonkaiUser) *StarRailUser {
 		FriendCount:       detailInfo.FriendCount,
 		EquilibriumLevel:  detailInfo.WordlLevel,
 		SimulatedUniverse: recordInfo.MaxRogueChallengeScore,
-		Platform:          StarRailPlatform(detailInfo.Platform),
+		Platform:          Platform(detailInfo.Platform),
 	}
 
 	if !detailInfo.IsDisplayAvatar {
-		user.Characters = make([]StarRailUserCharacter, 0)
+		user.Characters = make([]UserCharacter, 0)
 		return &user
 	}
 
-	var characters = []StarRailUserCharacter{}
+	var characters = []UserCharacter{}
 
 	for _, avatar := range detailInfo.AvatarDetailList {
 
@@ -52,23 +52,23 @@ func StarRailUserFromRaw(rawUser *RawHonkaiUser) *StarRailUser {
 		var ascension int = avatar.Promotion
 		var level int = avatar.Level
 		var avatarId int = avatar.AvatarId
-		var relics []StarRailRelic = []StarRailRelic{}
-		var lightCone *StarRailLightCone = nil
+		var relics []Relic = []Relic{}
+		var lightCone *LightCone = nil
 
 		var equipment *RawEquipmentInfo = avatar.Equipment
 		if equipment != nil {
-			var stats []StarRailLightConeStat = []StarRailLightConeStat{}
+			var stats []LightConeStat = []LightConeStat{}
 
 			var flat RawEquipmentFlatData = equipment.EquipmentFlatData
 
 			for _, subData := range flat.Props {
-				stats = append(stats, StarRailLightConeStat{
+				stats = append(stats, LightConeStat{
 					Stat:  subData.Type,
 					Value: subData.Value,
 				})
 			}
 
-			lightCone = &StarRailLightCone{
+			lightCone = &LightCone{
 				SuperImposion: equipment.Rank,
 				Promotion:     equipment.Promotion,
 				Level:         equipment.Level,
@@ -80,7 +80,7 @@ func StarRailUserFromRaw(rawUser *RawHonkaiUser) *StarRailUser {
 		for _, relicData := range avatar.RelicList {
 			var relicLevel int = relicData.Level
 			var flat RawRelicFlatData = relicData.RelicFlatData
-			var subStats []StarRailRelicStat = []StarRailRelicStat{}
+			var subStats []RelicStat = []RelicStat{}
 
 			var props []RawRelicFlatProp = flat.Props
 			if props == nil || len(props) == 0 {
@@ -92,19 +92,19 @@ func StarRailUserFromRaw(rawUser *RawHonkaiUser) *StarRailUser {
 					// Main Stat is not a sub stats
 					continue
 				}
-				subStats = append(subStats, StarRailRelicStat{
+				subStats = append(subStats, RelicStat{
 					Stat:  subData.Type,
 					Value: subData.Value,
 				})
 			}
 
 			var mainStat RawRelicFlatProp = props[0]
-			var main StarRailRelicStat = StarRailRelicStat{
+			var main RelicStat = RelicStat{
 				Stat:  mainStat.Type,
 				Value: mainStat.Value,
 			}
 
-			relics = append(relics, StarRailRelic{
+			relics = append(relics, Relic{
 				Level:    relicLevel,
 				Hash:     flat.SetName,
 				MainStat: main,
@@ -113,7 +113,7 @@ func StarRailUserFromRaw(rawUser *RawHonkaiUser) *StarRailUser {
 			})
 		}
 
-		characters = append(characters, StarRailUserCharacter{
+		characters = append(characters, UserCharacter{
 			Eidolon:   eidolon,
 			Ascension: ascension,
 			Relics:    relics,

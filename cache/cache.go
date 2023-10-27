@@ -1,6 +1,10 @@
-package enkanetworkapigo
+package cache
 
-import "time"
+import (
+	"time"
+
+	"github.com/Fesaa/enka-network-api-go/starrail"
+)
 
 type EnkaCacheAble interface {
 	GetTtl() int
@@ -27,9 +31,9 @@ func (c *CachedData[T]) IsExpired() bool {
 }
 
 type EnkaCache interface {
-	AddHonkaiUser(*RawHonkaiUser)
-	GetHonkaiUser(string) *RawHonkaiUser
+	AddHonkaiUser(*starrail.RawHonkaiUser)
+	GetHonkaiUser(string) *starrail.RawHonkaiUser
 
-	GetStarRailCharacterData(string) *StarRailCharacterData
-	GetAllStarRailCharacters() []*StarRailCharacterData
+	GetStarRailCharacterData(string) *starrail.CharacterData
+	GetAllStarRailCharacters() []*starrail.CharacterData
 }
