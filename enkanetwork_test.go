@@ -24,6 +24,8 @@ func TestFetchHonkaiUser(t *testing.T) {
 	}
 	t.Log(user.Characters[0].LightCone.Hash)
 	t.Log(*api.localization.GetHonkaiLocale(user.Characters[0].LightCone))
+	data := api.GetStarRailCharacterData(user.Characters[0])
+	t.Log(data)
 
 	_, _ = api.FetchHonkaiUserAndReturn(OWN_UID)
 }

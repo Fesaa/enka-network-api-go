@@ -29,4 +29,7 @@ func (c *CachedData[T]) IsExpired() bool {
 type EnkaCache interface {
 	AddHonkaiUser(*RawHonkaiUser)
 	GetHonkaiUser(string) *RawHonkaiUser
+
+	GetStarRailCharacterData(string) *StarRailCharacterData
+	GetAllStarRailCharacters() []*StarRailCharacterData
 }

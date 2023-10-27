@@ -8,7 +8,3 @@ type StarRailUserCharacter struct {
 	LightCone *StarRailLightCone
 	Relics    []StarRailRelic
 }
-
-func (c *StarRailUserCharacter) GetGameData() {
-
-}

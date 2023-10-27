@@ -3,6 +3,7 @@ package enkanetworkapigo
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -30,13 +31,16 @@ type EnkaNetworkAPI struct {
 //
 // See https://api.enka.network/ for API docs
 func New(userAgent string) *EnkaNetworkAPI {
-
+	mem, e := NewMemoryCache()
+	if e != nil {
+		panic(e) // TODO: proper error
+	}
 	return &EnkaNetworkAPI{
 		userAgent: userAgent,
 
 		log:          log.New(os.Stdout).WithColor(),
-		cache:        NewMemoryCache(),
-		localization: NewLocalization(),
+		cache:        mem,
+		localization: newLocalization(),
 	}
 }
 
@@ -150,4 +154,12 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*RawHonkaiUser, e
 
 	e.cache.AddHonkaiUser(&user)
 	return &user, nil
+}
+
+func (e *EnkaNetworkAPI) GetStarRailCharacterData(userCharacter StarRailUserCharacter) *StarRailCharacterData {
+	return e.GetStarRailCharacterDataById(fmt.Sprint(userCharacter.AvatarId))
+}
+
+func (e *EnkaNetworkAPI) GetStarRailCharacterDataById(uid string) *StarRailCharacterData {
+	return e.cache.GetStarRailCharacterData(uid)
 }
