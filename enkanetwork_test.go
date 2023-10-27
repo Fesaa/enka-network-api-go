@@ -22,7 +22,8 @@ func TestFetchHonkaiUser(t *testing.T) {
 		t.Logf("Wanted Amelia got %s", user.NickName)
 		t.Fail()
 	}
-	t.Log(user)
+	t.Log(user.Characters[0].LightCone.Hash)
+	t.Log(*api.localization.GetHonkaiLocale(user.Characters[0].LightCone))
 
 	_, _ = api.FetchHonkaiUserAndReturn(OWN_UID)
 }

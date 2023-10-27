@@ -17,8 +17,10 @@ const BASE_SR_UI_URL = "https://enka.network/ui/hsr/"
 type EnkaNetworkAPI struct {
 	userAgent string
 
-	log   *log.Logger
-	cache EnkaCache
+	log *log.Logger
+
+	cache        EnkaCache
+	localization Localization
 }
 
 // New creates a new EnkaNetworkAPI instance
@@ -32,8 +34,9 @@ func New(userAgent string) *EnkaNetworkAPI {
 	return &EnkaNetworkAPI{
 		userAgent: userAgent,
 
-		log:   log.New(os.Stdout).WithColor(),
-		cache: NewMemoryCache(),
+		log:          log.New(os.Stdout).WithColor(),
+		cache:        NewMemoryCache(),
+		localization: NewLocalization(),
 	}
 }
 
@@ -69,6 +72,11 @@ func (e *EnkaNetworkAPI) SetDebug(debug bool) {
 	} else {
 		e.log.WithoutDebug()
 	}
+}
+
+// Returns the localization used to get actual strings
+func (e *EnkaNetworkAPI) Loc() *Localization {
+	return &e.localization
 }
 
 func (e *EnkaNetworkAPI) SetCache(cache EnkaCache) {
@@ -125,6 +133,7 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*RawHonkaiUser, e
 	defer req.Body.Close()
 
 	if req.StatusCode != 200 {
+		e.log.Debugf("Returned a non 200 status code. Got %d", req.StatusCode)
 		return nil, errors.New("enka-network-api-go: Non 200 status code returned: " + req.Status)
 	}
 
