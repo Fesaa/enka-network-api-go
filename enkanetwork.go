@@ -17,7 +17,8 @@ const BASE_SR_UI_URL = "https://enka.network/ui/hsr/"
 type EnkaNetworkAPI struct {
 	userAgent string
 
-	log *log.Logger
+	log   *log.Logger
+	cache EnkaCache
 }
 
 // New creates a new EnkaNetworkAPI instance
@@ -31,7 +32,8 @@ func New(userAgent string) *EnkaNetworkAPI {
 	return &EnkaNetworkAPI{
 		userAgent: userAgent,
 
-		log: log.New(os.Stdout).WithColor(),
+		log:   log.New(os.Stdout).WithColor(),
+		cache: NewMemoryCache(),
 	}
 }
 
@@ -69,6 +71,10 @@ func (e *EnkaNetworkAPI) SetDebug(debug bool) {
 	}
 }
 
+func (e *EnkaNetworkAPI) SetCache(cache EnkaCache) {
+	e.cache = cache
+}
+
 // FetchHonkaiUser fetches a Honkai User from the Enka Network API
 // Or returns from (redis) cache if available and not expired
 //
@@ -80,9 +86,7 @@ func (e *EnkaNetworkAPI) SetDebug(debug bool) {
 //
 // See FetchHonkaiUserAndReturn for a synchronous version
 func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success func(*RawHonkaiUser), failure func(error)) {
-
 	go func() {
-
 		user, err := e.FetchHonkaiUserAndReturn(uid)
 		if err != nil {
 			failure(err)
@@ -91,7 +95,6 @@ func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success func(*RawHonkaiUser
 
 		success(user)
 	}()
-
 }
 
 // FetchHonkaiUserAndReturn fetches a Honkai User from the Enka Network API
@@ -107,9 +110,13 @@ func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success func(*RawHonkaiUser
 //
 // See FetchHonkaiUser for an asynchronous version
 func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*RawHonkaiUser, error) {
-
 	e.log.Debugf("Fetching Honkai User with UID %s", uid)
-	// TODO: return from cache
+
+	cachedUser := e.cache.GetHonkaiUser(uid)
+	if cachedUser != nil {
+		e.log.Debug("Returning from cache...")
+		return cachedUser, nil
+	}
 
 	req, err := http.Get(BASE_URL + "hsr/uid/" + uid + "/")
 	if err != nil {
@@ -132,5 +139,6 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*RawHonkaiUser, e
 		return nil, err
 	}
 
+	e.cache.AddHonkaiUser(&user)
 	return &user, nil
 }

@@ -6,6 +6,10 @@ type RawHonkaiUser struct {
 	Uid        string        `json:"uid"`
 }
 
+func (user *RawHonkaiUser) GetTtl() int {
+	return user.Ttl
+}
+
 type RawDetailInfo struct {
 	HeadIcon         int               `json:"headIcon"`
 	AvatarDetailList []RawAvatarDetail `json:"avatarDetailList"`
@@ -25,10 +29,10 @@ type RawAvatarDetail struct {
 	Rank     int `json:"rank"`
 	Level    int `json:"level"`
 	// Ascension, nill if level < 20
-	Promotion     int              `json:"promotion,omitempty"`
-	Equipment     RawEquipmentInfo `json:"equipment"`
-	SkillTreeList []RawSkillTree   `json:"skillTreeList"`
-	RelicList     []RawRelic       `json:"relicList"`
+	Promotion     int               `json:"promotion,omitempty"`
+	Equipment     *RawEquipmentInfo `json:"equipment,ompitempty"`
+	SkillTreeList []RawSkillTree    `json:"skillTreeList"`
+	RelicList     []RawRelic        `json:"relicList"`
 }
 
 type RawRecordInfo struct {
@@ -40,9 +44,9 @@ type RawRecordInfo struct {
 }
 
 type RawChallengeInfo struct {
-	ScheduleMaxLevel     int `json:"scheduleMaxLevel"`
-	ScheduleMaxGroupId   int `json:"scheduleMaxGroupId,omitempty"`
-	NoneScheduleMaxLevel int `json:"noneScheduleMaxLevel,omitempty"`
+	ScheduleMaxLevel     int  `json:"scheduleMaxLevel"`
+	ScheduleMaxGroupId   *int `json:"scheduleMaxGroupId,omitempty"`
+	NoneScheduleMaxLevel *int `json:"noneScheduleMaxLevel,omitempty"`
 }
 
 type RawEquipmentInfo struct {
@@ -79,7 +83,7 @@ type RawRelic struct {
 
 type RawRelicFlatData struct {
 	Props   []RawRelicFlatProp `json:"props"`
-	SetName int                `json:"setName"`
+	SetName int64              `json:"setName"`
 	SetId   int                `json:"setId"`
 }
 
