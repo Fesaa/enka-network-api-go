@@ -19,6 +19,9 @@ type EnkaNetworkAPI struct {
 }
 
 // New creates a new EnkaNetworkAPI instance
+//
+// # Will also initialize the cache and localization
+//
 // From the documentation:
 //
 //	Please set a custom User-Agent header with your requests so I can track them better and help you if needed.

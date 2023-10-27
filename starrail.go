@@ -80,10 +80,37 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*starrail.RawHonk
 	return &user, nil
 }
 
+// GetStarRailCharacterData returns the CharacterData for the given UserCharacter
+//
+// Convenience function for GetStarRailCharacterDataById
 func (e *EnkaNetworkAPI) GetStarRailCharacterData(userCharacter starrail.UserCharacter) *starrail.CharacterData {
 	return e.GetStarRailCharacterDataById(fmt.Sprint(userCharacter.AvatarId))
 }
 
+// GetStarRailCharacterDataById returns the CharacterData for the given UID
+//
+// Parameters:
+//
+//	uid: The UID of the character
+//
+// Returns:
+//
+//	The CharacterData, or nil if not found
 func (e *EnkaNetworkAPI) GetStarRailCharacterDataById(uid string) *starrail.CharacterData {
 	return cache.Get().GetStarRailCharacterData(uid)
+}
+
+// GetStarRailIcon returns the URL of the StarRail icon for the given key
+//
+// You can change the BASE_SR_UI_URL if you need images from a different source
+//
+// Parameters:
+//
+//	key: The key of the icon
+//
+// Returns:
+//
+//	The URL of the icon
+func (e *EnkaNetworkAPI) GetStarRailIcon(key string) string {
+	return fmt.Sprintf("%s%s.png", BASE_SR_UI_URL, key)
 }
