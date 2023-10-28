@@ -8,20 +8,22 @@ import (
 // In memory cache with maps
 // This is not thread save. Be careful
 type MemoryCache struct {
-	HonkaiUsers   map[string]CachedData[*starrail.RawHonkaiUser]
-	CharacterData map[string]*starrail.CharacterData
+	HonkaiUsers           map[string]CachedData[*starrail.RawHonkaiUser]
+	StarRailCharacterData map[string]*starrail.CharacterData
 
 	GenshinUsers     map[string]CachedData[*genshin.RawGenshinUser]
 	GenshinNameCards map[int]string
 
 	GensshinProfileIcons map[int]string
 	MaxGenshinProfileId  int
+
+	GenshinCharacterData map[string]*genshin.CharacterData
 }
 
 func newMemoryCache() (*MemoryCache, error) {
 	c := &MemoryCache{
-		HonkaiUsers:   map[string]CachedData[*starrail.RawHonkaiUser]{},
-		CharacterData: map[string]*starrail.CharacterData{},
+		HonkaiUsers:           map[string]CachedData[*starrail.RawHonkaiUser]{},
+		StarRailCharacterData: map[string]*starrail.CharacterData{},
 
 		GenshinUsers:     map[string]CachedData[*genshin.RawGenshinUser]{},
 		GenshinNameCards: map[int]string{},

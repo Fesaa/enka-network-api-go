@@ -114,3 +114,12 @@ func (e *EnkaNetworkAPI) GetStarRailCharacterDataById(uid string) *starrail.Char
 func (e *EnkaNetworkAPI) GetStarRailIcon(key string) string {
 	return fmt.Sprintf("%s%s.png", BASE_SR_UI_URL, key)
 }
+
+// GetAllStarRailCharacters returns all StarRail characters
+//
+// Returns:
+//
+//	A slice of all StarRail characters
+func (e *EnkaNetworkAPI) GetAllStarRailCharacters() []*starrail.CharacterData {
+	return cache.Get().GetAllStarRailCharacters()
+}

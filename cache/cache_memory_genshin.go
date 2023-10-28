@@ -22,6 +22,12 @@ func (m *MemoryCache) loadGenshinResources() error {
 	m.GensshinProfileIcons = profileIcons
 	m.MaxGenshinProfileId = *max
 
+	characters, err := loadCharacters()
+	if err != nil {
+		return err
+	}
+	m.GenshinCharacterData = characters
+
 	return nil
 }
 
@@ -75,6 +81,25 @@ func loadProfileIdentifiers() (map[int]string, *int, error) {
 	return icons, &max, nil
 }
 
+func loadCharacters() (map[string]*genshin.CharacterData, error) {
+	file, err := os.ReadFile("resources/genshin_characters.json")
+	if err != nil {
+		return nil, err
+	}
+
+	var genshinCharacters map[string]*genshin.CharacterData
+	err = json.Unmarshal(file, &genshinCharacters)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, character := range genshinCharacters {
+		character.WeaponType = genshin.WrapWeaponType(character.RawWeaponType)
+	}
+
+	return genshinCharacters, nil
+}
+
 func (m *MemoryCache) GetNameCardName(id int) *string {
 	if name, ok := m.GenshinNameCards[id]; ok {
 		return &name
@@ -111,4 +136,24 @@ func (m *MemoryCache) GetProfileIcon(id int) string {
 		return icon
 	}
 	return "UI_AvatarIcon_PlayerGirl_Circle"
+}
+
+func (m *MemoryCache) GetGenshinCharacterData(name string) *genshin.CharacterData {
+	if character, ok := m.GenshinCharacterData[name]; ok {
+		return character
+	}
+	return nil
+}
+
+// GetAllGenshinCharacterData returns all Genshin characters
+//
+// Returns:
+//
+//	A slice of all Genshin characters
+func (m *MemoryCache) GetAllGenshinCharacterData() []*genshin.CharacterData {
+	var characters []*genshin.CharacterData = make([]*genshin.CharacterData, 0, len(m.GenshinCharacterData))
+	for _, character := range m.GenshinCharacterData {
+		characters = append(characters, character)
+	}
+	return characters
 }

@@ -107,3 +107,13 @@ func (e *EnkaNetworkAPI) GetGenshinNameCard(id int) *genshin.NameCard {
 func (e *EnkaNetworkAPI) GetGenshinProfileIdentifier(profileId int) string {
 	return cache.Get().GetProfileIcon(profileId)
 }
+
+// GetGenshinCharacterData gets the character data of a character name
+// Returns nil if the name is invalid
+func (e *EnkaNetworkAPI) GetGenshinCharacterData(name string) *genshin.CharacterData {
+	return cache.Get().GetGenshinCharacterData(name)
+}
+
+func (e *EnkaNetworkAPI) GetAllGenshinCharacterData() []*genshin.CharacterData {
+	return cache.Get().GetAllGenshinCharacterData()
+}

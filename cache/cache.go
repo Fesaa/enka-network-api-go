@@ -45,4 +45,7 @@ type EnkaCache interface {
 	GetGenshinUser(string) *genshin.RawGenshinUser
 
 	GetProfileIcon(int) string
+
+	GetGenshinCharacterData(string) *genshin.CharacterData
+	GetAllGenshinCharacterData() []*genshin.CharacterData
 }
