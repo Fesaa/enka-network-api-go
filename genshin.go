@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/genshin"
@@ -82,7 +83,13 @@ func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string) (*genshin.RawGens
 
 // GetGenshinIcon retrieves the URL of a Genshin Impact icon
 func (e *EnkaNetworkAPI) GetGenshinIcon(key string) string {
-	return BASE_GENSHIN_UI_URL + key + ".png"
+	url := BASE_GENSHIN_UI_URL + key
+
+	if strings.HasSuffix(url, ".png") {
+		return url
+	}
+
+	return url + ".png"
 }
 
 // GetGenshinNameCard gets the NameCard of an id
@@ -110,8 +117,8 @@ func (e *EnkaNetworkAPI) GetGenshinProfileIdentifier(profileId int) string {
 
 // GetGenshinCharacterData gets the character data of a character name
 // Returns nil if the name is invalid
-func (e *EnkaNetworkAPI) GetGenshinCharacterData(name string) *genshin.CharacterData {
-	return cache.Get().GetGenshinCharacterData(name)
+func (e *EnkaNetworkAPI) GetGenshinCharacterData(id string) *genshin.CharacterData {
+	return cache.Get().GetGenshinCharacterData(id)
 }
 
 // GetAllGenshinCharacterData gets all character data

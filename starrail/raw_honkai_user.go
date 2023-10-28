@@ -10,6 +10,10 @@ func (user *RawHonkaiUser) GetTtl() int {
 	return user.Ttl
 }
 
+func (user *RawHonkaiUser) ToUser() *User {
+	return UserFromRaw(user)
+}
+
 type RawDetailInfo struct {
 	HeadIcon         int               `json:"headIcon"`
 	AvatarDetailList []RawAvatarDetail `json:"avatarDetailList"`

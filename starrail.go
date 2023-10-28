@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/starrail"
@@ -83,7 +84,10 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*starrail.RawHonk
 // GetStarRailCharacterData returns the CharacterData for the given UserCharacter
 //
 // Convenience function for GetStarRailCharacterDataById
-func (e *EnkaNetworkAPI) GetStarRailCharacterData(userCharacter starrail.UserCharacter) *starrail.CharacterData {
+func (e *EnkaNetworkAPI) GetStarRailCharacterData(userCharacter *starrail.UserCharacter) *starrail.CharacterData {
+	if userCharacter == nil {
+		return nil
+	}
 	return e.GetStarRailCharacterDataById(fmt.Sprint(userCharacter.AvatarId))
 }
 
@@ -112,7 +116,12 @@ func (e *EnkaNetworkAPI) GetStarRailCharacterDataById(uid string) *starrail.Char
 //
 //	The URL of the icon
 func (e *EnkaNetworkAPI) GetStarRailIcon(key string) string {
-	return fmt.Sprintf("%s%s.png", BASE_SR_UI_URL, key)
+	url := fmt.Sprintf("%s%s", BASE_SR_UI_URL, key)
+	if strings.HasSuffix(url, ".png") {
+		return url
+	}
+
+	return fmt.Sprintf("%s.png", url)
 }
 
 // GetAllStarRailCharacters returns all StarRail characters
