@@ -37,7 +37,8 @@ func Init() {
 	l := Localization{
 		defaultKey: ENGLISH,
 
-		honkaiLocalizationCache: map[LocalizationKey]LocalizationMap{},
+		honkaiLocalizationCache:  map[LocalizationKey]LocalizationMap{},
+		genshinLocalizationCache: map[LocalizationKey]LocalizationMap{},
 
 		log: log.New(os.Stdout).WithColor(),
 	}
@@ -50,6 +51,7 @@ func Init() {
 
 func (l *Localization) loadLocalizations() {
 	l.loadHonkaiLocalization()
+	l.loadGenshinLocalization()
 }
 
 func SetLocalization(locale LocalizationKey) {

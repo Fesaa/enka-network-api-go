@@ -36,7 +36,7 @@ type ArtifactStat struct {
 
 func TypeFromId(identifier string) ArtifactType {
 	switch identifier {
-	case "EQUIP_BRECER":
+	case "EQUIP_BRACER":
 		return FLOWER
 	case "EQUIP_NECKLACE":
 		return FEATHER

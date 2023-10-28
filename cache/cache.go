@@ -3,6 +3,7 @@ package cache
 import (
 	"time"
 
+	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 )
 
@@ -37,5 +38,9 @@ type EnkaCache interface {
 	GetStarRailCharacterData(string) *starrail.CharacterData
 	GetAllStarRailCharacters() []*starrail.CharacterData
 
-	GetNameCardName(int) string
+	HasNameCard(int) bool
+	GetNameCardName(int) *string
+
+	AddGenshinUser(*genshin.RawGenshinUser)
+	GetGenshinUser(string) *genshin.RawGenshinUser
 }

@@ -49,9 +49,9 @@ type RawFetterInfo struct {
 type RawEquipData struct {
 	ItemId int64 `json:"itemId"`
 	// Empty if weapon
-	ArtifactData *RawArtifactData `json:"artifactData,omitempty"`
+	ArtifactData *RawArtifactData `json:"reliquary,omitempty"`
 	// Empty if artifact
-	WeaponData *RawWeaponData `json:"weaponData,omitempty"`
+	WeaponData *RawWeaponData `json:"weapon,omitempty"`
 	Flat       RawFlatData    `json:"flat"`
 }
 
@@ -84,8 +84,8 @@ type RawArtifactMainData struct {
 }
 
 type RawSubData struct {
-	AppendPropId string `json:"appendPropId"`
-	StatValue    int64  `json:"statValue"`
+	AppendPropId string  `json:"appendPropId"`
+	StatValue    float64 `json:"statValue"`
 }
 
 // As of version 4.1, HoYo is not storing an avatar ID anymore, but rather a profile picture ID.

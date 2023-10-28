@@ -4,15 +4,45 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 )
 
 const OWN_UID = "714656501"
 
+var api *EnkaNetworkAPI
+
+func TestFetchGenshinUser(t *testing.T) {
+
+	if api == nil {
+		api = New("enka-network-api-tests")
+		api.SetDebug(true)
+	}
+
+	rgu, err := api.FetchGenshinUserAndReturn("618285856")
+	if err != nil {
+		t.Fatal(err)
+		t.FailNow()
+	}
+
+	user := genshin.UserFromRaw(rgu)
+	if user.NickName != "Algoinde" {
+		t.Logf("Wanted Algoinde got %s", user.NickName)
+		t.Fail()
+	}
+
+	if user.Level != 57 {
+		t.Logf("Wanted level 57 got %d", user.Level)
+		t.Fail()
+	}
+}
+
 func TestFetchHonkaiUser(t *testing.T) {
 
-	api := New("enka-network-api-tests")
-	api.SetDebug(true)
+	if api == nil {
+		api = New("enka-network-api-tests")
+		api.SetDebug(true)
+	}
 
 	hu, err := api.FetchHonkaiUserAndReturn(OWN_UID)
 	if err != nil {

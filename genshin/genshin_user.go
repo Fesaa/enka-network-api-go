@@ -1,9 +1,5 @@
 package genshin
 
-import "github.com/Fesaa/enka-network-api-go/cache"
-
-const BASE_GENSHIN_UI_URL = "https://enka.network/ui/"
-
 type User struct {
 	NickName              string
 	Signature             string
@@ -14,7 +10,8 @@ type User struct {
 	TowerFloorIndex       int
 	TowerLevelIndex       int
 	ShowCasedCharacters   []ShowCaseCharacter
-	NameCards             []NameCard
+	// Ids of the users NameCards, use EnkaNetworkApi#GetNameCardName to get the name
+	NameCardsId []int
 	// Always present
 	// As of version 4.1 not reliable.
 	// Use EnkaNetworkApi#GetGenshinProfileIdentifier instead.
@@ -27,7 +24,8 @@ func UserFromRaw(rawUser *RawGenshinUser) *User {
 	profilePicture := playerInfoData.ProfilePicture
 	signature := playerInfoData.Signature
 	if signature == nil {
-		signature = ""
+		temp := ""
+		signature = &temp
 	}
 
 	var profileId int
@@ -40,7 +38,7 @@ func UserFromRaw(rawUser *RawGenshinUser) *User {
 	var user User = User{
 		NickName:              playerInfoData.Nickname,
 		Level:                 playerInfoData.Level,
-		Signature:             signature,
+		Signature:             *signature,
 		WorldLevel:            playerInfoData.WorldLevel,
 		NameCardId:            playerInfoData.NameCardId,
 		CompletedAchievements: playerInfoData.FinishedAchievementsCount,
@@ -63,20 +61,7 @@ func UserFromRaw(rawUser *RawGenshinUser) *User {
 		}
 	}
 
-	nameCards := playerInfoData.ShowNameCardIdList
-	if nameCards == nil {
-		user.NameCards = make([]NameCard, 0)
-	} else {
-		user.NameCards = make([]NameCard, len(nameCards))
-		for i, nameCard := range nameCards {
-			name := cache.Get().GetNameCardName(nameCard)
-			url := BASE_GENSHIN_UI_URL + name + ".png"
-			user.NameCards[i] = NameCard{
-				RawId: nameCard,
-				Url:   url,
-			}
-		}
-	}
+	user.NameCardsId = playerInfoData.ShowNameCardIdList
 
 	avatars := rawUser.AvatarInfoList
 	if avatars == nil {
