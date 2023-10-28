@@ -84,7 +84,7 @@ func loadProfileIdentifiers() (map[int]string, *int, error) {
 
 func loadCharacters() (map[string]*genshin.CharacterData, error) {
 	var genshinCharacters map[string]*genshin.CharacterData
-	err := json.Unmarshal(charactersJson, &genshinCharacters)
+	err := json.Unmarshal(genshinCharactersJson, &genshinCharacters)
 	if err != nil {
 		return nil, err
 	}
