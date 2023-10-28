@@ -10,9 +10,15 @@ func (l *Localization) loadHonkaiLocalization() {
 	l.log.Infof("(Honkai) Loading new localization %s...", l.key)
 	localizationMap, err := l.fetchJson(fmt.Sprintf(HONKAI_BASE_URL, string(l.key)))
 	if err != nil {
-		l.log.Errorf("(Honkai) Couldn't load localization for %s, falling back to %s. \n Error: %s", l.key, l.defaultKey, err.Error())
+		if l.key != l.defaultKey {
+			l.log.Errorf("(Honkai) Couldn't load localization for %s, falling back to %s. \n Error: %s", l.key, l.defaultKey, err.Error())
+			l.key = l.defaultKey
+			l.loadHonkaiLocalization()
+			return
+		}
 		l.key = l.defaultKey
 		l.honkaiLocalizationCache = make(map[LocalizationKey]LocalizationMap)
+		l.log.Errorf("(Honkai) Localization for %s is not available", l.key)
 		return
 	}
 

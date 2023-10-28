@@ -1,6 +1,8 @@
 package cache
 
 import (
+	"sync"
+
 	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 )
@@ -39,14 +41,28 @@ func newMemoryCache() (*MemoryCache, error) {
 }
 
 func (m *MemoryCache) loadResources() error {
-	err := m.loadStarRailResources()
-	if err != nil {
-		return err
+	var SRError error
+	var GError error
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+
+	go func() {
+		SRError = m.loadStarRailResources()
+		wg.Add(-1)
+	}()
+
+	go func() {
+		GError = m.loadGenshinResources()
+		wg.Add(-1)
+	}()
+
+	wg.Wait()
+	if SRError != nil {
+		return SRError
 	}
 
-	err = m.loadGenshinResources()
-	if err != nil {
-		return err
+	if GError != nil {
+		return GError
 	}
 
 	return nil

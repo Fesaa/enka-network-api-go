@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"sync"
 
 	"github.com/withmandala/go-log"
 )
@@ -50,8 +51,20 @@ func Init() {
 }
 
 func (l *Localization) loadLocalizations() {
-	l.loadHonkaiLocalization()
-	l.loadGenshinLocalization()
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+
+	go func() {
+		l.loadHonkaiLocalization()
+		wg.Add(-1)
+	}()
+
+	go func() {
+		l.loadGenshinLocalization()
+		wg.Add(-1)
+	}()
+
+	wg.Wait()
 }
 
 func SetLocalization(locale LocalizationKey) {

@@ -7,17 +7,23 @@ func (l *Localization) loadGenshinLocalization() {
 		return
 	}
 
-	l.log.Infof("(Genshin) Loading localization for %s", l.key)
+	l.log.Infof("(Genshin) Loading localization for %s...", l.key)
 	localizationMap, err := l.fetchJson(fmt.Sprintf(GENSHIN_BASE_URL, string(l.key)))
 	if err != nil {
-		l.log.Errorf("(Genshin) Couldn't load localization for %s, failling back to %s \n Error: %s", l.key, l.defaultKey, err)
+		if l.key != l.defaultKey {
+			l.log.Errorf("(Genshin) Couldn't load localization for %s, failling back to %s \n Error: %s", l.key, l.defaultKey, err)
+			l.key = l.defaultKey
+			l.loadGenshinLocalization()
+			return
+		}
 		l.key = l.defaultKey
 		l.honkaiLocalizationCache = map[LocalizationKey]LocalizationMap{}
+		l.log.Errorf("(Genshin) Localization for %s is not available", l.key)
 		return
 	}
 
 	l.genshinLocalizationCache[l.key] = *localizationMap
-	l.log.Infof("(Genshin) Loaded localization for %s", l.key)
+	l.log.Infof("(Genshin) Loaded localization for %s!", l.key)
 }
 
 // GetGenshinLocale tries to retrieve the string for a hash
