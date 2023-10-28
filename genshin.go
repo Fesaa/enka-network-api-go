@@ -18,14 +18,18 @@ import (
 //
 // uid: The UID of the user to fetch
 //
+// showCaseInfo: Whether to show the showcase info or not
+//
+//	Consider not showing the showcase info if you don't need it
+//
 // success: The callback to call when the user is fetched successfully
 //
 // failure: The callback to call when the user could not be fetched
 //
 // See FetchGenshinUserAndReturn for a synchronous version
-func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, success func(*genshin.RawGenshinUser), failure func(error)) {
+func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, showCaseInfo bool, success func(*genshin.RawGenshinUser), failure func(error)) {
 	go func() {
-		user, err := e.FetchGenshinUserAndReturn(uid)
+		user, err := e.FetchGenshinUserAndReturn(uid, showCaseInfo)
 		if err != nil {
 			failure(err)
 			return
@@ -41,12 +45,16 @@ func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, success func(*genshin.RawG
 //
 // uid: The UID of the user to fetch
 //
+// showCaseInfo: Whether to show the showcase info or not
+//
+//	Consider not showing the showcase info if you don't need it
+//
 // Returns:
 //
 // *RawGenshinUser: The fetched user
 //
 // See FetchGenshinUser for an asynchronous version
-func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string) (*genshin.RawGenshinUser, error) {
+func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool) (*genshin.RawGenshinUser, error) {
 	e.log.Debugf("Fetching Genshin user with uid %s", uid)
 
 	cachedUser := cache.Get().GetGenshinUser(uid)
@@ -55,7 +63,12 @@ func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string) (*genshin.RawGens
 		return cachedUser, nil
 	}
 
-	req, err := http.Get(BASE_URL + "uid/" + uid + "/")
+	var suffix string = ""
+	if !showCaseInfo {
+		suffix = "?info"
+	}
+
+	req, err := http.Get(BASE_URL + "uid/" + uid + suffix)
 	if err != nil {
 		return nil, err
 	}
