@@ -15,6 +15,13 @@ func (m *MemoryCache) loadGenshinResources() error {
 	}
 	m.GenshinNameCards = cards
 
+	profileIcons, max, err := loadProfileIdentifiers()
+	if err != nil {
+		return err
+	}
+	m.GensshinProfileIcons = profileIcons
+	m.MaxGenshinProfileId = *max
+
 	return nil
 }
 
@@ -39,6 +46,33 @@ func loadCards() (map[int]string, error) {
 		cards[intId] = card.IconKey
 	}
 	return cards, nil
+}
+
+func loadProfileIdentifiers() (map[int]string, *int, error) {
+	file, err := os.ReadFile("resources/genshin_profiles.json")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	type Profile struct {
+		Id       int    `json:"id"`
+		IconPath string `json:"iconPath"`
+	}
+	var genshinProfileIcons []Profile
+	err = json.Unmarshal(file, &genshinProfileIcons)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var icons map[int]string = make(map[int]string, len(genshinProfileIcons))
+	var max int = 0
+	for _, profile := range genshinProfileIcons {
+		icons[profile.Id] = profile.IconPath
+		if profile.Id > max {
+			max = profile.Id
+		}
+	}
+	return icons, &max, nil
 }
 
 func (m *MemoryCache) GetNameCardName(id int) *string {
@@ -66,4 +100,15 @@ func (m *MemoryCache) GetGenshinUser(uid string) *genshin.RawGenshinUser {
 		return nil
 	}
 	return nil
+}
+
+func (m *MemoryCache) GetProfileIcon(id int) string {
+	if id > m.MaxGenshinProfileId {
+		return "Not Implemented"
+	}
+
+	if icon, ok := m.GensshinProfileIcons[id]; ok {
+		return icon
+	}
+	return "UI_AvatarIcon_PlayerGirl_Circle"
 }

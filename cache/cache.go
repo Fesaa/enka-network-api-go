@@ -43,4 +43,6 @@ type EnkaCache interface {
 
 	AddGenshinUser(*genshin.RawGenshinUser)
 	GetGenshinUser(string) *genshin.RawGenshinUser
+
+	GetProfileIcon(int) string
 }

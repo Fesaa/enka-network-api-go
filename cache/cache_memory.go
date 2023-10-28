@@ -13,6 +13,9 @@ type MemoryCache struct {
 
 	GenshinUsers     map[string]CachedData[*genshin.RawGenshinUser]
 	GenshinNameCards map[int]string
+
+	GensshinProfileIcons map[int]string
+	MaxGenshinProfileId  int
 }
 
 func newMemoryCache() (*MemoryCache, error) {
@@ -33,6 +36,11 @@ func newMemoryCache() (*MemoryCache, error) {
 
 func (m *MemoryCache) loadResources() error {
 	err := m.loadStarRailResources()
+	if err != nil {
+		return err
+	}
+
+	err = m.loadGenshinResources()
 	if err != nil {
 		return err
 	}

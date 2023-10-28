@@ -80,10 +80,15 @@ func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string) (*genshin.RawGens
 	return &user, nil
 }
 
+// GetGenshinIcon retrieves the URL of a Genshin Impact icon
 func (e *EnkaNetworkAPI) GetGenshinIcon(key string) string {
 	return BASE_GENSHIN_UI_URL + key + ".png"
 }
 
+// GetGenshinNameCard gets the NameCard of an id
+// Returns nil if the id is invalid
+//
+// You can access the enka-network url with the Url field
 func (e *EnkaNetworkAPI) GetGenshinNameCard(id int) *genshin.NameCard {
 	cardName := cache.Get().GetNameCardName(id)
 	if cardName == nil {
@@ -94,5 +99,11 @@ func (e *EnkaNetworkAPI) GetGenshinNameCard(id int) *genshin.NameCard {
 		RawId: id,
 		Url:   e.GetGenshinIcon(*cardName),
 	}
+}
 
+// GetGenshinProfileIdentifier gets the profile identifier of a profile id
+// Returns nil if the id is invalid
+// Falls back to 4.0 data, if not changed > 4.1
+func (e *EnkaNetworkAPI) GetGenshinProfileIdentifier(profileId int) string {
+	return cache.Get().GetProfileIcon(profileId)
 }

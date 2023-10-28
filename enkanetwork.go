@@ -28,8 +28,11 @@ type EnkaNetworkAPI struct {
 //
 // See https://api.enka.network/ for API docs
 func New(userAgent string) *EnkaNetworkAPI {
+	e := cache.Init(cache.MEMORY)
+	if e != nil {
+		panic(e)
+	}
 	localization.Init()
-	cache.Init(cache.MEMORY)
 	return &EnkaNetworkAPI{
 		userAgent: userAgent,
 
