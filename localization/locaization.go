@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	HONKAI_BASE_URL = "https://raw.githubusercontent.com/Dimbreath/StarRailData/master/TextMap/TextMap%s.json"
+	HONKAI_BASE_URL  = "https://raw.githubusercontent.com/Dimbreath/StarRailData/master/TextMap/TextMap%s.json"
+	GENSHIN_BASE_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/TextMap/TextMap%s.json"
 )
 
 var localization *Localization
@@ -26,7 +27,8 @@ type Localization struct {
 	defaultKey LocalizationKey
 	key        LocalizationKey
 
-	honkaiLocalizationCache map[LocalizationKey]LocalizationMap
+	honkaiLocalizationCache  map[LocalizationKey]LocalizationMap
+	genshinLocalizationCache map[LocalizationKey]LocalizationMap
 
 	log *log.Logger
 }

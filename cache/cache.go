@@ -36,4 +36,6 @@ type EnkaCache interface {
 
 	GetStarRailCharacterData(string) *starrail.CharacterData
 	GetAllStarRailCharacters() []*starrail.CharacterData
+
+	GetNameCardName(int) string
 }
