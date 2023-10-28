@@ -1,11 +1,11 @@
 package cache
 
 import (
+	_ "embed"
 	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/Fesaa/enka-network-api-go/genshin"
@@ -42,17 +42,15 @@ func (m *MemoryCache) loadGenshinResources() error {
 	return nil
 }
 
-func loadCards() (map[int]string, error) {
-	file, err := os.ReadFile("resources/genshin_namecards.json")
-	if err != nil {
-		return nil, err
-	}
+//go:embed resources/genshin_namecards.json
+var nameCardJson []byte
 
+func loadCards() (map[int]string, error) {
 	type Icon struct {
 		IconKey string `json:"icon"`
 	}
 	var genshinNameCards map[string]Icon
-	err = json.Unmarshal(file, &genshinNameCards)
+	err := json.Unmarshal(nameCardJson, &genshinNameCards)
 	if err != nil {
 		return nil, err
 	}
@@ -65,18 +63,16 @@ func loadCards() (map[int]string, error) {
 	return cards, nil
 }
 
-func loadProfileIdentifiers() (map[int]string, *int, error) {
-	file, err := os.ReadFile("resources/genshin_profiles.json")
-	if err != nil {
-		return nil, nil, err
-	}
+//go:embed resources/genshin_profiles.json
+var profileIdentifiersJson []byte
 
+func loadProfileIdentifiers() (map[int]string, *int, error) {
 	type Profile struct {
 		Id       int    `json:"id"`
 		IconPath string `json:"iconPath"`
 	}
 	var genshinProfileIcons []Profile
-	err = json.Unmarshal(file, &genshinProfileIcons)
+	err := json.Unmarshal(profileIdentifiersJson, &genshinProfileIcons)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -92,14 +88,12 @@ func loadProfileIdentifiers() (map[int]string, *int, error) {
 	return icons, &max, nil
 }
 
-func loadCharacters() (map[string]*genshin.CharacterData, error) {
-	file, err := os.ReadFile("resources/genshin_characters.json")
-	if err != nil {
-		return nil, err
-	}
+//go:embed resources/genshin_characters.json
+var charactersJson []byte
 
+func loadCharacters() (map[string]*genshin.CharacterData, error) {
 	var genshinCharacters map[string]*genshin.CharacterData
-	err = json.Unmarshal(file, &genshinCharacters)
+	err := json.Unmarshal(charactersJson, &genshinCharacters)
 	if err != nil {
 		return nil, err
 	}

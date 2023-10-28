@@ -1,20 +1,18 @@
 package cache
 
 import (
+	_ "embed"
 	"encoding/json"
-	"os"
 
 	"github.com/Fesaa/enka-network-api-go/starrail"
 )
 
-func (m *MemoryCache) loadStarRailResources() error {
-	file, err := os.ReadFile("resources/honkai_characters.json")
-	if err != nil {
-		return err
-	}
+//go:embed resources/honkai_characters.json
+var starRailCharacterJson []byte
 
+func (m *MemoryCache) loadStarRailResources() error {
 	var starRailCharacterData map[string]*starrail.CharacterData
-	err = json.Unmarshal(file, &starRailCharacterData)
+	err := json.Unmarshal(starRailCharacterJson, &starRailCharacterData)
 	if err != nil {
 		return err
 	}
