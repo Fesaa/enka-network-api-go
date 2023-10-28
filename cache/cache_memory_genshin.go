@@ -42,15 +42,12 @@ func (m *MemoryCache) loadGenshinResources() error {
 	return nil
 }
 
-//go:embed resources/genshin_namecards.json
-var nameCardJson []byte
-
 func loadCards() (map[int]string, error) {
 	type Icon struct {
 		IconKey string `json:"icon"`
 	}
 	var genshinNameCards map[string]Icon
-	err := json.Unmarshal(nameCardJson, &genshinNameCards)
+	err := json.Unmarshal(genshinNameCardJson, &genshinNameCards)
 	if err != nil {
 		return nil, err
 	}
@@ -63,16 +60,13 @@ func loadCards() (map[int]string, error) {
 	return cards, nil
 }
 
-//go:embed resources/genshin_profiles.json
-var profileIdentifiersJson []byte
-
 func loadProfileIdentifiers() (map[int]string, *int, error) {
 	type Profile struct {
 		Id       int    `json:"id"`
 		IconPath string `json:"iconPath"`
 	}
 	var genshinProfileIcons []Profile
-	err := json.Unmarshal(profileIdentifiersJson, &genshinProfileIcons)
+	err := json.Unmarshal(genshinProfileIdentifiersJson, &genshinProfileIcons)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -87,9 +81,6 @@ func loadProfileIdentifiers() (map[int]string, *int, error) {
 	}
 	return icons, &max, nil
 }
-
-//go:embed resources/genshin_characters.json
-var charactersJson []byte
 
 func loadCharacters() (map[string]*genshin.CharacterData, error) {
 	var genshinCharacters map[string]*genshin.CharacterData

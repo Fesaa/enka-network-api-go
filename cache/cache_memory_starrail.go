@@ -7,9 +7,6 @@ import (
 	"github.com/Fesaa/enka-network-api-go/starrail"
 )
 
-//go:embed resources/honkai_characters.json
-var starRailCharacterJson []byte
-
 func (m *MemoryCache) loadStarRailResources() error {
 	var starRailCharacterData map[string]*starrail.CharacterData
 	err := json.Unmarshal(starRailCharacterJson, &starRailCharacterData)
