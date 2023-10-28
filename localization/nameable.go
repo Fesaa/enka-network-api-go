@@ -13,3 +13,11 @@ type HashNameAble struct {
 func (h *HashNameAble) GetHash() string {
 	return fmt.Sprint(h.Hash)
 }
+
+type HashString struct {
+	Hash string
+}
+
+func (h *HashString) GetHash() string {
+	return h.Hash
+}

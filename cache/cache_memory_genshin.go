@@ -2,11 +2,16 @@ package cache
 
 import (
 	"encoding/json"
+	"errors"
+	"io"
+	"net/http"
 	"os"
 	"strconv"
 
 	"github.com/Fesaa/enka-network-api-go/genshin"
 )
+
+const MATERIAL_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/MaterialExcelConfigData.json"
 
 func (m *MemoryCache) loadGenshinResources() error {
 	cards, err := loadCards()
@@ -27,6 +32,12 @@ func (m *MemoryCache) loadGenshinResources() error {
 		return err
 	}
 	m.GenshinCharacterData = characters
+
+	materials, err := loadMaterials()
+	if err != nil {
+		return err
+	}
+	m.GenshinMaterials = materials
 
 	return nil
 }
@@ -100,6 +111,39 @@ func loadCharacters() (map[string]*genshin.CharacterData, error) {
 	return genshinCharacters, nil
 }
 
+func loadMaterials() (map[int]*genshin.Material, error) {
+
+	req, err := http.Get(MATERIAL_URL)
+	if err != nil {
+		return nil, err
+	}
+
+	defer req.Body.Close()
+
+	if req.StatusCode != 200 {
+		return nil, errors.New("enka-network-api-go: Non 200 status code returned: " + req.Status)
+	}
+
+	data, err := io.ReadAll(req.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var materials []genshin.RawMaterial
+	err = json.Unmarshal(data, &materials)
+	if err != nil {
+		return nil, err
+	}
+
+	var genshinMaterials map[int]*genshin.Material = make(map[int]*genshin.Material, len(materials))
+	for _, material := range materials {
+		converted := material.ToMaterial()
+		genshinMaterials[material.Id] = &converted
+	}
+
+	return genshinMaterials, nil
+}
+
 func (m *MemoryCache) GetNameCardName(id int) *string {
 	if name, ok := m.GenshinNameCards[id]; ok {
 		return &name
@@ -145,15 +189,17 @@ func (m *MemoryCache) GetGenshinCharacterData(name string) *genshin.CharacterDat
 	return nil
 }
 
-// GetAllGenshinCharacterData returns all Genshin characters
-//
-// Returns:
-//
-//	A slice of all Genshin characters
 func (m *MemoryCache) GetAllGenshinCharacterData() []*genshin.CharacterData {
 	var characters []*genshin.CharacterData = make([]*genshin.CharacterData, 0, len(m.GenshinCharacterData))
 	for _, character := range m.GenshinCharacterData {
 		characters = append(characters, character)
 	}
 	return characters
+}
+
+func (m *MemoryCache) GetGenshinMaterial(id int) *genshin.Material {
+	if material, ok := m.GenshinMaterials[id]; ok {
+		return material
+	}
+	return nil
 }

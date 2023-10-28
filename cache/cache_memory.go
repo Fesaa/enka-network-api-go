@@ -18,6 +18,8 @@ type MemoryCache struct {
 	MaxGenshinProfileId  int
 
 	GenshinCharacterData map[string]*genshin.CharacterData
+
+	GenshinMaterials map[int]*genshin.Material
 }
 
 func newMemoryCache() (*MemoryCache, error) {

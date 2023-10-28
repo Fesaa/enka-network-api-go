@@ -114,6 +114,13 @@ func (e *EnkaNetworkAPI) GetGenshinCharacterData(name string) *genshin.Character
 	return cache.Get().GetGenshinCharacterData(name)
 }
 
+// GetAllGenshinCharacterData gets all character data
 func (e *EnkaNetworkAPI) GetAllGenshinCharacterData() []*genshin.CharacterData {
 	return cache.Get().GetAllGenshinCharacterData()
+}
+
+// GetGenshinMaterial gets the material data of a material id
+// Returns nil if the id is invalid
+func (e *EnkaNetworkAPI) GetGenshinMaterial(id int) *genshin.Material {
+	return cache.Get().GetGenshinMaterial(id)
 }
