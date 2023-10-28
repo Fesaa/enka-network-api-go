@@ -41,7 +41,7 @@ func GetGenshinLocale(nameable Nameable) *string {
 //
 // Returns the hash if the string is not found
 func GetGenshinLocaleOrHash(nameable Nameable) string {
-	name := GetHonkaiLocale(nameable)
+	name := GetGenshinLocale(nameable)
 	if name != nil {
 		return *name
 	}

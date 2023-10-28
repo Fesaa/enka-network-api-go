@@ -35,6 +35,19 @@ func TestFetchGenshinUser(t *testing.T) {
 		t.Logf("Wanted level 57 got %d", user.Level)
 		t.Fail()
 	}
+
+	material := api.GetGenshinMaterial(101)
+	t.Log(material)
+	if material == nil {
+		t.Logf("Could not find material 101")
+		t.FailNow()
+	}
+
+	if material.IconKey != "UI_ItemIcon_101" {
+		t.Logf("Wanted UI_ItemIcon_101 got %s", material.IconKey)
+		t.Fail()
+	}
+
 }
 
 func TestFetchHonkaiUser(t *testing.T) {

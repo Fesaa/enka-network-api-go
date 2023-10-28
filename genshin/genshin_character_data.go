@@ -1,6 +1,7 @@
 package genshin
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/Fesaa/enka-network-api-go/localization"
@@ -11,7 +12,7 @@ type CharacterData struct {
 	TalentsImageKeys []string       `json:"Consts"`
 	SkillOrder       []int          `json:"SkillOrder"`
 	Skills           map[int]string `json:"Skills"`
-	NameHash         string         `json:"NameTextMapHash"`
+	NameHash         int            `json:"NameTextMapHash"`
 	SideIconKey      string         `json:"SideIconName"`
 	WeaponType       string
 	RawWeaponType    string          `json:"WeaponType"`
@@ -19,7 +20,7 @@ type CharacterData struct {
 }
 
 func (c *CharacterData) GetHash() string {
-	return c.NameHash
+	return fmt.Sprint(c.NameHash)
 }
 
 func (c *CharacterData) Name() string {

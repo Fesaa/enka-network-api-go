@@ -21,3 +21,11 @@ type HashString struct {
 func (h *HashString) GetHash() string {
 	return h.Hash
 }
+
+type HashInt struct {
+	Hash int
+}
+
+func (h *HashInt) GetHash() string {
+	return fmt.Sprint(h.Hash)
+}

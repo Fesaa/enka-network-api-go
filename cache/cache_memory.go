@@ -19,7 +19,7 @@ type MemoryCache struct {
 
 	GenshinCharacterData map[string]*genshin.CharacterData
 
-	GenshinMaterials map[int]*genshin.Material
+	GenshinMaterials map[int]genshin.RawMaterial
 }
 
 func newMemoryCache() (*MemoryCache, error) {

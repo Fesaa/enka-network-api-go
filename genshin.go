@@ -120,7 +120,8 @@ func (e *EnkaNetworkAPI) GetAllGenshinCharacterData() []*genshin.CharacterData {
 }
 
 // GetGenshinMaterial gets the material data of a material id
+// Use RawMaterial#ToMaterial to convert to a Material
 // Returns nil if the id is invalid
-func (e *EnkaNetworkAPI) GetGenshinMaterial(id int) *genshin.Material {
+func (e *EnkaNetworkAPI) GetGenshinMaterial(id int) *genshin.RawMaterial {
 	return cache.Get().GetGenshinMaterial(id)
 }

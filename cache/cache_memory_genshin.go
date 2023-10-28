@@ -111,7 +111,7 @@ func loadCharacters() (map[string]*genshin.CharacterData, error) {
 	return genshinCharacters, nil
 }
 
-func loadMaterials() (map[int]*genshin.Material, error) {
+func loadMaterials() (map[int]genshin.RawMaterial, error) {
 
 	req, err := http.Get(MATERIAL_URL)
 	if err != nil {
@@ -135,13 +135,15 @@ func loadMaterials() (map[int]*genshin.Material, error) {
 		return nil, err
 	}
 
-	var genshinMaterials map[int]*genshin.Material = make(map[int]*genshin.Material, len(materials))
+	// For some reasons we can't store them as pointers
+	// Maybe because they're from a Get request?
+	// I'm not sure, pretty confused
+	// Do tell me if you know why
+	materialsMap := map[int]genshin.RawMaterial{}
 	for _, material := range materials {
-		converted := material.ToMaterial()
-		genshinMaterials[material.Id] = &converted
+		materialsMap[material.Id] = material
 	}
-
-	return genshinMaterials, nil
+	return materialsMap, nil
 }
 
 func (m *MemoryCache) GetNameCardName(id int) *string {
@@ -197,9 +199,9 @@ func (m *MemoryCache) GetAllGenshinCharacterData() []*genshin.CharacterData {
 	return characters
 }
 
-func (m *MemoryCache) GetGenshinMaterial(id int) *genshin.Material {
+func (m *MemoryCache) GetGenshinMaterial(id int) *genshin.RawMaterial {
 	if material, ok := m.GenshinMaterials[id]; ok {
-		return material
+		return &material
 	}
 	return nil
 }

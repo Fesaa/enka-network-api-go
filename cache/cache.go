@@ -49,5 +49,5 @@ type EnkaCache interface {
 	GetGenshinCharacterData(string) *genshin.CharacterData
 	GetAllGenshinCharacterData() []*genshin.CharacterData
 
-	GetGenshinMaterial(int) *genshin.Material
+	GetGenshinMaterial(int) *genshin.RawMaterial
 }

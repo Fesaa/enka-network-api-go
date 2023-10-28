@@ -5,9 +5,9 @@ import "github.com/Fesaa/enka-network-api-go/localization"
 type Material struct {
 	Id              int
 	Name            string
-	NameHash        string
+	NameHash        localization.HashInt
 	Description     string
-	DescriptionHash string
+	DescriptionHash localization.HashInt
 	IconKey         string
 	Pictures        []string
 	ItemType        ItemType
@@ -16,7 +16,7 @@ type Material struct {
 	// Because I'm lazy it might be present for others
 	// be sure to check ItemType
 	MaterialType string
-	Stars        string
+	Stars        int
 }
 
 type ItemType string
@@ -30,22 +30,26 @@ const (
 
 type RawMaterial struct {
 	Id              int      `json:"id"`
-	NameHash        string   `json:"nameTextMapHash"`
-	DescriptionHash string   `json:"descTextMapHash"`
+	NameHash        int      `json:"nameTextMapHash"`
+	DescriptionHash int      `json:"descTextMapHash"`
 	IconKey         string   `json:"icon"`
 	Pictures        []string `json:"picPath"`
 	ItemType        string   `json:"itemType"`
 	MaterialType    string   `json:"materialType,omitempty"`
-	Stars           string   `json:"rankLevel,omitempty"`
+	Stars           int      `json:"rankLevel,omitempty"`
 }
 
 func (r RawMaterial) ToMaterial() Material {
+
+	name := localization.HashInt{Hash: r.NameHash}
+	description := localization.HashInt{Hash: r.DescriptionHash}
+
 	return Material{
 		Id:              r.Id,
-		Name:            localization.GetGenshinLocaleOrHash(&localization.HashString{Hash: r.NameHash}),
-		NameHash:        r.NameHash,
-		Description:     localization.GetGenshinLocaleOrHash(&localization.HashString{Hash: r.DescriptionHash}),
-		DescriptionHash: r.DescriptionHash,
+		Name:            localization.GetGenshinLocaleOrHash(&name),
+		NameHash:        name,
+		Description:     localization.GetGenshinLocaleOrHash(&description),
+		DescriptionHash: description,
 		IconKey:         r.IconKey,
 		Pictures:        r.Pictures,
 		ItemType:        ItemType(r.ItemType),
