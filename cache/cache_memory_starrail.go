@@ -19,7 +19,7 @@ func (m *MemoryCache) loadStarRailResources() error {
 		return err
 	}
 
-	m.CharacterData = starRailCharacterData
+	m.StarRailCharacterData = starRailCharacterData
 	return nil
 }
 
@@ -39,7 +39,7 @@ func (m *MemoryCache) AddHonkaiUser(user *starrail.RawHonkaiUser) {
 }
 
 func (m *MemoryCache) GetStarRailCharacterData(uid string) *starrail.CharacterData {
-	if data, ok := m.CharacterData[uid]; ok {
+	if data, ok := m.StarRailCharacterData[uid]; ok {
 		return data
 	}
 
@@ -47,9 +47,9 @@ func (m *MemoryCache) GetStarRailCharacterData(uid string) *starrail.CharacterDa
 }
 
 func (m *MemoryCache) GetAllStarRailCharacters() []*starrail.CharacterData {
-	s := make([]*starrail.CharacterData, 0, len(m.CharacterData))
+	s := make([]*starrail.CharacterData, 0, len(m.StarRailCharacterData))
 
-	for _, c := range m.CharacterData {
+	for _, c := range m.StarRailCharacterData {
 		s = append(s, c)
 	}
 	return s
