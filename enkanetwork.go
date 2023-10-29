@@ -20,33 +20,30 @@ type EnkaNetworkAPI struct {
 
 // New creates a new EnkaNetworkAPI instance
 //
-// # Will also initialize the cache and localization
+// Will also initialize the cache and localization
 //
 // From the documentation:
 //
 //	Please set a custom User-Agent header with your requests so I can track them better and help you if needed.
 //
 // See https://api.enka.network/ for API docs
-func New(userAgent string) *EnkaNetworkAPI {
-	e := cache.Init(cache.MEMORY)
+func New(userAgent string, cacheType cache.CacheType) (*EnkaNetworkAPI, error) {
+	e := cache.Init(cacheType)
 	if e != nil {
-		panic(e)
+		return nil, e
 	}
 	localization.Init()
 	return &EnkaNetworkAPI{
 		userAgent: userAgent,
 
 		log: log.New(os.Stdout).WithColor(),
-	}
+	}, nil
 }
 
 // NewDefaultUserAgent creates a new EnkaNetworkAPI instance with the default User-Agent header
-//
-// # This is not recommended, as it does not help the developer track requests
-//
 // Consider using New or SetUserAgent instead
-func NewDefaultUserAgent() *EnkaNetworkAPI {
-	return New("enka-network-api-go (Unset User Agent)")
+func NewDefaul() (*EnkaNetworkAPI, error) {
+	return New("enka-network-api-go (Unset User Agent)", cache.MEMORY)
 }
 
 // SetUserAgent sets the User-Agent header for requests

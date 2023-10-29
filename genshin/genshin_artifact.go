@@ -25,6 +25,7 @@ func (a *Artifact) GetHash() string {
 	return a.SetNameHash
 }
 
+// SetName returns the name of the artifact set
 func (a *Artifact) SetName() string {
 	return localization.GetGenshinLocaleOrHash(a)
 }

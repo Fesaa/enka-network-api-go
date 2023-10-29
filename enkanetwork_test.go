@@ -4,6 +4,7 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 )
@@ -15,11 +16,15 @@ var api *EnkaNetworkAPI
 func TestFetchGenshinUser(t *testing.T) {
 
 	if api == nil {
-		api = New("enka-network-api-tests")
+		var e error
+		api, e = New("enka-network-api-tests", cache.MEMORY)
+		if e != nil {
+			t.Fatal(e)
+		}
 		api.SetDebug(true)
 	}
 
-	rgu, err := api.FetchGenshinUserAndReturn("618285856", false)
+	rgu, err := api.FetchGenshinUserAndReturn("618285856", true)
 	if err != nil {
 		t.Fatal(err)
 		t.FailNow()
@@ -53,7 +58,11 @@ func TestFetchGenshinUser(t *testing.T) {
 func TestFetchHonkaiUser(t *testing.T) {
 
 	if api == nil {
-		api = New("enka-network-api-tests")
+		var e error
+		api, e = New("enka-network-api-tests", cache.MEMORY)
+		if e != nil {
+			t.Fatal(e)
+		}
 		api.SetDebug(true)
 	}
 
@@ -69,12 +78,17 @@ func TestFetchHonkaiUser(t *testing.T) {
 		t.Fail()
 	}
 
-	FirstCharacter := user.Characters[1]
+	if len(user.Characters) < 2 {
+		t.Logf("Wanted at least 2 characters got %d", len(user.Characters))
+		t.Fail()
+	}
 
-	lightCone := FirstCharacter.LightCone
+	character := user.Characters[1]
+
+	lightCone := character.LightCone
 	name := lightCone.Name()
 
-	characterData := api.GetStarRailCharacterData(&FirstCharacter)
+	characterData := api.GetStarRailCharacterData(&character)
 
 	t.Logf("Character %s has lightCone %s", characterData.Name(), name)
 
