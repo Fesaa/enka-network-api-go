@@ -1,5 +1,7 @@
 package starrail
 
+import "fmt"
+
 type Platform string
 
 const (
@@ -13,8 +15,10 @@ const (
 type User struct {
 	NickName string
 	// Between 1 and 70
-	Level            int
-	Signature        string
+	Level     int
+	Signature string
+	// This has to be parsed with EnkaNetworkApi#GetStarRailAvatarKey & EnkaiNetworkApi#GetStarRailIcon
+	AvatarIconId     string
 	Uid              int
 	FriendCount      int
 	EquilibriumLevel int
@@ -32,6 +36,7 @@ func UserFromRaw(rawUser *RawHonkaiUser) *User {
 		NickName:          detailInfo.NickName,
 		Level:             detailInfo.Level,
 		Signature:         detailInfo.Signature,
+		AvatarIconId:      fmt.Sprint(detailInfo.HeadIcon),
 		Uid:               detailInfo.Uid,
 		FriendCount:       detailInfo.FriendCount,
 		EquilibriumLevel:  detailInfo.WordlLevel,

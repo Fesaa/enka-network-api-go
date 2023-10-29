@@ -14,7 +14,22 @@ func (m *MemoryCache) loadStarRailResources() error {
 		return err
 	}
 
+	type Icon struct {
+		Icon string `json:"icon"`
+	}
+	var starRailAvatars map[string]*Icon
+	err = json.Unmarshal(starRailAvataJson, &starRailAvatars)
+	if err != nil {
+		return err
+	}
+
+	var avatars map[string]string = make(map[string]string, len(starRailAvatars))
+	for k, v := range starRailAvatars {
+		avatars[k] = v.Icon
+	}
+
 	m.StarRailCharacterData = starRailCharacterData
+	m.StarRailAvatars = avatars
 	return nil
 }
 
@@ -48,4 +63,11 @@ func (m *MemoryCache) GetAllStarRailCharacters() []*starrail.CharacterData {
 		s = append(s, c)
 	}
 	return s
+}
+
+func (m *MemoryCache) GetStarRailAvatarKey(id string) string {
+	if avatar, ok := m.StarRailAvatars[id]; ok {
+		return avatar
+	}
+	return id
 }

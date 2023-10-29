@@ -12,6 +12,7 @@ import (
 type MemoryCache struct {
 	HonkaiUsers           map[string]CachedData[*starrail.RawHonkaiUser]
 	StarRailCharacterData map[string]*starrail.CharacterData
+	StarRailAvatars       map[string]string
 
 	GenshinUsers     map[string]CachedData[*genshin.RawGenshinUser]
 	GenshinNameCards map[int]string

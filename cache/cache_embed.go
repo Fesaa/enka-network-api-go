@@ -13,3 +13,6 @@ var genshinCharactersJson []byte
 
 //go:embed resources/honkai_characters.json
 var starRailCharacterJson []byte
+
+//go:embed resources/honkai_avatars.json
+var starRailAvataJson []byte

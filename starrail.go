@@ -132,3 +132,16 @@ func (e *EnkaNetworkAPI) GetStarRailIcon(key string) string {
 func (e *EnkaNetworkAPI) GetAllStarRailCharacters() []*starrail.CharacterData {
 	return cache.Get().GetAllStarRailCharacters()
 }
+
+// GetStarRailAvatarKey returns the avatar key for the given avatar ID
+//
+// Parameters:
+//
+//	avatarId: The avatar ID
+//
+// Returns:
+//
+//	The avatar key or id if not found
+func (e *EnkaNetworkAPI) GetStarRailAvatarKey(avatarId string) string {
+	return cache.Get().GetStarRailAvatarKey(avatarId)
+}

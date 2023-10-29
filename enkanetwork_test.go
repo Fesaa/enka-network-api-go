@@ -19,7 +19,7 @@ func TestFetchGenshinUser(t *testing.T) {
 		api.SetDebug(true)
 	}
 
-	rgu, err := api.FetchGenshinUserAndReturn("618285856")
+	rgu, err := api.FetchGenshinUserAndReturn("618285856", false)
 	if err != nil {
 		t.Fatal(err)
 		t.FailNow()
@@ -74,11 +74,11 @@ func TestFetchHonkaiUser(t *testing.T) {
 	lightCone := FirstCharacter.LightCone
 	name := lightCone.Name()
 
-	characterData := api.GetStarRailCharacterData(FirstCharacter)
+	characterData := api.GetStarRailCharacterData(&FirstCharacter)
 
 	t.Logf("Character %s has lightCone %s", characterData.Name(), name)
 
-	t.Log(characterData)
+	t.Log(characterData.Path)
 
 	wg := sync.WaitGroup{}
 	wg.Add(1)
