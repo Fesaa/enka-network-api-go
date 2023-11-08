@@ -13,3 +13,5 @@ go get github.com/Fesaa/enka-network-api-go
 ## Note
 I stole the fields from the [java](https://github.com/kazuryyx/EnkaNetworkAPI) version :D
 Feel free to message me on discord if needed `ameliahh`
+
+I can't code, don't blame me thanks
