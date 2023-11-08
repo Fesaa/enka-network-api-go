@@ -68,8 +68,8 @@ type RawWeaponData struct {
 }
 
 type RawFlatData struct {
-	NameTextMapHash    string              `json:"nameTextMapHash"`
-	SetNameTextMapHash string              `json:"setNameTextMapHash"`
+	NameTextMapHash    int                 `json:"nameTextMapHash"`
+	SetNameTextMapHash int                 `json:"setNameTextMapHash"`
 	RankLevel          int                 `json:"rankLevel"`
 	WeaponStats        []RawSubData        `json:"weaponStats"`
 	ArtifactMainData   RawArtifactMainData `json:"artifactMainData"`
@@ -93,4 +93,6 @@ type RawSubData struct {
 type RawProfilePicture struct {
 	AvatarId int `json:"avatarId,omitempty"`
 	Id       int `json:"id,omitempty"`
+	// Fallback if above are empty
+	CostumeId int `json:"costume_id,omitempty"`
 }

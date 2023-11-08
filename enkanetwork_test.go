@@ -53,6 +53,13 @@ func TestFetchGenshinUser(t *testing.T) {
 		t.Fail()
 	}
 
+	s, err := api.GetGenshinProfileIdentifier(&user.ProfilePictureId)
+	if err != nil {
+		t.Fatal(err)
+		t.FailNow()
+	}
+	t.Logf("Pfp: %s", *s)
+
 }
 
 func TestFetchHonkaiUser(t *testing.T) {

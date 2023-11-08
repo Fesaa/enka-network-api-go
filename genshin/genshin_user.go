@@ -15,8 +15,21 @@ type User struct {
 	// Always present
 	// As of version 4.1 not reliable.
 	// Use EnkaNetworkApi#GetGenshinProfileIdentifier instead.
-	ProfilePictureId int
+	ProfilePictureId Pair[int]
 	Characters       []UserCharacter
+}
+
+type Pair[T any] struct {
+	Left  T
+	Right T
+}
+
+func filterID(pfp *RawProfilePicture) Pair[int] {
+	if pfp.AvatarId != 0 {
+		return Pair[int]{pfp.AvatarId, 0}
+	} else {
+		return Pair[int]{pfp.AvatarId, pfp.CostumeId}
+	}
 }
 
 func UserFromRaw(rawUser *RawGenshinUser) *User {
@@ -28,13 +41,6 @@ func UserFromRaw(rawUser *RawGenshinUser) *User {
 		signature = &temp
 	}
 
-	var profileId int
-	if profilePicture.AvatarId != 0 {
-		profileId = profilePicture.AvatarId
-	} else {
-		profileId = profilePicture.Id
-	}
-
 	var user User = User{
 		NickName:              playerInfoData.Nickname,
 		Level:                 playerInfoData.Level,
@@ -44,7 +50,7 @@ func UserFromRaw(rawUser *RawGenshinUser) *User {
 		CompletedAchievements: playerInfoData.FinishedAchievementsCount,
 		TowerFloorIndex:       playerInfoData.TowerFloorIndex,
 		TowerLevelIndex:       playerInfoData.TowerLevelIndex,
-		ProfilePictureId:      profileId,
+		ProfilePictureId:      filterID(&profilePicture),
 	}
 
 	showAvatars := playerInfoData.ShowAvatarInfoList
