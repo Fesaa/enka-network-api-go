@@ -2,7 +2,6 @@ package genshin
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 )
 
@@ -66,12 +65,10 @@ func userCharacterFromRaw(c RawAvatarInfo) UserCharacter {
 		artifacts = append(artifacts, Artifact{
 			ArtifactType: artifactType,
 			Level:        artifactData.Level - 1,
-			MainStats: ArtifactStat{
-				Stat:  mainStat.MainPropId,
-				Value: float64(mainStat.StatValue),
-			},
-			SubStats:    subStats,
-			SetNameHash: fmt.Sprintf("%d", flatData.SetNameTextMapHash),
+			MainStats:    ArtifactStat{Stat: mainStat.MainPropId, Value: float64(mainStat.StatValue)},
+			SubStats:     subStats,
+			SetNameHash:  flatData.SetNameTextMapHash,
+			IconKey:      "",
 		})
 	}
 

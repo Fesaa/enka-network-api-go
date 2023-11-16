@@ -68,8 +68,8 @@ type RawWeaponData struct {
 }
 
 type RawFlatData struct {
-	NameTextMapHash    int                 `json:"nameTextMapHash"`
-	SetNameTextMapHash int                 `json:"setNameTextMapHash"`
+	NameTextMapHash    string              `json:"nameTextMapHash"`
+	SetNameTextMapHash string              `json:"setNameTextMapHash"`
 	RankLevel          int                 `json:"rankLevel"`
 	WeaponStats        []RawSubData        `json:"weaponStats"`
 	ArtifactMainData   RawArtifactMainData `json:"artifactMainData"`
