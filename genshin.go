@@ -3,8 +3,10 @@ package enkanetworkapigo
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/Fesaa/enka-network-api-go/cache"
@@ -56,6 +58,9 @@ func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, showCaseInfo bool, success
 // See FetchGenshinUser for an asynchronous version
 func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool) (*genshin.RawGenshinUser, error) {
 	e.log.Debugf("Fetching Genshin user with uid %s", uid)
+	if _, err := strconv.Atoi(uid); err != nil || len(uid) != 9 {
+		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 characters long")
+	}
 
 	cachedUser := cache.Get().GetGenshinUser(uid)
 	if cachedUser != nil {
@@ -76,7 +81,16 @@ func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool
 
 	if req.StatusCode != 200 {
 		e.log.Debugf("Returned a non 200 status code. Got %d", req.StatusCode)
-		return nil, errors.New("enka-network-api-go: Non 200 status code returned: " + req.Status)
+
+		var error string
+		data, err := io.ReadAll(req.Body)
+		if err != nil {
+			e.log.Errorf("Failed to read body: %s", err.Error())
+			error = "Unknown: Failed to read body"
+		} else {
+			error = string(data)
+		}
+		return nil, errors.New(fmt.Sprintf("enka-network-api-go: Non 200 status code returned: %d\nBody: %s", req.StatusCode, error))
 	}
 
 	data, err := io.ReadAll(req.Body)
