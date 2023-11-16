@@ -2,6 +2,7 @@ package genshin
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 )
 
@@ -70,7 +71,7 @@ func userCharacterFromRaw(c RawAvatarInfo) UserCharacter {
 				Value: float64(mainStat.StatValue),
 			},
 			SubStats:    subStats,
-			SetNameHash: flatData.SetNameTextMapHash,
+			SetNameHash: fmt.Sprintf("%d", flatData.SetNameTextMapHash),
 		})
 	}
 

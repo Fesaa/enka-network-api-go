@@ -1,6 +1,10 @@
 package genshin
 
-import "github.com/Fesaa/enka-network-api-go/localization"
+import (
+	"fmt"
+
+	"github.com/Fesaa/enka-network-api-go/localization"
+)
 
 type Weapon struct {
 	NameHash   string
@@ -36,7 +40,7 @@ func fromRawData(raw RawEquipData, flat RawFlatData) Weapon {
 	}
 
 	return Weapon{
-		NameHash:   flat.NameTextMapHash,
+		NameHash:   fmt.Sprintf("%d", flat.NameTextMapHash),
 		Level:      rawWeaponData.Level,
 		Ascension:  rawWeaponData.PromoteLevel,
 		Refinement: resolveFirst(rawWeaponData.AffixMap),

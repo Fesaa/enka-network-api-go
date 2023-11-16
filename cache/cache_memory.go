@@ -17,7 +17,7 @@ type MemoryCache struct {
 	GenshinUsers     map[string]CachedData[*genshin.RawGenshinUser]
 	GenshinNameCards map[int]string
 
-	GensshinProfileIcons map[int]string
+	GensshinProfileIcons map[int]*genshin.ProfilePicture
 	MaxGenshinProfileId  int
 
 	GenshinCharacterData map[string]*genshin.CharacterData
