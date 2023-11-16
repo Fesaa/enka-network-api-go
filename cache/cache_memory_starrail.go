@@ -50,6 +50,7 @@ func (m *MemoryCache) AddHonkaiUser(user *starrail.RawHonkaiUser) {
 
 func (m *MemoryCache) GetStarRailCharacterData(uid string) *starrail.CharacterData {
 	if data, ok := m.StarRailCharacterData[uid]; ok {
+		data.Path = starrail.PathFromRaw(data.RawPath)
 		return data
 	}
 

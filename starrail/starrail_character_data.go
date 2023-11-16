@@ -17,6 +17,28 @@ type CharacterData struct {
 	SkillList               []int                     `json:"SkillList"`
 }
 
+// Returns the path used in game, from the raw path.
+// Used internally, you can just use CharacterData.Path
+func PathFromRaw(rawPath string) string {
+	switch rawPath {
+	case "Knight":
+		return "Preservation"
+	case "Mage":
+		return "Erudition"
+	case "Priest":
+		return "Abundance"
+	case "Rogue":
+		return "The Hunt"
+	case "Shaman":
+		return "Harmony"
+	case "Warlock":
+		return "Nihility"
+	case "Warrior":
+		return "Destruction"
+	}
+	return rawPath
+}
+
 // Returns the localized AvatarName or Hash if not found
 func (d *CharacterData) Name() string {
 	return localization.GetHonkaiLocaleOrHash(&d.AvatarName)
