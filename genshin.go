@@ -55,6 +55,8 @@ func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, showCaseInfo bool, success
 //
 // *RawGenshinUser: The fetched user
 //
+//	The error, will be MaintenanceError if the API is in maintenance
+//
 // See FetchGenshinUser for an asynchronous version
 func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool) (*genshin.RawGenshinUser, error) {
 	e.log.Debugf("Fetching Genshin user with uid %s", uid)
@@ -78,6 +80,10 @@ func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool
 		return nil, err
 	}
 	defer req.Body.Close()
+
+	if req.StatusCode == 424 {
+		return nil, MaintenanceError
+	}
 
 	if req.StatusCode != 200 {
 		e.log.Debugf("Returned a non 200 status code. Got %d", req.StatusCode)

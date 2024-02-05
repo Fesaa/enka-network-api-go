@@ -1,6 +1,7 @@
 package enkanetworkapigo
 
 import (
+	"errors"
 	"os"
 
 	"github.com/Fesaa/enka-network-api-go/cache"
@@ -12,6 +13,8 @@ const BASE_URL = "https://enka.network/api/"
 const BASE_GENSHIN_UI_URL = "https://enka.network/ui/"
 const BASE_SR_UI_URL = "https://enka.network/ui/hsr/"
 
+var MaintenanceError error = errors.New("enka-network-api-go: The API is currently in maintenance")
+
 type EnkaNetworkAPI struct {
 	userAgent string
 
@@ -20,7 +23,7 @@ type EnkaNetworkAPI struct {
 
 // New creates a new EnkaNetworkAPI instance
 //
-// Will also initialize the cache and localization
+// # Will also initialize the cache and localization
 //
 // From the documentation:
 //

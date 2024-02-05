@@ -45,6 +45,7 @@ func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success func(*starrail.RawH
 // Returns:
 //
 //	The HonkaiUser, or nil if an error occurred
+//	The error, will be MaintenanceError if the API is in maintenance
 //
 // See FetchHonkaiUser for an asynchronous version
 func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*starrail.RawHonkaiUser, error) {
@@ -64,6 +65,10 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*starrail.RawHonk
 		return nil, err
 	}
 	defer req.Body.Close()
+
+	if req.StatusCode == 424 {
+		return nil, MaintenanceError
+	}
 
 	if req.StatusCode != 200 {
 		e.log.Debugf("Returned a non 200 status code. Got %d", req.StatusCode)

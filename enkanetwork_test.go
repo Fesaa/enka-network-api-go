@@ -25,6 +25,11 @@ func TestFetchGenshinUser(t *testing.T) {
 	}
 
 	rgu, err := api.FetchGenshinUserAndReturn("618285856", true)
+	if err == MaintenanceError {
+		t.Logf("API in Maintenance skipping test")
+		t.SkipNow()
+	}
+
 	if err != nil {
 		t.Fatal(err)
 		t.FailNow()
@@ -74,6 +79,11 @@ func TestFetchHonkaiUser(t *testing.T) {
 	}
 
 	hu, err := api.FetchHonkaiUserAndReturn(OWN_UID)
+	if err == MaintenanceError {
+		t.Logf("API in Maintenance skipping test")
+		t.SkipNow()
+	}
+
 	if err != nil {
 		api.log.Error(err)
 		t.Fatal(err)
