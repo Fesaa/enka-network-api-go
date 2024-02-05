@@ -12,7 +12,7 @@ import (
 	"github.com/Fesaa/enka-network-api-go/genshin"
 )
 
-const MATERIAL_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/MaterialExcelConfigData.json"
+const MATERIAL_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/main/ExcelBinOutput/MaterialExcelConfigData.json"
 
 func (m *MemoryCache) loadGenshinResources() error {
 	cards, err := loadCards()

@@ -13,7 +13,7 @@ import (
 
 const (
 	HONKAI_BASE_URL  = "https://raw.githubusercontent.com/Dimbreath/StarRailData/master/TextMap/TextMap%s.json"
-	GENSHIN_BASE_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/TextMap/TextMap%s.json"
+	GENSHIN_BASE_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/main/TextMap/TextMap%s.json"
 )
 
 var localization *Localization
