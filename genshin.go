@@ -60,7 +60,7 @@ func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, showCaseInfo bool, success
 // See FetchGenshinUser for an asynchronous version
 func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool) (*genshin.RawGenshinUser, error) {
 	e.log.Debugf("Fetching Genshin user with uid %s", uid)
-	if _, err := strconv.Atoi(uid); err != nil || (len(uid) != 9 || len(uid) != 10) {
+	if _, err := strconv.Atoi(uid); err != nil || (len(uid) != 9 && len(uid) != 10) {
 		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 or 10 characters long")
 	}
 
