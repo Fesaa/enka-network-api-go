@@ -642,24 +642,6 @@
     "RankIDList": [130501, 130502, 130503, 130504, 130505, 130506],
     "SkillList": [130501, 130502, 130503, 130504, 130506, 130507]
   },
-  "8001": {
-    "AvatarName": {
-      "Hash": -531793818
-    },
-    "AvatarFullName": {
-      "Hash": -1461075445
-    },
-    "Rarity": 5,
-    "Element": "Physical",
-    "AvatarBaseType": "Warrior",
-    "AvatarSideIconPath": "SpriteOutput/AvatarRoundIcon/8001.png",
-    "ActionAvatarHeadIconPath": "SpriteOutput/AvatarIconTeam/8001B.png",
-    "AvatarCutinFrontImgPath": "SpriteOutput/AvatarDrawCard/8001.png",
-    "RankIDList": [800101, 800102, 800103, 800104, 800105, 800106],
-    "SkillList": [
-      800101, 800102, 800103, 800104, 800106, 800107, 800108, 800109
-    ]
-  },
   "1306": {
     "AvatarName": {
       "Hash": 368883737
@@ -707,6 +689,24 @@
     "AvatarCutinFrontImgPath": "SpriteOutput/AvatarDrawCard/1312.png",
     "RankIDList": [131201, 131202, 131203, 131204, 131205, 131206],
     "SkillList": [131201, 131202, 131203, 131204, 131206, 131207]
+  },
+  "8001": {
+    "AvatarName": {
+      "Hash": -531793818
+    },
+    "AvatarFullName": {
+      "Hash": -1461075445
+    },
+    "Rarity": 5,
+    "Element": "Physical",
+    "AvatarBaseType": "Warrior",
+    "AvatarSideIconPath": "SpriteOutput/AvatarRoundIcon/8001.png",
+    "ActionAvatarHeadIconPath": "SpriteOutput/AvatarIconTeam/8001B.png",
+    "AvatarCutinFrontImgPath": "SpriteOutput/AvatarDrawCard/8001.png",
+    "RankIDList": [800101, 800102, 800103, 800104, 800105, 800106],
+    "SkillList": [
+      800101, 800102, 800103, 800104, 800106, 800107, 800108, 800109
+    ]
   },
   "8002": {
     "AvatarName": {
