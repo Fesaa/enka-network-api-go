@@ -18,7 +18,6 @@ func TestCorrectLoading(t *testing.T) {
 			t.FailNow()
 		}
 		c = m
-		slog.SetLogLoggerLevel(slog.LevelDebug)
 	}
 
 	if l == nil {
