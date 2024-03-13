@@ -30,14 +30,24 @@ import (
 //
 // See FetchGenshinUserAndReturn for a synchronous version
 func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, showCaseInfo bool, success func(*genshin.RawGenshinUser), failure func(error)) {
-	go func() {
+	go func(uid string, showCaseInfo bool, success func(*genshin.RawGenshinUser), failure func(error)) {
 		user, err := e.FetchGenshinUserAndReturn(uid, showCaseInfo)
 		if err != nil {
+			if failure == nil {
+				e.log.Warn("Provided failure call is nil, ignoring...")
+				return
+			}
+
 			failure(err)
 			return
 		}
+		if success == nil {
+			e.log.Warn("Provided success call is nil, ignoring...")
+			return
+		}
+
 		success(user)
-	}()
+	}(uid, showCaseInfo, success, failure)
 }
 
 // FetchGenshinUserAndReturn fetches a Genshin User from the Enka Network API
@@ -59,14 +69,14 @@ func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, showCaseInfo bool, success
 //
 // See FetchGenshinUser for an asynchronous version
 func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool) (*genshin.RawGenshinUser, error) {
-	e.log.Debugf("Fetching Genshin user with uid %s", uid)
+	e.log.Debug("Fetching Genshin user with", "uid", uid)
 	if _, err := strconv.Atoi(uid); err != nil || (len(uid) != 9 && len(uid) != 10) {
 		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 or 10 characters long")
 	}
 
 	cachedUser := cache.Get().GetGenshinUser(uid)
 	if cachedUser != nil {
-		e.log.Debug("Returning from cache...")
+		e.log.Debug("Returning from cache...", "uid", uid)
 		return cachedUser, nil
 	}
 
@@ -86,17 +96,17 @@ func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool
 	}
 
 	if req.StatusCode != 200 {
-		e.log.Debugf("Returned a non 200 status code. Got %d", req.StatusCode)
+		e.log.Debug("Returned a non 200 status code. Got ", "status_code", req.StatusCode)
 
 		var error string
 		data, err := io.ReadAll(req.Body)
 		if err != nil {
-			e.log.Errorf("Failed to read body: %s", err.Error())
+			e.log.Error("Failed to read body:", "error", err.Error())
 			error = "Unknown: Failed to read body"
 		} else {
 			error = string(data)
 		}
-		return nil, errors.New(fmt.Sprintf("enka-network-api-go: Non 200 status code returned: %d\nBody: %s", req.StatusCode, error))
+		return nil, fmt.Errorf("enka-network-api-go: Non 200 status code returned: %d\nBody: %s", req.StatusCode, error)
 	}
 
 	data, err := io.ReadAll(req.Body)

@@ -1,6 +1,9 @@
 package enkanetworkapigo
 
 import (
+	"io"
+	"log/slog"
+	"os"
 	"sync"
 	"testing"
 
@@ -13,15 +16,36 @@ const OWN_UID = "714656501"
 
 var api *EnkaNetworkAPI
 
+var h slog.Handler
+var logger *slog.Logger
+
+func TestMain(m *testing.M) {
+	file, err := os.OpenFile("enkanetwork_test.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	multiWriter := io.MultiWriter(os.Stdout, file)
+	h = slog.NewTextHandler(multiWriter, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	})
+
+	logger = slog.New(h)
+
+	exitCode := m.Run()
+	os.Exit(exitCode)
+}
+
 func TestFetchGenshinUser(t *testing.T) {
 
 	if api == nil {
 		var e error
-		api, e = New("enka-network-api-tests", cache.MEMORY)
+
+		api, e = New("enka-network-api-tests", cache.MEMORY, logger)
 		if e != nil {
 			t.Fatal(e)
 		}
-		api.SetDebug(true)
 	}
 
 	rgu, err := api.FetchGenshinUserAndReturn("618285856", true)
@@ -71,11 +95,10 @@ func TestFetchHonkaiUser(t *testing.T) {
 
 	if api == nil {
 		var e error
-		api, e = New("enka-network-api-tests", cache.MEMORY)
+		api, e = New("enka-network-api-tests", cache.MEMORY, logger)
 		if e != nil {
 			t.Fatal(e)
 		}
-		api.SetDebug(true)
 	}
 
 	hu, err := api.FetchHonkaiUserAndReturn(OWN_UID)
@@ -85,7 +108,7 @@ func TestFetchHonkaiUser(t *testing.T) {
 	}
 
 	if err != nil {
-		api.log.Error(err)
+		api.log.Error(err.Error())
 		t.Fatal(err)
 		t.FailNow()
 	}

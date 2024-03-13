@@ -7,30 +7,31 @@ func (l *Localization) loadHonkaiLocalization() {
 		return
 	}
 
-	l.log.Infof("(Honkai) Loading new localization %s...", l.key)
+	l.log.Info("(Honkai) Loading new localization", "key", l.key)
 	localizationMap, err := l.fetchJson(fmt.Sprintf(HONKAI_BASE_URL, string(l.key)))
 	if err != nil {
 		if l.key != l.defaultKey {
-			l.log.Errorf("(Honkai) Couldn't load localization for %s, falling back to %s. \n Error: %s", l.key, l.defaultKey, err.Error())
+			l.log.Error("(Honkai) Couldn't load localization, failling back",
+				"key", l.key, "fallback_key", l.defaultKey, "error", err)
 			l.key = l.defaultKey
 			l.loadHonkaiLocalization()
 			return
 		}
 		l.key = l.defaultKey
 		l.honkaiLocalizationCache = make(map[LocalizationKey]LocalizationMap)
-		l.log.Errorf("(Honkai) Localization for %s is not available", l.key)
+		l.log.Error("(Honkai) Localization is not available", "key", l.key)
 		return
 	}
 
 	l.honkaiLocalizationCache[l.key] = *localizationMap
-	l.log.Infof("(Honkai) Loaded localization %s!", l.key)
+	l.log.Info("(Honkai) Loaded localization!", "key", l.key)
 
 }
 
 // GetHonkaiLocale tries to retrieve the string for a hash
 // in Honkai: Star Rail
 //
-// Takes a nameable and returns a nilable string
+// # Takes a nameable and returns a nilable string
 //
 // Methods on structs will use GetHonkaiLocaleOrHash, call this directly
 // for full control over it's behavior

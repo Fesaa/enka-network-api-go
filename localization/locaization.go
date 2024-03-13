@@ -4,11 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"log/slog"
 	"net/http"
-	"os"
 	"sync"
-
-	"github.com/withmandala/go-log"
 )
 
 const (
@@ -31,17 +29,17 @@ type Localization struct {
 	honkaiLocalizationCache  map[LocalizationKey]LocalizationMap
 	genshinLocalizationCache map[LocalizationKey]LocalizationMap
 
-	log *log.Logger
+	log *slog.Logger
 }
 
-func Init() {
+func Init(logger *slog.Logger) {
 	l := Localization{
 		defaultKey: ENGLISH,
 
 		honkaiLocalizationCache:  map[LocalizationKey]LocalizationMap{},
 		genshinLocalizationCache: map[LocalizationKey]LocalizationMap{},
 
-		log: log.New(os.Stdout).WithColor(),
+		log: logger,
 	}
 
 	l.key = l.defaultKey
@@ -72,14 +70,6 @@ func SetLocalization(locale LocalizationKey) {
 	localization.loadLocalizations()
 }
 
-func SetDebug(debug bool) {
-	if debug {
-		localization.log.WithDebug()
-	} else {
-		localization.log.WithoutDebug()
-	}
-}
-
 func (l *Localization) fetchJson(url string) (*LocalizationMap, error) {
 
 	req, err := http.Get(url)
@@ -90,7 +80,7 @@ func (l *Localization) fetchJson(url string) (*LocalizationMap, error) {
 	defer req.Body.Close()
 
 	if req.StatusCode != 200 {
-		l.log.Debugf("Returned a non 200 status code. Got %d", req.StatusCode)
+		l.log.Debug("Returned a non 200 status code. Got ", "status_code", req.StatusCode)
 		return nil, errors.New("enka-network-api-go: Non 200 status code returned: " + req.Status)
 	}
 

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
@@ -8,12 +10,11 @@ import (
 	enkanetworkapigo "github.com/Fesaa/enka-network-api-go"
 	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/starrail"
-	"github.com/withmandala/go-log"
 )
 
 const SRUID = "714656501"
 
-var _log log.Logger = *log.New(os.Stdout).WithColor()
+var _log *slog.Logger = slog.Default()
 
 func main() {
 
@@ -38,24 +39,24 @@ func main() {
 				_log.Info("No characters found")
 				return
 			}
-			_log.Infof("User %s:", user.NickName)
-			_log.Infof("They are level %d, and have unlocked %d planets in Herta's Simulated Universe", user.Level, user.SimulatedUniverse)
+			_log.Info("User: " + user.NickName)
+			_log.Info(fmt.Sprintf("They are level %d, and have unlocked %d planets in Herta's Simulated Universe", user.Level, user.SimulatedUniverse))
 			for _, character := range selectedCharacters {
 				gameData := api.GetStarRailCharacterData(&character)
 
 				if gameData == nil {
-					_log.Infof("No game data found for %d", character.AvatarId)
+					_log.Info(fmt.Sprintf("No game data found for %d", character.AvatarId))
 					return
 				}
 
-				_log.Infof("%s is level %d, and has %d stars", gameData.Name(), character.Level, gameData.Star)
-				_log.Infof("Find the icon for the character by surfing to %s", api.GetStarRailIcon(gameData.AvatarSideIconPath))
+				_log.Info(fmt.Sprintf("%s is level %d, and has %d stars", gameData.Name(), character.Level, gameData.Star))
+				_log.Info(fmt.Sprintf("Find the icon for the character by surfing to %s", api.GetStarRailIcon(gameData.AvatarSideIconPath)))
 				_log.Info("\n")
 			}
 
 		},
 		func(err error) {
-			_log.Error(err)
+			_log.Error(err.Error())
 		})
 
 	// Make the program not shut down before the goroutines are done
