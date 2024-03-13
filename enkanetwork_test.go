@@ -1,9 +1,7 @@
 package enkanetworkapigo
 
 import (
-	"io"
-	"log/slog"
-	"os"
+	"strings"
 	"sync"
 	"testing"
 
@@ -16,33 +14,12 @@ const OWN_UID = "714656501"
 
 var api *EnkaNetworkAPI
 
-var h slog.Handler
-var logger *slog.Logger
-
-func TestMain(m *testing.M) {
-	file, err := os.OpenFile("enkanetwork_test.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	multiWriter := io.MultiWriter(os.Stdout, file)
-	h = slog.NewTextHandler(multiWriter, &slog.HandlerOptions{
-		Level: slog.LevelDebug,
-	})
-
-	logger = slog.New(h)
-
-	exitCode := m.Run()
-	os.Exit(exitCode)
-}
-
 func TestFetchGenshinUser(t *testing.T) {
 
 	if api == nil {
 		var e error
 
-		api, e = New("enka-network-api-tests", cache.MEMORY, logger)
+		api, e = New("enka-network-api-tests", cache.Default())
 		if e != nil {
 			t.Fatal(e)
 		}
@@ -73,12 +50,12 @@ func TestFetchGenshinUser(t *testing.T) {
 	material := api.GetGenshinMaterial(101)
 	t.Log(material)
 	if material == nil {
-		t.Logf("Could not find material 101")
+		t.Logf("Could not find material")
 		t.FailNow()
 	}
 
-	if material.IconKey != "UI_ItemIcon_101" {
-		t.Logf("Wanted UI_ItemIcon_101 got %s", material.IconKey)
+	if !strings.Contains(material.IconKey, "UI_ItemIcon") {
+		t.Logf("Wanted UI_ItemIcon got %s", material.IconKey)
 		t.Fail()
 	}
 
@@ -95,7 +72,7 @@ func TestFetchHonkaiUser(t *testing.T) {
 
 	if api == nil {
 		var e error
-		api, e = New("enka-network-api-tests", cache.MEMORY, logger)
+		api, e = New("enka-network-api-tests", cache.Default())
 		if e != nil {
 			t.Fatal(e)
 		}

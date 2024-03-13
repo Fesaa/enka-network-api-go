@@ -10,11 +10,12 @@ import (
 	"strconv"
 
 	"github.com/Fesaa/enka-network-api-go/genshin"
+	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 const MATERIAL_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/main/ExcelBinOutput/MaterialExcelConfigData.json"
 
-func (m *MemoryCache) loadGenshinResources() error {
+func (m *memoryCache) loadGenshinResources() error {
 	cards, err := loadCards()
 	if err != nil {
 		return err
@@ -25,7 +26,7 @@ func (m *MemoryCache) loadGenshinResources() error {
 	if err != nil {
 		return err
 	}
-	m.GensshinProfileIcons = profileIcons
+	m.GenshinProfileIcons = profileIcons
 	m.MaxGenshinProfileId = *max
 
 	characters, err := loadCharacters()
@@ -43,7 +44,7 @@ func (m *MemoryCache) loadGenshinResources() error {
 	return nil
 }
 
-func loadCards() (map[int]string, error) {
+func loadCards() (*utils.Map[int, string], error) {
 	type Icon struct {
 		IconKey string `json:"icon"`
 	}
@@ -53,15 +54,15 @@ func loadCards() (map[int]string, error) {
 		return nil, err
 	}
 
-	var cards map[int]string = make(map[int]string, len(genshinNameCards))
+	cards := utils.NewMap[int, string]()
 	for id, card := range genshinNameCards {
 		intId, _ := strconv.Atoi(id)
-		cards[intId] = card.IconKey
+		cards.Set(intId, card.IconKey)
 	}
 	return cards, nil
 }
 
-func loadProfileIdentifiers() (map[int]*genshin.ProfilePicture, *int, error) {
+func loadProfileIdentifiers() (*utils.Map[int, *genshin.ProfilePicture], *int, error) {
 	type Profile struct {
 		Id         int    `json:"id"`
 		IconPath   string `json:"iconPath"`
@@ -74,15 +75,15 @@ func loadProfileIdentifiers() (map[int]*genshin.ProfilePicture, *int, error) {
 		return nil, nil, err
 	}
 
-	var icons map[int]*genshin.ProfilePicture = make(map[int]*genshin.ProfilePicture, len(genshinProfileIcons))
+	icons := utils.NewMap[int, *genshin.ProfilePicture]()
 	var max int = 0
 	for _, profile := range genshinProfileIcons {
-		icons[profile.Id] = &genshin.ProfilePicture{
+		icons.Set(profile.Id, &genshin.ProfilePicture{
 			Id:         profile.Id,
 			IconPath:   profile.IconPath,
 			UnlockType: profile.UnlockType,
 			InternalId: profile.InternalId,
-		}
+		})
 		if profile.Id > max {
 			max = profile.Id
 		}
@@ -90,22 +91,22 @@ func loadProfileIdentifiers() (map[int]*genshin.ProfilePicture, *int, error) {
 	return icons, &max, nil
 }
 
-func loadCharacters() (map[string]*genshin.CharacterData, error) {
-	var genshinCharacters map[string]*genshin.CharacterData
-	err := json.Unmarshal(genshinCharactersJson, &genshinCharacters)
+func loadCharacters() (*utils.Map[string, *genshin.CharacterData], error) {
+	genshinCharactersMap := make(map[string]*genshin.CharacterData)
+	err := json.Unmarshal(genshinCharactersJson, &genshinCharactersMap)
 	if err != nil {
 		return nil, err
 	}
 
-	for _, character := range genshinCharacters {
+	genshinCharacters := utils.FromMap(genshinCharactersMap)
+	genshinCharacters.ForEach(func(key string, character *genshin.CharacterData) {
 		character.WeaponType = genshin.WrapWeaponType(character.RawWeaponType)
-	}
+	})
 
 	return genshinCharacters, nil
 }
 
-func loadMaterials() (map[int]genshin.RawMaterial, error) {
-
+func loadMaterials() (*utils.Map[int, *genshin.RawMaterial], error) {
 	req, err := http.Get(MATERIAL_URL)
 	if err != nil {
 		return nil, err
@@ -132,35 +133,35 @@ func loadMaterials() (map[int]genshin.RawMaterial, error) {
 	// Maybe because they're from a Get request?
 	// I'm not sure, pretty confused
 	// Do tell me if you know why
-	materialsMap := map[int]genshin.RawMaterial{}
+	materialsMap := utils.NewMap[int, *genshin.RawMaterial]()
 	for _, material := range materials {
-		materialsMap[material.Id] = material
+		materialsMap.Set(material.Id, &material)
 	}
 	return materialsMap, nil
 }
 
-func (m *MemoryCache) GetNameCardName(id int) *string {
-	if name, ok := m.GenshinNameCards[id]; ok {
+func (m *memoryCache) GetNameCardName(id int) *string {
+	if name, ok := m.GenshinNameCards.Get(id); ok {
 		return &name
 	}
 	return nil
 }
 
-func (m *MemoryCache) HasNameCard(id int) bool {
-	_, ok := m.GenshinNameCards[id]
+func (m *memoryCache) HasNameCard(id int) bool {
+	_, ok := m.GenshinNameCards.Get(id)
 	return ok
 }
 
-func (m *MemoryCache) AddGenshinUser(user *genshin.RawGenshinUser) {
-	m.GenshinUsers[user.Uid] = NewCachedData[*genshin.RawGenshinUser](user)
+func (m *memoryCache) AddGenshinUser(user *genshin.RawGenshinUser) {
+	m.GenshinUsers.Set(user.Uid, NewCachedData[*genshin.RawGenshinUser](user))
 }
 
-func (m *MemoryCache) GetGenshinUser(uid string) *genshin.RawGenshinUser {
-	if cache, ok := m.GenshinUsers[uid]; ok {
+func (m *memoryCache) GetGenshinUser(uid string) *genshin.RawGenshinUser {
+	if cache, ok := m.GenshinUsers.Get(uid); ok {
 		if !cache.IsExpired() {
 			return cache.GetData()
 		}
-		delete(m.GenshinUsers, uid)
+		m.GenshinUsers.Delete(uid)
 		return nil
 	}
 	return nil
@@ -168,7 +169,7 @@ func (m *MemoryCache) GetGenshinUser(uid string) *genshin.RawGenshinUser {
 
 // If this returns an error, I have the update the lib.
 // You can mostly assume it'll return succesfully.
-func (m *MemoryCache) GetProfileIcon(pair *genshin.Pair[int]) (*string, error) {
+func (m *memoryCache) GetProfileIcon(pair *genshin.Pair[int]) (*string, error) {
 	if pair.Left > m.MaxGenshinProfileId && pair.Right == 0 {
 
 		data := m.GetGenshinCharacterData(fmt.Sprintf("%d", pair.Left))
@@ -180,40 +181,41 @@ func (m *MemoryCache) GetProfileIcon(pair *genshin.Pair[int]) (*string, error) {
 	}
 
 	if pair.Right == 0 {
-		if profile, ok := m.GensshinProfileIcons[pair.Left]; ok {
+		if profile, ok := m.GenshinProfileIcons.Get(pair.Left); ok {
 			s := profile.IconPath
 			return &s, nil
 		}
 	}
 
-	for _, profile := range m.GensshinProfileIcons {
-		if profile.InternalId == pair.Right {
-			s := profile.IconPath
-			return &s, nil
-		}
+	_, profile := m.GenshinProfileIcons.Find(func(key int, value *genshin.ProfilePicture) bool {
+		return value.InternalId == pair.Right
+	})
+
+	if profile != nil && *profile != nil {
+		return &(*profile).IconPath, nil
 	}
 
 	return nil, errors.New("Not Implemented")
 }
 
-func (m *MemoryCache) GetGenshinCharacterData(name string) *genshin.CharacterData {
-	if character, ok := m.GenshinCharacterData[name]; ok {
+func (m *memoryCache) GetGenshinCharacterData(name string) *genshin.CharacterData {
+	if character, ok := m.GenshinCharacterData.Get(name); ok {
 		return character
 	}
 	return nil
 }
 
-func (m *MemoryCache) GetAllGenshinCharacterData() []*genshin.CharacterData {
-	var characters []*genshin.CharacterData = make([]*genshin.CharacterData, 0, len(m.GenshinCharacterData))
-	for _, character := range m.GenshinCharacterData {
+func (m *memoryCache) GetAllGenshinCharacterData() []*genshin.CharacterData {
+	var characters []*genshin.CharacterData = make([]*genshin.CharacterData, 0, m.GenshinCharacterData.Len())
+	m.GenshinCharacterData.ForEach(func(_ string, character *genshin.CharacterData) {
 		characters = append(characters, character)
-	}
+	})
 	return characters
 }
 
-func (m *MemoryCache) GetGenshinMaterial(id int) *genshin.RawMaterial {
-	if material, ok := m.GenshinMaterials[id]; ok {
-		return &material
+func (m *memoryCache) GetGenshinMaterial(id int) *genshin.RawMaterial {
+	if material, ok := m.GenshinMaterials.Get(id); ok {
+		return material
 	}
 	return nil
 }

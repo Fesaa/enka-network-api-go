@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/genshin"
+	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 // FetchGenshinUser fetches a Genshin User from the Enka Network API
@@ -29,7 +29,7 @@ import (
 // failure: The callback to call when the user could not be fetched
 //
 // See FetchGenshinUserAndReturn for a synchronous version
-func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, showCaseInfo bool, success func(*genshin.RawGenshinUser), failure func(error)) {
+func (e *EnkaNetworkAPI) FetchGenshinUser(uid string, showCaseInfo bool, success utils.Consumer[*genshin.RawGenshinUser], failure utils.Consumer[error]) {
 	go func(uid string, showCaseInfo bool, success func(*genshin.RawGenshinUser), failure func(error)) {
 		user, err := e.FetchGenshinUserAndReturn(uid, showCaseInfo)
 		if err != nil {
@@ -74,7 +74,7 @@ func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool
 		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 or 10 characters long")
 	}
 
-	cachedUser := cache.Get().GetGenshinUser(uid)
+	cachedUser := e.cache.GetGenshinUser(uid)
 	if cachedUser != nil {
 		e.log.Debug("Returning from cache...", "uid", uid)
 		return cachedUser, nil
@@ -120,7 +120,7 @@ func (e *EnkaNetworkAPI) FetchGenshinUserAndReturn(uid string, showCaseInfo bool
 		return nil, err
 	}
 
-	cache.Get().AddGenshinUser(&user)
+	e.cache.AddGenshinUser(&user)
 	return &user, nil
 }
 
@@ -140,7 +140,7 @@ func (e *EnkaNetworkAPI) GetGenshinIcon(key string) string {
 //
 // You can access the enka-network url with the Url field
 func (e *EnkaNetworkAPI) GetGenshinNameCard(id int) *genshin.NameCard {
-	cardName := cache.Get().GetNameCardName(id)
+	cardName := e.cache.GetNameCardName(id)
 	if cardName == nil {
 		return nil
 	}
@@ -157,23 +157,23 @@ func (e *EnkaNetworkAPI) GetGenshinNameCard(id int) *genshin.NameCard {
 // Only an error if I didn't update the lib
 // You can assume it works
 func (e *EnkaNetworkAPI) GetGenshinProfileIdentifier(pair *genshin.Pair[int]) (*string, error) {
-	return cache.Get().GetProfileIcon(pair)
+	return e.cache.GetProfileIcon(pair)
 }
 
 // GetGenshinCharacterData gets the character data of a character name
 // Returns nil if the name is invalid
 func (e *EnkaNetworkAPI) GetGenshinCharacterData(id string) *genshin.CharacterData {
-	return cache.Get().GetGenshinCharacterData(id)
+	return e.cache.GetGenshinCharacterData(id)
 }
 
 // GetAllGenshinCharacterData gets all character data
 func (e *EnkaNetworkAPI) GetAllGenshinCharacterData() []*genshin.CharacterData {
-	return cache.Get().GetAllGenshinCharacterData()
+	return e.cache.GetAllGenshinCharacterData()
 }
 
 // GetGenshinMaterial gets the material data of a material id
 // Use RawMaterial#ToMaterial to convert to a Material
 // Returns nil if the id is invalid
 func (e *EnkaNetworkAPI) GetGenshinMaterial(id int) *genshin.RawMaterial {
-	return cache.Get().GetGenshinMaterial(id)
+	return e.cache.GetGenshinMaterial(id)
 }

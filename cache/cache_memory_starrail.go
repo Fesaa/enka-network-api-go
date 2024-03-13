@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 
 	"github.com/Fesaa/enka-network-api-go/starrail"
+	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
-func (m *MemoryCache) loadStarRailResources() error {
+func (m *memoryCache) loadStarRailResources() error {
 	var starRailCharacterData map[string]*starrail.CharacterData
 	err := json.Unmarshal(starRailCharacterJson, &starRailCharacterData)
 	if err != nil {
@@ -28,28 +29,28 @@ func (m *MemoryCache) loadStarRailResources() error {
 		avatars[k] = v.Icon
 	}
 
-	m.StarRailCharacterData = starRailCharacterData
-	m.StarRailAvatars = avatars
+	m.StarRailCharacterData = utils.FromMap(starRailCharacterData)
+	m.StarRailAvatars = utils.FromMap(avatars)
 	return nil
 }
 
-func (m *MemoryCache) GetHonkaiUser(uid string) *starrail.RawHonkaiUser {
-	if cache, ok := m.HonkaiUsers[uid]; ok {
+func (m *memoryCache) GetHonkaiUser(uid string) *starrail.RawHonkaiUser {
+	if cache, ok := m.HonkaiUsers.Get(uid); ok {
 		if !cache.IsExpired() {
 			return cache.GetData()
 		}
-		delete(m.HonkaiUsers, uid)
+		m.HonkaiUsers.Delete(uid)
 		return nil
 	}
 	return nil
 }
 
-func (m *MemoryCache) AddHonkaiUser(user *starrail.RawHonkaiUser) {
-	m.HonkaiUsers[user.Uid] = NewCachedData[*starrail.RawHonkaiUser](user)
+func (m *memoryCache) AddHonkaiUser(user *starrail.RawHonkaiUser) {
+	m.HonkaiUsers.Set(user.Uid, NewCachedData[*starrail.RawHonkaiUser](user))
 }
 
-func (m *MemoryCache) GetStarRailCharacterData(uid string) *starrail.CharacterData {
-	if data, ok := m.StarRailCharacterData[uid]; ok {
+func (m *memoryCache) GetStarRailCharacterData(uid string) *starrail.CharacterData {
+	if data, ok := m.StarRailCharacterData.Get(uid); ok {
 		data.Path = starrail.PathFromRaw(data.RawPath)
 		return data
 	}
@@ -57,17 +58,16 @@ func (m *MemoryCache) GetStarRailCharacterData(uid string) *starrail.CharacterDa
 	return nil
 }
 
-func (m *MemoryCache) GetAllStarRailCharacters() []*starrail.CharacterData {
-	s := make([]*starrail.CharacterData, 0, len(m.StarRailCharacterData))
-
-	for _, c := range m.StarRailCharacterData {
+func (m *memoryCache) GetAllStarRailCharacters() []*starrail.CharacterData {
+	s := make([]*starrail.CharacterData, 0, m.StarRailCharacterData.Len())
+	m.StarRailCharacterData.ForEach(func(_ string, c *starrail.CharacterData) {
 		s = append(s, c)
-	}
+	})
 	return s
 }
 
-func (m *MemoryCache) GetStarRailAvatarKey(id string) string {
-	if avatar, ok := m.StarRailAvatars[id]; ok {
+func (m *memoryCache) GetStarRailAvatarKey(id string) string {
+	if avatar, ok := m.StarRailAvatars.Get(id); ok {
 		return avatar
 	}
 	return id

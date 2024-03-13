@@ -1,47 +1,77 @@
 package cache
 
 import (
+	"log/slog"
 	"sync"
+	"time"
 
 	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
+	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 // In memory cache with maps
 // This is not thread save. Be careful
-type MemoryCache struct {
-	HonkaiUsers           map[string]CachedData[*starrail.RawHonkaiUser]
-	StarRailCharacterData map[string]*starrail.CharacterData
-	StarRailAvatars       map[string]string
+type memoryCache struct {
+	HonkaiUsers           *utils.Map[string, CachedData[*starrail.RawHonkaiUser]]
+	StarRailCharacterData *utils.Map[string, *starrail.CharacterData]
+	StarRailAvatars       *utils.Map[string, string]
 
-	GenshinUsers     map[string]CachedData[*genshin.RawGenshinUser]
-	GenshinNameCards map[int]string
+	GenshinUsers     *utils.Map[string, CachedData[*genshin.RawGenshinUser]]
+	GenshinNameCards *utils.Map[int, string]
 
-	GensshinProfileIcons map[int]*genshin.ProfilePicture
-	MaxGenshinProfileId  int
+	GenshinProfileIcons *utils.Map[int, *genshin.ProfilePicture]
+	MaxGenshinProfileId int
 
-	GenshinCharacterData map[string]*genshin.CharacterData
+	GenshinCharacterData *utils.Map[string, *genshin.CharacterData]
 
-	GenshinMaterials map[int]genshin.RawMaterial
+	GenshinMaterials *utils.Map[int, *genshin.RawMaterial]
+
+	log *slog.Logger
 }
 
-func newMemoryCache() (*MemoryCache, error) {
-	c := &MemoryCache{
-		HonkaiUsers:           map[string]CachedData[*starrail.RawHonkaiUser]{},
-		StarRailCharacterData: map[string]*starrail.CharacterData{},
+func NewMemoryCache(logger *slog.Logger, ds ...time.Duration) (*memoryCache, error) {
+	c := &memoryCache{
+		HonkaiUsers:           utils.NewMap[string, CachedData[*starrail.RawHonkaiUser]](),
+		StarRailCharacterData: utils.NewMap[string, *starrail.CharacterData](),
 
-		GenshinUsers:     map[string]CachedData[*genshin.RawGenshinUser]{},
-		GenshinNameCards: map[int]string{},
+		GenshinUsers:     utils.NewMap[string, CachedData[*genshin.RawGenshinUser]](),
+		GenshinNameCards: utils.NewMap[int, string](),
+		log:              logger,
 	}
 	e := c.loadResources()
 	if e != nil {
 		return nil, e
 	}
 
+	d := time.Duration(5) * time.Minute
+	if len(ds) > 0 {
+		d = ds[0]
+	}
+
+	go c.cleaner(d)
+
 	return c, nil
 }
 
-func (m *MemoryCache) loadResources() error {
+func (m *memoryCache) cleaner(d time.Duration) {
+	for range time.Tick(d) {
+		m.log.Info(" (Honkai) Cleaning cache")
+		m.HonkaiUsers.ForEachModifySafe(func(key string, value CachedData[*starrail.RawHonkaiUser]) {
+			if value.IsExpired() {
+				m.HonkaiUsers.Delete(key)
+			}
+		})
+		m.log.Info(" (Genshin) Cleaning cache")
+		m.GenshinUsers.ForEachModifySafe(func(key string, value CachedData[*genshin.RawGenshinUser]) {
+			if value.IsExpired() {
+				m.GenshinUsers.Delete(key)
+			}
+		})
+	}
+}
+
+func (m *memoryCache) loadResources() error {
 	var SRError error
 	var GError error
 	wg := sync.WaitGroup{}

@@ -1,39 +1,13 @@
 package cache
 
-var cache EnkaCache
+import (
+	"log/slog"
 
-type CacheType int
-
-const (
-	// In-memory cache
-	// Uses maps, so it's not thread-safe
-	MEMORY CacheType = iota
+	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
-// Init initializes the cache
-// If you've initiated a EnkaNetworkAPI instance, a cache will be automatically created
-// Parameters:
-//
-//	cacheType: The type of cache to use
-//
-// Returns:
-//
-//	error: An error if one occurred, nil otherwise
-func Init(cacheType CacheType) error {
-
-	switch cacheType {
-	case MEMORY:
-		c, e := newMemoryCache()
-		if e != nil {
-			return e
-		}
-		cache = c
+func Default() utils.ErrorSupplier[EnkaCache] {
+	return func() (EnkaCache, error) {
+		return NewMemoryCache(slog.Default())
 	}
-
-	return nil
-}
-
-// Get the current cache instance
-func Get() EnkaCache {
-	return cache
 }

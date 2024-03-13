@@ -6,6 +6,7 @@ import (
 
 	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/localization"
+	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 const BASE_URL = "https://enka.network/api/"
@@ -16,6 +17,7 @@ var MaintenanceError error = errors.New("enka-network-api-go: The API is current
 
 type EnkaNetworkAPI struct {
 	userAgent string
+	cache     cache.EnkaCache
 
 	log *slog.Logger
 }
@@ -25,7 +27,7 @@ type EnkaNetworkAPI struct {
 // Parameters:
 //
 //	userAgent: The User-Agent header for requests
-//	cacheType: The cache type to use
+//	cacheSupplier: A function that returns a cache instance
 //	loggers: Optional custom loggers
 //
 // # Will also initialize the cache and localization
@@ -35,10 +37,10 @@ type EnkaNetworkAPI struct {
 //	Please set a custom User-Agent header with your requests so I can track them better and help you if needed.
 //
 // See https://api.enka.network/ for API docs
-func New(userAgent string, cacheType cache.CacheType, loggers ...*slog.Logger) (*EnkaNetworkAPI, error) {
-	e := cache.Init(cacheType)
-	if e != nil {
-		return nil, e
+func New(userAgent string, cacheSupplier utils.ErrorSupplier[cache.EnkaCache], loggers ...*slog.Logger) (*EnkaNetworkAPI, error) {
+	cache, err := cacheSupplier()
+	if err != nil {
+		return nil, err
 	}
 
 	var logger *slog.Logger
@@ -52,13 +54,14 @@ func New(userAgent string, cacheType cache.CacheType, loggers ...*slog.Logger) (
 	return &EnkaNetworkAPI{
 		userAgent: userAgent,
 		log:       logger,
+		cache:     cache,
 	}, nil
 }
 
 // NewDefaultUserAgent creates a new EnkaNetworkAPI instance with the default User-Agent header
 // Consider using New or SetUserAgent instead
 func NewDefault() (*EnkaNetworkAPI, error) {
-	return New("enka-network-api-go (Unset User Agent)", cache.MEMORY)
+	return New("enka-network-api-go (Unset User Agent)", cache.Default())
 }
 
 // SetUserAgent sets the User-Agent header for requests

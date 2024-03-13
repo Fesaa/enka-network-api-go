@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/starrail"
+	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 // FetchHonkaiUser fetches a Honkai User from the Enka Network API
@@ -23,7 +23,7 @@ import (
 //	failure: A function to call on failure, with the error as the first parameter
 //
 // See FetchHonkaiUserAndReturn for a synchronous version
-func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success func(*starrail.RawHonkaiUser), failure func(error)) {
+func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success utils.Consumer[*starrail.RawHonkaiUser], failure utils.Consumer[error]) {
 	go func(uid string, success func(*starrail.RawHonkaiUser), failure func(error)) {
 		user, err := e.FetchHonkaiUserAndReturn(uid)
 		if err != nil {
@@ -63,7 +63,7 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*starrail.RawHonk
 		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 characters long")
 	}
 
-	cachedUser := cache.Get().GetHonkaiUser(uid)
+	cachedUser := e.cache.GetHonkaiUser(uid)
 	if cachedUser != nil {
 		e.log.Debug("Returning from cache...", "uid", uid)
 		return cachedUser, nil
@@ -104,7 +104,7 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*starrail.RawHonk
 		return nil, err
 	}
 
-	cache.Get().AddHonkaiUser(&user)
+	e.cache.AddHonkaiUser(&user)
 	return &user, nil
 }
 
@@ -128,7 +128,7 @@ func (e *EnkaNetworkAPI) GetStarRailCharacterData(userCharacter *starrail.UserCh
 //
 //	The CharacterData, or nil if not found
 func (e *EnkaNetworkAPI) GetStarRailCharacterDataById(uid string) *starrail.CharacterData {
-	return cache.Get().GetStarRailCharacterData(uid)
+	return e.cache.GetStarRailCharacterData(uid)
 }
 
 // GetStarRailIcon returns the URL of the StarRail icon for the given key
@@ -157,7 +157,7 @@ func (e *EnkaNetworkAPI) GetStarRailIcon(key string) string {
 //
 //	A slice of all StarRail characters
 func (e *EnkaNetworkAPI) GetAllStarRailCharacters() []*starrail.CharacterData {
-	return cache.Get().GetAllStarRailCharacters()
+	return e.cache.GetAllStarRailCharacters()
 }
 
 // GetStarRailAvatarKey returns the avatar key for the given avatar ID
@@ -170,5 +170,5 @@ func (e *EnkaNetworkAPI) GetAllStarRailCharacters() []*starrail.CharacterData {
 //
 //	The avatar key or id if not found
 func (e *EnkaNetworkAPI) GetStarRailAvatarKey(avatarId string) string {
-	return cache.Get().GetStarRailAvatarKey(avatarId)
+	return e.cache.GetStarRailAvatarKey(avatarId)
 }
