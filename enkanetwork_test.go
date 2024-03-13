@@ -1,6 +1,7 @@
 package enkanetworkapigo
 
 import (
+	"log/slog"
 	"strings"
 	"sync"
 	"testing"
@@ -23,6 +24,7 @@ func TestFetchGenshinUser(t *testing.T) {
 		if e != nil {
 			t.Fatal(e)
 		}
+		slog.SetLogLoggerLevel(slog.LevelDebug)
 	}
 
 	rgu, err := api.FetchGenshinUserAndReturn("618285856", true)

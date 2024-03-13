@@ -8,7 +8,7 @@ func (l *Localization) loadGenshinLocalization() {
 	}
 
 	l.log.Info("(Genshin) Loading localization", "key", l.key)
-	localizationMap, err := l.fetchJson(fmt.Sprintf(GENSHIN_BASE_URL, string(l.key)))
+	localizationMap, err := l.fetchJson("genshin_", fmt.Sprintf(GENSHIN_BASE_URL, string(l.key)))
 	if err != nil {
 		if l.key != l.defaultKey {
 			l.log.Error("(Genshin) Couldn't load localization, failling back",

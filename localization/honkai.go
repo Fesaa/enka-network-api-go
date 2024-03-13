@@ -8,7 +8,7 @@ func (l *Localization) loadHonkaiLocalization() {
 	}
 
 	l.log.Info("(Honkai) Loading new localization", "key", l.key)
-	localizationMap, err := l.fetchJson(fmt.Sprintf(HONKAI_BASE_URL, string(l.key)))
+	localizationMap, err := l.fetchJson("honkai_", fmt.Sprintf(HONKAI_BASE_URL, string(l.key)))
 	if err != nil {
 		if l.key != l.defaultKey {
 			l.log.Error("(Honkai) Couldn't load localization, failling back",
