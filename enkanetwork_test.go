@@ -59,12 +59,12 @@ func TestFetchGenshinUser(t *testing.T) {
 		t.Fail()
 	}
 
-	s, err := api.GetGenshinProfileIdentifier(&user.ProfilePictureId)
+	id := api.GetGenshinProfileIdentifier(user.ProfilePicture.AvatarId)
 	if err != nil {
 		t.Fatal(err)
 		t.FailNow()
 	}
-	t.Logf("Pfp: %s", *s)
+	t.Logf("Pfp: %s", id)
 
 }
 

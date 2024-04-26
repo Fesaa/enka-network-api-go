@@ -1915,17 +1915,28 @@
     "QualityType": "QUALITY_ORANGE",
     "WeaponType": "WEAPON_SWORD_ONE_HAND"
   },
-  "10000005-501": {
-    "Element": "None",
-    "Consts": ["None", "None", "None", "None", "None", "None"],
-    "SkillOrder": [100540, 10067, 10068],
-    "Skills": { "10067": "None", "10068": "None", "100540": "Skill_A_01" },
-    "NameTextMapHash": 3816664530,
-    "ProudMap": { "10067": 732, "10068": 739, "100540": 731 },
-    "SideIconName": "UI_AvatarIcon_Side_PlayerBoy",
-    "QualityType": "QUALITY_ORANGE"
+  "10000096": {
+    "Element": "Fire",
+    "Consts": [
+      "UI_Talent_S_Arlecchino_01",
+      "UI_Talent_S_Arlecchino_02",
+      "UI_Talent_U_Arlecchino_01",
+      "UI_Talent_S_Arlecchino_03",
+      "UI_Talent_U_Arlecchino_02",
+      "UI_Talent_S_Arlecchino_04"
+    ],
+    "SkillOrder": [10961, 10962, 10965],
+    "Skills": {
+      "10961": "Skill_A_03",
+      "10962": "Skill_S_Arlecchino_01",
+      "10965": "Skill_E_Arlecchino_01"
+    },
+    "ProudMap": { "10961": 9631, "10962": 9632, "10965": 9639 },
+    "NameTextMapHash": 167199474,
+    "SideIconName": "UI_AvatarIcon_Side_Arlecchino",
+    "QualityType": "QUALITY_ORANGE",
+    "WeaponType": "WEAPON_POLE"
   },
-  "10000005-502": {},
   "10000005-503": {
     "Element": "Water",
     "Consts": [
@@ -1970,7 +1981,6 @@
     "QualityType": "QUALITY_ORANGE",
     "WeaponType": "WEAPON_SWORD_ONE_HAND"
   },
-  "10000005-505": {},
   "10000005-506": {
     "Element": "Rock",
     "Consts": [
@@ -2037,6 +2047,16 @@
     "QualityType": "QUALITY_ORANGE",
     "WeaponType": "WEAPON_SWORD_ONE_HAND"
   },
+  "10000005-501": {
+    "Element": "None",
+    "Consts": ["None", "None", "None", "None", "None", "None"],
+    "SkillOrder": [100540, 10067, 10068],
+    "Skills": { "10067": "None", "10068": "None", "100540": "Skill_A_01" },
+    "NameTextMapHash": 3816664530,
+    "ProudMap": { "10067": 732, "10068": 739, "100540": 731 },
+    "SideIconName": "UI_AvatarIcon_Side_PlayerBoy",
+    "QualityType": "QUALITY_ORANGE"
+  },
   "10000007-701": {
     "Element": "None",
     "Consts": ["None", "None", "None", "None", "None", "None"],
@@ -2047,7 +2067,6 @@
     "SideIconName": "UI_AvatarIcon_Side_PlayerGirl",
     "QualityType": "QUALITY_ORANGE"
   },
-  "10000007-702": {},
   "10000007-703": {
     "Element": "Water",
     "Consts": [
@@ -2092,7 +2111,6 @@
     "QualityType": "QUALITY_ORANGE",
     "WeaponType": "WEAPON_SWORD_ONE_HAND"
   },
-  "10000007-705": {},
   "10000007-706": {
     "Element": "Rock",
     "Consts": [

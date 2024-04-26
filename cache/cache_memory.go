@@ -20,8 +20,7 @@ type memoryCache struct {
 	GenshinUsers     *utils.Map[string, CachedData[*genshin.RawGenshinUser]]
 	GenshinNameCards *utils.Map[int, string]
 
-	GenshinProfileIcons *utils.Map[int, *genshin.ProfilePicture]
-	MaxGenshinProfileId int
+	GenshinProfileIcons *utils.Map[string, *genshin.ProfilePicture]
 
 	GenshinCharacterData *utils.Map[string, *genshin.CharacterData]
 

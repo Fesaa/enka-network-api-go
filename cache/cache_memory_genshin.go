@@ -4,7 +4,6 @@ import (
 	_ "embed"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -13,7 +12,7 @@ import (
 	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
-const MATERIAL_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/main/ExcelBinOutput/MaterialExcelConfigData.json"
+const MATERIAL_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/MaterialExcelConfigData.json"
 
 func (m *memoryCache) loadGenshinResources() error {
 	cards, err := loadCards()
@@ -22,12 +21,11 @@ func (m *memoryCache) loadGenshinResources() error {
 	}
 	m.GenshinNameCards = cards
 
-	profileIcons, max, err := loadProfileIdentifiers()
+	profileIcons, err := loadProfileIdentifiers()
 	if err != nil {
 		return err
 	}
 	m.GenshinProfileIcons = profileIcons
-	m.MaxGenshinProfileId = *max
 
 	characters, err := loadCharacters()
 	if err != nil {
@@ -62,33 +60,21 @@ func loadCards() (*utils.Map[int, string], error) {
 	return cards, nil
 }
 
-func loadProfileIdentifiers() (*utils.Map[int, *genshin.ProfilePicture], *int, error) {
-	type Profile struct {
-		Id         int    `json:"id"`
-		IconPath   string `json:"iconPath"`
-		UnlockType string `json:"KJEOGPCNAOJ"`
-		InternalId int    `json:"CPBELMNGNEK"`
-	}
-	var genshinProfileIcons []Profile
+func loadProfileIdentifiers() (*utils.Map[string, *genshin.ProfilePicture], error) {
+	var genshinProfileIcons map[string]genshin.ProfilePicture
 	err := json.Unmarshal(genshinProfileIdentifiersJson, &genshinProfileIcons)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	icons := utils.NewMap[int, *genshin.ProfilePicture]()
-	var max int = 0
-	for _, profile := range genshinProfileIcons {
-		icons.Set(profile.Id, &genshin.ProfilePicture{
-			Id:         profile.Id,
-			IconPath:   profile.IconPath,
-			UnlockType: profile.UnlockType,
-			InternalId: profile.InternalId,
+	icons := utils.NewMap[string, *genshin.ProfilePicture]()
+	for id, profile := range genshinProfileIcons {
+		icons.Set(id, &genshin.ProfilePicture{
+			Id:       id,
+			IconPath: profile.IconPath,
 		})
-		if profile.Id > max {
-			max = profile.Id
-		}
 	}
-	return icons, &max, nil
+	return icons, nil
 }
 
 func loadCharacters() (*utils.Map[string, *genshin.CharacterData], error) {
@@ -169,33 +155,12 @@ func (m *memoryCache) GetGenshinUser(uid string) *genshin.RawGenshinUser {
 
 // If this returns an error, I have the update the lib.
 // You can mostly assume it'll return succesfully.
-func (m *memoryCache) GetProfileIcon(pair *genshin.Pair[int]) (*string, error) {
-	if pair.Left > m.MaxGenshinProfileId && pair.Right == 0 {
-
-		data := m.GetGenshinCharacterData(fmt.Sprintf("%d", pair.Left))
-		if data == nil {
-			return nil, errors.New("Not Implemented")
-		}
-		s := data.GetSideIconKey()
-		return &s, nil
+func (m *memoryCache) GetProfileIcon(id string) string {
+	icon, ok := m.GenshinProfileIcons.Get(id)
+	if !ok {
+		return ""
 	}
-
-	if pair.Right == 0 {
-		if profile, ok := m.GenshinProfileIcons.Get(pair.Left); ok {
-			s := profile.IconPath
-			return &s, nil
-		}
-	}
-
-	_, profile := m.GenshinProfileIcons.Find(func(key int, value *genshin.ProfilePicture) bool {
-		return value.InternalId == pair.Right
-	})
-
-	if profile != nil && *profile != nil {
-		return &(*profile).IconPath, nil
-	}
-
-	return nil, errors.New("Not Implemented")
+	return icon.IconPath
 }
 
 func (m *memoryCache) GetGenshinCharacterData(name string) *genshin.CharacterData {

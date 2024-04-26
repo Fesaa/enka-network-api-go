@@ -152,12 +152,9 @@ func (e *EnkaNetworkAPI) GetGenshinNameCard(id int) *genshin.NameCard {
 }
 
 // GetGenshinProfileIdentifier gets the profile identifier of a profile id
-// Returns nil if the id is invalid
-// Falls back to 4.0 data, if not changed > 4.1
-// Only an error if I didn't update the lib
-// You can assume it works
-func (e *EnkaNetworkAPI) GetGenshinProfileIdentifier(pair *genshin.Pair[int]) (*string, error) {
-	return e.cache.GetProfileIcon(pair)
+// returns an empty string if the id is invalid
+func (e *EnkaNetworkAPI) GetGenshinProfileIdentifier(id int) string {
+	return e.cache.GetProfileIcon(fmt.Sprintf("%d", id))
 }
 
 // GetGenshinCharacterData gets the character data of a character name
