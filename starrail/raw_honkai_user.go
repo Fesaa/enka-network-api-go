@@ -45,12 +45,17 @@ type RawRecordInfo struct {
 	MaxRogueChallengeScore int              `json:"maxRogueChallengeScore"`
 	AchievementCount       int              `json:"achievementCount"`
 	AvatarCount            int              `json:"avatarCount"`
+	BookCount              int              `json:"bookCount"`
+	RelicCount             int              `json:"relicCount"`
+	MusicCount             int              `json:"musicCount"`
 }
 
 type RawChallengeInfo struct {
 	ScheduleMaxLevel     int  `json:"scheduleMaxLevel"`
 	ScheduleMaxGroupId   *int `json:"scheduleMaxGroupId,omitempty"`
 	NoneScheduleMaxLevel *int `json:"noneScheduleMaxLevel,omitempty"`
+	AbyssLevel           int  `json:"abyssLevel"`
+	AbyssStarCount       int  `json:"abyssStarCount"`
 }
 
 type RawEquipmentInfo struct {
