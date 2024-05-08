@@ -7,6 +7,7 @@ import (
 )
 
 type LightCone struct {
+	LightConeID   int
 	SuperImposion int
 	Level         int
 	// Also ascension
@@ -26,4 +27,12 @@ func (lightCone *LightCone) Name() string {
 type LightConeStat struct {
 	Stat  string
 	Value float64
+}
+
+type LightConeData struct {
+	Rarity int `json:"Rarity"`
+	// Convert to Path with starrail.PathFromRaw
+	RawPath       string                    `json:"AvatarBaseType"`
+	EquipmentName localization.HashNameAble `json:"EquipmentName"`
+	ImagePath     string                    `json:"ImagePath"`
 }

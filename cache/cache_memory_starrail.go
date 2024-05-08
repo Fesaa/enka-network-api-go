@@ -35,9 +35,16 @@ func (m *memoryCache) loadStarRailResources() error {
 		return err
 	}
 
+	var lightCones map[string]*starrail.LightConeData
+	err = json.Unmarshal(starRailLightconesJson, &lightCones)
+	if err != nil {
+		return err
+	}
+
 	m.StarRailCharacterData = utils.FromMap(starRailCharacterData)
 	m.StarRailAvatars = utils.FromMap(avatars)
 	m.StarRailRelics = utils.FromMap(relics)
+	m.StarRailLightCones = utils.FromMap(lightCones)
 	return nil
 }
 
@@ -83,6 +90,13 @@ func (m *memoryCache) GetStarRailAvatarKey(id string) string {
 func (m *memoryCache) GetStarRailRelicData(id string) *starrail.RelicData {
 	if relic, ok := m.StarRailRelics.Get(id); ok {
 		return relic
+	}
+	return nil
+}
+
+func (m *memoryCache) GetStarRailLightConeData(id string) *starrail.LightConeData {
+	if lightCone, ok := m.StarRailLightCones.Get(id); ok {
+		return lightCone
 	}
 	return nil
 }

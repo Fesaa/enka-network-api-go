@@ -102,11 +102,13 @@ func TestFetchHonkaiUser(t *testing.T) {
 
 	for _, character := range user.Characters {
 		lightCone := character.LightCone
+		lightConeData := api.GetStarRailLightConeData(lightCone)
 		name := lightCone.Name()
+		lightConeIcon := api.GetStarRailIcon(lightConeData.ImagePath)
 
 		characterData := api.GetStarRailCharacterData(&character)
 		avatarIcon := api.GetStarRailIcon(characterData.AvatarSideIconPath)
-		t.Logf("Character %s (%d) of path %s has lightCone %s", characterData.Name(), character.Level, characterData.Path, name)
+		t.Logf("Character %s (%d) of path %s has lightCone %s with icon %s", characterData.Name(), character.Level, characterData.Path, name, lightConeIcon)
 		t.Logf("Avatar icon: %s", avatarIcon)
 
 		if len(character.Relics) == 0 {

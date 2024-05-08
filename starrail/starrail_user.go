@@ -74,6 +74,7 @@ func UserFromRaw(rawUser *RawHonkaiUser) *User {
 			}
 
 			lightCone = &LightCone{
+				LightConeID:   equipment.Tid,
 				SuperImposion: equipment.Rank,
 				Promotion:     equipment.Promotion,
 				Level:         equipment.Level,

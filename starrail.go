@@ -188,3 +188,10 @@ func (e *EnkaNetworkAPI) GetStarRailRelicData(relic *starrail.Relic) *starrail.R
 	}
 	return e.cache.GetStarRailRelicData(fmt.Sprintf("%d", relic.RelicID))
 }
+
+func (e *EnkaNetworkAPI) GetStarRailLightConeData(lightcone *starrail.LightCone) *starrail.LightConeData {
+	if lightcone == nil {
+		return nil
+	}
+	return e.cache.GetStarRailLightConeData(fmt.Sprintf("%d", lightcone.LightConeID))
+}

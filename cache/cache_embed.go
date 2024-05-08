@@ -20,6 +20,9 @@ var starRailAvataJson []byte
 //go:embed resources/honkai_relics.json
 var starRailRelicJson []byte
 
+//go:embed resources/honkai_lightcones.json
+var starRailLightconesJson []byte
+
 func GetGenshinNameCardJson() []byte {
 	return genshinNameCardJson
 }
@@ -42,4 +45,8 @@ func GetStarRailAvatarJson() []byte {
 
 func GetStarRailRelicJson() []byte {
 	return starRailRelicJson
+}
+
+func GetStarRailLightconesJson() []byte {
+	return starRailLightconesJson
 }
