@@ -16,6 +16,7 @@ type memoryCache struct {
 	HonkaiUsers           *utils.Map[string, CachedData[*starrail.RawHonkaiUser]]
 	StarRailCharacterData *utils.Map[string, *starrail.CharacterData]
 	StarRailAvatars       *utils.Map[string, string]
+	StarRailRelics        *utils.Map[string, *starrail.RelicData]
 
 	GenshinUsers     *utils.Map[string, CachedData[*genshin.RawGenshinUser]]
 	GenshinNameCards *utils.Map[int, string]

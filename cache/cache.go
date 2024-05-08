@@ -40,6 +40,8 @@ type EnkaCache interface {
 
 	GetStarRailAvatarKey(string) string
 
+	GetStarRailRelicData(string) *starrail.RelicData
+
 	HasNameCard(int) bool
 	GetNameCardName(int) *string
 

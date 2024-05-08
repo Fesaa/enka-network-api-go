@@ -172,3 +172,19 @@ func (e *EnkaNetworkAPI) GetAllStarRailCharacters() []*starrail.CharacterData {
 func (e *EnkaNetworkAPI) GetStarRailAvatarKey(avatarId string) string {
 	return e.cache.GetStarRailAvatarKey(avatarId)
 }
+
+// GetStarRailRelicData returns the RelicData for the given Relic
+//
+// Parameters:
+//
+//	relic: The relic to get the data for
+//
+// Returns:
+//
+//	The RelicData, or nil if not found (or if the relic was nil)
+func (e *EnkaNetworkAPI) GetStarRailRelicData(relic *starrail.Relic) *starrail.RelicData {
+	if relic == nil {
+		return nil
+	}
+	return e.cache.GetStarRailRelicData(fmt.Sprintf("%d", relic.RelicID))
+}

@@ -29,8 +29,15 @@ func (m *memoryCache) loadStarRailResources() error {
 		avatars[k] = v.Icon
 	}
 
+	var relics map[string]*starrail.RelicData
+	err = json.Unmarshal(starRailRelicJson, &relics)
+	if err != nil {
+		return err
+	}
+
 	m.StarRailCharacterData = utils.FromMap(starRailCharacterData)
 	m.StarRailAvatars = utils.FromMap(avatars)
+	m.StarRailRelics = utils.FromMap(relics)
 	return nil
 }
 
@@ -71,4 +78,11 @@ func (m *memoryCache) GetStarRailAvatarKey(id string) string {
 		return avatar
 	}
 	return id
+}
+
+func (m *memoryCache) GetStarRailRelicData(id string) *starrail.RelicData {
+	if relic, ok := m.StarRailRelics.Get(id); ok {
+		return relic
+	}
+	return nil
 }

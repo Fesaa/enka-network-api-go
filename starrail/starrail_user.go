@@ -110,6 +110,7 @@ func UserFromRaw(rawUser *RawHonkaiUser) *User {
 			}
 
 			relics = append(relics, Relic{
+				RelicID:  relicData.Tid,
 				Level:    relicLevel,
 				Hash:     flat.SetName,
 				MainStat: main,

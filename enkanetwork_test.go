@@ -108,6 +108,15 @@ func TestFetchHonkaiUser(t *testing.T) {
 		avatarIcon := api.GetStarRailIcon(characterData.AvatarSideIconPath)
 		t.Logf("Character %s (%d) of path %s has lightCone %s", characterData.Name(), character.Level, characterData.Path, name)
 		t.Logf("Avatar icon: %s", avatarIcon)
+
+		if len(character.Relics) == 0 {
+			continue
+		}
+
+		relic := character.Relics[0]
+		relicData := api.GetStarRailRelicData(&relic)
+		icon := api.GetStarRailIcon(relicData.Icon)
+		t.Logf("Relic %s with icon %s", relic.Name(), icon)
 	}
 	wg := sync.WaitGroup{}
 	wg.Add(1)

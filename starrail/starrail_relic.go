@@ -37,7 +37,27 @@ func starRailRelicTypeFromId(id int) RelicType {
 	}
 }
 
+func StarRailRelicTypeFromString(t string) RelicType {
+	switch t {
+	case "Head":
+		return HEAD
+	case "Hand":
+		return HAND
+	case "Body":
+		return BODY
+	case "Feet":
+		return FEET
+	case "Planar":
+		return PLANAR
+	case "Rope":
+		return ROPE
+	default:
+		return UNKNOWN
+	}
+}
+
 type Relic struct {
+	RelicID  int
 	Level    int
 	Type     RelicType
 	MainStat RelicStat
@@ -57,4 +77,13 @@ func (relic *Relic) Name() string {
 type RelicStat struct {
 	Stat  string
 	Value float64
+}
+
+type RelicData struct {
+	Rarity         int    `json:"Rarity"`
+	Type           string `json:"Type"`
+	MainAffixGroup int    `json:"MainAffixGroup"`
+	SubAffixGroup  int    `json:"SubAffixGroup"`
+	Icon           string `json:"Icon"`
+	SetId          int    `json:"SetID"`
 }
