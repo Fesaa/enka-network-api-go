@@ -10,17 +10,23 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Fesaa/enka-network-api-go/data"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 type starRailAPIImpl struct {
-	api EnkaNetworkAPI
-	log *slog.Logger
+	api  EnkaNetworkAPI
+	data data.StarRailData
+	log  *slog.Logger
 }
 
 func newStarRail(api EnkaNetworkAPI, log *slog.Logger) StarRailAPI {
-	return &starRailAPIImpl{api: api, log: log}
+	return &starRailAPIImpl{
+		api:  api,
+		data: api.Data().StarRailData(),
+		log:  log,
+	}
 }
 
 func (sr *starRailAPIImpl) Fetch(uid string, success utils.Consumer[*starrail.RawHonkaiUser], failure utils.Consumer[error]) {
@@ -103,7 +109,7 @@ func (sr *starRailAPIImpl) CharacterData(userCharacter *starrail.UserCharacter) 
 }
 
 func (sr *starRailAPIImpl) CharacterDataById(uid string) *starrail.CharacterData {
-	return sr.api.Data().GetStarRailCharacterData(uid)
+	return sr.data.CharacterData(uid)
 }
 
 func (sr *starRailAPIImpl) Icon(key string) string {
@@ -116,7 +122,7 @@ func (sr *starRailAPIImpl) Icon(key string) string {
 }
 
 func (sr *starRailAPIImpl) AvatarKey(avatarId string) string {
-	return sr.api.Data().GetStarRailAvatarKey(avatarId)
+	return sr.data.AvatarKey(avatarId)
 }
 
 func (sr *starRailAPIImpl) RelicData(relic *starrail.Relic) *starrail.RelicData {
@@ -127,7 +133,7 @@ func (sr *starRailAPIImpl) RelicData(relic *starrail.Relic) *starrail.RelicData 
 }
 
 func (sr *starRailAPIImpl) RelicDataById(relicId string) *starrail.RelicData {
-	return sr.api.Data().GetStarRailRelicData(relicId)
+	return sr.data.RelicData(relicId)
 }
 
 func (sr *starRailAPIImpl) LightConeData(lightcone *starrail.LightCone) *starrail.LightConeData {
@@ -138,5 +144,5 @@ func (sr *starRailAPIImpl) LightConeData(lightcone *starrail.LightCone) *starrai
 }
 
 func (sr *starRailAPIImpl) LightConeDataById(lightConeId string) *starrail.LightConeData {
-	return sr.api.Data().GetStarRailLightConeData(lightConeId)
+	return sr.data.LightConeData(lightConeId)
 }

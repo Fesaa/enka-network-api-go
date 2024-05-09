@@ -2,11 +2,6 @@ package data
 
 import (
 	"log/slog"
-	"sync"
-
-	"github.com/Fesaa/enka-network-api-go/genshin"
-	"github.com/Fesaa/enka-network-api-go/starrail"
-	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 func New(log *slog.Logger) (EnkaData, error) {
@@ -14,56 +9,34 @@ func New(log *slog.Logger) (EnkaData, error) {
 }
 
 type memoryCache struct {
-	StarRailCharacterData *utils.Map[string, *starrail.CharacterData]
-	StarRailAvatars       *utils.Map[string, string]
-	StarRailRelics        *utils.Map[string, *starrail.RelicData]
-	StarRailLightCones    *utils.Map[string, *starrail.LightConeData]
+	starRailData StarRailData
+	genshinData  GenshinData
+	log          *slog.Logger
+}
 
-	GenshinNameCards     *utils.Map[int, string]
-	GenshinProfileIcons  *utils.Map[string, *genshin.ProfilePicture]
-	GenshinCharacterData *utils.Map[string, *genshin.CharacterData]
-	GenshinMaterials     *utils.Map[int, *genshin.RawMaterial]
+func (m *memoryCache) StarRailData() StarRailData {
+	return m.starRailData
+}
 
-	log *slog.Logger
+func (m *memoryCache) GenshinData() GenshinData {
+	return m.genshinData
 }
 
 func NewMemoryCache(logger *slog.Logger) (*memoryCache, error) {
-	c := &memoryCache{
-		StarRailCharacterData: utils.NewMap[string, *starrail.CharacterData](),
-		GenshinNameCards:      utils.NewMap[int, string](),
-		log:                   logger,
+	sr, err := newStarRail()
+	if err != nil {
+		return nil, err
 	}
-	e := c.loadResources()
-	if e != nil {
-		return nil, e
+
+	g, err := newGenshin()
+	if err != nil {
+		return nil, err
+	}
+
+	c := &memoryCache{
+		starRailData: sr,
+		genshinData:  g,
+		log:          logger,
 	}
 	return c, nil
-}
-
-func (m *memoryCache) loadResources() error {
-	var SRError error
-	var GError error
-	wg := sync.WaitGroup{}
-	wg.Add(2)
-
-	go func() {
-		SRError = m.loadStarRailResources()
-		wg.Add(-1)
-	}()
-
-	go func() {
-		GError = m.loadGenshinResources()
-		wg.Add(-1)
-	}()
-
-	wg.Wait()
-	if SRError != nil {
-		return SRError
-	}
-
-	if GError != nil {
-		return GError
-	}
-
-	return nil
 }

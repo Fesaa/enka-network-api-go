@@ -10,19 +10,22 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Fesaa/enka-network-api-go/data"
 	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 type genshinAPIImpl struct {
-	api EnkaNetworkAPI
-	log *slog.Logger
+	api  EnkaNetworkAPI
+	data data.GenshinData
+	log  *slog.Logger
 }
 
 func newGenshinAPI(api EnkaNetworkAPI, log *slog.Logger) GenshinAPI {
 	return &genshinAPIImpl{
-		api: api,
-		log: log,
+		api:  api,
+		data: api.Data().GenshinData(),
+		log:  log,
 	}
 }
 
@@ -114,7 +117,7 @@ func (g *genshinAPIImpl) Icon(key string) string {
 }
 
 func (g *genshinAPIImpl) NameCard(id int) *genshin.NameCard {
-	cardName := g.api.Data().GetNameCardName(id)
+	cardName := g.data.NameCardName(id)
 	if cardName == nil {
 		return nil
 	}
@@ -126,17 +129,17 @@ func (g *genshinAPIImpl) NameCard(id int) *genshin.NameCard {
 }
 
 func (g *genshinAPIImpl) ProfileId(id int) string {
-	return g.api.Data().GetProfileIcon(fmt.Sprintf("%d", id))
+	return g.data.ProfileIcon(fmt.Sprintf("%d", id))
 }
 
 func (g *genshinAPIImpl) CharacterData(character *genshin.UserCharacter) *genshin.CharacterData {
-	return g.api.Data().GetGenshinCharacterData(fmt.Sprint(character.Id))
+	return g.data.CharacterData(fmt.Sprint(character.Id))
 }
 
 func (g *genshinAPIImpl) CharacterDataById(id string) *genshin.CharacterData {
-	return g.api.Data().GetGenshinCharacterData(id)
+	return g.data.CharacterData(id)
 }
 
 func (g *genshinAPIImpl) Material(id int) *genshin.RawMaterial {
-	return g.api.Data().GetGenshinMaterial(id)
+	return g.data.Material(id)
 }

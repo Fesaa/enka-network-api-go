@@ -13,32 +13,33 @@ import (
 
 const MATERIAL_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/MaterialExcelConfigData.json"
 
-func (m *memoryCache) loadGenshinResources() error {
+func newGenshin() (GenshinData, error) {
+	m := &genshinData{}
 	cards, err := loadCards()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.GenshinNameCards = cards
 
 	profileIcons, err := loadProfileIdentifiers()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.GenshinProfileIcons = profileIcons
 
 	characters, err := loadCharacters()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.GenshinCharacterData = characters
 
 	materials, err := loadMaterials()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.GenshinMaterials = materials
 
-	return nil
+	m.GenshinNameCards = cards
+	m.GenshinProfileIcons = profileIcons
+	m.GenshinCharacterData = characters
+	m.GenshinMaterials = materials
+	return m, nil
 }
 
 func loadCards() (*utils.Map[int, string], error) {

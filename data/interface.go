@@ -6,22 +6,23 @@ import (
 )
 
 type EnkaData interface {
-	GetStarRailCharacterData(string) *starrail.CharacterData
-	GetAllStarRailCharacters() []*starrail.CharacterData
+	StarRailData() StarRailData
+	GenshinData() GenshinData
+}
 
-	GetStarRailAvatarKey(string) string
+type StarRailData interface {
+	CharacterData(string) *starrail.CharacterData
+	Characters() []*starrail.CharacterData
+	AvatarKey(string) string
+	RelicData(string) *starrail.RelicData
+	LightConeData(string) *starrail.LightConeData
+}
 
-	GetStarRailRelicData(string) *starrail.RelicData
-
-	GetStarRailLightConeData(string) *starrail.LightConeData
-
+type GenshinData interface {
 	HasNameCard(int) bool
-	GetNameCardName(int) *string
-
-	GetProfileIcon(string) string
-
-	GetGenshinCharacterData(string) *genshin.CharacterData
-	GetAllGenshinCharacterData() []*genshin.CharacterData
-
-	GetGenshinMaterial(int) *genshin.RawMaterial
+	NameCardName(int) *string
+	ProfileIcon(string) string
+	CharacterData(string) *genshin.CharacterData
+	Characters() []*genshin.CharacterData
+	Material(int) *genshin.RawMaterial
 }

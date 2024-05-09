@@ -8,11 +8,12 @@ import (
 	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
-func (m *memoryCache) loadStarRailResources() error {
+func newStarRail() (StarRailData, error) {
+	srData := &starRailData{}
 	var starRailCharacterData map[string]*starrail.CharacterData
 	err := json.Unmarshal(starRailCharacterJson, &starRailCharacterData)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	type Icon struct {
@@ -21,7 +22,7 @@ func (m *memoryCache) loadStarRailResources() error {
 	var starRailAvatars map[string]*Icon
 	err = json.Unmarshal(starRailAvataJson, &starRailAvatars)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var avatars map[string]string = make(map[string]string, len(starRailAvatars))
@@ -32,18 +33,18 @@ func (m *memoryCache) loadStarRailResources() error {
 	var relics map[string]*starrail.RelicData
 	err = json.Unmarshal(starRailRelicJson, &relics)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var lightCones map[string]*starrail.LightConeData
 	err = json.Unmarshal(starRailLightconesJson, &lightCones)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	m.StarRailCharacterData = utils.FromMap(starRailCharacterData)
-	m.StarRailAvatars = utils.FromMap(avatars)
-	m.StarRailRelics = utils.FromMap(relics)
-	m.StarRailLightCones = utils.FromMap(lightCones)
-	return nil
+	srData.StarRailCharacterData = utils.FromMap(starRailCharacterData)
+	srData.StarRailAvatars = utils.FromMap(avatars)
+	srData.StarRailRelics = utils.FromMap(relics)
+	srData.StarRailLightCones = utils.FromMap(lightCones)
+	return srData, nil
 }

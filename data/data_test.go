@@ -26,7 +26,7 @@ func TestCorrectLoading(t *testing.T) {
 	}
 
 	//Jingliu
-	d := c.GetStarRailCharacterData("1212")
+	d := c.StarRailData().CharacterData("1212")
 	if d == nil {
 		t.Error("Expected some data got nil")
 		t.FailNow()
