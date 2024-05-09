@@ -5,8 +5,8 @@ import (
 	"log/slog"
 
 	"github.com/Fesaa/enka-network-api-go/cache"
+	"github.com/Fesaa/enka-network-api-go/data"
 	"github.com/Fesaa/enka-network-api-go/localization"
-	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 const BASE_URL = "https://enka.network/api/"
@@ -15,11 +15,19 @@ const BASE_SR_UI_URL = "https://enka.network/ui/hsr/"
 
 var MaintenanceError error = errors.New("enka-network-api-go: The API is currently in maintenance")
 
-type EnkaNetworkAPI struct {
+type enkaNetworkAPIImpl struct {
 	userAgent string
-	cache     cache.EnkaCache
+	data      data.EnkaData
+	cache     cache.EnkaHttpCache
 
 	log *slog.Logger
+
+	starRailAPI StarRailAPI
+	genshinApi  GenshinAPI
+}
+
+func WithCustomUserAgent(userAgent string) (EnkaNetworkAPI, error) {
+	return New(userAgent, cache.Default(slog.Default()))
 }
 
 // New creates a new EnkaNetworkAPI instance
@@ -37,12 +45,7 @@ type EnkaNetworkAPI struct {
 //	Please set a custom User-Agent header with your requests so I can track them better and help you if needed.
 //
 // See https://api.enka.network/ for API docs
-func New(userAgent string, cacheSupplier utils.ErrorSupplier[cache.EnkaCache], loggers ...*slog.Logger) (*EnkaNetworkAPI, error) {
-	cache, err := cacheSupplier()
-	if err != nil {
-		return nil, err
-	}
-
+func New(userAgent string, httpCache cache.EnkaHttpCache, loggers ...*slog.Logger) (EnkaNetworkAPI, error) {
 	var logger *slog.Logger
 	if len(loggers) > 0 {
 		logger = loggers[0]
@@ -50,21 +53,48 @@ func New(userAgent string, cacheSupplier utils.ErrorSupplier[cache.EnkaCache], l
 		logger = slog.Default()
 	}
 
+	data, err := data.New(logger)
+	if err != nil {
+		return nil, err
+	}
+
 	localization.Init(logger)
-	return &EnkaNetworkAPI{
+	api := &enkaNetworkAPIImpl{
 		userAgent: userAgent,
 		log:       logger,
-		cache:     cache,
-	}, nil
+		data:      data,
+		cache:     httpCache,
+	}
+
+	api.starRailAPI = newStarRail(api, logger)
+	api.genshinApi = newGenshinAPI(api, logger)
+	return api, nil
 }
 
 // NewDefaultUserAgent creates a new EnkaNetworkAPI instance with the default User-Agent header
 // Consider using New or SetUserAgent instead
-func NewDefault() (*EnkaNetworkAPI, error) {
-	return New("enka-network-api-go (Unset User Agent)", cache.Default())
+func NewDefault() (EnkaNetworkAPI, error) {
+	http := cache.Default(slog.Default())
+	return New("enka-network-api-go (Unset User Agent)", http)
 }
 
 // SetUserAgent sets the User-Agent header for requests
-func (e *EnkaNetworkAPI) SetUserAgent(userAgent string) {
+func (e *enkaNetworkAPIImpl) SetUserAgent(userAgent string) {
 	e.userAgent = userAgent
+}
+
+func (e *enkaNetworkAPIImpl) StarRail() StarRailAPI {
+	return e.starRailAPI
+}
+
+func (e *enkaNetworkAPIImpl) Genshin() GenshinAPI {
+	return e.genshinApi
+}
+
+func (e *enkaNetworkAPIImpl) Data() data.EnkaData {
+	return e.data
+}
+
+func (e *enkaNetworkAPIImpl) Cache() cache.EnkaHttpCache {
+	return e.cache
 }

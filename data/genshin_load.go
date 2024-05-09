@@ -1,7 +1,6 @@
-package cache
+package data
 
 import (
-	_ "embed"
 	"encoding/json"
 	"errors"
 	"io"
@@ -14,32 +13,33 @@ import (
 
 const MATERIAL_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/MaterialExcelConfigData.json"
 
-func (m *memoryCache) loadGenshinResources() error {
+func newGenshin() (GenshinData, error) {
+	m := &genshinData{}
 	cards, err := loadCards()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.GenshinNameCards = cards
 
 	profileIcons, err := loadProfileIdentifiers()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.GenshinProfileIcons = profileIcons
 
 	characters, err := loadCharacters()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.GenshinCharacterData = characters
 
 	materials, err := loadMaterials()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.GenshinMaterials = materials
 
-	return nil
+	m.GenshinNameCards = cards
+	m.GenshinProfileIcons = profileIcons
+	m.GenshinCharacterData = characters
+	m.GenshinMaterials = materials
+	return m, nil
 }
 
 func loadCards() (*utils.Map[int, string], error) {
@@ -124,63 +124,4 @@ func loadMaterials() (*utils.Map[int, *genshin.RawMaterial], error) {
 		materialsMap.Set(material.Id, &material)
 	}
 	return materialsMap, nil
-}
-
-func (m *memoryCache) GetNameCardName(id int) *string {
-	if name, ok := m.GenshinNameCards.Get(id); ok {
-		return &name
-	}
-	return nil
-}
-
-func (m *memoryCache) HasNameCard(id int) bool {
-	_, ok := m.GenshinNameCards.Get(id)
-	return ok
-}
-
-func (m *memoryCache) AddGenshinUser(user *genshin.RawGenshinUser) {
-	m.GenshinUsers.Set(user.Uid, NewCachedData[*genshin.RawGenshinUser](user))
-}
-
-func (m *memoryCache) GetGenshinUser(uid string) *genshin.RawGenshinUser {
-	if cache, ok := m.GenshinUsers.Get(uid); ok {
-		if !cache.IsExpired() {
-			return cache.GetData()
-		}
-		m.GenshinUsers.Delete(uid)
-		return nil
-	}
-	return nil
-}
-
-// If this returns an error, I have the update the lib.
-// You can mostly assume it'll return succesfully.
-func (m *memoryCache) GetProfileIcon(id string) string {
-	icon, ok := m.GenshinProfileIcons.Get(id)
-	if !ok {
-		return ""
-	}
-	return icon.IconPath
-}
-
-func (m *memoryCache) GetGenshinCharacterData(name string) *genshin.CharacterData {
-	if character, ok := m.GenshinCharacterData.Get(name); ok {
-		return character
-	}
-	return nil
-}
-
-func (m *memoryCache) GetAllGenshinCharacterData() []*genshin.CharacterData {
-	var characters []*genshin.CharacterData = make([]*genshin.CharacterData, 0, m.GenshinCharacterData.Len())
-	m.GenshinCharacterData.ForEach(func(_ string, character *genshin.CharacterData) {
-		characters = append(characters, character)
-	})
-	return characters
-}
-
-func (m *memoryCache) GetGenshinMaterial(id int) *genshin.RawMaterial {
-	if material, ok := m.GenshinMaterials.Get(id); ok {
-		return material
-	}
-	return nil
 }
