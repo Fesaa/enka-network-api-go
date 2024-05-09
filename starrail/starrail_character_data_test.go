@@ -7,7 +7,7 @@ import (
 )
 
 func TestResourceData(t *testing.T) {
-	file, err := os.ReadFile("../cache/resources/honkai_characters.json")
+	file, err := os.ReadFile("../data/resources/honkai_characters.json")
 	if err != nil {
 		t.Error(err)
 		t.FailNow()

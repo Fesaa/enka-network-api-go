@@ -63,6 +63,7 @@ func New(userAgent string, httpCache cache.EnkaHttpCache, loggers ...*slog.Logge
 		userAgent: userAgent,
 		log:       logger,
 		data:      data,
+		cache:     httpCache,
 	}
 
 	api.starRailAPI = newStarRail(api, logger)
