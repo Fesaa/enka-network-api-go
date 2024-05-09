@@ -17,7 +17,7 @@ const OWN_UID = "714656501"
 var api EnkaNetworkAPI
 
 func init() {
-	if os.Getenv("DEBUG") != "" {
+	if os.Getenv("DEBUG") != "" && os.Getenv("GITHUB") == "" {
 		slog.SetLogLoggerLevel(slog.LevelDebug)
 	}
 }
