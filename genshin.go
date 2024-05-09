@@ -114,7 +114,7 @@ func (g *genshinAPIImpl) Icon(key string) string {
 }
 
 func (g *genshinAPIImpl) NameCard(id int) *genshin.NameCard {
-	cardName := g.api.Cache().GetNameCardName(id)
+	cardName := g.api.Data().GetNameCardName(id)
 	if cardName == nil {
 		return nil
 	}
@@ -126,17 +126,17 @@ func (g *genshinAPIImpl) NameCard(id int) *genshin.NameCard {
 }
 
 func (g *genshinAPIImpl) ProfileId(id int) string {
-	return g.api.Cache().GetProfileIcon(fmt.Sprintf("%d", id))
+	return g.api.Data().GetProfileIcon(fmt.Sprintf("%d", id))
 }
 
 func (g *genshinAPIImpl) CharacterData(character *genshin.UserCharacter) *genshin.CharacterData {
-	return g.api.Cache().GetGenshinCharacterData(fmt.Sprint(character.Id))
+	return g.api.Data().GetGenshinCharacterData(fmt.Sprint(character.Id))
 }
 
 func (g *genshinAPIImpl) CharacterDataById(id string) *genshin.CharacterData {
-	return g.api.Cache().GetGenshinCharacterData(id)
+	return g.api.Data().GetGenshinCharacterData(id)
 }
 
 func (g *genshinAPIImpl) Material(id int) *genshin.RawMaterial {
-	return g.api.Cache().GetGenshinMaterial(id)
+	return g.api.Data().GetGenshinMaterial(id)
 }

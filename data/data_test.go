@@ -1,4 +1,4 @@
-package cache
+package data
 
 import (
 	"log/slog"
@@ -7,12 +7,12 @@ import (
 	"github.com/Fesaa/enka-network-api-go/localization"
 )
 
-var c EnkaCache
+var c EnkaData
 var l *localization.Localization
 
 func TestCorrectLoading(t *testing.T) {
 	if c == nil {
-		m, e := NewMemoryCache(slog.Default())
+		m, e := New(slog.Default())
 		if e != nil {
 			t.Error(e)
 			t.FailNow()

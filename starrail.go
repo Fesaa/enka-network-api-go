@@ -103,7 +103,7 @@ func (sr *starRailAPIImpl) CharacterData(userCharacter *starrail.UserCharacter) 
 }
 
 func (sr *starRailAPIImpl) CharacterDataById(uid string) *starrail.CharacterData {
-	return sr.api.Cache().GetStarRailCharacterData(uid)
+	return sr.api.Data().GetStarRailCharacterData(uid)
 }
 
 func (sr *starRailAPIImpl) Icon(key string) string {
@@ -116,7 +116,7 @@ func (sr *starRailAPIImpl) Icon(key string) string {
 }
 
 func (sr *starRailAPIImpl) AvatarKey(avatarId string) string {
-	return sr.api.Cache().GetStarRailAvatarKey(avatarId)
+	return sr.api.Data().GetStarRailAvatarKey(avatarId)
 }
 
 func (sr *starRailAPIImpl) RelicData(relic *starrail.Relic) *starrail.RelicData {
@@ -127,7 +127,7 @@ func (sr *starRailAPIImpl) RelicData(relic *starrail.Relic) *starrail.RelicData 
 }
 
 func (sr *starRailAPIImpl) RelicDataById(relicId string) *starrail.RelicData {
-	return sr.api.Cache().GetStarRailRelicData(relicId)
+	return sr.api.Data().GetStarRailRelicData(relicId)
 }
 
 func (sr *starRailAPIImpl) LightConeData(lightcone *starrail.LightCone) *starrail.LightConeData {
@@ -138,5 +138,5 @@ func (sr *starRailAPIImpl) LightConeData(lightcone *starrail.LightCone) *starrai
 }
 
 func (sr *starRailAPIImpl) LightConeDataById(lightConeId string) *starrail.LightConeData {
-	return sr.api.Cache().GetStarRailLightConeData(lightConeId)
+	return sr.api.Data().GetStarRailLightConeData(lightConeId)
 }

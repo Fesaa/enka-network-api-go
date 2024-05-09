@@ -2,13 +2,15 @@ package enkanetworkapigo
 
 import (
 	"github.com/Fesaa/enka-network-api-go/cache"
+	"github.com/Fesaa/enka-network-api-go/data"
 	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
 type EnkaNetworkAPI interface {
-	Cache() cache.EnkaCache
+	Data() data.EnkaData
+	Cache() cache.EnkaHttpCache
 	StarRail() StarRailAPI
 	Genshin() GenshinAPI
 

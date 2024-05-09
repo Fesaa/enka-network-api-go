@@ -1,6 +1,7 @@
 package enkanetworkapigo
 
 import (
+	"log/slog"
 	"strings"
 	"sync"
 	"testing"
@@ -19,7 +20,7 @@ func TestFetchGenshinUser(t *testing.T) {
 	if api == nil {
 		var e error
 
-		api, e = New("enka-network-api-tests", cache.Default())
+		api, e = New("enka-network-api-tests", cache.Default(slog.Default()))
 		if e != nil {
 			t.Fatal(e)
 		}
@@ -73,7 +74,7 @@ func TestFetchHonkaiUser(t *testing.T) {
 
 	if api == nil {
 		var e error
-		api, e = New("enka-network-api-tests", cache.Default())
+		api, e = New("enka-network-api-tests", cache.Default(slog.Default()))
 		if e != nil {
 			t.Fatal(e)
 		}

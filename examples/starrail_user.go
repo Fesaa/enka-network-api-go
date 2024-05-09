@@ -8,7 +8,6 @@ import (
 	"syscall"
 
 	enkanetworkapigo "github.com/Fesaa/enka-network-api-go"
-	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 )
 
@@ -18,7 +17,7 @@ var _log *slog.Logger = slog.Default()
 
 func main() {
 
-	api, err := enkanetworkapigo.New("enka-network-api-go example starrail_user.go", cache.Default())
+	api, err := enkanetworkapigo.WithCustomUserAgent("enka-network-api-go example starrail_user.go")
 	if err != nil {
 		// Use proper error handling in a real program
 		panic(err)
