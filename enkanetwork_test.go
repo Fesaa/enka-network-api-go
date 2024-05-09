@@ -78,7 +78,8 @@ func TestFetchHonkaiUser(t *testing.T) {
 		}
 	}
 
-	hu, err := api.FetchHonkaiUserAndReturn(OWN_UID)
+	sr := api.StarRail()
+	hu, err := sr.FetchAndReturn(OWN_UID)
 	if err == MaintenanceError {
 		t.Logf("API in Maintenance skipping test")
 		t.SkipNow()
@@ -102,12 +103,12 @@ func TestFetchHonkaiUser(t *testing.T) {
 
 	for _, character := range user.Characters {
 		lightCone := character.LightCone
-		lightConeData := api.GetStarRailLightConeData(lightCone)
+		lightConeData := sr.LightConeData(lightCone)
 		name := lightCone.Name()
-		lightConeIcon := api.GetStarRailIcon(lightConeData.ImagePath)
+		lightConeIcon := sr.Icon(lightConeData.ImagePath)
 
-		characterData := api.GetStarRailCharacterData(&character)
-		avatarIcon := api.GetStarRailIcon(characterData.AvatarSideIconPath)
+		characterData := sr.CharacterData(&character)
+		avatarIcon := sr.Icon(characterData.AvatarSideIconPath)
 		t.Logf("Character %s (%d) of path %s has lightCone %s with icon %s", characterData.Name(), character.Level, characterData.Path, name, lightConeIcon)
 		t.Logf("Avatar icon: %s", avatarIcon)
 
@@ -116,14 +117,14 @@ func TestFetchHonkaiUser(t *testing.T) {
 		}
 
 		relic := character.Relics[0]
-		relicData := api.GetStarRailRelicData(&relic)
-		icon := api.GetStarRailIcon(relicData.Icon)
+		relicData := sr.RelicData(&relic)
+		icon := sr.Icon(relicData.Icon)
 		t.Logf("Relic %s with icon %s", relic.Name(), icon)
 	}
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
-	api.FetchHonkaiUser(OWN_UID,
+	sr.Fetch(OWN_UID,
 		func(rhu *starrail.RawHonkaiUser) {
 			user := starrail.UserFromRaw(rhu)
 

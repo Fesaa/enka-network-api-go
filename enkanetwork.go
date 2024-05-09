@@ -20,6 +20,8 @@ type EnkaNetworkAPI struct {
 	cache     cache.EnkaCache
 
 	log *slog.Logger
+
+	starRailAPI StarRailAPI
 }
 
 // New creates a new EnkaNetworkAPI instance
@@ -51,11 +53,13 @@ func New(userAgent string, cacheSupplier utils.ErrorSupplier[cache.EnkaCache], l
 	}
 
 	localization.Init(logger)
-	return &EnkaNetworkAPI{
+	api := &EnkaNetworkAPI{
 		userAgent: userAgent,
 		log:       logger,
 		cache:     cache,
-	}, nil
+	}
+	api.starRailAPI = newStarRail(api, logger)
+	return api, nil
 }
 
 // NewDefaultUserAgent creates a new EnkaNetworkAPI instance with the default User-Agent header
@@ -67,4 +71,8 @@ func NewDefault() (*EnkaNetworkAPI, error) {
 // SetUserAgent sets the User-Agent header for requests
 func (e *EnkaNetworkAPI) SetUserAgent(userAgent string) {
 	e.userAgent = userAgent
+}
+
+func (e *EnkaNetworkAPI) StarRail() StarRailAPI {
+	return e.starRailAPI
 }

@@ -24,7 +24,9 @@ func main() {
 		panic(err)
 	}
 
-	api.FetchHonkaiUser(SRUID,
+	sr := api.StarRail()
+
+	sr.Fetch(SRUID,
 		func(rhu *starrail.RawHonkaiUser) {
 			user := rhu.ToUser()
 
@@ -42,7 +44,7 @@ func main() {
 			_log.Info("User: " + user.NickName)
 			_log.Info(fmt.Sprintf("They are level %d, and have unlocked %d planets in Herta's Simulated Universe", user.Level, user.SimulatedUniverse))
 			for _, character := range selectedCharacters {
-				gameData := api.GetStarRailCharacterData(&character)
+				gameData := sr.CharacterData(&character)
 
 				if gameData == nil {
 					_log.Info(fmt.Sprintf("No game data found for %d", character.AvatarId))
@@ -50,7 +52,7 @@ func main() {
 				}
 
 				_log.Info(fmt.Sprintf("%s is level %d, and has %d stars", gameData.Name(), character.Level, gameData.Star))
-				_log.Info(fmt.Sprintf("Find the icon for the character by surfing to %s", api.GetStarRailIcon(gameData.AvatarSideIconPath)))
+				_log.Info(fmt.Sprintf("Find the icon for the character by surfing to %s", sr.Icon(gameData.AvatarSideIconPath)))
 				_log.Info("\n")
 			}
 

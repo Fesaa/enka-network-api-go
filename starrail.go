@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"strconv"
 	"strings"
@@ -13,22 +14,21 @@ import (
 	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
-// FetchHonkaiUser fetches a Honkai User from the Enka Network API
-// Or returns from (redis) cache if available and not expired
-//
-// Parameters:
-//
-//	uid: The UID of the user to fetch
-//	success: A function to call on success, with the HonkaiUser as the first parameter
-//	failure: A function to call on failure, with the error as the first parameter
-//
-// See FetchHonkaiUserAndReturn for a synchronous version
-func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success utils.Consumer[*starrail.RawHonkaiUser], failure utils.Consumer[error]) {
+type starRailAPIImpl struct {
+	api *EnkaNetworkAPI
+	log *slog.Logger
+}
+
+func newStarRail(api *EnkaNetworkAPI, log *slog.Logger) StarRailAPI {
+	return &starRailAPIImpl{api: api, log: log}
+}
+
+func (sr *starRailAPIImpl) Fetch(uid string, success utils.Consumer[*starrail.RawHonkaiUser], failure utils.Consumer[error]) {
 	go func(uid string, success func(*starrail.RawHonkaiUser), failure func(error)) {
-		user, err := e.FetchHonkaiUserAndReturn(uid)
+		user, err := sr.FetchAndReturn(uid)
 		if err != nil {
 			if failure == nil {
-				e.log.Warn("Provided failure call is nil, ignoring...")
+				sr.log.Warn("Provided failure call is nil, ignoring...")
 				return
 			}
 
@@ -36,7 +36,7 @@ func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success utils.Consumer[*sta
 			return
 		}
 		if success == nil {
-			e.log.Warn("Provided success call is nil, ignoring...")
+			sr.log.Warn("Provided success call is nil, ignoring...")
 			return
 		}
 
@@ -44,28 +44,15 @@ func (e *EnkaNetworkAPI) FetchHonkaiUser(uid string, success utils.Consumer[*sta
 	}(uid, success, failure)
 }
 
-// FetchHonkaiUserAndReturn fetches a Honkai User from the Enka Network API
-// Or returns from (redis) cache if available and not expired
-//
-// Parameters:
-//
-//	uid: The UID of the user to fetch
-//
-// Returns:
-//
-//	The HonkaiUser, or nil if an error occurred
-//	The error, will be MaintenanceError if the API is in maintenance
-//
-// See FetchHonkaiUser for an asynchronous version
-func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*starrail.RawHonkaiUser, error) {
-	e.log.Debug("Fetching Honkai User with UID ", "uid", uid)
+func (sr *starRailAPIImpl) FetchAndReturn(uid string) (*starrail.RawHonkaiUser, error) {
+	sr.log.Debug("Fetching Honkai User with UID ", "uid", uid)
 	if _, err := strconv.Atoi(uid); err != nil || len(uid) != 9 {
 		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 characters long")
 	}
 
-	cachedUser := e.cache.GetHonkaiUser(uid)
+	cachedUser := sr.api.cache.GetHonkaiUser(uid)
 	if cachedUser != nil {
-		e.log.Debug("Returning from cache...", "uid", uid)
+		sr.log.Debug("Returning from cache...", "uid", uid)
 		return cachedUser, nil
 	}
 
@@ -80,12 +67,12 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*starrail.RawHonk
 	}
 
 	if req.StatusCode != 200 {
-		e.log.Debug("Returned a non 200 status code. Got ", "status_code", req.StatusCode)
+		sr.log.Debug("Returned a non 200 status code. Got ", "status_code", req.StatusCode)
 
 		var error string
 		data, err := io.ReadAll(req.Body)
 		if err != nil {
-			e.log.Error("Failed to read body:", "error", err.Error())
+			sr.log.Error("Failed to read body:", "error", err.Error())
 			error = "Unknown: Failed to read body"
 		} else {
 			error = string(data)
@@ -104,45 +91,22 @@ func (e *EnkaNetworkAPI) FetchHonkaiUserAndReturn(uid string) (*starrail.RawHonk
 		return nil, err
 	}
 
-	e.cache.AddHonkaiUser(&user)
+	sr.api.cache.AddHonkaiUser(&user)
 	return &user, nil
 }
 
-// GetStarRailCharacterData returns the CharacterData for the given UserCharacter
-//
-// Convenience function for GetStarRailCharacterDataById
-func (e *EnkaNetworkAPI) GetStarRailCharacterData(userCharacter *starrail.UserCharacter) *starrail.CharacterData {
+func (sr *starRailAPIImpl) CharacterData(userCharacter *starrail.UserCharacter) *starrail.CharacterData {
 	if userCharacter == nil {
 		return nil
 	}
-	return e.GetStarRailCharacterDataById(fmt.Sprint(userCharacter.AvatarId))
+	return sr.CharacterDataById(fmt.Sprint(userCharacter.AvatarId))
 }
 
-// GetStarRailCharacterDataById returns the CharacterData for the given UID
-//
-// Parameters:
-//
-//	uid: The UID of the character
-//
-// Returns:
-//
-//	The CharacterData, or nil if not found
-func (e *EnkaNetworkAPI) GetStarRailCharacterDataById(uid string) *starrail.CharacterData {
-	return e.cache.GetStarRailCharacterData(uid)
+func (sr *starRailAPIImpl) CharacterDataById(uid string) *starrail.CharacterData {
+	return sr.api.cache.GetStarRailCharacterData(uid)
 }
 
-// GetStarRailIcon returns the URL of the StarRail icon for the given key
-//
-// You can change the BASE_SR_UI_URL if you need images from a different source
-//
-// Parameters:
-//
-//	key: The key of the icon
-//
-// Returns:
-//
-//	The URL of the icon
-func (e *EnkaNetworkAPI) GetStarRailIcon(key string) string {
+func (sr *starRailAPIImpl) Icon(key string) string {
 	url := fmt.Sprintf("%s%s", BASE_SR_UI_URL, key)
 	if strings.HasSuffix(url, ".png") {
 		return url
@@ -151,47 +115,28 @@ func (e *EnkaNetworkAPI) GetStarRailIcon(key string) string {
 	return fmt.Sprintf("%s.png", url)
 }
 
-// GetAllStarRailCharacters returns all StarRail characters
-//
-// Returns:
-//
-//	A slice of all StarRail characters
-func (e *EnkaNetworkAPI) GetAllStarRailCharacters() []*starrail.CharacterData {
-	return e.cache.GetAllStarRailCharacters()
+func (sr *starRailAPIImpl) AvatarKey(avatarId string) string {
+	return sr.api.cache.GetStarRailAvatarKey(avatarId)
 }
 
-// GetStarRailAvatarKey returns the avatar key for the given avatar ID
-//
-// Parameters:
-//
-//	avatarId: The avatar ID
-//
-// Returns:
-//
-//	The avatar key or id if not found
-func (e *EnkaNetworkAPI) GetStarRailAvatarKey(avatarId string) string {
-	return e.cache.GetStarRailAvatarKey(avatarId)
-}
-
-// GetStarRailRelicData returns the RelicData for the given Relic
-//
-// Parameters:
-//
-//	relic: The relic to get the data for
-//
-// Returns:
-//
-//	The RelicData, or nil if not found (or if the relic was nil)
-func (e *EnkaNetworkAPI) GetStarRailRelicData(relic *starrail.Relic) *starrail.RelicData {
+func (sr *starRailAPIImpl) RelicData(relic *starrail.Relic) *starrail.RelicData {
 	if relic == nil {
 		return nil
 	}
-	return e.cache.GetStarRailRelicData(fmt.Sprintf("%d", relic.RelicID))
+	return sr.RelicDataById(fmt.Sprint(relic.RelicID))
 }
 
-func (e *EnkaNetworkAPI) GetStarRailLightConeData(lightcone *starrail.LightCone) *starrail.LightConeData {
+func (sr *starRailAPIImpl) RelicDataById(relicId string) *starrail.RelicData {
+	return sr.api.cache.GetStarRailRelicData(relicId)
+}
+
+func (sr *starRailAPIImpl) LightConeData(lightcone *starrail.LightCone) *starrail.LightConeData {
 	if lightcone == nil {
 		return nil
 	}
-	return e.cache.GetStarRailLightConeData(fmt.Sprintf("%d", lightcone.LightConeID))
+	return sr.LightConeDataById(fmt.Sprint(lightcone.LightConeID))
+}
+
+func (sr *starRailAPIImpl) LightConeDataById(lightConeId string) *starrail.LightConeData {
+	return sr.api.cache.GetStarRailLightConeData(lightConeId)
 }
