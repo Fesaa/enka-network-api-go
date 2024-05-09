@@ -22,6 +22,7 @@ type EnkaNetworkAPI struct {
 	log *slog.Logger
 
 	starRailAPI StarRailAPI
+	genshinApi  GenshinAPI
 }
 
 // New creates a new EnkaNetworkAPI instance
@@ -59,6 +60,7 @@ func New(userAgent string, cacheSupplier utils.ErrorSupplier[cache.EnkaCache], l
 		cache:     cache,
 	}
 	api.starRailAPI = newStarRail(api, logger)
+	api.genshinApi = newGenshinAPI(api, logger)
 	return api, nil
 }
 
@@ -75,4 +77,8 @@ func (e *EnkaNetworkAPI) SetUserAgent(userAgent string) {
 
 func (e *EnkaNetworkAPI) StarRail() StarRailAPI {
 	return e.starRailAPI
+}
+
+func (e *EnkaNetworkAPI) Genshin() GenshinAPI {
+	return e.genshinApi
 }

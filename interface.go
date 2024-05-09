@@ -1,6 +1,7 @@
 package enkanetworkapigo
 
 import (
+	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 	"github.com/Fesaa/enka-network-api-go/utils"
 )
@@ -20,4 +21,18 @@ type StarRailAPI interface {
 
 	Icon(key string) string
 	AvatarKey(avatarId string) string
+}
+
+type GenshinAPI interface {
+	Fetch(uid string, showCaseInfo bool, success utils.Consumer[*genshin.RawGenshinUser], failure utils.Consumer[error])
+	FetchAndReturn(uid string, showCaseInfo bool) (*genshin.RawGenshinUser, error)
+
+	CharacterData(userCharacter *genshin.UserCharacter) *genshin.CharacterData
+	CharacterDataById(uuid string) *genshin.CharacterData
+
+	Icon(key string) string
+
+	ProfileId(id int) string
+	NameCard(nameCardId int) *genshin.NameCard
+	Material(id int) *genshin.RawMaterial
 }

@@ -25,7 +25,8 @@ func TestFetchGenshinUser(t *testing.T) {
 		}
 	}
 
-	rgu, err := api.FetchGenshinUserAndReturn("618285856", true)
+	g := api.Genshin()
+	rgu, err := g.FetchAndReturn("618285856", true)
 	if err == MaintenanceError {
 		t.Logf("API in Maintenance skipping test")
 		t.SkipNow()
@@ -47,7 +48,7 @@ func TestFetchGenshinUser(t *testing.T) {
 		t.Fail()
 	}
 
-	material := api.GetGenshinMaterial(101)
+	material := g.Material(101)
 	t.Log(material)
 	if material == nil {
 		t.Logf("Could not find material")
@@ -59,7 +60,7 @@ func TestFetchGenshinUser(t *testing.T) {
 		t.Fail()
 	}
 
-	id := api.GetGenshinProfileIdentifier(user.ProfilePicture.AvatarId)
+	id := g.ProfileId(user.ProfilePicture.AvatarId)
 	if err != nil {
 		t.Fatal(err)
 		t.FailNow()
