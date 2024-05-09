@@ -15,11 +15,11 @@ import (
 )
 
 type starRailAPIImpl struct {
-	api *EnkaNetworkAPI
+	api EnkaNetworkAPI
 	log *slog.Logger
 }
 
-func newStarRail(api *EnkaNetworkAPI, log *slog.Logger) StarRailAPI {
+func newStarRail(api EnkaNetworkAPI, log *slog.Logger) StarRailAPI {
 	return &starRailAPIImpl{api: api, log: log}
 }
 
@@ -50,7 +50,7 @@ func (sr *starRailAPIImpl) FetchAndReturn(uid string) (*starrail.RawHonkaiUser, 
 		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 characters long")
 	}
 
-	cachedUser := sr.api.cache.GetHonkaiUser(uid)
+	cachedUser := sr.api.Cache().GetHonkaiUser(uid)
 	if cachedUser != nil {
 		sr.log.Debug("Returning from cache...", "uid", uid)
 		return cachedUser, nil
@@ -91,7 +91,7 @@ func (sr *starRailAPIImpl) FetchAndReturn(uid string) (*starrail.RawHonkaiUser, 
 		return nil, err
 	}
 
-	sr.api.cache.AddHonkaiUser(&user)
+	sr.api.Cache().AddHonkaiUser(&user)
 	return &user, nil
 }
 
@@ -103,7 +103,7 @@ func (sr *starRailAPIImpl) CharacterData(userCharacter *starrail.UserCharacter) 
 }
 
 func (sr *starRailAPIImpl) CharacterDataById(uid string) *starrail.CharacterData {
-	return sr.api.cache.GetStarRailCharacterData(uid)
+	return sr.api.Cache().GetStarRailCharacterData(uid)
 }
 
 func (sr *starRailAPIImpl) Icon(key string) string {
@@ -116,7 +116,7 @@ func (sr *starRailAPIImpl) Icon(key string) string {
 }
 
 func (sr *starRailAPIImpl) AvatarKey(avatarId string) string {
-	return sr.api.cache.GetStarRailAvatarKey(avatarId)
+	return sr.api.Cache().GetStarRailAvatarKey(avatarId)
 }
 
 func (sr *starRailAPIImpl) RelicData(relic *starrail.Relic) *starrail.RelicData {
@@ -127,7 +127,7 @@ func (sr *starRailAPIImpl) RelicData(relic *starrail.Relic) *starrail.RelicData 
 }
 
 func (sr *starRailAPIImpl) RelicDataById(relicId string) *starrail.RelicData {
-	return sr.api.cache.GetStarRailRelicData(relicId)
+	return sr.api.Cache().GetStarRailRelicData(relicId)
 }
 
 func (sr *starRailAPIImpl) LightConeData(lightcone *starrail.LightCone) *starrail.LightConeData {
@@ -138,5 +138,5 @@ func (sr *starRailAPIImpl) LightConeData(lightcone *starrail.LightCone) *starrai
 }
 
 func (sr *starRailAPIImpl) LightConeDataById(lightConeId string) *starrail.LightConeData {
-	return sr.api.cache.GetStarRailLightConeData(lightConeId)
+	return sr.api.Cache().GetStarRailLightConeData(lightConeId)
 }

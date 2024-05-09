@@ -15,7 +15,7 @@ const BASE_SR_UI_URL = "https://enka.network/ui/hsr/"
 
 var MaintenanceError error = errors.New("enka-network-api-go: The API is currently in maintenance")
 
-type EnkaNetworkAPI struct {
+type enkaNetworkAPIImpl struct {
 	userAgent string
 	cache     cache.EnkaCache
 
@@ -40,7 +40,7 @@ type EnkaNetworkAPI struct {
 //	Please set a custom User-Agent header with your requests so I can track them better and help you if needed.
 //
 // See https://api.enka.network/ for API docs
-func New(userAgent string, cacheSupplier utils.ErrorSupplier[cache.EnkaCache], loggers ...*slog.Logger) (*EnkaNetworkAPI, error) {
+func New(userAgent string, cacheSupplier utils.ErrorSupplier[cache.EnkaCache], loggers ...*slog.Logger) (EnkaNetworkAPI, error) {
 	cache, err := cacheSupplier()
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func New(userAgent string, cacheSupplier utils.ErrorSupplier[cache.EnkaCache], l
 	}
 
 	localization.Init(logger)
-	api := &EnkaNetworkAPI{
+	api := &enkaNetworkAPIImpl{
 		userAgent: userAgent,
 		log:       logger,
 		cache:     cache,
@@ -66,19 +66,23 @@ func New(userAgent string, cacheSupplier utils.ErrorSupplier[cache.EnkaCache], l
 
 // NewDefaultUserAgent creates a new EnkaNetworkAPI instance with the default User-Agent header
 // Consider using New or SetUserAgent instead
-func NewDefault() (*EnkaNetworkAPI, error) {
+func NewDefault() (EnkaNetworkAPI, error) {
 	return New("enka-network-api-go (Unset User Agent)", cache.Default())
 }
 
 // SetUserAgent sets the User-Agent header for requests
-func (e *EnkaNetworkAPI) SetUserAgent(userAgent string) {
+func (e *enkaNetworkAPIImpl) SetUserAgent(userAgent string) {
 	e.userAgent = userAgent
 }
 
-func (e *EnkaNetworkAPI) StarRail() StarRailAPI {
+func (e *enkaNetworkAPIImpl) StarRail() StarRailAPI {
 	return e.starRailAPI
 }
 
-func (e *EnkaNetworkAPI) Genshin() GenshinAPI {
+func (e *enkaNetworkAPIImpl) Genshin() GenshinAPI {
 	return e.genshinApi
+}
+
+func (e *enkaNetworkAPIImpl) Cache() cache.EnkaCache {
+	return e.cache
 }

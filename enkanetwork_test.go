@@ -12,7 +12,7 @@ import (
 
 const OWN_UID = "714656501"
 
-var api *EnkaNetworkAPI
+var api EnkaNetworkAPI
 
 func TestFetchGenshinUser(t *testing.T) {
 
@@ -87,7 +87,7 @@ func TestFetchHonkaiUser(t *testing.T) {
 	}
 
 	if err != nil {
-		api.log.Error(err.Error())
+		t.Log(err.Error())
 		t.Fatal(err)
 		t.FailNow()
 	}

@@ -15,11 +15,11 @@ import (
 )
 
 type genshinAPIImpl struct {
-	api *EnkaNetworkAPI
+	api EnkaNetworkAPI
 	log *slog.Logger
 }
 
-func newGenshinAPI(api *EnkaNetworkAPI, log *slog.Logger) GenshinAPI {
+func newGenshinAPI(api EnkaNetworkAPI, log *slog.Logger) GenshinAPI {
 	return &genshinAPIImpl{
 		api: api,
 		log: log,
@@ -53,7 +53,7 @@ func (g *genshinAPIImpl) FetchAndReturn(uid string, showCaseInfo bool) (*genshin
 		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 or 10 characters long")
 	}
 
-	cachedUser := g.api.cache.GetGenshinUser(uid)
+	cachedUser := g.api.Cache().GetGenshinUser(uid)
 	if cachedUser != nil {
 		g.log.Debug("Returning from cache...", "uid", uid)
 		return cachedUser, nil
@@ -99,7 +99,7 @@ func (g *genshinAPIImpl) FetchAndReturn(uid string, showCaseInfo bool) (*genshin
 		return nil, err
 	}
 
-	g.api.cache.AddGenshinUser(&user)
+	g.api.Cache().AddGenshinUser(&user)
 	return &user, nil
 }
 
@@ -114,7 +114,7 @@ func (g *genshinAPIImpl) Icon(key string) string {
 }
 
 func (g *genshinAPIImpl) NameCard(id int) *genshin.NameCard {
-	cardName := g.api.cache.GetNameCardName(id)
+	cardName := g.api.Cache().GetNameCardName(id)
 	if cardName == nil {
 		return nil
 	}
@@ -126,17 +126,17 @@ func (g *genshinAPIImpl) NameCard(id int) *genshin.NameCard {
 }
 
 func (g *genshinAPIImpl) ProfileId(id int) string {
-	return g.api.cache.GetProfileIcon(fmt.Sprintf("%d", id))
+	return g.api.Cache().GetProfileIcon(fmt.Sprintf("%d", id))
 }
 
 func (g *genshinAPIImpl) CharacterData(character *genshin.UserCharacter) *genshin.CharacterData {
-	return g.api.cache.GetGenshinCharacterData(fmt.Sprint(character.Id))
+	return g.api.Cache().GetGenshinCharacterData(fmt.Sprint(character.Id))
 }
 
 func (g *genshinAPIImpl) CharacterDataById(id string) *genshin.CharacterData {
-	return g.api.cache.GetGenshinCharacterData(id)
+	return g.api.Cache().GetGenshinCharacterData(id)
 }
 
 func (g *genshinAPIImpl) Material(id int) *genshin.RawMaterial {
-	return g.api.cache.GetGenshinMaterial(id)
+	return g.api.Cache().GetGenshinMaterial(id)
 }

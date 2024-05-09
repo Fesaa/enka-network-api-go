@@ -1,10 +1,19 @@
 package enkanetworkapigo
 
 import (
+	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 	"github.com/Fesaa/enka-network-api-go/utils"
 )
+
+type EnkaNetworkAPI interface {
+	Cache() cache.EnkaCache
+	StarRail() StarRailAPI
+	Genshin() GenshinAPI
+
+	SetUserAgent(userAgent string)
+}
 
 type StarRailAPI interface {
 	Fetch(uid string, success utils.Consumer[*starrail.RawHonkaiUser], failure utils.Consumer[error])
