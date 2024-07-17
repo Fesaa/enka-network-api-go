@@ -9,6 +9,9 @@ type User struct {
 	CompletedAchievements int
 	TowerFloorIndex       int
 	TowerLevelIndex       int
+	TowerAct              int
+	TheaterStars          int
+	TheaterMode           int
 	ShowCasedCharacters   []ShowCaseCharacter
 	// Ids of the users NameCards, use EnkaNetworkApi#GetNameCardName to get the name
 	NameCardsId    []int
@@ -39,6 +42,9 @@ func UserFromRaw(rawUser *RawGenshinUser) *User {
 		CompletedAchievements: playerInfoData.FinishedAchievementsCount,
 		TowerFloorIndex:       playerInfoData.TowerFloorIndex,
 		TowerLevelIndex:       playerInfoData.TowerLevelIndex,
+		TowerAct:              playerInfoData.TowerAct,
+		TheaterStars:          playerInfoData.TheaterStars,
+		TheaterMode:           playerInfoData.TheaterMode,
 		ProfilePicture:        profilePicture,
 	}
 

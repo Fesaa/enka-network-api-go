@@ -23,6 +23,9 @@ type RawPlayerInfo struct {
 	ShowAvatarInfoList        []RawShowAvatarInfo `json:"showAvatarInfoList"`
 	ShowNameCardIdList        []int               `json:"showNameCardIdList"`
 	ProfilePicture            RawProfilePicture   `json:"profilePicture"`
+	TowerAct                  int                 `json:"towerAct"`
+	TheaterStars              int                 `json:"theaterStars"`
+	TheaterMode               int                 `json:"theaterMode"`
 }
 
 type RawAvatarInfo struct {
