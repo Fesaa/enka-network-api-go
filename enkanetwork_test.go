@@ -105,9 +105,13 @@ func TestFetchHonkaiUser(t *testing.T) {
 
 	for _, character := range user.Characters {
 		lightCone := character.LightCone
-		lightConeData := sr.LightConeData(lightCone)
-		name := lightCone.Name()
-		lightConeIcon := sr.Icon(lightConeData.ImagePath)
+
+		var name, lightConeIcon string
+		if lightCone != nil {
+			lightConeData := sr.LightConeData(lightCone)
+			name = lightCone.Name()
+			lightConeIcon = sr.Icon(lightConeData.ImagePath)
+		}
 
 		characterData := sr.CharacterData(&character)
 		avatarIcon := sr.Icon(characterData.AvatarSideIconPath)
