@@ -26,6 +26,12 @@ type RawPlayerInfo struct {
 	TowerAct                  int                 `json:"towerAct"`
 	TheaterStars              int                 `json:"theaterStars"`
 	TheaterMode               int                 `json:"theaterMode"`
+	TheaterActIndex           int                 `json:"theaterActIndex"`
+	TheaterModeIndex          int                 `json:"theaterModeIndex"`
+	TheaterStarsIndex         int                 `json:"theaterStarsIndex"`
+	IsShowAvatarTalent        bool                `json:"isShowAvatarTalent"`
+	FetterCount               int                 `json:"fetterCount"`
+	TowerStarIndex            int                 `json:"towerStarIndex"`
 }
 
 type RawAvatarInfo struct {
@@ -37,6 +43,8 @@ type RawAvatarInfo struct {
 	InherentProudSkillList []int                  `json:"inherentProudSkillList"`
 	EquipList              []RawEquipData         `json:"equipList"`
 	FetterInfo             RawFetterInfo          `json:"fetterInfo"`
+	EneryType              int                    `json:"energyType"`
+	TalentLevel            int                    `json:"talentLevel"`
 }
 
 type RawShowAvatarInfo struct {
