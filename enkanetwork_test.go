@@ -1,6 +1,7 @@
 package enkanetworkapigo
 
 import (
+	"errors"
 	"log/slog"
 	"strings"
 	"sync"
@@ -82,7 +83,7 @@ func TestFetchHonkaiUser(t *testing.T) {
 
 	sr := api.StarRail()
 	hu, err := sr.FetchAndReturn(OWN_UID)
-	if err == MaintenanceError {
+	if errors.Is(err, MaintenanceError) {
 		t.Logf("API in Maintenance skipping test")
 		t.SkipNow()
 	}

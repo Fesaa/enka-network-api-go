@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
-	"net/http"
 	"strconv"
 	"strings"
 
@@ -67,7 +66,7 @@ func (g *genshinAPIImpl) FetchAndReturn(uid string, showCaseInfo bool) (*genshin
 		suffix = "?info"
 	}
 
-	req, err := http.Get(BASE_URL + "uid/" + uid + suffix)
+	req, err := g.api.HttpClient().Get(BASE_URL + "uid/" + uid + suffix)
 	if err != nil {
 		return nil, err
 	}
@@ -80,24 +79,25 @@ func (g *genshinAPIImpl) FetchAndReturn(uid string, showCaseInfo bool) (*genshin
 	if req.StatusCode != 200 {
 		g.log.Debug("Returned a non 200 status code. Got ", "status_code", req.StatusCode)
 
-		var error string
-		data, err := io.ReadAll(req.Body)
+		var e string
+		var bytes []byte
+		bytes, err = io.ReadAll(req.Body)
 		if err != nil {
 			g.log.Error("Failed to read body:", "error", err.Error())
-			error = "Unknown: Failed to read body"
+			e = "Unknown: Failed to read body"
 		} else {
-			error = string(data)
+			e = string(bytes)
 		}
-		return nil, fmt.Errorf("enka-network-api-go: Non 200 status code returned: %d\nBody: %s", req.StatusCode, error)
+		return nil, fmt.Errorf("enka-network-api-go: Non 200 status code returned: %d\nBody: %s", req.StatusCode, e)
 	}
 
-	data, err := io.ReadAll(req.Body)
+	bytes, err := io.ReadAll(req.Body)
 	if err != nil {
 		return nil, err
 	}
 
 	var user genshin.RawGenshinUser
-	err = json.Unmarshal(data, &user)
+	err = json.Unmarshal(bytes, &user)
 	if err != nil {
 		return nil, err
 	}

@@ -6,6 +6,7 @@ import (
 	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 	"github.com/Fesaa/enka-network-api-go/utils"
+	"net/http"
 )
 
 type EnkaNetworkAPI interface {
@@ -15,6 +16,8 @@ type EnkaNetworkAPI interface {
 	Genshin() GenshinAPI
 
 	SetUserAgent(userAgent string)
+	GetUserAgent() string
+	HttpClient() *http.Client
 }
 
 type StarRailAPI interface {
