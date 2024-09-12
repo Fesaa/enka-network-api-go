@@ -44,12 +44,12 @@ func UserFromRaw(rawUser *RawHonkaiUser) *User {
 		Platform:          Platform(detailInfo.Platform),
 	}
 
-	if !detailInfo.IsDisplayAvatar {
+	if detailInfo.IsDisplayAvatar != nil && !(*detailInfo.IsDisplayAvatar) {
 		user.Characters = make([]UserCharacter, 0)
 		return &user
 	}
 
-	var characters = []UserCharacter{}
+	var characters []UserCharacter
 
 	for _, avatar := range detailInfo.AvatarDetailList {
 

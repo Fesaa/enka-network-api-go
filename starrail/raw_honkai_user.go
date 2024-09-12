@@ -24,7 +24,7 @@ type RawDetailInfo struct {
 	FriendCount      int               `json:"friendCount"`
 	RecordInfo       RawRecordInfo     `json:"recordInfo"`
 	WordlLevel       int               `json:"worldLevel"`
-	IsDisplayAvatar  bool              `json:"isDisplayAvatar"`
+	IsDisplayAvatar  *bool             `json:"isDisplayAvatar,omitempty"`
 	Platform         string            `json:"platform"`
 }
 
@@ -32,7 +32,7 @@ type RawAvatarDetail struct {
 	AvatarId int `json:"avatarId"`
 	Rank     int `json:"rank"`
 	Level    int `json:"level"`
-	// Ascension, nill if level < 20
+	// Ascension, 0 if level < 20
 	Promotion     int               `json:"promotion,omitempty"`
 	Equipment     *RawEquipmentInfo `json:"equipment,ompitempty"`
 	SkillTreeList []RawSkillTree    `json:"skillTreeList"`
