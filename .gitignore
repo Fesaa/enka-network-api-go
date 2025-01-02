@@ -24,3 +24,5 @@ go.work
 # Log files
 *.log
 tmp
+
+.idea
