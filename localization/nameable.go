@@ -7,7 +7,7 @@ type Nameable interface {
 }
 
 type HashNameAble struct {
-	Hash int64 `json:"Hash"`
+	Hash string `json:"Hash"`
 }
 
 func (h *HashNameAble) GetHash() string {

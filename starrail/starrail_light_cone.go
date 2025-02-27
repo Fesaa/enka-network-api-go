@@ -13,7 +13,7 @@ type LightCone struct {
 	// Also ascension
 	Promotion int
 	Stats     []LightConeStat
-	Hash      int64
+	Hash      string
 }
 
 func (lightCone *LightCone) GetHash() string {

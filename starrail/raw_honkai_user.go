@@ -69,7 +69,7 @@ type RawEquipmentInfo struct {
 
 type RawEquipmentFlatData struct {
 	Props []RawEquipmentFlatProp `json:"props"`
-	Name  int64                  `json:"name"`
+	Name  string                 `json:"name"`
 }
 
 type RawSkillTree struct {
@@ -92,7 +92,7 @@ type RawRelic struct {
 
 type RawRelicFlatData struct {
 	Props   []RawRelicFlatProp `json:"props"`
-	SetName int64              `json:"setName"`
+	SetName string             `json:"setName"`
 	SetId   int                `json:"setId"`
 }
 

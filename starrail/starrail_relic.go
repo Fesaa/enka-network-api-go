@@ -62,7 +62,7 @@ type Relic struct {
 	Type     RelicType
 	MainStat RelicStat
 	SubStats []RelicStat
-	Hash     int64
+	Hash     string
 }
 
 func (relic *Relic) GetHash() string {
