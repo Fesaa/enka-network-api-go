@@ -2,12 +2,12 @@ package enkanetworkapigo
 
 import "net/http"
 
-type httpUserAgentInterceptor struct {
+type HttpUserAgentInterceptor struct {
 	api         EnkaNetworkAPI
 	transporter http.RoundTripper
 }
 
-func (uai *httpUserAgentInterceptor) RoundTrip(request *http.Request) (*http.Response, error) {
+func (uai *HttpUserAgentInterceptor) RoundTrip(request *http.Request) (*http.Response, error) {
 	request.Header.Set("User-Agent", uai.api.GetUserAgent())
 	return uai.transporter.RoundTrip(request)
 }

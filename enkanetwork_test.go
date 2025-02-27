@@ -2,12 +2,10 @@ package enkanetworkapigo
 
 import (
 	"errors"
-	"log/slog"
 	"strings"
 	"sync"
 	"testing"
 
-	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 )
@@ -21,7 +19,7 @@ func TestFetchGenshinUser(t *testing.T) {
 	if api == nil {
 		var e error
 
-		api, e = New("enka-network-api-tests", cache.Default(slog.Default()))
+		api, e = New(WithCustomUserAgent("enka-network-api-tests"))
 		if e != nil {
 			t.Fatal(e)
 		}
@@ -75,7 +73,7 @@ func TestFetchHonkaiUser(t *testing.T) {
 
 	if api == nil {
 		var e error
-		api, e = New("enka-network-api-tests", cache.Default(slog.Default()))
+		api, e = New(WithCustomUserAgent("enka-network-api-tests"))
 		if e != nil {
 			t.Fatal(e)
 		}

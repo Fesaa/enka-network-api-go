@@ -14,6 +14,11 @@ const (
 	GENSHIN_BASE_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/TextMap/TextMap%s.json"
 )
 
+var (
+	LoadGenshin  = true
+	LoadStarRail = true
+)
+
 var localization *Localization
 
 func Get() *Localization {
@@ -34,8 +39,6 @@ type Localization struct {
 	log *slog.Logger
 }
 
-// LocalizationCache is an interface for a cache
-// that can be used to store localization data
 func Init(logger *slog.Logger, caches ...LocalizationCache) {
 	var cache LocalizationCache
 	if len(caches) > 0 {
@@ -64,22 +67,40 @@ func (l *Localization) loadLocalizations() {
 	wg := sync.WaitGroup{}
 	wg.Add(2)
 
-	go func() {
-		l.loadHonkaiLocalization()
-		wg.Add(-1)
-	}()
+	if LoadStarRail {
+		go func() {
+			l.loadHonkaiLocalization()
+			wg.Add(-1)
+		}()
+	}
 
-	go func() {
-		l.loadGenshinLocalization()
-		wg.Add(-1)
-	}()
+	if LoadGenshin {
+		go func() {
+			l.loadGenshinLocalization()
+			wg.Add(-1)
+		}()
+	}
 
 	wg.Wait()
 }
 
-func SetLocalization(locale LocalizationKey) {
+// SetLocalization updates the localization for the given language. Removes current locale if flushOld is true
+func SetLocalization(locale LocalizationKey, flushOld ...bool) {
+	flush := func() bool {
+		if len(flushOld) > 0 {
+			return flushOld[0]
+		}
+		return false
+	}()
+
 	localization.key = locale
 	localization.loadLocalizations()
+
+	if flush {
+		localization.log.Info("Deleting cached localization", "locale", locale)
+		delete(localization.honkaiLocalizationCache, locale)
+		delete(localization.genshinLocalizationCache, locale)
+	}
 }
 
 func (l *Localization) fetchJson(s string, url string) (*LocalizationMap, error) {

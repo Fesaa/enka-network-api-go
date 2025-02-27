@@ -17,7 +17,7 @@ var _log *slog.Logger = slog.Default()
 
 func main() {
 
-	api, err := enkanetworkapigo.WithCustomUserAgent("enka-network-api-go example starrail_user.go")
+	api, err := enkanetworkapigo.New(enkanetworkapigo.WithCustomUserAgent("enka-network-api-go example starrail_user.go"))
 	if err != nil {
 		// Use proper error handling in a real program
 		panic(err)
