@@ -23,7 +23,7 @@ type hsrExcels struct {
 	relicSubAffix  []starrail.RelicSubAffixConfig
 	setConfig      *utils.Map[string, *starrail.RelicSetConfig]
 	relicConfig    *utils.Map[string, *starrail.RelicConfig]
-	multiPath      *utils.Map[int, *starrail.MultiplePathAvatarConfig]
+	multiPath      *utils.Map[string, *starrail.MultiplePathAvatarConfig]
 }
 
 func NewExcels(logs ...*slog.Logger) HSRExcels {
@@ -39,7 +39,7 @@ func NewExcels(logs ...*slog.Logger) HSRExcels {
 	}
 }
 
-func (e *hsrExcels) MultiplePathAvatarConfig(i int) (*starrail.MultiplePathAvatarConfig, bool) {
+func (e *hsrExcels) MultiplePathAvatarConfig(i string) (*starrail.MultiplePathAvatarConfig, bool) {
 	if e.multiPath == nil {
 		if err := e.parseMultiPath(); err != nil {
 			e.log.Error("Failed to parse multi path", "error", err)
@@ -114,9 +114,9 @@ func (e *hsrExcels) parseMultiPath() error {
 		return err
 	}
 
-	m := make(map[int]*starrail.MultiplePathAvatarConfig, len(slice))
+	m := make(map[string]*starrail.MultiplePathAvatarConfig, len(slice))
 	for _, v := range slice {
-		m[v.AvatarID] = &v
+		m[fmt.Sprintf("%d", v.AvatarID)] = &v
 	}
 
 	e.multiPath = utils.FromMap(m)
