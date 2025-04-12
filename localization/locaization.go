@@ -65,9 +65,9 @@ func Init(logger *slog.Logger, caches ...LocalizationCache) {
 
 func (l *Localization) loadLocalizations() {
 	wg := sync.WaitGroup{}
-	wg.Add(2)
 
 	if LoadStarRail {
+		wg.Add(1)
 		go func() {
 			l.loadHonkaiLocalization()
 			wg.Add(-1)
@@ -75,6 +75,7 @@ func (l *Localization) loadLocalizations() {
 	}
 
 	if LoadGenshin {
+		wg.Add(1)
 		go func() {
 			l.loadGenshinLocalization()
 			wg.Add(-1)
