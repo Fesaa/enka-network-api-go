@@ -2,6 +2,7 @@ package starrail
 
 import (
 	"fmt"
+	"github.com/Fesaa/enka-network-api-go/hash"
 
 	"github.com/Fesaa/enka-network-api-go/localization"
 )
@@ -32,7 +33,7 @@ type LightConeStat struct {
 type LightConeData struct {
 	Rarity int `json:"Rarity"`
 	// Convert to Path with starrail.PathFromRaw
-	RawPath       string                    `json:"AvatarBaseType"`
-	EquipmentName localization.HashNameAble `json:"EquipmentName"`
-	ImagePath     string                    `json:"ImagePath"`
+	RawPath       string      `json:"AvatarBaseType"`
+	EquipmentName hash.String `json:"EquipmentName"`
+	ImagePath     string      `json:"ImagePath"`
 }

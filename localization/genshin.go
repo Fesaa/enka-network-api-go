@@ -1,6 +1,9 @@
 package localization
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/Fesaa/enka-network-api-go/hash"
+)
 
 func (l *Localization) loadGenshinLocalization() {
 	if _, ok := l.genshinLocalizationCache[l.key]; ok {
@@ -34,7 +37,7 @@ func (l *Localization) loadGenshinLocalization() {
 //
 // Methods on structs will use GetGensinLocaleOrHash, call this directly
 // for full control over it's behavior
-func GetGenshinLocale(nameable Nameable) *string {
+func GetGenshinLocale(nameable hash.Nameable) *string {
 	if m, ok := localization.genshinLocalizationCache[localization.key]; ok {
 		if name, ok := m[nameable.GetHash()]; ok {
 			return &name
@@ -47,7 +50,7 @@ func GetGenshinLocale(nameable Nameable) *string {
 // in Genish impact
 //
 // Returns the hash if the string is not found
-func GetGenshinLocaleOrHash(nameable Nameable) string {
+func GetGenshinLocaleOrHash(nameable hash.Nameable) string {
 	name := GetGenshinLocale(nameable)
 	if name != nil {
 		return *name

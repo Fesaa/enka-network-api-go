@@ -69,7 +69,7 @@ func (relic *Relic) GetHash() string {
 	return fmt.Sprint(relic.Hash)
 }
 
-// Returns the localized name or hash
+// Name returns the localized name or hash
 func (relic *Relic) Name() string {
 	return localization.GetHonkaiLocaleOrHash(relic)
 }

@@ -10,14 +10,12 @@ type starRailData struct {
 	StarRailAvatars       *utils.Map[string, string]
 	StarRailRelics        *utils.Map[string, *starrail.RelicData]
 	StarRailLightCones    *utils.Map[string, *starrail.LightConeData]
-	StarRailSkillTree     *utils.Map[string, map[starrail.SkillTreeAnchor]starrail.SkillTreeNode]
+
+	excels HSRExcels
 }
 
-func (m *starRailData) SkillTree(id string) map[starrail.SkillTreeAnchor]starrail.SkillTreeNode {
-	if data, ok := m.StarRailSkillTree.Get(id); ok {
-		return data
-	}
-	return nil
+func (m *starRailData) Excels() HSRExcels {
+	return m.excels
 }
 
 func (m *starRailData) CharacterData(uid string) *starrail.CharacterData {

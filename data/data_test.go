@@ -35,8 +35,20 @@ func TestCorrectLoading(t *testing.T) {
 		t.FailNow()
 	}
 
+}
+
+func TestRelicExcels(t *testing.T) {
+	if c == nil {
+		m, e := New(slog.Default())
+		if e != nil {
+			t.Error(e)
+			t.FailNow()
+		}
+		c = m
+	}
+
 	// Castorice
-	skillTree := c.StarRailData().SkillTree("1407")
+	skillTree := c.StarRailData().Excels().SkillTree("1407")
 
 	if skillTree[starrail.AnchorBasic].PointID != 1407001 {
 		t.Errorf("Expected Basic(1407001) got %d", skillTree[starrail.AnchorBasic].PointID)
@@ -55,6 +67,28 @@ func TestCorrectLoading(t *testing.T) {
 
 	if skillTree[starrail.AnchorMajor3].PointID != 1407103 {
 		t.Errorf("Expected Major3(1407103) got %d", skillTree[starrail.AnchorMajor3].PointID)
+		t.FailNow()
+	}
+
+	set, ok := c.StarRailData().Excels().RelicSetConfig("101")
+	if !ok {
+		t.Error("Expected some data got nil")
+		t.FailNow()
+	}
+
+	if set.SetIconPath != "SpriteOutput/ItemIcon/71000.png" {
+		t.Errorf("Expected SpriteOutput/ItemIcon/71000.png got %s", set.SetIconPath)
+		t.FailNow()
+	}
+
+	setItem, ok := c.StarRailData().Excels().RelicConfig("31011")
+	if !ok {
+		t.Error("Expected some data got nil")
+		t.FailNow()
+	}
+
+	if setItem.Rarity != "CombatPowerRelicRarity2" {
+		t.Errorf("Expected CombatPowerRelicRarity2 got %s", setItem.Rarity)
 		t.FailNow()
 	}
 

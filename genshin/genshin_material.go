@@ -1,13 +1,16 @@
 package genshin
 
-import "github.com/Fesaa/enka-network-api-go/localization"
+import (
+	"github.com/Fesaa/enka-network-api-go/hash"
+	"github.com/Fesaa/enka-network-api-go/localization"
+)
 
 type Material struct {
 	Id              int
 	Name            string
-	NameHash        localization.HashInt
+	NameHash        hash.Int
 	Description     string
-	DescriptionHash localization.HashInt
+	DescriptionHash hash.Int
 	IconKey         string
 	Pictures        []string
 	ItemType        ItemType
@@ -41,8 +44,8 @@ type RawMaterial struct {
 
 func (r RawMaterial) ToMaterial() Material {
 
-	name := localization.HashInt{Hash: r.NameHash}
-	description := localization.HashInt{Hash: r.DescriptionHash}
+	name := hash.Int{Hash: r.NameHash}
+	description := hash.Int{Hash: r.DescriptionHash}
 
 	return Material{
 		Id:              r.Id,
