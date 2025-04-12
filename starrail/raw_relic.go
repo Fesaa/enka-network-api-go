@@ -11,6 +11,35 @@ type (
 	RelicMode                    string
 )
 
+const (
+	HeadRelicType         RelicTypeString = "HEAD"
+	HandsRelicType        RelicTypeString = "HAND"
+	BodyRelicType         RelicTypeString = "BODY"
+	FeetRelicType         RelicTypeString = "FOOT"
+	PlanarSphereRelicType RelicTypeString = "NECK"
+	LinkRopeRelicType     RelicTypeString = "OBJECT"
+
+	HPDelta                   RelicMainAffixConfigProperty = "HPDelta"
+	AttackDelta               RelicMainAffixConfigProperty = "AttackDelta"
+	HPAddedRatio              RelicMainAffixConfigProperty = "HPAddedRatio"
+	AttackAddedRatio          RelicMainAffixConfigProperty = "AttackAddedRatio"
+	DefenceAddedRatio         RelicMainAffixConfigProperty = "DefenceAddedRatio"
+	CriticalChanceBase        RelicMainAffixConfigProperty = "CriticalChanceBase"
+	CriticalDamageBase        RelicMainAffixConfigProperty = "CriticalDamageBase"
+	HealRatioBase             RelicMainAffixConfigProperty = "HealRatioBase"
+	SpeedDelta                RelicMainAffixConfigProperty = "SpeedDelta"
+	StatusProbabilityBase     RelicMainAffixConfigProperty = "StatusProbabilityBase"
+	PhysicalAddedRatio        RelicMainAffixConfigProperty = "PhysicalAddedRatio"
+	FireAddedRatio            RelicMainAffixConfigProperty = "FireAddedRatio"
+	IceAddedRatio             RelicMainAffixConfigProperty = "IceAddedRatio"
+	ThunderAddedRatio         RelicMainAffixConfigProperty = "ThunderAddedRatio"
+	WindAddedRatio            RelicMainAffixConfigProperty = "WindAddedRatio"
+	QuantumAddedRatio         RelicMainAffixConfigProperty = "QuantumAddedRatio"
+	ImaginaryAddedRatio       RelicMainAffixConfigProperty = "ImaginaryAddedRatio"
+	BreakDamageAddedRatioBase RelicMainAffixConfigProperty = "BreakDamageAddedRatioBase"
+	SPRatioBase               RelicMainAffixConfigProperty = "SPRatioBase"
+)
+
 type RelicMainAffixConfig struct {
 	GroupID   int                          `json:"GroupID"`
 	AffixID   int                          `json:"AffixID"`
