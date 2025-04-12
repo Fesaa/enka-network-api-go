@@ -1,16 +1,16 @@
 package starrail
 
-type RawHonkaiUser struct {
+type RawUser struct {
 	DetailInfo RawDetailInfo `json:"detailInfo"`
 	Ttl        int           `json:"ttl"`
 	Uid        string        `json:"uid"`
 }
 
-func (user *RawHonkaiUser) GetTtl() int {
+func (user *RawUser) GetTtl() int {
 	return user.Ttl
 }
 
-func (user *RawHonkaiUser) ToUser() *User {
+func (user *RawUser) ToUser() *User {
 	return UserFromRaw(user)
 }
 

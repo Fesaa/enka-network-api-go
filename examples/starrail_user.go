@@ -26,7 +26,7 @@ func main() {
 	sr := api.StarRail()
 
 	sr.Fetch(SRUID,
-		func(rhu *starrail.RawHonkaiUser) {
+		func(rhu *starrail.RawUser) {
 			user := rhu.ToUser()
 
 			if user == nil {

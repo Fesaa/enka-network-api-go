@@ -6,39 +6,40 @@ import (
 )
 
 func (l *Localization) loadGenshinLocalization() {
-	if _, ok := l.genshinLocalizationCache[l.key]; ok {
+	if _, ok := l.genshinCache[l.key]; ok {
 		return
 	}
 
-	l.log.Info("(Genshin) Loading localization", "key", l.key)
+	l.log.Info().Str("game", "genshin").Any("key", l.key).Msg("loading localization")
 	localizationMap, err := l.fetchJson("genshin_", fmt.Sprintf(GENSHIN_BASE_URL, string(l.key)))
 	if err != nil {
 		if l.key != l.defaultKey {
-			l.log.Error("(Genshin) Couldn't load localization, failling back",
-				"key", l.key, "fallback_key", l.defaultKey, "error", err)
+			l.log.Error().Err(err).Str("game", "genshin").
+				Any("key", l.key).
+				Any("defaultKey", l.defaultKey).
+				Msg("falling back after failure")
 			l.key = l.defaultKey
-			l.loadGenshinLocalization()
+			l.loadHsrLocalization()
 			return
 		}
 		l.key = l.defaultKey
-		l.honkaiLocalizationCache = map[LocalizationKey]LocalizationMap{}
-		l.log.Error("(Genshin) Localization is not available", "key", l.key)
+		l.genshinCache = make(map[LocalizationKey]map[string]string)
+		l.log.Error().Err(err).Str("game", "genshin").Any("key", l.key).
+			Msg("failed to load, localization won't be avaible")
 		return
 	}
 
-	l.genshinLocalizationCache[l.key] = *localizationMap
-	l.log.Info("(Genshin) Loaded localization!", "key", l.key)
+	l.genshinCache[l.key] = *localizationMap
+	l.log.Info().Str("game", "genshin").Any("key", l.key).Msg("loaded localization")
 }
 
 // GetGenshinLocale tries to retrieve the string for a hash
-// in Genish impact
-//
-// # Takes a nameable and returns a nilable string
+// in Genish impact. Takes a nameable and returns a nilable string
 //
 // Methods on structs will use GetGensinLocaleOrHash, call this directly
-// for full control over it's behavior
+// for full control over its behavior
 func GetGenshinLocale(nameable hash.Nameable) *string {
-	if m, ok := localization.genshinLocalizationCache[localization.key]; ok {
+	if m, ok := localization.genshinCache[localization.key]; ok {
 		if name, ok := m[nameable.GetHash()]; ok {
 			return &name
 		}

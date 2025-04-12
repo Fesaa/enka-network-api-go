@@ -24,7 +24,7 @@ type Pair[T any] struct {
 	Right T
 }
 
-func UserFromRaw(rawUser *RawGenshinUser) *User {
+func UserFromRaw(rawUser *RawUser) *User {
 	playerInfoData := rawUser.PlayerInfo
 	profilePicture := playerInfoData.ProfilePicture
 	signature := playerInfoData.Signature

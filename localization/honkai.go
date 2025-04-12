@@ -5,41 +5,41 @@ import (
 	"github.com/Fesaa/enka-network-api-go/hash"
 )
 
-func (l *Localization) loadHonkaiLocalization() {
-	if _, ok := l.honkaiLocalizationCache[l.key]; ok {
+func (l *Localization) loadHsrLocalization() {
+	if _, ok := l.hsrCache[l.key]; ok {
 		return
 	}
 
-	l.log.Info("(Honkai) Loading new localization", "key", l.key)
+	l.log.Info().Str("game", "hsr").Any("key", l.key).Msg("loading localization")
 	localizationMap, err := l.fetchJson("honkai_", fmt.Sprintf(HONKAI_BASE_URL, string(l.key)))
 	if err != nil {
 		if l.key != l.defaultKey {
-			l.log.Error("(Honkai) Couldn't load localization, failling back",
-				"key", l.key, "fallback_key", l.defaultKey, "error", err)
+			l.log.Error().Err(err).Str("game", "hsr").
+				Any("key", l.key).
+				Any("defaultKey", l.defaultKey).
+				Msg("falling back after failure")
 			l.key = l.defaultKey
-			l.loadHonkaiLocalization()
+			l.loadHsrLocalization()
 			return
 		}
 		l.key = l.defaultKey
-		l.honkaiLocalizationCache = make(map[LocalizationKey]LocalizationMap)
-		l.log.Error("(Honkai) Localization is not available", "key", l.key)
+		l.hsrCache = make(map[LocalizationKey]map[string]string)
+		l.log.Error().Err(err).Str("game", "hsr").Any("key", l.key).
+			Msg("failed to load, localization won't be avaible")
 		return
 	}
 
-	l.honkaiLocalizationCache[l.key] = *localizationMap
-	l.log.Info("(Honkai) Loaded localization!", "key", l.key)
-
+	l.hsrCache[l.key] = *localizationMap
+	l.log.Info().Str("game", "hsr").Any("key", l.key).Msg("loaded localization")
 }
 
-// GetHonkaiLocale tries to retrieve the string for a hash
-// in Honkai: Star Rail
+// GetHsrLocale tries to retrieve the string for a hash
+// in Honkai: Star Rail. Takes a nameable and returns a nilable string
 //
-// # Takes a nameable and returns a nilable string
-//
-// Methods on structs will use GetHonkaiLocaleOrHash, call this directly
-// for full control over it's behavior
-func GetHonkaiLocale(nameable hash.Nameable) *string {
-	if m, ok := localization.honkaiLocalizationCache[localization.key]; ok {
+// Methods on structs will use GetHsrLocaleOrHash, call this directly
+// for full control over its behavior
+func GetHsrLocale(nameable hash.Nameable) *string {
+	if m, ok := localization.hsrCache[localization.key]; ok {
 		if str, ok := m[nameable.GetHash()]; ok {
 			return &str
 		}
@@ -47,12 +47,12 @@ func GetHonkaiLocale(nameable hash.Nameable) *string {
 	return nil
 }
 
-// GetHonkaiLocaleOrHash tries to retrieve the string for a hash
+// GetHsrLocaleOrHash tries to retrieve the string for a hash
 // in Honkai: Star Rail
 //
 // Returns the hash if string is not found
-func GetHonkaiLocaleOrHash(nameable hash.Nameable) string {
-	name := GetHonkaiLocale(nameable)
+func GetHsrLocaleOrHash(nameable hash.Nameable) string {
+	name := GetHsrLocale(nameable)
 	if name != nil {
 		return *name
 	}

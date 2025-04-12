@@ -2,10 +2,9 @@ package cache
 
 import (
 	"encoding/json"
-	"log/slog"
-
 	"github.com/Fesaa/enka-network-api-go/genshin"
 	"github.com/Fesaa/enka-network-api-go/starrail"
+	"github.com/rs/zerolog"
 )
 
 type ExternalCache interface {
@@ -15,63 +14,63 @@ type ExternalCache interface {
 
 type externalCache struct {
 	ext ExternalCache
-	log *slog.Logger
+	log zerolog.Logger
 }
 
-func ExternalCacheWrapper(ext ExternalCache, log *slog.Logger) EnkaHttpCache {
+func ExternalCacheWrapper(ext ExternalCache, log zerolog.Logger) EnkaHttpCache {
 	return &externalCache{ext: ext, log: log}
 }
 
-func (c *externalCache) AddGenshinUser(user *genshin.RawGenshinUser) {
+func (c *externalCache) AddGenshinUser(user *genshin.RawUser) {
 	data, err := json.Marshal(user)
 	if err != nil {
-		c.log.Error("Failed to marshal genshin user", "err", err)
+		c.log.Error().Err(err).Msg("Failed to marshal genshin user")
 		return
 	}
 
-	if err := c.ext.Save(user.Uid, data); err != nil {
-		c.log.Error("Failed to save genshin user", "err", err)
+	if err = c.ext.Save(user.Uid, data); err != nil {
+		c.log.Error().Err(err).Msg("Failed to save genshin user")
 	}
 }
 
-func (c *externalCache) GetGenshinUser(uid string) *genshin.RawGenshinUser {
+func (c *externalCache) GetGenshinUser(uid string) *genshin.RawUser {
 	data, err := c.ext.Load(uid)
 	if err != nil {
-		c.log.Error("Failed to load genshin user", "err", err)
+		c.log.Error().Err(err).Msg("Failed to get genshin user")
 		return nil
 	}
 
-	var user genshin.RawGenshinUser
-	if err := json.Unmarshal(data, &user); err != nil {
-		c.log.Error("Failed to unmarshal genshin user", "err", err)
+	var user genshin.RawUser
+	if err = json.Unmarshal(data, &user); err != nil {
+		c.log.Error().Err(err).Msg("Failed to unmarshal genshin user")
 		return nil
 	}
 
 	return &user
 }
 
-func (c *externalCache) AddHonkaiUser(user *starrail.RawHonkaiUser) {
+func (c *externalCache) AddHSRUser(user *starrail.RawUser) {
 	data, err := json.Marshal(user)
 	if err != nil {
-		c.log.Error("Failed to marshal user", "err", err)
+		c.log.Error().Err(err).Msg("Failed to marshal hsr user")
 		return
 	}
 
-	if err := c.ext.Save(user.Uid, data); err != nil {
-		c.log.Error("Failed to save user", "err", err)
+	if err = c.ext.Save(user.Uid, data); err != nil {
+		c.log.Error().Err(err).Msg("Failed to save user")
 	}
 }
 
-func (c *externalCache) GetHonkaiUser(uid string) *starrail.RawHonkaiUser {
+func (c *externalCache) GetHsrUser(uid string) *starrail.RawUser {
 	data, err := c.ext.Load(uid)
 	if err != nil {
-		c.log.Error("Failed to load user", "err", err)
+		c.log.Error().Err(err).Msg("Failed to load user")
 		return nil
 	}
 
-	var user starrail.RawHonkaiUser
-	if err := json.Unmarshal(data, &user); err != nil {
-		c.log.Error("Failed to unmarshal user", "err", err)
+	var user starrail.RawUser
+	if err = json.Unmarshal(data, &user); err != nil {
+		c.log.Error().Err(err).Msg("Failed to marshal hsr user")
 		return nil
 	}
 

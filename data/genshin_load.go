@@ -3,6 +3,7 @@ package data
 import (
 	"encoding/json"
 	"errors"
+	"github.com/rs/zerolog"
 	"io"
 	"net/http"
 	"strconv"
@@ -13,7 +14,7 @@ import (
 
 const MATERIAL_URL = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/MaterialExcelConfigData.json"
 
-func newGenshin() (GenshinData, error) {
+func newGenshin(log zerolog.Logger) (GenshinData, error) {
 	m := &genshinData{}
 	cards, err := loadCards()
 	if err != nil {

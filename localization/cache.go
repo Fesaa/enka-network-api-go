@@ -3,9 +3,10 @@ package localization
 import (
 	"io"
 	"os"
+	"path/filepath"
 )
 
-type LocalizationCache interface {
+type Cache interface {
 	Load(s string) ([]byte, error)
 	Save(s string, data []byte) (error, bool)
 }
@@ -13,20 +14,21 @@ type LocalizationCache interface {
 type diskCache struct{}
 
 func (d *diskCache) Load(s string) ([]byte, error) {
-	return tryFromDisk(s)
+	return d.tryFromDisk(s)
 }
 
 func (d *diskCache) Save(s string, data []byte) (error, bool) {
-	return saveToDisk(s, data)
+	return d.saveToDisk(s, data)
 }
 
-func tryFromDisk(s string) ([]byte, error) {
+func (d *diskCache) tryFromDisk(s string) ([]byte, error) {
 	dir := os.Getenv("LOCALIZATION_DIR")
 	if dir == "" {
-		return nil, nil
+		dir = os.TempDir()
 	}
 
-	f, err := os.Open(dir + s)
+	cachePath := filepath.Join(dir, s)
+	f, err := os.Open(cachePath)
 	if err != nil {
 		return nil, err
 	}
@@ -39,13 +41,14 @@ func tryFromDisk(s string) ([]byte, error) {
 	return data, nil
 }
 
-func saveToDisk(s string, data []byte) (error, bool) {
+func (d *diskCache) saveToDisk(s string, data []byte) (error, bool) {
 	dir := os.Getenv("LOCALIZATION_DIR")
 	if dir == "" {
-		return nil, false
+		dir = os.TempDir()
 	}
 
-	f, err := os.Create(dir + s)
+	cachePath := filepath.Join(dir, s)
+	f, err := os.Create(cachePath)
 	if err != nil {
 		return err, false
 	}

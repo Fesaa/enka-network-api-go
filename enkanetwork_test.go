@@ -130,7 +130,7 @@ func TestFetchHonkaiUser(t *testing.T) {
 	wg.Add(1)
 
 	sr.Fetch(OWN_UID,
-		func(rhu *starrail.RawHonkaiUser) {
+		func(rhu *starrail.RawUser) {
 			user := starrail.UserFromRaw(rhu)
 
 			t.Logf("Found user %s with level %d", user.NickName, user.Level)

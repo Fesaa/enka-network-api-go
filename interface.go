@@ -21,8 +21,8 @@ type EnkaNetworkAPI interface {
 }
 
 type StarRailAPI interface {
-	Fetch(uid string, success utils.Consumer[*starrail.RawHonkaiUser], failure utils.Consumer[error])
-	FetchAndReturn(uid string) (*starrail.RawHonkaiUser, error)
+	Fetch(uid string, success utils.Consumer[*starrail.RawUser], failure utils.Consumer[error])
+	FetchAndReturn(uid string) (*starrail.RawUser, error)
 
 	CharacterData(userCharacter *starrail.UserCharacter) *starrail.CharacterData
 	CharacterDataById(uuid string) *starrail.CharacterData
@@ -38,8 +38,8 @@ type StarRailAPI interface {
 }
 
 type GenshinAPI interface {
-	Fetch(uid string, showCaseInfo bool, success utils.Consumer[*genshin.RawGenshinUser], failure utils.Consumer[error])
-	FetchAndReturn(uid string, showCaseInfo bool) (*genshin.RawGenshinUser, error)
+	Fetch(uid string, showCaseInfo bool, success utils.Consumer[*genshin.RawUser], failure utils.Consumer[error])
+	FetchAndReturn(uid string, showCaseInfo bool) (*genshin.RawUser, error)
 
 	CharacterData(userCharacter *genshin.UserCharacter) *genshin.CharacterData
 	CharacterDataById(uuid string) *genshin.CharacterData

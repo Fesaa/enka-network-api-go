@@ -3,8 +3,8 @@ package localization
 import (
 	"encoding/json"
 	"errors"
+	"github.com/rs/zerolog"
 	"io"
-	"log/slog"
 	"net/http"
 	"sync"
 )
@@ -19,35 +19,33 @@ var (
 	LoadStarRail = true
 )
 
-var localization *Localization = &Localization{
-	defaultKey:               ENGLISH,
-	key:                      ENGLISH,
-	cache:                    nil,
-	honkaiLocalizationCache:  map[LocalizationKey]LocalizationMap{},
-	genshinLocalizationCache: map[LocalizationKey]LocalizationMap{},
-	log:                      slog.Default(),
+var localization = &Localization{
+	defaultKey:   ENGLISH,
+	key:          ENGLISH,
+	cache:        nil,
+	hsrCache:     map[LocalizationKey]map[string]string{},
+	genshinCache: map[LocalizationKey]map[string]string{},
+	log:          zerolog.Nop(),
 }
 
 func Get() *Localization {
 	return localization
 }
 
-type LocalizationMap map[string]string
-
 type Localization struct {
 	defaultKey LocalizationKey
 	key        LocalizationKey
 
-	cache LocalizationCache
+	cache Cache
 
-	honkaiLocalizationCache  map[LocalizationKey]LocalizationMap
-	genshinLocalizationCache map[LocalizationKey]LocalizationMap
+	hsrCache     map[LocalizationKey]map[string]string
+	genshinCache map[LocalizationKey]map[string]string
 
-	log *slog.Logger
+	log zerolog.Logger
 }
 
-func Init(logger *slog.Logger, caches ...LocalizationCache) {
-	var cache LocalizationCache
+func Init(logger zerolog.Logger, caches ...Cache) {
+	var cache Cache
 	if len(caches) > 0 {
 		cache = caches[0]
 	} else {
@@ -58,10 +56,10 @@ func Init(logger *slog.Logger, caches ...LocalizationCache) {
 		defaultKey: ENGLISH,
 		cache:      cache,
 
-		honkaiLocalizationCache:  map[LocalizationKey]LocalizationMap{},
-		genshinLocalizationCache: map[LocalizationKey]LocalizationMap{},
+		hsrCache:     map[LocalizationKey]map[string]string{},
+		genshinCache: map[LocalizationKey]map[string]string{},
 
-		log: logger,
+		log: logger.With().Str("handler", "localization").Logger(),
 	}
 
 	l.key = l.defaultKey
@@ -76,7 +74,7 @@ func (l *Localization) loadLocalizations() {
 	if LoadStarRail {
 		wg.Add(1)
 		go func() {
-			l.loadHonkaiLocalization()
+			l.loadHsrLocalization()
 			wg.Add(-1)
 		}()
 	}
@@ -105,28 +103,28 @@ func SetLocalization(locale LocalizationKey, flushOld ...bool) {
 	localization.loadLocalizations()
 
 	if flush {
-		localization.log.Info("Deleting cached localization", "locale", locale)
-		delete(localization.honkaiLocalizationCache, locale)
-		delete(localization.genshinLocalizationCache, locale)
+		localization.log.Info().Any("locale", locale).Msg("Deleting cached localization")
+		delete(localization.hsrCache, locale)
+		delete(localization.genshinCache, locale)
 	}
 }
 
-func (l *Localization) fetchJson(s string, url string) (*LocalizationMap, error) {
+func (l *Localization) fetchJson(s string, url string) (*map[string]string, error) {
 	cacheKey := s + string(l.key)
 
 	data, err := l.cache.Load(cacheKey)
 	if data != nil {
-		l.log.Debug("Loaded from disk", "url", url)
+		l.log.Debug().Str("cacheKey", cacheKey).Str("url", url).Msg("Loaded from cache")
 		return unmarshal(data)
 	}
 
 	if err != nil {
-		l.log.Debug("Failed to load from disk", "url", url, "error", err)
+		l.log.Debug().Str("cacheKey", cacheKey).Str("url", url).Msg("Loaded from cache errored")
 	} else {
-		l.log.Debug("No data found on disk", "url", url)
+		l.log.Debug().Str("cacheKey", cacheKey).Str("url", url).Msg("no data in cache")
 	}
 
-	l.log.Info("Fetching localization from network", "url", url)
+	l.log.Info().Str("url", url).Msg("Fetching localization from network")
 	req, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -134,7 +132,7 @@ func (l *Localization) fetchJson(s string, url string) (*LocalizationMap, error)
 
 	defer req.Body.Close()
 	if req.StatusCode != 200 {
-		l.log.Debug("Returned a non 200 status code. Got ", "status_code", req.StatusCode)
+		l.log.Warn().Str("url", url).Int("status", req.StatusCode).Msg("Failed to fetch localization from network")
 		return nil, errors.New("enka-network-api-go: Non 200 status code returned: " + req.Status)
 	}
 
@@ -143,18 +141,17 @@ func (l *Localization) fetchJson(s string, url string) (*LocalizationMap, error)
 		return nil, err
 	}
 	defer func() {
-		l.log.Debug("Saving localization to disk", "url", url)
-		err, _ := l.cache.Save(cacheKey, data)
-		if err != nil {
-			l.log.Warn("Failed to save to disk", "url", url, "error", err)
+		l.log.Debug().Str("url", url).Msg("saving to cache")
+		if err, _ = l.cache.Save(cacheKey, data); err != nil {
+			l.log.Warn().Str("cacheKey", cacheKey).Str("url", url).Msg("Failed to save to cache")
 		}
 	}()
 
 	return unmarshal(data)
 }
 
-func unmarshal(data []byte) (*LocalizationMap, error) {
-	var localizationJson LocalizationMap
+func unmarshal(data []byte) (*map[string]string, error) {
+	var localizationJson map[string]string
 	err := json.Unmarshal(data, &localizationJson)
 	if err != nil {
 		return nil, err

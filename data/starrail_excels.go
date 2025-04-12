@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 	"github.com/Fesaa/enka-network-api-go/utils"
+	"github.com/rs/zerolog"
 	"io"
-	"log/slog"
 	"net/http"
 )
 
@@ -16,7 +16,7 @@ var (
 )
 
 type hsrExcels struct {
-	log *slog.Logger
+	log zerolog.Logger
 
 	skillTree      *utils.Map[string, map[starrail.SkillTreeAnchor]starrail.SkillTreeNode]
 	relicMainAffix []starrail.RelicMainAffixConfig
@@ -26,23 +26,16 @@ type hsrExcels struct {
 	multiPath      *utils.Map[string, *starrail.MultiplePathAvatarConfig]
 }
 
-func NewExcels(logs ...*slog.Logger) HSRExcels {
-	log := func() *slog.Logger {
-		if len(logs) > 0 {
-			return logs[0]
-		}
-		return slog.Default()
-	}()
-
+func NewExcels(log zerolog.Logger) HSRExcels {
 	return &hsrExcels{
-		log: log,
+		log: log.With().Str("module", "hsr_excels").Logger(),
 	}
 }
 
 func (e *hsrExcels) MultiplePathAvatarConfig(i string) (*starrail.MultiplePathAvatarConfig, bool) {
 	if e.multiPath == nil {
 		if err := e.parseMultiPath(); err != nil {
-			e.log.Error("Failed to parse multi path", "error", err)
+			e.log.Error().Err(err).Msg("Failed to parse multi path")
 			return nil, false
 		}
 	}
@@ -53,7 +46,7 @@ func (e *hsrExcels) MultiplePathAvatarConfig(i string) (*starrail.MultiplePathAv
 func (e *hsrExcels) SkillTree(id string) map[starrail.SkillTreeAnchor]starrail.SkillTreeNode {
 	if e.skillTree == nil {
 		if err := e.parseHSRSkillTree(); err != nil {
-			e.log.Error("Failed to parse HSRSkillTree", "error", err)
+			e.log.Error().Err(err).Msg("Failed to parse HSRSkillTree")
 			return nil
 		}
 	}
@@ -67,7 +60,7 @@ func (e *hsrExcels) SkillTree(id string) map[starrail.SkillTreeAnchor]starrail.S
 func (e *hsrExcels) RelicMainAffix() []starrail.RelicMainAffixConfig {
 	if e.relicMainAffix == nil {
 		if err := e.parseFromExcels("RelicMainAffixConfig", &e.relicMainAffix); err != nil {
-			e.log.Error("Failed to parse RelicMainAffixConfig", "error", err)
+			e.log.Error().Err(err).Msg("Failed to parse RelicMainAffixConfig")
 			return nil
 		}
 	}
@@ -78,7 +71,7 @@ func (e *hsrExcels) RelicMainAffix() []starrail.RelicMainAffixConfig {
 func (e *hsrExcels) RelicSubAffixConfig() []starrail.RelicSubAffixConfig {
 	if e.relicSubAffix == nil {
 		if err := e.parseFromExcels("RelicSubAffixConfig", &e.relicSubAffix); err != nil {
-			e.log.Error("Failed to parse RelicMainAffixConfig", "error", err)
+			e.log.Error().Err(err).Msg("Failed to parse RelicSubAffixConfig")
 			return nil
 		}
 	}
@@ -89,7 +82,7 @@ func (e *hsrExcels) RelicSubAffixConfig() []starrail.RelicSubAffixConfig {
 func (e *hsrExcels) RelicSetConfig(i string) (*starrail.RelicSetConfig, bool) {
 	if e.setConfig == nil {
 		if err := e.parseRelicSetConfig(); err != nil {
-			e.log.Error("Failed to parse RelicSetConfig", "error", err)
+			e.log.Error().Err(err).Msg("Failed to parse RelicSetConfig")
 			return nil, false
 		}
 	}
@@ -100,7 +93,7 @@ func (e *hsrExcels) RelicSetConfig(i string) (*starrail.RelicSetConfig, bool) {
 func (e *hsrExcels) RelicConfig(i string) (*starrail.RelicConfig, bool) {
 	if e.relicConfig == nil {
 		if err := e.parseRelicConfig(); err != nil {
-			e.log.Error("Failed to parse RelicConfig", "error", err)
+			e.log.Error().Err(err).Msg("Failed to parse RelicConfig")
 			return nil, false
 		}
 	}

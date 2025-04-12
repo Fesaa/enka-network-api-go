@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/rs/zerolog"
 	"io"
-	"log/slog"
 	"strconv"
 	"strings"
 
@@ -17,23 +17,23 @@ import (
 type starRailAPIImpl struct {
 	api  EnkaNetworkAPI
 	data data.StarRailData
-	log  *slog.Logger
+	log  zerolog.Logger
 }
 
-func newStarRail(api EnkaNetworkAPI, log *slog.Logger) StarRailAPI {
+func newStarRail(api EnkaNetworkAPI, log zerolog.Logger) StarRailAPI {
 	return &starRailAPIImpl{
 		api:  api,
 		data: api.Data().StarRailData(),
-		log:  log,
+		log:  log.With().Str("handler", "hsr-api").Logger(),
 	}
 }
 
-func (sr *starRailAPIImpl) Fetch(uid string, success utils.Consumer[*starrail.RawHonkaiUser], failure utils.Consumer[error]) {
-	go func(uid string, success func(*starrail.RawHonkaiUser), failure func(error)) {
+func (sr *starRailAPIImpl) Fetch(uid string, success utils.Consumer[*starrail.RawUser], failure utils.Consumer[error]) {
+	go func(uid string, success func(*starrail.RawUser), failure func(error)) {
 		user, err := sr.FetchAndReturn(uid)
 		if err != nil {
 			if failure == nil {
-				sr.log.Warn("Provided failure call is nil, ignoring...")
+				sr.log.Debug().Msg("Provided failure call is nil, ignoring...")
 				return
 			}
 
@@ -41,7 +41,7 @@ func (sr *starRailAPIImpl) Fetch(uid string, success utils.Consumer[*starrail.Ra
 			return
 		}
 		if success == nil {
-			sr.log.Warn("Provided success call is nil, ignoring...")
+			sr.log.Debug().Msg("Provided success call is nil, ignoring...")
 			return
 		}
 
@@ -49,15 +49,15 @@ func (sr *starRailAPIImpl) Fetch(uid string, success utils.Consumer[*starrail.Ra
 	}(uid, success, failure)
 }
 
-func (sr *starRailAPIImpl) FetchAndReturn(uid string) (*starrail.RawHonkaiUser, error) {
-	sr.log.Debug("Fetching Honkai User with UID ", "uid", uid)
+func (sr *starRailAPIImpl) FetchAndReturn(uid string) (*starrail.RawUser, error) {
+	sr.log.Debug().Str("uid", uid).Msg("Fetching Honkai User with UID ")
 	if _, err := strconv.Atoi(uid); err != nil || len(uid) != 9 {
 		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 characters long")
 	}
 
-	cachedUser := sr.api.Cache().GetHonkaiUser(uid)
+	cachedUser := sr.api.Cache().GetHsrUser(uid)
 	if cachedUser != nil {
-		sr.log.Debug("Returning from cache...", "uid", uid)
+		sr.log.Debug().Str("uid", uid).Msg("Returning from cache...")
 		return cachedUser, nil
 	}
 
@@ -72,13 +72,13 @@ func (sr *starRailAPIImpl) FetchAndReturn(uid string) (*starrail.RawHonkaiUser, 
 	}
 
 	if req.StatusCode != 200 {
-		sr.log.Debug("Returned a non 200 status code. Got ", "status_code", req.StatusCode)
+		sr.log.Debug().Int("status_code", req.StatusCode).Msg("Returned a non 200 status code. Got ")
 
 		var e string
 		var bytes []byte
 		bytes, err = io.ReadAll(req.Body)
 		if err != nil {
-			sr.log.Error("Failed to read body:", "err", err.Error())
+			sr.log.Error().Err(err).Msg("Failed to read body")
 			e = "Unknown: Failed to read body"
 		} else {
 			e = string(bytes)
@@ -91,13 +91,13 @@ func (sr *starRailAPIImpl) FetchAndReturn(uid string) (*starrail.RawHonkaiUser, 
 		return nil, err
 	}
 
-	var user starrail.RawHonkaiUser
+	var user starrail.RawUser
 	err = json.Unmarshal(bytes, &user)
 	if err != nil {
 		return nil, err
 	}
 
-	sr.api.Cache().AddHonkaiUser(&user)
+	sr.api.Cache().AddHSRUser(&user)
 	return &user, nil
 }
 

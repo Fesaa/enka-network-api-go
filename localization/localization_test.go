@@ -1,17 +1,17 @@
 package localization
 
 import (
-	"log/slog"
+	"github.com/rs/zerolog"
 	"testing"
 )
 
 func TestLocalization(t *testing.T) {
-	Init(slog.Default())
+	Init(zerolog.Nop())
 	l := Get()
-	if len(l.genshinLocalizationCache) == 0 {
+	if len(l.genshinCache) == 0 {
 		t.Errorf("Genshin localization cache is empty")
 	}
-	if len(l.honkaiLocalizationCache) == 0 {
+	if len(l.hsrCache) == 0 {
 		t.Errorf("Honkai localization cache is empty")
 	}
 }

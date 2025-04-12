@@ -2,12 +2,11 @@ package enkanetworkapigo
 
 import (
 	"errors"
-	"log/slog"
-	"net/http"
-
 	"github.com/Fesaa/enka-network-api-go/cache"
 	"github.com/Fesaa/enka-network-api-go/data"
 	"github.com/Fesaa/enka-network-api-go/localization"
+	"github.com/rs/zerolog"
+	"net/http"
 )
 
 const BASE_URL = "https://enka.network/api/"
@@ -25,7 +24,7 @@ type enkaNetworkAPI struct {
 
 	http *http.Client
 
-	log *slog.Logger
+	log *zerolog.Logger
 
 	starRailAPI StarRailAPI
 	genshinApi  GenshinAPI
@@ -49,6 +48,12 @@ func WithCustomUserAgent(userAgent string) Option {
 	}
 }
 
+func WithLogger(logger zerolog.Logger) Option {
+	return func(e *enkaNetworkAPI) {
+		e.log = &logger
+	}
+}
+
 // New creates a new EnkaNetworkAPI instance
 // Will also initialize the cache and localization
 //
@@ -65,11 +70,11 @@ func New(opts ...Option) (EnkaNetworkAPI, error) {
 	}
 
 	if api.log == nil {
-		api.log = slog.Default()
+		api.log = logger()
 	}
 
 	if api.cache == nil {
-		api.cache = cache.Default(api.log)
+		api.cache = cache.Default(*api.log)
 	}
 
 	if api.http == nil {
@@ -79,17 +84,17 @@ func New(opts ...Option) (EnkaNetworkAPI, error) {
 		}}
 	}
 
-	localization.Init(api.log)
+	localization.Init(*api.log)
 
-	d, err := data.New(api.log)
+	d, err := data.New(*api.log)
 	if err != nil {
 		return nil, err
 	}
 
 	api.data = d
 
-	api.starRailAPI = newStarRail(api, api.log)
-	api.genshinApi = newGenshinAPI(api, api.log)
+	api.starRailAPI = newStarRail(api, *api.log)
+	api.genshinApi = newGenshinAPI(api, *api.log)
 	return api, nil
 }
 

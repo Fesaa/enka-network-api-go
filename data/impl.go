@@ -1,17 +1,14 @@
 package data
 
-import (
-	"log/slog"
-)
+import "github.com/rs/zerolog"
 
-func New(log *slog.Logger) (EnkaData, error) {
-	return NewMemoryCache(log)
+func New(log zerolog.Logger) (EnkaData, error) {
+	return newMemoryCache(log)
 }
 
 type memoryCache struct {
 	starRailData StarRailData
 	genshinData  GenshinData
-	log          *slog.Logger
 }
 
 func (m *memoryCache) StarRailData() StarRailData {
@@ -22,13 +19,13 @@ func (m *memoryCache) GenshinData() GenshinData {
 	return m.genshinData
 }
 
-func NewMemoryCache(logger *slog.Logger) (*memoryCache, error) {
-	sr, err := newStarRail()
+func newMemoryCache(log zerolog.Logger) (*memoryCache, error) {
+	sr, err := newStarRail(log)
 	if err != nil {
 		return nil, err
 	}
 
-	g, err := newGenshin()
+	g, err := newGenshin(log)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +33,6 @@ func NewMemoryCache(logger *slog.Logger) (*memoryCache, error) {
 	c := &memoryCache{
 		starRailData: sr,
 		genshinData:  g,
-		log:          logger,
 	}
 	return c, nil
 }

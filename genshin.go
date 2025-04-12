@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/rs/zerolog"
 	"io"
-	"log/slog"
 	"strconv"
 	"strings"
 
@@ -17,23 +17,23 @@ import (
 type genshinAPIImpl struct {
 	api  EnkaNetworkAPI
 	data data.GenshinData
-	log  *slog.Logger
+	log  zerolog.Logger
 }
 
-func newGenshinAPI(api EnkaNetworkAPI, log *slog.Logger) GenshinAPI {
+func newGenshinAPI(api EnkaNetworkAPI, log zerolog.Logger) GenshinAPI {
 	return &genshinAPIImpl{
 		api:  api,
 		data: api.Data().GenshinData(),
-		log:  log,
+		log:  log.With().Str("handler", "genshin-api").Logger(),
 	}
 }
 
-func (g *genshinAPIImpl) Fetch(uid string, showCaseInfo bool, success utils.Consumer[*genshin.RawGenshinUser], failure utils.Consumer[error]) {
-	go func(uid string, showCaseInfo bool, success func(*genshin.RawGenshinUser), failure func(error)) {
+func (g *genshinAPIImpl) Fetch(uid string, showCaseInfo bool, success utils.Consumer[*genshin.RawUser], failure utils.Consumer[error]) {
+	go func(uid string, showCaseInfo bool, success func(*genshin.RawUser), failure func(error)) {
 		user, err := g.FetchAndReturn(uid, showCaseInfo)
 		if err != nil {
 			if failure == nil {
-				g.log.Warn("Provided failure call is nil, ignoring...")
+				g.log.Warn().Msg("Provided failure call is nil, ignoring...")
 				return
 			}
 
@@ -41,7 +41,7 @@ func (g *genshinAPIImpl) Fetch(uid string, showCaseInfo bool, success utils.Cons
 			return
 		}
 		if success == nil {
-			g.log.Warn("Provided success call is nil, ignoring...")
+			g.log.Warn().Msg("Provided success call is nil, ignoring...")
 			return
 		}
 
@@ -49,15 +49,15 @@ func (g *genshinAPIImpl) Fetch(uid string, showCaseInfo bool, success utils.Cons
 	}(uid, showCaseInfo, success, failure)
 }
 
-func (g *genshinAPIImpl) FetchAndReturn(uid string, showCaseInfo bool) (*genshin.RawGenshinUser, error) {
-	g.log.Debug("Fetching Genshin user with", "uid", uid)
+func (g *genshinAPIImpl) FetchAndReturn(uid string, showCaseInfo bool) (*genshin.RawUser, error) {
+	g.log.Debug().Str("uid", uid).Msg("Fetching Genshin user with")
 	if _, err := strconv.Atoi(uid); err != nil || (len(uid) != 9 && len(uid) != 10) {
 		return nil, errors.New("enka-network-api-go: UID must be a number, and 9 or 10 characters long")
 	}
 
 	cachedUser := g.api.Cache().GetGenshinUser(uid)
 	if cachedUser != nil {
-		g.log.Debug("Returning from cache...", "uid", uid)
+		g.log.Debug().Str("uid", uid).Msg("Returning from cache...")
 		return cachedUser, nil
 	}
 
@@ -77,13 +77,13 @@ func (g *genshinAPIImpl) FetchAndReturn(uid string, showCaseInfo bool) (*genshin
 	}
 
 	if req.StatusCode != 200 {
-		g.log.Debug("Returned a non 200 status code. Got ", "status_code", req.StatusCode)
+		g.log.Debug().Int("status_code", req.StatusCode).Msg("Returned a non 200 status code. Got ")
 
 		var e string
 		var bytes []byte
 		bytes, err = io.ReadAll(req.Body)
 		if err != nil {
-			g.log.Error("Failed to read body:", "error", err.Error())
+			g.log.Error().Err(err).Msg("Failed to read body:")
 			e = "Unknown: Failed to read body"
 		} else {
 			e = string(bytes)
@@ -96,7 +96,7 @@ func (g *genshinAPIImpl) FetchAndReturn(uid string, showCaseInfo bool) (*genshin
 		return nil, err
 	}
 
-	var user genshin.RawGenshinUser
+	var user genshin.RawUser
 	err = json.Unmarshal(bytes, &user)
 	if err != nil {
 		return nil, err

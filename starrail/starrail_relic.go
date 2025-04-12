@@ -71,7 +71,7 @@ func (relic *Relic) GetHash() string {
 
 // Name returns the localized name or hash
 func (relic *Relic) Name() string {
-	return localization.GetHonkaiLocaleOrHash(relic)
+	return localization.GetHsrLocaleOrHash(relic)
 }
 
 type RelicStat struct {

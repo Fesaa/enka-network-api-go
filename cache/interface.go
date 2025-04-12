@@ -6,9 +6,9 @@ import (
 )
 
 type EnkaHttpCache interface {
-	AddGenshinUser(*genshin.RawGenshinUser)
-	GetGenshinUser(string) *genshin.RawGenshinUser
+	AddGenshinUser(*genshin.RawUser)
+	GetGenshinUser(string) *genshin.RawUser
 
-	AddHonkaiUser(*starrail.RawHonkaiUser)
-	GetHonkaiUser(string) *starrail.RawHonkaiUser
+	AddHSRUser(*starrail.RawUser)
+	GetHsrUser(string) *starrail.RawUser
 }

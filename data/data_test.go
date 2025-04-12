@@ -2,7 +2,7 @@ package data
 
 import (
 	"github.com/Fesaa/enka-network-api-go/starrail"
-	"log/slog"
+	"github.com/rs/zerolog"
 	"testing"
 )
 
@@ -10,7 +10,7 @@ var c EnkaData
 
 func TestCorrectLoading(t *testing.T) {
 	if c == nil {
-		m, e := New(slog.Default())
+		m, e := New(zerolog.Nop())
 		if e != nil {
 			t.Error(e)
 			t.FailNow()
@@ -39,7 +39,7 @@ func TestCorrectLoading(t *testing.T) {
 
 func TestRelicExcels(t *testing.T) {
 	if c == nil {
-		m, e := New(slog.Default())
+		m, e := New(zerolog.Nop())
 		if e != nil {
 			t.Error(e)
 			t.FailNow()

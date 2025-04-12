@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"github.com/Fesaa/enka-network-api-go/starrail"
 	"github.com/Fesaa/enka-network-api-go/utils"
+	"github.com/rs/zerolog"
 )
 
-func newStarRail() (StarRailData, error) {
+func newStarRail(log zerolog.Logger) (StarRailData, error) {
 	srData := &starRailData{
-		excels: NewExcels(),
+		excels: NewExcels(log),
 	}
 
 	var starRailCharacterData map[string]*starrail.CharacterData

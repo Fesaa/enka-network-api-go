@@ -1,13 +1,13 @@
 package genshin
 
-type RawGenshinUser struct {
+type RawUser struct {
 	PlayerInfo     RawPlayerInfo   `json:"playerInfo"`
 	AvatarInfoList []RawAvatarInfo `json:"avatarInfoList"`
 	Ttl            int             `json:"ttl"`
 	Uid            string          `json:"uid"`
 }
 
-func (user *RawGenshinUser) GetTtl() int {
+func (user *RawUser) GetTtl() int {
 	return user.Ttl
 }
 

@@ -1,7 +1,7 @@
 package cache
 
 import (
-	"log/slog"
+	"github.com/rs/zerolog"
 	"time"
 
 	"github.com/Fesaa/enka-network-api-go/genshin"
@@ -9,61 +9,61 @@ import (
 	"github.com/Fesaa/enka-network-api-go/utils"
 )
 
-func Default(log *slog.Logger) EnkaHttpCache {
+func Default(log zerolog.Logger) EnkaHttpCache {
 	return &httpMemoryCache{
-		HonkaiUsers:  utils.NewMap[string, CachedData[*starrail.RawHonkaiUser]](),
-		GenshinUsers: utils.NewMap[string, CachedData[*genshin.RawGenshinUser]](),
-		log:          log,
+		hsrUsers:     utils.NewMap[string, CachedData[*starrail.RawUser]](),
+		GenshinUsers: utils.NewMap[string, CachedData[*genshin.RawUser]](),
+		log:          log.With().Str("handler", "http-cache").Logger(),
 	}
 }
 
 type httpMemoryCache struct {
-	HonkaiUsers  *utils.Map[string, CachedData[*starrail.RawHonkaiUser]]
-	GenshinUsers *utils.Map[string, CachedData[*genshin.RawGenshinUser]]
+	hsrUsers     *utils.Map[string, CachedData[*starrail.RawUser]]
+	GenshinUsers *utils.Map[string, CachedData[*genshin.RawUser]]
 
-	log *slog.Logger
+	log zerolog.Logger
 }
 
-func (m *httpMemoryCache) AddGenshinUser(user *genshin.RawGenshinUser) {
-	m.GenshinUsers.Set(user.Uid, NewCachedData[*genshin.RawGenshinUser](user))
+func (http *httpMemoryCache) AddGenshinUser(user *genshin.RawUser) {
+	http.GenshinUsers.Set(user.Uid, NewCachedData[*genshin.RawUser](user))
 }
 
-func (m *httpMemoryCache) GetGenshinUser(uid string) *genshin.RawGenshinUser {
-	if cache, ok := m.GenshinUsers.Get(uid); ok {
+func (http *httpMemoryCache) GetGenshinUser(uid string) *genshin.RawUser {
+	if cache, ok := http.GenshinUsers.Get(uid); ok {
 		if !cache.IsExpired() {
 			return cache.GetData()
 		}
-		m.GenshinUsers.Delete(uid)
+		http.GenshinUsers.Delete(uid)
 		return nil
 	}
 	return nil
 }
 
-func (m *httpMemoryCache) GetHonkaiUser(uid string) *starrail.RawHonkaiUser {
-	if cache, ok := m.HonkaiUsers.Get(uid); ok {
+func (http *httpMemoryCache) GetHsrUser(uid string) *starrail.RawUser {
+	if cache, ok := http.hsrUsers.Get(uid); ok {
 		if !cache.IsExpired() {
 			return cache.GetData()
 		}
-		m.HonkaiUsers.Delete(uid)
+		http.hsrUsers.Delete(uid)
 		return nil
 	}
 	return nil
 }
 
-func (m *httpMemoryCache) AddHonkaiUser(user *starrail.RawHonkaiUser) {
-	m.HonkaiUsers.Set(user.Uid, NewCachedData[*starrail.RawHonkaiUser](user))
+func (http *httpMemoryCache) AddHSRUser(user *starrail.RawUser) {
+	http.hsrUsers.Set(user.Uid, NewCachedData[*starrail.RawUser](user))
 }
 
 func (http *httpMemoryCache) cleaner(d time.Duration) {
 	for range time.Tick(d) {
-		http.log.Debug(" (Honkai) Cleaning cache")
-		http.HonkaiUsers.ForEachModifySafe(func(key string, value CachedData[*starrail.RawHonkaiUser]) {
+		http.log.Debug().Str("game", "hsr").Msg("cleaning hsr cache")
+		http.hsrUsers.ForEachModifySafe(func(key string, value CachedData[*starrail.RawUser]) {
 			if value.IsExpired() {
-				http.HonkaiUsers.Delete(key)
+				http.hsrUsers.Delete(key)
 			}
 		})
-		http.log.Debug(" (Genshin) Cleaning cache")
-		http.GenshinUsers.ForEachModifySafe(func(key string, value CachedData[*genshin.RawGenshinUser]) {
+		http.log.Debug().Str("game", "genshin").Msg("cleaning genshin cache")
+		http.GenshinUsers.ForEachModifySafe(func(key string, value CachedData[*genshin.RawUser]) {
 			if value.IsExpired() {
 				http.GenshinUsers.Delete(key)
 			}

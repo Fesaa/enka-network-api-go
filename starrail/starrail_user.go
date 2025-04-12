@@ -28,7 +28,7 @@ type User struct {
 	Characters        []UserCharacter
 }
 
-func UserFromRaw(rawUser *RawHonkaiUser) *User {
+func UserFromRaw(rawUser *RawUser) *User {
 	var detailInfo RawDetailInfo = rawUser.DetailInfo
 	var recordInfo RawRecordInfo = detailInfo.RecordInfo
 

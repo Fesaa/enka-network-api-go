@@ -22,7 +22,7 @@ func (lightCone *LightCone) GetHash() string {
 }
 
 func (lightCone *LightCone) Name() string {
-	return localization.GetHonkaiLocaleOrHash(lightCone)
+	return localization.GetHsrLocaleOrHash(lightCone)
 }
 
 type LightConeStat struct {

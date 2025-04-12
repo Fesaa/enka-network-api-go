@@ -46,12 +46,12 @@ func PathFromRaw(rawPath string) string {
 
 // Name returns the localized AvatarName or Hash if not found
 func (d *CharacterData) Name() string {
-	return localization.GetHonkaiLocaleOrHash(&d.AvatarName)
+	return localization.GetHsrLocaleOrHash(&d.AvatarName)
 }
 
 // FullName returns the localized AvatarFullName or Hash if not found
 //
 // For some reason always returns the Hash. FullName isn't present in the GitHub file.
 func (d *CharacterData) FullName() string {
-	return localization.GetHonkaiLocaleOrHash(&d.AvatarFullName)
+	return localization.GetHsrLocaleOrHash(&d.AvatarFullName)
 }
