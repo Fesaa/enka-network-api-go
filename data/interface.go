@@ -28,6 +28,7 @@ type HSRExcels interface {
 	RelicSetConfig(string) (*starrail.RelicSetConfig, bool)
 	RelicConfig(string) (*starrail.RelicConfig, bool)
 	SkillTree(string) map[starrail.SkillTreeAnchor]starrail.SkillTreeNode
+	MultiplePathAvatarConfig(int) (*starrail.MultiplePathAvatarConfig, bool)
 }
 
 type GenshinData interface {

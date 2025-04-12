@@ -23,6 +23,7 @@ type hsrExcels struct {
 	relicSubAffix  []starrail.RelicSubAffixConfig
 	setConfig      *utils.Map[string, *starrail.RelicSetConfig]
 	relicConfig    *utils.Map[string, *starrail.RelicConfig]
+	multiPath      *utils.Map[int, *starrail.MultiplePathAvatarConfig]
 }
 
 func NewExcels(logs ...*slog.Logger) HSRExcels {
@@ -36,6 +37,17 @@ func NewExcels(logs ...*slog.Logger) HSRExcels {
 	return &hsrExcels{
 		log: log,
 	}
+}
+
+func (e *hsrExcels) MultiplePathAvatarConfig(i int) (*starrail.MultiplePathAvatarConfig, bool) {
+	if e.multiPath == nil {
+		if err := e.parseMultiPath(); err != nil {
+			e.log.Error("Failed to parse multi path", "error", err)
+			return nil, false
+		}
+	}
+
+	return e.multiPath.Get(i)
 }
 
 func (e *hsrExcels) SkillTree(id string) map[starrail.SkillTreeAnchor]starrail.SkillTreeNode {
@@ -94,6 +106,21 @@ func (e *hsrExcels) RelicConfig(i string) (*starrail.RelicConfig, bool) {
 	}
 
 	return e.relicConfig.Get(i)
+}
+
+func (e *hsrExcels) parseMultiPath() error {
+	var slice []starrail.MultiplePathAvatarConfig
+	if err := e.parseFromExcels("MultiplePathAvatarConfig", &slice); err != nil {
+		return err
+	}
+
+	m := make(map[int]*starrail.MultiplePathAvatarConfig, len(slice))
+	for _, v := range slice {
+		m[v.AvatarID] = &v
+	}
+
+	e.multiPath = utils.FromMap(m)
+	return nil
 }
 
 func (e *hsrExcels) parseRelicSetConfig() error {
