@@ -1,14 +1,12 @@
 package data
 
 import (
+	"github.com/Fesaa/enka-network-api-go/starrail"
 	"log/slog"
 	"testing"
-
-	"github.com/Fesaa/enka-network-api-go/localization"
 )
 
 var c EnkaData
-var l *localization.Localization
 
 func TestCorrectLoading(t *testing.T) {
 	if c == nil {
@@ -20,11 +18,6 @@ func TestCorrectLoading(t *testing.T) {
 		c = m
 	}
 
-	if l == nil {
-		localization.Init(slog.Default())
-		l = localization.Get()
-	}
-
 	//Jingliu
 	d := c.StarRailData().CharacterData("1212")
 	if d == nil {
@@ -32,13 +25,36 @@ func TestCorrectLoading(t *testing.T) {
 		t.FailNow()
 	}
 
-	if d.Name() != "Jingliu" {
-		t.Errorf("Expected Jingliu got %s", d.Name())
+	if d.Name() != "940795027444042330" {
+		t.Errorf("Expected Jingliu(940795027444042330) got %s", d.Name())
 		t.FailNow()
 	}
 
 	if d.Path != "Destruction" {
 		t.Errorf("Expected Destruction got %s", d.Path)
+		t.FailNow()
+	}
+
+	// Castorice
+	skillTree := c.StarRailData().SkillTree("1407")
+
+	if skillTree[starrail.AnchorBasic].PointID != 1407001 {
+		t.Errorf("Expected Basic(1407001) got %d", skillTree[starrail.AnchorBasic].PointID)
+		t.FailNow()
+	}
+
+	if skillTree[starrail.AnchorTalent].PointID != 1407004 {
+		t.Errorf("Expected Talent(1407004) got %d", skillTree[starrail.AnchorTalent].PointID)
+		t.FailNow()
+	}
+
+	if skillTree[starrail.AnchorMemoTalent].PointID != 1407302 {
+		t.Errorf("Expected MemoTalent(1407302) got %d", skillTree[starrail.AnchorMemoTalent].PointID)
+		t.FailNow()
+	}
+
+	if skillTree[starrail.AnchorMajor3].PointID != 1407103 {
+		t.Errorf("Expected Major3(1407103) got %d", skillTree[starrail.AnchorMajor3].PointID)
 		t.FailNow()
 	}
 

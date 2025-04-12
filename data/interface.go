@@ -16,6 +16,7 @@ type StarRailData interface {
 	AvatarKey(string) string
 	RelicData(string) *starrail.RelicData
 	LightConeData(string) *starrail.LightConeData
+	SkillTree(string) map[starrail.SkillTreeAnchor]starrail.SkillTreeNode
 }
 
 type GenshinData interface {

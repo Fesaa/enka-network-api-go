@@ -19,7 +19,14 @@ var (
 	LoadStarRail = true
 )
 
-var localization *Localization
+var localization *Localization = &Localization{
+	defaultKey:               ENGLISH,
+	key:                      ENGLISH,
+	cache:                    nil,
+	honkaiLocalizationCache:  map[LocalizationKey]LocalizationMap{},
+	genshinLocalizationCache: map[LocalizationKey]LocalizationMap{},
+	log:                      slog.Default(),
+}
 
 func Get() *Localization {
 	return localization
