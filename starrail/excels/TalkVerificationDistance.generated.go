@@ -45,6 +45,8 @@ func (a *TalkVerificationDistanceAccessor) Raw() ([]TalkVerificationDistance, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TalkVerificationDistanceAccessor.LoadData to preload everything
 func (a *TalkVerificationDistanceAccessor) GroupData() {
+	a._dataDistance = map[float64]TalkVerificationDistance{}
+	a._dataID = map[float64]TalkVerificationDistance{}
 	for _, d := range a._data {
 		a._dataDistance[d.Distance] = d
 		a._dataID[d.ID] = d

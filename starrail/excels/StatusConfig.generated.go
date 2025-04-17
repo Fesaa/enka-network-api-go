@@ -55,6 +55,8 @@ func (a *StatusConfigAccessor) Raw() ([]StatusConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StatusConfigAccessor.LoadData to preload everything
 func (a *StatusConfigAccessor) GroupData() {
+	a._dataModifierName = map[string]StatusConfig{}
+	a._dataStatusID = map[float64]StatusConfig{}
 	for _, d := range a._data {
 		a._dataModifierName[d.ModifierName] = d
 		a._dataStatusID[d.StatusID] = d

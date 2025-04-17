@@ -61,6 +61,10 @@ func (a *RogueDLCAeonCabinetAccessor) Raw() ([]RogueDLCAeonCabinet, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCAeonCabinetAccessor.LoadData to preload everything
 func (a *RogueDLCAeonCabinetAccessor) GroupData() {
+	a._dataCabinetID = map[float64]RogueDLCAeonCabinet{}
+	a._dataCabinetIcon = map[string]RogueDLCAeonCabinet{}
+	a._dataQuestID = map[float64]RogueDLCAeonCabinet{}
+	a._dataSort = map[float64]RogueDLCAeonCabinet{}
 	for _, d := range a._data {
 		a._dataCabinetID[d.CabinetID] = d
 		a._dataCabinetIcon[d.CabinetIcon] = d

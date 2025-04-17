@@ -63,6 +63,7 @@ func (a *AetherDivideSpiritSkillAccessor) Raw() ([]AetherDivideSpiritSkill, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideSpiritSkillAccessor.LoadData to preload everything
 func (a *AetherDivideSpiritSkillAccessor) GroupData() {
+	a._dataSkillID = map[float64]AetherDivideSpiritSkill{}
 	for _, d := range a._data {
 		a._dataSkillID[d.SkillID] = d
 	}

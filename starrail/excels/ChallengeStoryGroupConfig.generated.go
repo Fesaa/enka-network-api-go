@@ -55,6 +55,8 @@ func (a *ChallengeStoryGroupConfigAccessor) Raw() ([]ChallengeStoryGroupConfig, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeStoryGroupConfigAccessor.LoadData to preload everything
 func (a *ChallengeStoryGroupConfigAccessor) GroupData() {
+	a._dataGroupID = map[float64]ChallengeStoryGroupConfig{}
+	a._dataScheduleDataID = map[float64]ChallengeStoryGroupConfig{}
 	for _, d := range a._data {
 		a._dataGroupID[d.GroupID] = d
 		a._dataScheduleDataID[d.ScheduleDataID] = d

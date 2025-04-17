@@ -49,6 +49,7 @@ func (a *RogueEscapeLaserAccessor) Raw() ([]RogueEscapeLaser, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueEscapeLaserAccessor.LoadData to preload everything
 func (a *RogueEscapeLaserAccessor) GroupData() {
+	a._dataParamGroupID = map[float64]RogueEscapeLaser{}
 	for _, d := range a._data {
 		a._dataParamGroupID[d.ParamGroupID] = d
 	}

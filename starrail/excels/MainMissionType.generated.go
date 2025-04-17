@@ -62,6 +62,11 @@ func (a *MainMissionTypeAccessor) Raw() ([]MainMissionType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MainMissionTypeAccessor.LoadData to preload everything
 func (a *MainMissionTypeAccessor) GroupData() {
+	a._dataTypeChapterColor = map[string]MainMissionType{}
+	a._dataTypeColor = map[string]MainMissionType{}
+	a._dataTypeIcon = map[string]MainMissionType{}
+	a._dataTypeIconMini = map[string]MainMissionType{}
+	a._dataTypePriority = map[float64]MainMissionType{}
 	for _, d := range a._data {
 		a._dataTypeChapterColor[d.TypeChapterColor] = d
 		a._dataTypeColor[d.TypeColor] = d

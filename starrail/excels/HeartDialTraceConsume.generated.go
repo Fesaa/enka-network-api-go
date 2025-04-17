@@ -52,6 +52,7 @@ func (a *HeartDialTraceConsumeAccessor) Raw() ([]HeartDialTraceConsume, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeartDialTraceConsumeAccessor.LoadData to preload everything
 func (a *HeartDialTraceConsumeAccessor) GroupData() {
+	a._dataHeartDialTraceID = map[float64]HeartDialTraceConsume{}
 	for _, d := range a._data {
 		a._dataHeartDialTraceID[d.HeartDialTraceID] = d
 	}

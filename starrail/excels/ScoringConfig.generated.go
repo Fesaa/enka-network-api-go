@@ -47,6 +47,7 @@ func (a *ScoringConfigAccessor) Raw() ([]ScoringConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ScoringConfigAccessor.LoadData to preload everything
 func (a *ScoringConfigAccessor) GroupData() {
+	a._dataScoringID = map[float64]ScoringConfig{}
 	for _, d := range a._data {
 		a._dataScoringID[d.ScoringID] = d
 	}

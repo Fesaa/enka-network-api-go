@@ -44,6 +44,7 @@ func (a *StrongChallengeBuffConfigAccessor) Raw() ([]StrongChallengeBuffConfig, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StrongChallengeBuffConfigAccessor.LoadData to preload everything
 func (a *StrongChallengeBuffConfigAccessor) GroupData() {
+	a._dataStrongChallengeBuffID = map[float64]StrongChallengeBuffConfig{}
 	for _, d := range a._data {
 		a._dataStrongChallengeBuffID[d.StrongChallengeBuffID] = d
 	}

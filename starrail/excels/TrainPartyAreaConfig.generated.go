@@ -59,6 +59,10 @@ func (a *TrainPartyAreaConfigAccessor) Raw() ([]TrainPartyAreaConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyAreaConfigAccessor.LoadData to preload everything
 func (a *TrainPartyAreaConfigAccessor) GroupData() {
+	a._dataFirstStep = map[float64]TrainPartyAreaConfig{}
+	a._dataID = map[float64]TrainPartyAreaConfig{}
+	a._dataIconPath = map[string]TrainPartyAreaConfig{}
+	a._dataSort = map[float64]TrainPartyAreaConfig{}
 	for _, d := range a._data {
 		a._dataFirstStep[d.FirstStep] = d
 		a._dataID[d.ID] = d

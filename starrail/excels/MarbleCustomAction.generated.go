@@ -46,6 +46,8 @@ func (a *MarbleCustomActionAccessor) Raw() ([]MarbleCustomAction, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarbleCustomActionAccessor.LoadData to preload everything
 func (a *MarbleCustomActionAccessor) GroupData() {
+	a._dataID = map[float64]MarbleCustomAction{}
+	a._dataSealInsID = map[float64]MarbleCustomAction{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataSealInsID[d.SealInsID] = d

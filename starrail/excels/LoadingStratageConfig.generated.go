@@ -52,6 +52,7 @@ func (a *LoadingStratageConfigAccessor) Raw() ([]LoadingStratageConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with LoadingStratageConfigAccessor.LoadData to preload everything
 func (a *LoadingStratageConfigAccessor) GroupData() {
+	a._dataLoadingID = map[float64]LoadingStratageConfig{}
 	for _, d := range a._data {
 		a._dataLoadingID[d.LoadingID] = d
 	}

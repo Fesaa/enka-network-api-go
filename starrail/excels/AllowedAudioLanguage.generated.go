@@ -50,6 +50,9 @@ func (a *AllowedAudioLanguageAccessor) Raw() ([]AllowedAudioLanguage, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AllowedAudioLanguageAccessor.LoadData to preload everything
 func (a *AllowedAudioLanguageAccessor) GroupData() {
+	a._dataAudioLanguageKey = map[string]AllowedAudioLanguage{}
+	a._dataWwiseLanguageKey = map[string]AllowedAudioLanguage{}
+	a._dataWwiseLanguageState = map[string]AllowedAudioLanguage{}
 	for _, d := range a._data {
 		a._dataAudioLanguageKey[d.AudioLanguageKey] = d
 		a._dataWwiseLanguageKey[d.WwiseLanguageKey] = d

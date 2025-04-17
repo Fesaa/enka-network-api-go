@@ -45,6 +45,7 @@ func (a *RogueTournContentDisplayAccessor) Raw() ([]RogueTournContentDisplay, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournContentDisplayAccessor.LoadData to preload everything
 func (a *RogueTournContentDisplayAccessor) GroupData() {
+	a._dataDisplayID = map[float64]RogueTournContentDisplay{}
 	for _, d := range a._data {
 		a._dataDisplayID[d.DisplayID] = d
 	}

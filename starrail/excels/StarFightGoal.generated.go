@@ -44,6 +44,7 @@ func (a *StarFightGoalAccessor) Raw() ([]StarFightGoal, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StarFightGoalAccessor.LoadData to preload everything
 func (a *StarFightGoalAccessor) GroupData() {
+	a._dataID = map[float64]StarFightGoal{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

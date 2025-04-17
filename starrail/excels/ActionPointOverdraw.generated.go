@@ -44,6 +44,7 @@ func (a *ActionPointOverdrawAccessor) Raw() ([]ActionPointOverdraw, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActionPointOverdrawAccessor.LoadData to preload everything
 func (a *ActionPointOverdrawAccessor) GroupData() {
+	a._dataActionPoint = map[float64]ActionPointOverdraw{}
 	for _, d := range a._data {
 		a._dataActionPoint[d.ActionPoint] = d
 	}

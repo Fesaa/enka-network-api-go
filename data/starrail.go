@@ -10,12 +10,6 @@ type starRailData struct {
 	StarRailAvatars       *utils.Map[string, string]
 	StarRailRelics        *utils.Map[string, *starrail.RelicData]
 	StarRailLightCones    *utils.Map[string, *starrail.LightConeData]
-
-	excels HSRExcels
-}
-
-func (m *starRailData) Excels() HSRExcels {
-	return m.excels
 }
 
 func (m *starRailData) CharacterData(uid string) *starrail.CharacterData {

@@ -51,6 +51,7 @@ func (a *DrinkMakerRequestDataAccessor) Raw() ([]DrinkMakerRequestData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerRequestDataAccessor.LoadData to preload everything
 func (a *DrinkMakerRequestDataAccessor) GroupData() {
+	a._dataRequestID = map[float64]DrinkMakerRequestData{}
 	for _, d := range a._data {
 		a._dataRequestID[d.RequestID] = d
 	}

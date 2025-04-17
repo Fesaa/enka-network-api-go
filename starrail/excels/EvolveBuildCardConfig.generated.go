@@ -51,6 +51,9 @@ func (a *EvolveBuildCardConfigAccessor) Raw() ([]EvolveBuildCardConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildCardConfigAccessor.LoadData to preload everything
 func (a *EvolveBuildCardConfigAccessor) GroupData() {
+	a._dataID = map[float64]EvolveBuildCardConfig{}
+	a._dataItemIcon = map[string]EvolveBuildCardConfig{}
+	a._dataLvID = map[float64]EvolveBuildCardConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataItemIcon[d.ItemIcon] = d

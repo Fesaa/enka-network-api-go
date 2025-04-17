@@ -48,6 +48,8 @@ func (a *DrinkMakerChatAccessor) Raw() ([]DrinkMakerChat, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerChatAccessor.LoadData to preload everything
 func (a *DrinkMakerChatAccessor) GroupData() {
+	a._dataChatID = map[float64]DrinkMakerChat{}
+	a._dataPerformanceID = map[float64]DrinkMakerChat{}
 	for _, d := range a._data {
 		a._dataChatID[d.ChatID] = d
 		a._dataPerformanceID[d.PerformanceID] = d

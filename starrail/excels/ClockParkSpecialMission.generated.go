@@ -54,6 +54,10 @@ func (a *ClockParkSpecialMissionAccessor) Raw() ([]ClockParkSpecialMission, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkSpecialMissionAccessor.LoadData to preload everything
 func (a *ClockParkSpecialMissionAccessor) GroupData() {
+	a._dataEventNum = map[float64]ClockParkSpecialMission{}
+	a._dataSpecialMissionGotoIDBefore = map[float64]ClockParkSpecialMission{}
+	a._dataSpecialMissionID = map[float64]ClockParkSpecialMission{}
+	a._dataSpecialMissionUnlockItemID = map[float64]ClockParkSpecialMission{}
 	for _, d := range a._data {
 		a._dataEventNum[d.EventNum] = d
 		a._dataSpecialMissionGotoIDBefore[d.SpecialMissionGotoIDBefore] = d

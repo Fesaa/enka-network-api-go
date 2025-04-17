@@ -48,6 +48,9 @@ func (a *AvatarPlayerIconAccessor) Raw() ([]AvatarPlayerIcon, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarPlayerIconAccessor.LoadData to preload everything
 func (a *AvatarPlayerIconAccessor) GroupData() {
+	a._dataAvatarID = map[float64]AvatarPlayerIcon{}
+	a._dataID = map[float64]AvatarPlayerIcon{}
+	a._dataImagePath = map[string]AvatarPlayerIcon{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataID[d.ID] = d

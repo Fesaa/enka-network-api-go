@@ -47,6 +47,9 @@ func (a *RogueDLCDiceSurfaceRarityAccessor) Raw() ([]RogueDLCDiceSurfaceRarity, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCDiceSurfaceRarityAccessor.LoadData to preload everything
 func (a *RogueDLCDiceSurfaceRarityAccessor) GroupData() {
+	a._dataDiceSurfaceRarityImage = map[string]RogueDLCDiceSurfaceRarity{}
+	a._dataNameColor = map[string]RogueDLCDiceSurfaceRarity{}
+	a._dataRarity = map[float64]RogueDLCDiceSurfaceRarity{}
 	for _, d := range a._data {
 		a._dataDiceSurfaceRarityImage[d.DiceSurfaceRarityImage] = d
 		a._dataNameColor[d.NameColor] = d

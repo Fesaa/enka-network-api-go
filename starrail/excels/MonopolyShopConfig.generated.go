@@ -44,6 +44,7 @@ func (a *MonopolyShopConfigAccessor) Raw() ([]MonopolyShopConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyShopConfigAccessor.LoadData to preload everything
 func (a *MonopolyShopConfigAccessor) GroupData() {
+	a._dataShopID = map[float64]MonopolyShopConfig{}
 	for _, d := range a._data {
 		a._dataShopID[d.ShopID] = d
 	}

@@ -69,6 +69,7 @@ func (a *MonsterTemplateUniqueConfigAccessor) Raw() ([]MonsterTemplateUniqueConf
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonsterTemplateUniqueConfigAccessor.LoadData to preload everything
 func (a *MonsterTemplateUniqueConfigAccessor) GroupData() {
+	a._dataMonsterTemplateID = map[float64]MonsterTemplateUniqueConfig{}
 	for _, d := range a._data {
 		a._dataMonsterTemplateID[d.MonsterTemplateID] = d
 	}

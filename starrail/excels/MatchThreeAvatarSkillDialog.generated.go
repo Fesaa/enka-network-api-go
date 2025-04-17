@@ -45,6 +45,7 @@ func (a *MatchThreeAvatarSkillDialogAccessor) Raw() ([]MatchThreeAvatarSkillDial
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeAvatarSkillDialogAccessor.LoadData to preload everything
 func (a *MatchThreeAvatarSkillDialogAccessor) GroupData() {
+	a._dataID = map[float64]MatchThreeAvatarSkillDialog{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

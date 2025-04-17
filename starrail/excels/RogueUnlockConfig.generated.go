@@ -46,6 +46,7 @@ func (a *RogueUnlockConfigAccessor) Raw() ([]RogueUnlockConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueUnlockConfigAccessor.LoadData to preload everything
 func (a *RogueUnlockConfigAccessor) GroupData() {
+	a._dataRogueUnlockID = map[float64]RogueUnlockConfig{}
 	for _, d := range a._data {
 		a._dataRogueUnlockID[d.RogueUnlockID] = d
 	}

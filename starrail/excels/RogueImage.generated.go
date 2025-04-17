@@ -49,6 +49,8 @@ func (a *RogueImageAccessor) Raw() ([]RogueImage, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueImageAccessor.LoadData to preload everything
 func (a *RogueImageAccessor) GroupData() {
+	a._dataImageID = map[float64]RogueImage{}
+	a._dataImagePath = map[string]RogueImage{}
 	for _, d := range a._data {
 		a._dataImageID[d.ImageID] = d
 		a._dataImagePath[d.ImagePath] = d

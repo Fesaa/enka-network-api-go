@@ -53,6 +53,8 @@ func (a *RogueDLCMainStoryAccessor) Raw() ([]RogueDLCMainStory, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCMainStoryAccessor.LoadData to preload everything
 func (a *RogueDLCMainStoryAccessor) GroupData() {
+	a._dataMainStoryButtonIcon = map[string]RogueDLCMainStory{}
+	a._dataMainStoryID = map[float64]RogueDLCMainStory{}
 	for _, d := range a._data {
 		a._dataMainStoryButtonIcon[d.MainStoryButtonIcon] = d
 		a._dataMainStoryID[d.MainStoryID] = d

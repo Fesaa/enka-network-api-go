@@ -46,6 +46,8 @@ func (a *PlayerReturnLoginRewardAccessor) Raw() ([]PlayerReturnLoginReward, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlayerReturnLoginRewardAccessor.LoadData to preload everything
 func (a *PlayerReturnLoginRewardAccessor) GroupData() {
+	a._dataID = map[float64]PlayerReturnLoginReward{}
+	a._dataLoginReward = map[float64]PlayerReturnLoginReward{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataLoginReward[d.LoginReward] = d

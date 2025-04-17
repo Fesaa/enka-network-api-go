@@ -45,6 +45,7 @@ func (a *ChallengeStoryRewardLineAccessor) Raw() ([]ChallengeStoryRewardLine, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeStoryRewardLineAccessor.LoadData to preload everything
 func (a *ChallengeStoryRewardLineAccessor) GroupData() {
+	a._dataRewardID = map[float64]ChallengeStoryRewardLine{}
 	for _, d := range a._data {
 		a._dataRewardID[d.RewardID] = d
 	}

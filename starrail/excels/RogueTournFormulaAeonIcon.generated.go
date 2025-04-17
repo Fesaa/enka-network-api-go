@@ -51,6 +51,11 @@ func (a *RogueTournFormulaAeonIconAccessor) Raw() ([]RogueTournFormulaAeonIcon, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournFormulaAeonIconAccessor.LoadData to preload everything
 func (a *RogueTournFormulaAeonIconAccessor) GroupData() {
+	a._dataBuffTypeID = map[float64]RogueTournFormulaAeonIcon{}
+	a._dataFormulaIcon = map[string]RogueTournFormulaAeonIcon{}
+	a._dataFormulaSubIcon = map[string]RogueTournFormulaAeonIcon{}
+	a._dataUltraFormulaCardIcon = map[string]RogueTournFormulaAeonIcon{}
+	a._dataUltraFormulaIcon = map[string]RogueTournFormulaAeonIcon{}
 	for _, d := range a._data {
 		a._dataBuffTypeID[d.BuffTypeID] = d
 		a._dataFormulaIcon[d.FormulaIcon] = d

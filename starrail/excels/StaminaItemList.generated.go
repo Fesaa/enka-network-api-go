@@ -48,6 +48,8 @@ func (a *StaminaItemListAccessor) Raw() ([]StaminaItemList, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StaminaItemListAccessor.LoadData to preload everything
 func (a *StaminaItemListAccessor) GroupData() {
+	a._dataItemID = map[float64]StaminaItemList{}
+	a._dataSortWeight = map[float64]StaminaItemList{}
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
 		a._dataSortWeight[d.SortWeight] = d

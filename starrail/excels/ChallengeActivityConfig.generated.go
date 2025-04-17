@@ -46,6 +46,7 @@ func (a *ChallengeActivityConfigAccessor) Raw() ([]ChallengeActivityConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeActivityConfigAccessor.LoadData to preload everything
 func (a *ChallengeActivityConfigAccessor) GroupData() {
+	a._dataActivityID = map[float64]ChallengeActivityConfig{}
 	for _, d := range a._data {
 		a._dataActivityID[d.ActivityID] = d
 	}

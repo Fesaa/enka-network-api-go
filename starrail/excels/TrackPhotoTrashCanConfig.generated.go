@@ -49,6 +49,8 @@ func (a *TrackPhotoTrashCanConfigAccessor) Raw() ([]TrackPhotoTrashCanConfig, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrackPhotoTrashCanConfigAccessor.LoadData to preload everything
 func (a *TrackPhotoTrashCanConfigAccessor) GroupData() {
+	a._dataCanTypeID = map[string]TrackPhotoTrashCanConfig{}
+	a._dataNpcTemplateID = map[float64]TrackPhotoTrashCanConfig{}
 	for _, d := range a._data {
 		a._dataCanTypeID[d.CanTypeID] = d
 		a._dataNpcTemplateID[d.NpcTemplateID] = d

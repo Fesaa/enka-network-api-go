@@ -53,6 +53,11 @@ func (a *BoxingClubChallengeSeasonAccessor) Raw() ([]BoxingClubChallengeSeason, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BoxingClubChallengeSeasonAccessor.LoadData to preload everything
 func (a *BoxingClubChallengeSeasonAccessor) GroupData() {
+	a._dataActivityTitle = map[string]BoxingClubChallengeSeason{}
+	a._dataSeasonID = map[float64]BoxingClubChallengeSeason{}
+	a._dataSeasonIconPath = map[string]BoxingClubChallengeSeason{}
+	a._dataSeasonTabPath = map[string]BoxingClubChallengeSeason{}
+	a._dataSeasonType = map[string]BoxingClubChallengeSeason{}
 	for _, d := range a._data {
 		a._dataActivityTitle[d.ActivityTitle] = d
 		a._dataSeasonID[d.SeasonID] = d

@@ -49,6 +49,8 @@ func (a *HeliobusChallengeRewardAccessor) Raw() ([]HeliobusChallengeReward, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeliobusChallengeRewardAccessor.LoadData to preload everything
 func (a *HeliobusChallengeRewardAccessor) GroupData() {
+	a._dataChallengeRewardTabID = map[float64]HeliobusChallengeReward{}
+	a._dataUnlockQuest = map[float64]HeliobusChallengeReward{}
 	for _, d := range a._data {
 		a._dataChallengeRewardTabID[d.ChallengeRewardTabID] = d
 		a._dataUnlockQuest[d.UnlockQuest] = d

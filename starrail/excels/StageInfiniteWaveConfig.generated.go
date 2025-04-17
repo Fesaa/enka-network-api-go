@@ -50,6 +50,7 @@ func (a *StageInfiniteWaveConfigAccessor) Raw() ([]StageInfiniteWaveConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StageInfiniteWaveConfigAccessor.LoadData to preload everything
 func (a *StageInfiniteWaveConfigAccessor) GroupData() {
+	a._dataInfiniteWaveID = map[float64]StageInfiniteWaveConfig{}
 	for _, d := range a._data {
 		a._dataInfiniteWaveID[d.InfiniteWaveID] = d
 	}

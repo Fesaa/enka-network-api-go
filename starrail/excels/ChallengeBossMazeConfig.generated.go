@@ -66,6 +66,7 @@ func (a *ChallengeBossMazeConfigAccessor) Raw() ([]ChallengeBossMazeConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeBossMazeConfigAccessor.LoadData to preload everything
 func (a *ChallengeBossMazeConfigAccessor) GroupData() {
+	a._dataID = map[float64]ChallengeBossMazeConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

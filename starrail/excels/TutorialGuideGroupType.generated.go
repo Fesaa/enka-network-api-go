@@ -46,6 +46,7 @@ func (a *TutorialGuideGroupTypeAccessor) Raw() ([]TutorialGuideGroupType, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TutorialGuideGroupTypeAccessor.LoadData to preload everything
 func (a *TutorialGuideGroupTypeAccessor) GroupData() {
+	a._dataMessageIconPath = map[string]TutorialGuideGroupType{}
 	for _, d := range a._data {
 		a._dataMessageIconPath[d.MessageIconPath] = d
 	}

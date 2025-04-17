@@ -56,6 +56,8 @@ func (a *MultiplePathAvatarConfigAccessor) Raw() ([]MultiplePathAvatarConfig, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MultiplePathAvatarConfigAccessor.LoadData to preload everything
 func (a *MultiplePathAvatarConfigAccessor) GroupData() {
+	a._dataAvatarID = map[float64]MultiplePathAvatarConfig{}
+	a._dataChangeConfigPath = map[string]MultiplePathAvatarConfig{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataChangeConfigPath[d.ChangeConfigPath] = d

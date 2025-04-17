@@ -78,6 +78,11 @@ func (a *RogueNousDiceBranchAccessor) Raw() ([]RogueNousDiceBranch, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNousDiceBranchAccessor.LoadData to preload everything
 func (a *RogueNousDiceBranchAccessor) GroupData() {
+	a._dataBranchCorePrefab = map[string]RogueNousDiceBranch{}
+	a._dataBranchEditCorePrefab = map[string]RogueNousDiceBranch{}
+	a._dataBranchID = map[float64]RogueNousDiceBranch{}
+	a._dataDiceIcon = map[string]RogueNousDiceBranch{}
+	a._dataDiceLightColor = map[string]RogueNousDiceBranch{}
 	for _, d := range a._data {
 		a._dataBranchCorePrefab[d.BranchCorePrefab] = d
 		a._dataBranchEditCorePrefab[d.BranchEditCorePrefab] = d

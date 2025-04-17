@@ -52,6 +52,10 @@ func (a *BoxingClubPerformanceAccessor) Raw() ([]BoxingClubPerformance, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BoxingClubPerformanceAccessor.LoadData to preload everything
 func (a *BoxingClubPerformanceAccessor) GroupData() {
+	a._dataBubbleTalkEnemy = map[string]BoxingClubPerformance{}
+	a._dataBubbleTalkPlayer = map[string]BoxingClubPerformance{}
+	a._dataID = map[float64]BoxingClubPerformance{}
+	a._dataName = map[string]BoxingClubPerformance{}
 	for _, d := range a._data {
 		a._dataBubbleTalkEnemy[d.BubbleTalkEnemy] = d
 		a._dataBubbleTalkPlayer[d.BubbleTalkPlayer] = d

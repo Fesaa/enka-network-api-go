@@ -49,6 +49,9 @@ func (a *AvatarDemoEntranceAccessor) Raw() ([]AvatarDemoEntrance, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarDemoEntranceAccessor.LoadData to preload everything
 func (a *AvatarDemoEntranceAccessor) GroupData() {
+	a._dataAvatarID = map[float64]AvatarDemoEntrance{}
+	a._dataStageID = map[float64]AvatarDemoEntrance{}
+	a._dataTrialRoleAvatarPath = map[string]AvatarDemoEntrance{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataStageID[d.StageID] = d

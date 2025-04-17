@@ -47,6 +47,8 @@ func (a *DrinkMakerGuestSequenceAccessor) Raw() ([]DrinkMakerGuestSequence, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerGuestSequenceAccessor.LoadData to preload everything
 func (a *DrinkMakerGuestSequenceAccessor) GroupData() {
+	a._dataSequenceID = map[float64]DrinkMakerGuestSequence{}
+	a._dataStartChatID = map[float64]DrinkMakerGuestSequence{}
 	for _, d := range a._data {
 		a._dataSequenceID[d.SequenceID] = d
 		a._dataStartChatID[d.StartChatID] = d

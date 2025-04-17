@@ -46,6 +46,7 @@ func (a *DailyActiveConfigAccessor) Raw() ([]DailyActiveConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DailyActiveConfigAccessor.LoadData to preload everything
 func (a *DailyActiveConfigAccessor) GroupData() {
+	a._dataDailyActiveReward = map[float64]DailyActiveConfig{}
 	for _, d := range a._data {
 		a._dataDailyActiveReward[d.DailyActiveReward] = d
 	}

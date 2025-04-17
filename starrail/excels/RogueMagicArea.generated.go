@@ -66,6 +66,8 @@ func (a *RogueMagicAreaAccessor) Raw() ([]RogueMagicArea, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMagicAreaAccessor.LoadData to preload everything
 func (a *RogueMagicAreaAccessor) GroupData() {
+	a._dataAreaID = map[float64]RogueMagicArea{}
+	a._dataFirstReward = map[float64]RogueMagicArea{}
 	for _, d := range a._data {
 		a._dataAreaID[d.AreaID] = d
 		a._dataFirstReward[d.FirstReward] = d

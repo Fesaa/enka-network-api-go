@@ -60,6 +60,8 @@ func (a *GameplayGuideDataAccessor) Raw() ([]GameplayGuideData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GameplayGuideDataAccessor.LoadData to preload everything
 func (a *GameplayGuideDataAccessor) GroupData() {
+	a._dataID = map[float64]GameplayGuideData{}
+	a._dataOrder = map[float64]GameplayGuideData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataOrder[d.Order] = d

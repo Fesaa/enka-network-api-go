@@ -50,6 +50,8 @@ func (a *DocumentaryPhaseQuestPanelAccessor) Raw() ([]DocumentaryPhaseQuestPanel
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DocumentaryPhaseQuestPanelAccessor.LoadData to preload everything
 func (a *DocumentaryPhaseQuestPanelAccessor) GroupData() {
+	a._dataExtraQuest = map[float64]DocumentaryPhaseQuestPanel{}
+	a._dataPhaseID = map[float64]DocumentaryPhaseQuestPanel{}
 	for _, d := range a._data {
 		a._dataExtraQuest[d.ExtraQuest] = d
 		a._dataPhaseID[d.PhaseID] = d

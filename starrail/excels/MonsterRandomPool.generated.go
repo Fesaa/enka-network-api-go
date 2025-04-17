@@ -45,6 +45,7 @@ func (a *MonsterRandomPoolAccessor) Raw() ([]MonsterRandomPool, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonsterRandomPoolAccessor.LoadData to preload everything
 func (a *MonsterRandomPoolAccessor) GroupData() {
+	a._dataRandomPoolID = map[float64]MonsterRandomPool{}
 	for _, d := range a._data {
 		a._dataRandomPoolID[d.RandomPoolID] = d
 	}

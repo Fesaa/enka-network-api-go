@@ -57,6 +57,8 @@ func (a *GuideRogueDataAccessor) Raw() ([]GuideRogueData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GuideRogueDataAccessor.LoadData to preload everything
 func (a *GuideRogueDataAccessor) GroupData() {
+	a._dataID = map[float64]GuideRogueData{}
+	a._dataRelatedID = map[float64]GuideRogueData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataRelatedID[d.RelatedID] = d

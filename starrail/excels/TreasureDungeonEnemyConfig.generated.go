@@ -46,6 +46,7 @@ func (a *TreasureDungeonEnemyConfigAccessor) Raw() ([]TreasureDungeonEnemyConfig
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TreasureDungeonEnemyConfigAccessor.LoadData to preload everything
 func (a *TreasureDungeonEnemyConfigAccessor) GroupData() {
+	a._dataEnemyID = map[float64]TreasureDungeonEnemyConfig{}
 	for _, d := range a._data {
 		a._dataEnemyID[d.EnemyID] = d
 	}

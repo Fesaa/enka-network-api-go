@@ -45,6 +45,7 @@ func (a *EvolveBuildForgeMaterialAccessor) Raw() ([]EvolveBuildForgeMaterial, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildForgeMaterialAccessor.LoadData to preload everything
 func (a *EvolveBuildForgeMaterialAccessor) GroupData() {
+	a._dataForgeGearID = map[float64]EvolveBuildForgeMaterial{}
 	for _, d := range a._data {
 		a._dataForgeGearID[d.ForgeGearID] = d
 	}

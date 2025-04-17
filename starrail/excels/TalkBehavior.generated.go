@@ -50,6 +50,8 @@ func (a *TalkBehaviorAccessor) Raw() ([]TalkBehavior, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TalkBehaviorAccessor.LoadData to preload everything
 func (a *TalkBehaviorAccessor) GroupData() {
+	a._dataCustomString = map[string]TalkBehavior{}
+	a._dataID = map[float64]TalkBehavior{}
 	for _, d := range a._data {
 		a._dataCustomString[d.CustomString] = d
 		a._dataID[d.ID] = d

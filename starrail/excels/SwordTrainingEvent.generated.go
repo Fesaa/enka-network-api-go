@@ -49,6 +49,7 @@ func (a *SwordTrainingEventAccessor) Raw() ([]SwordTrainingEvent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SwordTrainingEventAccessor.LoadData to preload everything
 func (a *SwordTrainingEventAccessor) GroupData() {
+	a._dataEventID = map[float64]SwordTrainingEvent{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 	}

@@ -47,6 +47,7 @@ func (a *InControlControlTypeInfoAccessor) Raw() ([]InControlControlTypeInfo, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InControlControlTypeInfoAccessor.LoadData to preload everything
 func (a *InControlControlTypeInfoAccessor) GroupData() {
+	a._dataControlType = map[string]InControlControlTypeInfo{}
 	for _, d := range a._data {
 		a._dataControlType[d.ControlType] = d
 	}

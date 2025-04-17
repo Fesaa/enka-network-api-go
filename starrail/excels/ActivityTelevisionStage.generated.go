@@ -71,6 +71,17 @@ func (a *ActivityTelevisionStageAccessor) Raw() ([]ActivityTelevisionStage, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityTelevisionStageAccessor.LoadData to preload everything
 func (a *ActivityTelevisionStageAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]ActivityTelevisionStage{}
+	a._dataEntranceID = map[float64]ActivityTelevisionStage{}
+	a._dataGotoID = map[float64]ActivityTelevisionStage{}
+	a._dataImagePath = map[string]ActivityTelevisionStage{}
+	a._dataMappingInfo = map[float64]ActivityTelevisionStage{}
+	a._dataMiniImagePath = map[string]ActivityTelevisionStage{}
+	a._dataMissionID = map[float64]ActivityTelevisionStage{}
+	a._dataOriginalImagePath = map[string]ActivityTelevisionStage{}
+	a._dataOriginalMiniImagePath = map[string]ActivityTelevisionStage{}
+	a._dataQuestGroupID = map[float64]ActivityTelevisionStage{}
+	a._dataTelevisionID = map[float64]ActivityTelevisionStage{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataEntranceID[d.EntranceID] = d

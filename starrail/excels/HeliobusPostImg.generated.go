@@ -45,6 +45,8 @@ func (a *HeliobusPostImgAccessor) Raw() ([]HeliobusPostImg, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeliobusPostImgAccessor.LoadData to preload everything
 func (a *HeliobusPostImgAccessor) GroupData() {
+	a._dataPostImgID = map[float64]HeliobusPostImg{}
+	a._dataPostImgPath = map[string]HeliobusPostImg{}
 	for _, d := range a._data {
 		a._dataPostImgID[d.PostImgID] = d
 		a._dataPostImgPath[d.PostImgPath] = d

@@ -45,6 +45,7 @@ func (a *InventorySortTypeAccessor) Raw() ([]InventorySortType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InventorySortTypeAccessor.LoadData to preload everything
 func (a *InventorySortTypeAccessor) GroupData() {
+	a._dataSortType = map[string]InventorySortType{}
 	for _, d := range a._data {
 		a._dataSortType[d.SortType] = d
 	}

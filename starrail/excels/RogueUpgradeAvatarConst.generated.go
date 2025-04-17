@@ -45,6 +45,7 @@ func (a *RogueUpgradeAvatarConstAccessor) Raw() ([]RogueUpgradeAvatarConst, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueUpgradeAvatarConstAccessor.LoadData to preload everything
 func (a *RogueUpgradeAvatarConstAccessor) GroupData() {
+	a._dataConstValueName = map[string]RogueUpgradeAvatarConst{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

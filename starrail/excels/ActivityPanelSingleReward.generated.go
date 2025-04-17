@@ -47,6 +47,8 @@ func (a *ActivityPanelSingleRewardAccessor) Raw() ([]ActivityPanelSingleReward, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityPanelSingleRewardAccessor.LoadData to preload everything
 func (a *ActivityPanelSingleRewardAccessor) GroupData() {
+	a._dataActivityID = map[float64]ActivityPanelSingleReward{}
+	a._dataAvatarID = map[float64]ActivityPanelSingleReward{}
 	for _, d := range a._data {
 		a._dataActivityID[d.ActivityID] = d
 		a._dataAvatarID[d.AvatarID] = d

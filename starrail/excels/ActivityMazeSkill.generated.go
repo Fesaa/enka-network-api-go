@@ -50,6 +50,8 @@ func (a *ActivityMazeSkillAccessor) Raw() ([]ActivityMazeSkill, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityMazeSkillAccessor.LoadData to preload everything
 func (a *ActivityMazeSkillAccessor) GroupData() {
+	a._dataMazeSkillId = map[float64]ActivityMazeSkill{}
+	a._dataRelatedAvatarSkill = map[float64]ActivityMazeSkill{}
 	for _, d := range a._data {
 		a._dataMazeSkillId[d.MazeSkillId] = d
 		a._dataRelatedAvatarSkill[d.RelatedAvatarSkill] = d

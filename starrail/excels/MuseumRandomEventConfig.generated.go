@@ -49,6 +49,7 @@ func (a *MuseumRandomEventConfigAccessor) Raw() ([]MuseumRandomEventConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumRandomEventConfigAccessor.LoadData to preload everything
 func (a *MuseumRandomEventConfigAccessor) GroupData() {
+	a._dataRandomEventID = map[float64]MuseumRandomEventConfig{}
 	for _, d := range a._data {
 		a._dataRandomEventID[d.RandomEventID] = d
 	}

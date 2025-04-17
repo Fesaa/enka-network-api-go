@@ -50,6 +50,9 @@ func (a *Anniversary2NDTabConfigAccessor) Raw() ([]Anniversary2NDTabConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with Anniversary2NDTabConfigAccessor.LoadData to preload everything
 func (a *Anniversary2NDTabConfigAccessor) GroupData() {
+	a._dataPanelType = map[string]Anniversary2NDTabConfig{}
+	a._dataTabID = map[float64]Anniversary2NDTabConfig{}
+	a._dataTabIcon = map[string]Anniversary2NDTabConfig{}
 	for _, d := range a._data {
 		a._dataPanelType[d.PanelType] = d
 		a._dataTabID[d.TabID] = d

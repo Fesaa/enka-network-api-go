@@ -51,6 +51,8 @@ func (a *MatchThreeOpponentAccessor) Raw() ([]MatchThreeOpponent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeOpponentAccessor.LoadData to preload everything
 func (a *MatchThreeOpponentAccessor) GroupData() {
+	a._dataAIConfig = map[string]MatchThreeOpponent{}
+	a._dataOpponentID = map[float64]MatchThreeOpponent{}
 	for _, d := range a._data {
 		a._dataAIConfig[d.AIConfig] = d
 		a._dataOpponentID[d.OpponentID] = d

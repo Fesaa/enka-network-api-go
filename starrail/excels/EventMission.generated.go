@@ -59,6 +59,8 @@ func (a *EventMissionAccessor) Raw() ([]EventMission, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EventMissionAccessor.LoadData to preload everything
 func (a *EventMissionAccessor) GroupData() {
+	a._dataFinishWayID = map[float64]EventMission{}
+	a._dataID = map[float64]EventMission{}
 	for _, d := range a._data {
 		a._dataFinishWayID[d.FinishWayID] = d
 		a._dataID[d.ID] = d

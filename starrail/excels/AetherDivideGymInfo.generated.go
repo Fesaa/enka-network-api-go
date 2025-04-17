@@ -65,6 +65,15 @@ func (a *AetherDivideGymInfoAccessor) Raw() ([]AetherDivideGymInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideGymInfoAccessor.LoadData to preload everything
 func (a *AetherDivideGymInfoAccessor) GroupData() {
+	a._dataBGPath = map[string]AetherDivideGymInfo{}
+	a._dataBadgeUnlockID = map[float64]AetherDivideGymInfo{}
+	a._dataEntranceID = map[float64]AetherDivideGymInfo{}
+	a._dataID = map[float64]AetherDivideGymInfo{}
+	a._dataIconPath = map[string]AetherDivideGymInfo{}
+	a._dataSpiritQuest = map[float64]AetherDivideGymInfo{}
+	a._dataTabIconPath = map[string]AetherDivideGymInfo{}
+	a._dataTrainerQuest = map[float64]AetherDivideGymInfo{}
+	a._dataUnlockID = map[float64]AetherDivideGymInfo{}
 	for _, d := range a._data {
 		a._dataBGPath[d.BGPath] = d
 		a._dataBadgeUnlockID[d.BadgeUnlockID] = d

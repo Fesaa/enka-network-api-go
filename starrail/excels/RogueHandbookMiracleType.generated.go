@@ -48,6 +48,8 @@ func (a *RogueHandbookMiracleTypeAccessor) Raw() ([]RogueHandbookMiracleType, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueHandbookMiracleTypeAccessor.LoadData to preload everything
 func (a *RogueHandbookMiracleTypeAccessor) GroupData() {
+	a._dataRogueHandbookMiracleType = map[float64]RogueHandbookMiracleType{}
+	a._dataTypeIcon = map[string]RogueHandbookMiracleType{}
 	for _, d := range a._data {
 		a._dataRogueHandbookMiracleType[d.RogueHandbookMiracleType] = d
 		a._dataTypeIcon[d.TypeIcon] = d

@@ -45,6 +45,8 @@ func (a *OptionalRewardQuestAccessor) Raw() ([]OptionalRewardQuest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with OptionalRewardQuestAccessor.LoadData to preload everything
 func (a *OptionalRewardQuestAccessor) GroupData() {
+	a._dataOptionalGiftItemID = map[float64]OptionalRewardQuest{}
+	a._dataQuestID = map[float64]OptionalRewardQuest{}
 	for _, d := range a._data {
 		a._dataOptionalGiftItemID[d.OptionalGiftItemID] = d
 		a._dataQuestID[d.QuestID] = d

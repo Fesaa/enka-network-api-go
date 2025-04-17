@@ -46,6 +46,8 @@ func (a *AlleyRewardAccessor) Raw() ([]AlleyReward, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyRewardAccessor.LoadData to preload everything
 func (a *AlleyRewardAccessor) GroupData() {
+	a._dataLevel = map[float64]AlleyReward{}
+	a._dataRewardID = map[float64]AlleyReward{}
 	for _, d := range a._data {
 		a._dataLevel[d.Level] = d
 		a._dataRewardID[d.RewardID] = d

@@ -47,6 +47,9 @@ func (a *EquipmentExpItemConfigAccessor) Raw() ([]EquipmentExpItemConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EquipmentExpItemConfigAccessor.LoadData to preload everything
 func (a *EquipmentExpItemConfigAccessor) GroupData() {
+	a._dataCoinCost = map[float64]EquipmentExpItemConfig{}
+	a._dataExpProvide = map[float64]EquipmentExpItemConfig{}
+	a._dataItemID = map[float64]EquipmentExpItemConfig{}
 	for _, d := range a._data {
 		a._dataCoinCost[d.CoinCost] = d
 		a._dataExpProvide[d.ExpProvide] = d

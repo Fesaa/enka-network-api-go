@@ -44,6 +44,7 @@ func (a *DrinkMakerLayerDataAccessor) Raw() ([]DrinkMakerLayerData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerLayerDataAccessor.LoadData to preload everything
 func (a *DrinkMakerLayerDataAccessor) GroupData() {
+	a._dataLayerID = map[float64]DrinkMakerLayerData{}
 	for _, d := range a._data {
 		a._dataLayerID[d.LayerID] = d
 	}

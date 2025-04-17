@@ -49,6 +49,9 @@ func (a *ActivityRewardRogueEndlessAccessor) Raw() ([]ActivityRewardRogueEndless
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityRewardRogueEndlessAccessor.LoadData to preload everything
 func (a *ActivityRewardRogueEndlessAccessor) GroupData() {
+	a._dataRewardID = map[float64]ActivityRewardRogueEndless{}
+	a._dataRewardLevel = map[float64]ActivityRewardRogueEndless{}
+	a._dataRewardPoint = map[float64]ActivityRewardRogueEndless{}
 	for _, d := range a._data {
 		a._dataRewardID[d.RewardID] = d
 		a._dataRewardLevel[d.RewardLevel] = d

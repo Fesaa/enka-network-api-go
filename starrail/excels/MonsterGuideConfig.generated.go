@@ -49,6 +49,7 @@ func (a *MonsterGuideConfigAccessor) Raw() ([]MonsterGuideConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonsterGuideConfigAccessor.LoadData to preload everything
 func (a *MonsterGuideConfigAccessor) GroupData() {
+	a._dataMonsterID = map[float64]MonsterGuideConfig{}
 	for _, d := range a._data {
 		a._dataMonsterID[d.MonsterID] = d
 	}

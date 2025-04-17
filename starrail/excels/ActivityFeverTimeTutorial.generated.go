@@ -45,6 +45,7 @@ func (a *ActivityFeverTimeTutorialAccessor) Raw() ([]ActivityFeverTimeTutorial, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityFeverTimeTutorialAccessor.LoadData to preload everything
 func (a *ActivityFeverTimeTutorialAccessor) GroupData() {
+	a._dataP2AvailableBuffID = map[float64]ActivityFeverTimeTutorial{}
 	for _, d := range a._data {
 		a._dataP2AvailableBuffID[d.P2AvailableBuffID] = d
 	}

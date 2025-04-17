@@ -45,6 +45,7 @@ func (a *ScheduleDataActivityPanelAccessor) Raw() ([]ScheduleDataActivityPanel, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ScheduleDataActivityPanelAccessor.LoadData to preload everything
 func (a *ScheduleDataActivityPanelAccessor) GroupData() {
+	a._dataID = map[float64]ScheduleDataActivityPanel{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

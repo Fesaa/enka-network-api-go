@@ -51,6 +51,8 @@ func (a *PlanetFesAvatarEventAccessor) Raw() ([]PlanetFesAvatarEvent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesAvatarEventAccessor.LoadData to preload everything
 func (a *PlanetFesAvatarEventAccessor) GroupData() {
+	a._dataID = map[float64]PlanetFesAvatarEvent{}
+	a._dataPicPath = map[string]PlanetFesAvatarEvent{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataPicPath[d.PicPath] = d

@@ -49,6 +49,7 @@ func (a *DialoguePropAccessor) Raw() ([]DialogueProp, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DialoguePropAccessor.LoadData to preload everything
 func (a *DialoguePropAccessor) GroupData() {
+	a._dataGroupID = map[float64]DialogueProp{}
 	for _, d := range a._data {
 		a._dataGroupID[d.GroupID] = d
 	}

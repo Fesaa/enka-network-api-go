@@ -45,6 +45,8 @@ func (a *MuseumTutorialTalkAccessor) Raw() ([]MuseumTutorialTalk, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumTutorialTalkAccessor.LoadData to preload everything
 func (a *MuseumTutorialTalkAccessor) GroupData() {
+	a._dataTriggerCustomString = map[string]MuseumTutorialTalk{}
+	a._dataTriggerMissionID = map[float64]MuseumTutorialTalk{}
 	for _, d := range a._data {
 		a._dataTriggerCustomString[d.TriggerCustomString] = d
 		a._dataTriggerMissionID[d.TriggerMissionID] = d

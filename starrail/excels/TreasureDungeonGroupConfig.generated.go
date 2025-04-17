@@ -58,6 +58,8 @@ func (a *TreasureDungeonGroupConfigAccessor) Raw() ([]TreasureDungeonGroupConfig
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TreasureDungeonGroupConfigAccessor.LoadData to preload everything
 func (a *TreasureDungeonGroupConfigAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]TreasureDungeonGroupConfig{}
+	a._dataGroupID = map[float64]TreasureDungeonGroupConfig{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataGroupID[d.GroupID] = d

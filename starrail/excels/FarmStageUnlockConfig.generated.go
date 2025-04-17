@@ -51,6 +51,8 @@ func (a *FarmStageUnlockConfigAccessor) Raw() ([]FarmStageUnlockConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FarmStageUnlockConfigAccessor.LoadData to preload everything
 func (a *FarmStageUnlockConfigAccessor) GroupData() {
+	a._dataID = map[float64]FarmStageUnlockConfig{}
+	a._dataUIEntranceBgPath = map[string]FarmStageUnlockConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataUIEntranceBgPath[d.UIEntranceBgPath] = d

@@ -45,6 +45,7 @@ func (a *RogueDLCDifficultyAccessor) Raw() ([]RogueDLCDifficulty, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCDifficultyAccessor.LoadData to preload everything
 func (a *RogueDLCDifficultyAccessor) GroupData() {
+	a._dataDifficultyID = map[float64]RogueDLCDifficulty{}
 	for _, d := range a._data {
 		a._dataDifficultyID[d.DifficultyID] = d
 	}

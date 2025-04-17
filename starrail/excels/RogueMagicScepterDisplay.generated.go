@@ -51,6 +51,9 @@ func (a *RogueMagicScepterDisplayAccessor) Raw() ([]RogueMagicScepterDisplay, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMagicScepterDisplayAccessor.LoadData to preload everything
 func (a *RogueMagicScepterDisplayAccessor) GroupData() {
+	a._dataScepterFigurePath = map[string]RogueMagicScepterDisplay{}
+	a._dataScepterID = map[float64]RogueMagicScepterDisplay{}
+	a._dataScepterIconPath = map[string]RogueMagicScepterDisplay{}
 	for _, d := range a._data {
 		a._dataScepterFigurePath[d.ScepterFigurePath] = d
 		a._dataScepterID[d.ScepterID] = d

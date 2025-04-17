@@ -59,6 +59,8 @@ func (a *RogueMagicTalentAccessor) Raw() ([]RogueMagicTalent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMagicTalentAccessor.LoadData to preload everything
 func (a *RogueMagicTalentAccessor) GroupData() {
+	a._dataLevel = map[float64]RogueMagicTalent{}
+	a._dataTalentID = map[float64]RogueMagicTalent{}
 	for _, d := range a._data {
 		a._dataLevel[d.Level] = d
 		a._dataTalentID[d.TalentID] = d

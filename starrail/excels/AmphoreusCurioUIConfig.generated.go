@@ -52,6 +52,8 @@ func (a *AmphoreusCurioUIConfigAccessor) Raw() ([]AmphoreusCurioUIConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AmphoreusCurioUIConfigAccessor.LoadData to preload everything
 func (a *AmphoreusCurioUIConfigAccessor) GroupData() {
+	a._dataID = map[float64]AmphoreusCurioUIConfig{}
+	a._dataIconPath = map[string]AmphoreusCurioUIConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d

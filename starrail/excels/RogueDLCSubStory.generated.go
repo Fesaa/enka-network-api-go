@@ -51,6 +51,9 @@ func (a *RogueDLCSubStoryAccessor) Raw() ([]RogueDLCSubStory, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCSubStoryAccessor.LoadData to preload everything
 func (a *RogueDLCSubStoryAccessor) GroupData() {
+	a._dataLevelGraphPath = map[string]RogueDLCSubStory{}
+	a._dataOptionPath = map[string]RogueDLCSubStory{}
+	a._dataRogueDLCSubStoryID = map[float64]RogueDLCSubStory{}
 	for _, d := range a._data {
 		a._dataLevelGraphPath[d.LevelGraphPath] = d
 		a._dataOptionPath[d.OptionPath] = d

@@ -48,6 +48,7 @@ func (a *StaminaSaleConfigAccessor) Raw() ([]StaminaSaleConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StaminaSaleConfigAccessor.LoadData to preload everything
 func (a *StaminaSaleConfigAccessor) GroupData() {
+	a._dataTimes = map[float64]StaminaSaleConfig{}
 	for _, d := range a._data {
 		a._dataTimes[d.Times] = d
 	}

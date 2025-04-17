@@ -60,6 +60,9 @@ func (a *AchievementDataAccessor) Raw() ([]AchievementData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AchievementDataAccessor.LoadData to preload everything
 func (a *AchievementDataAccessor) GroupData() {
+	a._dataAchievementID = map[float64]AchievementData{}
+	a._dataLinearQuestID = map[float64]AchievementData{}
+	a._dataQuestID = map[float64]AchievementData{}
 	for _, d := range a._data {
 		a._dataAchievementID[d.AchievementID] = d
 		a._dataLinearQuestID[d.LinearQuestID] = d

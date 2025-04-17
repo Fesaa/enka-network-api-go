@@ -51,6 +51,7 @@ func (a *FightFestPaperInterviewAccessor) Raw() ([]FightFestPaperInterview, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FightFestPaperInterviewAccessor.LoadData to preload everything
 func (a *FightFestPaperInterviewAccessor) GroupData() {
+	a._dataTextJoinItemID = map[float64]FightFestPaperInterview{}
 	for _, d := range a._data {
 		a._dataTextJoinItemID[d.TextJoinItemID] = d
 	}

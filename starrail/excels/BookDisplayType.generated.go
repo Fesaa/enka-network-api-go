@@ -45,6 +45,8 @@ func (a *BookDisplayTypeAccessor) Raw() ([]BookDisplayType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BookDisplayTypeAccessor.LoadData to preload everything
 func (a *BookDisplayTypeAccessor) GroupData() {
+	a._dataAlignment = map[float64]BookDisplayType{}
+	a._dataBookDisplayTypeID = map[float64]BookDisplayType{}
 	for _, d := range a._data {
 		a._dataAlignment[d.Alignment] = d
 		a._dataBookDisplayTypeID[d.BookDisplayTypeID] = d

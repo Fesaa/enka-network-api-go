@@ -53,6 +53,7 @@ func (a *RelicSetSkillConfigAccessor) Raw() ([]RelicSetSkillConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RelicSetSkillConfigAccessor.LoadData to preload everything
 func (a *RelicSetSkillConfigAccessor) GroupData() {
+	a._dataSkillDesc = map[string]RelicSetSkillConfig{}
 	for _, d := range a._data {
 		a._dataSkillDesc[d.SkillDesc] = d
 	}

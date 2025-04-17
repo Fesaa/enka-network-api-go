@@ -56,6 +56,12 @@ func (a *AchievementSeriesAccessor) Raw() ([]AchievementSeries, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AchievementSeriesAccessor.LoadData to preload everything
 func (a *AchievementSeriesAccessor) GroupData() {
+	a._dataCopperIconPath = map[string]AchievementSeries{}
+	a._dataGoldIconPath = map[string]AchievementSeries{}
+	a._dataIconPath = map[string]AchievementSeries{}
+	a._dataMainIconPath = map[string]AchievementSeries{}
+	a._dataSeriesID = map[float64]AchievementSeries{}
+	a._dataSilverIconPath = map[string]AchievementSeries{}
 	for _, d := range a._data {
 		a._dataCopperIconPath[d.CopperIconPath] = d
 		a._dataGoldIconPath[d.GoldIconPath] = d

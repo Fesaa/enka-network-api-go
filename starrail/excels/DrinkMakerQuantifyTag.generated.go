@@ -45,6 +45,7 @@ func (a *DrinkMakerQuantifyTagAccessor) Raw() ([]DrinkMakerQuantifyTag, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerQuantifyTagAccessor.LoadData to preload everything
 func (a *DrinkMakerQuantifyTagAccessor) GroupData() {
+	a._dataTagID = map[float64]DrinkMakerQuantifyTag{}
 	for _, d := range a._data {
 		a._dataTagID[d.TagID] = d
 	}

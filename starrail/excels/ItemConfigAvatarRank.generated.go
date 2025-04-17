@@ -58,6 +58,7 @@ func (a *ItemConfigAvatarRankAccessor) Raw() ([]ItemConfigAvatarRank, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemConfigAvatarRankAccessor.LoadData to preload everything
 func (a *ItemConfigAvatarRankAccessor) GroupData() {
+	a._dataID = map[float64]ItemConfigAvatarRank{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

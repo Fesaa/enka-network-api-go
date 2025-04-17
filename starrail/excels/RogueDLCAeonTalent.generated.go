@@ -52,6 +52,7 @@ func (a *RogueDLCAeonTalentAccessor) Raw() ([]RogueDLCAeonTalent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCAeonTalentAccessor.LoadData to preload everything
 func (a *RogueDLCAeonTalentAccessor) GroupData() {
+	a._dataAeonTalentID = map[float64]RogueDLCAeonTalent{}
 	for _, d := range a._data {
 		a._dataAeonTalentID[d.AeonTalentID] = d
 	}

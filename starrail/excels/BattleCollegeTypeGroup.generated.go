@@ -51,6 +51,9 @@ func (a *BattleCollegeTypeGroupAccessor) Raw() ([]BattleCollegeTypeGroup, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattleCollegeTypeGroupAccessor.LoadData to preload everything
 func (a *BattleCollegeTypeGroupAccessor) GroupData() {
+	a._dataBackGroundImagePath = map[string]BattleCollegeTypeGroup{}
+	a._dataBattleCollegeTypeGroupID = map[float64]BattleCollegeTypeGroup{}
+	a._dataTabIconPath = map[string]BattleCollegeTypeGroup{}
 	for _, d := range a._data {
 		a._dataBackGroundImagePath[d.BackGroundImagePath] = d
 		a._dataBattleCollegeTypeGroupID[d.BattleCollegeTypeGroupID] = d

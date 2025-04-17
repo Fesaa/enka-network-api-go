@@ -49,6 +49,8 @@ func (a *ActivityAvatarDeliverConfigAccessor) Raw() ([]ActivityAvatarDeliverConf
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityAvatarDeliverConfigAccessor.LoadData to preload everything
 func (a *ActivityAvatarDeliverConfigAccessor) GroupData() {
+	a._dataAvatarID = map[float64]ActivityAvatarDeliverConfig{}
+	a._dataSort = map[float64]ActivityAvatarDeliverConfig{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataSort[d.Sort] = d

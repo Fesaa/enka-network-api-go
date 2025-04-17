@@ -46,6 +46,8 @@ func (a *ClockParkStoryAccessor) Raw() ([]ClockParkStory, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkStoryAccessor.LoadData to preload everything
 func (a *ClockParkStoryAccessor) GroupData() {
+	a._dataStoryID = map[float64]ClockParkStory{}
+	a._dataStoryJsonPath = map[string]ClockParkStory{}
 	for _, d := range a._data {
 		a._dataStoryID[d.StoryID] = d
 		a._dataStoryJsonPath[d.StoryJsonPath] = d

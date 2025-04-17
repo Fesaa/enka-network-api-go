@@ -47,6 +47,7 @@ func (a *MissionDisableAccessor) Raw() ([]MissionDisable, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MissionDisableAccessor.LoadData to preload everything
 func (a *MissionDisableAccessor) GroupData() {
+	a._dataSubMissionID = map[float64]MissionDisable{}
 	for _, d := range a._data {
 		a._dataSubMissionID[d.SubMissionID] = d
 	}

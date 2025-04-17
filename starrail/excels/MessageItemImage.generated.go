@@ -45,6 +45,7 @@ func (a *MessageItemImageAccessor) Raw() ([]MessageItemImage, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MessageItemImageAccessor.LoadData to preload everything
 func (a *MessageItemImageAccessor) GroupData() {
+	a._dataID = map[float64]MessageItemImage{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

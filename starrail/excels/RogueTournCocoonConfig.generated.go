@@ -65,6 +65,7 @@ func (a *RogueTournCocoonConfigAccessor) Raw() ([]RogueTournCocoonConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournCocoonConfigAccessor.LoadData to preload everything
 func (a *RogueTournCocoonConfigAccessor) GroupData() {
+	a._dataEventID = map[float64]RogueTournCocoonConfig{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 	}

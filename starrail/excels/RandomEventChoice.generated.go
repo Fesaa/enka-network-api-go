@@ -49,6 +49,7 @@ func (a *RandomEventChoiceAccessor) Raw() ([]RandomEventChoice, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RandomEventChoiceAccessor.LoadData to preload everything
 func (a *RandomEventChoiceAccessor) GroupData() {
+	a._dataChoiceID = map[float64]RandomEventChoice{}
 	for _, d := range a._data {
 		a._dataChoiceID[d.ChoiceID] = d
 	}

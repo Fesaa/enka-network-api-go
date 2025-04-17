@@ -46,6 +46,8 @@ func (a *RogueTournCollectionConfigAccessor) Raw() ([]RogueTournCollectionConfig
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournCollectionConfigAccessor.LoadData to preload everything
 func (a *RogueTournCollectionConfigAccessor) GroupData() {
+	a._dataConfigID = map[float64]RogueTournCollectionConfig{}
+	a._dataPillarID = map[float64]RogueTournCollectionConfig{}
 	for _, d := range a._data {
 		a._dataConfigID[d.ConfigID] = d
 		a._dataPillarID[d.PillarID] = d

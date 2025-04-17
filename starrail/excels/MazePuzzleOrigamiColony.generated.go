@@ -53,6 +53,9 @@ func (a *MazePuzzleOrigamiColonyAccessor) Raw() ([]MazePuzzleOrigamiColony, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazePuzzleOrigamiColonyAccessor.LoadData to preload everything
 func (a *MazePuzzleOrigamiColonyAccessor) GroupData() {
+	a._dataFinishQuestID = map[float64]MazePuzzleOrigamiColony{}
+	a._dataFloorID = map[float64]MazePuzzleOrigamiColony{}
+	a._dataOrigamiColonyID = map[float64]MazePuzzleOrigamiColony{}
 	for _, d := range a._data {
 		a._dataFinishQuestID[d.FinishQuestID] = d
 		a._dataFloorID[d.FloorID] = d

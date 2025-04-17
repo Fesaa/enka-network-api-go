@@ -48,6 +48,9 @@ func (a *GachaCeilingAccessor) Raw() ([]GachaCeiling, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GachaCeilingAccessor.LoadData to preload everything
 func (a *GachaCeilingAccessor) GroupData() {
+	a._dataCeilingNum = map[float64]GachaCeiling{}
+	a._dataCeilingType = map[string]GachaCeiling{}
+	a._dataGachaType = map[string]GachaCeiling{}
 	for _, d := range a._data {
 		a._dataCeilingNum[d.CeilingNum] = d
 		a._dataCeilingType[d.CeilingType] = d

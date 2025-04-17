@@ -47,6 +47,8 @@ func (a *StuffStatsConfigAccessor) Raw() ([]StuffStatsConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StuffStatsConfigAccessor.LoadData to preload everything
 func (a *StuffStatsConfigAccessor) GroupData() {
+	a._dataStatsID = map[string]StuffStatsConfig{}
+	a._dataStatsIconPath = map[string]StuffStatsConfig{}
 	for _, d := range a._data {
 		a._dataStatsID[d.StatsID] = d
 		a._dataStatsIconPath[d.StatsIconPath] = d

@@ -46,6 +46,8 @@ func (a *RechargeGiftConfigAccessor) Raw() ([]RechargeGiftConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RechargeGiftConfigAccessor.LoadData to preload everything
 func (a *RechargeGiftConfigAccessor) GroupData() {
+	a._dataDiscount = map[float64]RechargeGiftConfig{}
+	a._dataGiftType = map[float64]RechargeGiftConfig{}
 	for _, d := range a._data {
 		a._dataDiscount[d.Discount] = d
 		a._dataGiftType[d.GiftType] = d

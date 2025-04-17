@@ -52,6 +52,8 @@ func (a *TrainVisitorConfigAccessor) Raw() ([]TrainVisitorConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainVisitorConfigAccessor.LoadData to preload everything
 func (a *TrainVisitorConfigAccessor) GroupData() {
+	a._dataAvatarID = map[float64]TrainVisitorConfig{}
+	a._dataVisitorID = map[float64]TrainVisitorConfig{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataVisitorID[d.VisitorID] = d

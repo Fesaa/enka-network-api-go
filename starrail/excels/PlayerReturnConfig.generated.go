@@ -63,6 +63,7 @@ func (a *PlayerReturnConfigAccessor) Raw() ([]PlayerReturnConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlayerReturnConfigAccessor.LoadData to preload everything
 func (a *PlayerReturnConfigAccessor) GroupData() {
+	a._dataPlayerReturnID = map[float64]PlayerReturnConfig{}
 	for _, d := range a._data {
 		a._dataPlayerReturnID[d.PlayerReturnID] = d
 	}

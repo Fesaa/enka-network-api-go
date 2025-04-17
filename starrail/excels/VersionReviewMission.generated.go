@@ -49,6 +49,10 @@ func (a *VersionReviewMissionAccessor) Raw() ([]VersionReviewMission, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with VersionReviewMissionAccessor.LoadData to preload everything
 func (a *VersionReviewMissionAccessor) GroupData() {
+	a._dataPreMainMissionID = map[float64]VersionReviewMission{}
+	a._dataReviewMainMissionID = map[float64]VersionReviewMission{}
+	a._dataStoryPerformanceID = map[float64]VersionReviewMission{}
+	a._dataStoryStartEntranceID = map[float64]VersionReviewMission{}
 	for _, d := range a._data {
 		a._dataPreMainMissionID[d.PreMainMissionID] = d
 		a._dataReviewMainMissionID[d.ReviewMainMissionID] = d

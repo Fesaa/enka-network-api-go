@@ -45,6 +45,7 @@ func (a *EvolveBuildRewardAccessor) Raw() ([]EvolveBuildReward, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildRewardAccessor.LoadData to preload everything
 func (a *EvolveBuildRewardAccessor) GroupData() {
+	a._dataRewardID = map[float64]EvolveBuildReward{}
 	for _, d := range a._data {
 		a._dataRewardID[d.RewardID] = d
 	}

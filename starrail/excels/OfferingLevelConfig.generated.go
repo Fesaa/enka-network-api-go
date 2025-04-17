@@ -48,6 +48,7 @@ func (a *OfferingLevelConfigAccessor) Raw() ([]OfferingLevelConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with OfferingLevelConfigAccessor.LoadData to preload everything
 func (a *OfferingLevelConfigAccessor) GroupData() {
+	a._dataRewardID = map[float64]OfferingLevelConfig{}
 	for _, d := range a._data {
 		a._dataRewardID[d.RewardID] = d
 	}

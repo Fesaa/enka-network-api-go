@@ -47,6 +47,7 @@ func (a *MarbleBuffConditionAccessor) Raw() ([]MarbleBuffCondition, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarbleBuffConditionAccessor.LoadData to preload everything
 func (a *MarbleBuffConditionAccessor) GroupData() {
+	a._dataID = map[float64]MarbleBuffCondition{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

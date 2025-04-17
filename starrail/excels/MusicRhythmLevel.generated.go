@@ -50,6 +50,7 @@ func (a *MusicRhythmLevelAccessor) Raw() ([]MusicRhythmLevel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MusicRhythmLevelAccessor.LoadData to preload everything
 func (a *MusicRhythmLevelAccessor) GroupData() {
+	a._dataID = map[float64]MusicRhythmLevel{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

@@ -54,6 +54,8 @@ func (a *MissionChapterConfigAccessor) Raw() ([]MissionChapterConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MissionChapterConfigAccessor.LoadData to preload everything
 func (a *MissionChapterConfigAccessor) GroupData() {
+	a._dataChapterDisplayPriority = map[float64]MissionChapterConfig{}
+	a._dataID = map[float64]MissionChapterConfig{}
 	for _, d := range a._data {
 		a._dataChapterDisplayPriority[d.ChapterDisplayPriority] = d
 		a._dataID[d.ID] = d

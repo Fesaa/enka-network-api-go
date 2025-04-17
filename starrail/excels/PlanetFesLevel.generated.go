@@ -64,6 +64,7 @@ func (a *PlanetFesLevelAccessor) Raw() ([]PlanetFesLevel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesLevelAccessor.LoadData to preload everything
 func (a *PlanetFesLevelAccessor) GroupData() {
+	a._dataLevel = map[float64]PlanetFesLevel{}
 	for _, d := range a._data {
 		a._dataLevel[d.Level] = d
 	}

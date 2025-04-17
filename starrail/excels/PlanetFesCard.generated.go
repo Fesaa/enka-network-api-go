@@ -51,6 +51,8 @@ func (a *PlanetFesCardAccessor) Raw() ([]PlanetFesCard, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesCardAccessor.LoadData to preload everything
 func (a *PlanetFesCardAccessor) GroupData() {
+	a._dataCardID = map[float64]PlanetFesCard{}
+	a._dataPicPath = map[string]PlanetFesCard{}
 	for _, d := range a._data {
 		a._dataCardID[d.CardID] = d
 		a._dataPicPath[d.PicPath] = d

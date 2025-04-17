@@ -47,6 +47,7 @@ func (a *HeartDialNpcAccessor) Raw() ([]HeartDialNpc, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeartDialNpcAccessor.LoadData to preload everything
 func (a *HeartDialNpcAccessor) GroupData() {
+	a._dataGroupID = map[float64]HeartDialNpc{}
 	for _, d := range a._data {
 		a._dataGroupID[d.GroupID] = d
 	}

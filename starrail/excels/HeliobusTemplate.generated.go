@@ -52,6 +52,8 @@ func (a *HeliobusTemplateAccessor) Raw() ([]HeliobusTemplate, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeliobusTemplateAccessor.LoadData to preload everything
 func (a *HeliobusTemplateAccessor) GroupData() {
+	a._dataHeliobusTemplateID = map[float64]HeliobusTemplate{}
+	a._dataPrefabPathNormal = map[string]HeliobusTemplate{}
 	for _, d := range a._data {
 		a._dataHeliobusTemplateID[d.HeliobusTemplateID] = d
 		a._dataPrefabPathNormal[d.PrefabPathNormal] = d

@@ -73,6 +73,10 @@ func (a *ActivityTelevisionLevelAccessor) Raw() ([]ActivityTelevisionLevel, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityTelevisionLevelAccessor.LoadData to preload everything
 func (a *ActivityTelevisionLevelAccessor) GroupData() {
+	a._dataEventID = map[float64]ActivityTelevisionLevel{}
+	a._dataMazeBuffID = map[float64]ActivityTelevisionLevel{}
+	a._dataMonsterPic = map[string]ActivityTelevisionLevel{}
+	a._dataTelevisionID = map[float64]ActivityTelevisionLevel{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 		a._dataMazeBuffID[d.MazeBuffID] = d

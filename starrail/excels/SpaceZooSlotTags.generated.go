@@ -46,6 +46,8 @@ func (a *SpaceZooSlotTagsAccessor) Raw() ([]SpaceZooSlotTags, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpaceZooSlotTagsAccessor.LoadData to preload everything
 func (a *SpaceZooSlotTagsAccessor) GroupData() {
+	a._dataFeatureID = map[float64]SpaceZooSlotTags{}
+	a._dataImagePath = map[string]SpaceZooSlotTags{}
 	for _, d := range a._data {
 		a._dataFeatureID[d.FeatureID] = d
 		a._dataImagePath[d.ImagePath] = d

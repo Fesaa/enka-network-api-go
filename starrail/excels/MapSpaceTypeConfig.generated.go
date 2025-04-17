@@ -46,6 +46,7 @@ func (a *MapSpaceTypeConfigAccessor) Raw() ([]MapSpaceTypeConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MapSpaceTypeConfigAccessor.LoadData to preload everything
 func (a *MapSpaceTypeConfigAccessor) GroupData() {
+	a._dataIcon = map[string]MapSpaceTypeConfig{}
 	for _, d := range a._data {
 		a._dataIcon[d.Icon] = d
 	}

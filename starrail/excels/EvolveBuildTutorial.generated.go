@@ -46,6 +46,7 @@ func (a *EvolveBuildTutorialAccessor) Raw() ([]EvolveBuildTutorial, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildTutorialAccessor.LoadData to preload everything
 func (a *EvolveBuildTutorialAccessor) GroupData() {
+	a._dataTutorialID = map[string]EvolveBuildTutorial{}
 	for _, d := range a._data {
 		a._dataTutorialID[d.TutorialID] = d
 	}

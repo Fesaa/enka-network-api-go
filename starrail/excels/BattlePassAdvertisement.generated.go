@@ -48,6 +48,8 @@ func (a *BattlePassAdvertisementAccessor) Raw() ([]BattlePassAdvertisement, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattlePassAdvertisementAccessor.LoadData to preload everything
 func (a *BattlePassAdvertisementAccessor) GroupData() {
+	a._dataID = map[float64]BattlePassAdvertisement{}
+	a._dataIconBundlePath = map[string]BattlePassAdvertisement{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconBundlePath[d.IconBundlePath] = d

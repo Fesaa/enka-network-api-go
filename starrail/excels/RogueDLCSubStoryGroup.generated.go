@@ -48,6 +48,7 @@ func (a *RogueDLCSubStoryGroupAccessor) Raw() ([]RogueDLCSubStoryGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCSubStoryGroupAccessor.LoadData to preload everything
 func (a *RogueDLCSubStoryGroupAccessor) GroupData() {
+	a._dataSubStoryGroupID = map[float64]RogueDLCSubStoryGroup{}
 	for _, d := range a._data {
 		a._dataSubStoryGroupID[d.SubStoryGroupID] = d
 	}

@@ -55,6 +55,8 @@ func (a *ChatInviteConfigAccessor) Raw() ([]ChatInviteConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChatInviteConfigAccessor.LoadData to preload everything
 func (a *ChatInviteConfigAccessor) GroupData() {
+	a._dataID = map[float64]ChatInviteConfig{}
+	a._dataPicPath = map[string]ChatInviteConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataPicPath[d.PicPath] = d

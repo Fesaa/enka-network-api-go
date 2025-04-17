@@ -48,6 +48,8 @@ func (a *MultiMaterialConfigAccessor) Raw() ([]MultiMaterialConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MultiMaterialConfigAccessor.LoadData to preload everything
 func (a *MultiMaterialConfigAccessor) GroupData() {
+	a._dataItemID = map[float64]MultiMaterialConfig{}
+	a._dataPurposeID = map[float64]MultiMaterialConfig{}
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
 		a._dataPurposeID[d.PurposeID] = d

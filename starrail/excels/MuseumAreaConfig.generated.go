@@ -51,6 +51,9 @@ func (a *MuseumAreaConfigAccessor) Raw() ([]MuseumAreaConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumAreaConfigAccessor.LoadData to preload everything
 func (a *MuseumAreaConfigAccessor) GroupData() {
+	a._dataAreaID = map[float64]MuseumAreaConfig{}
+	a._dataMuseumAreaHintIcon = map[string]MuseumAreaConfig{}
+	a._dataMuseumAreaTabIcon = map[string]MuseumAreaConfig{}
 	for _, d := range a._data {
 		a._dataAreaID[d.AreaID] = d
 		a._dataMuseumAreaHintIcon[d.MuseumAreaHintIcon] = d

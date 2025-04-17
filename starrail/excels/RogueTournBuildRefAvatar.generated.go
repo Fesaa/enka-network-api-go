@@ -45,6 +45,8 @@ func (a *RogueTournBuildRefAvatarAccessor) Raw() ([]RogueTournBuildRefAvatar, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournBuildRefAvatarAccessor.LoadData to preload everything
 func (a *RogueTournBuildRefAvatarAccessor) GroupData() {
+	a._dataAvatarID = map[float64]RogueTournBuildRefAvatar{}
+	a._dataSortWeight = map[float64]RogueTournBuildRefAvatar{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataSortWeight[d.SortWeight] = d

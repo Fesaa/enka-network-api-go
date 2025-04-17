@@ -53,6 +53,7 @@ func (a *ActionGroupAccessor) Raw() ([]ActionGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActionGroupAccessor.LoadData to preload everything
 func (a *ActionGroupAccessor) GroupData() {
+	a._dataActionGroupName = map[string]ActionGroup{}
 	for _, d := range a._data {
 		a._dataActionGroupName[d.ActionGroupName] = d
 	}

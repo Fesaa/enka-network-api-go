@@ -47,6 +47,9 @@ func (a *AutoFightVOAccessor) Raw() ([]AutoFightVO, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AutoFightVOAccessor.LoadData to preload everything
 func (a *AutoFightVOAccessor) GroupData() {
+	a._dataLightHit = map[float64]AutoFightVO{}
+	a._dataMode = map[float64]AutoFightVO{}
+	a._dataReceiveBuff = map[float64]AutoFightVO{}
 	for _, d := range a._data {
 		a._dataLightHit[d.LightHit] = d
 		a._dataMode[d.Mode] = d

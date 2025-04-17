@@ -44,6 +44,7 @@ func (a *RollShopRewardAccessor) Raw() ([]RollShopReward, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RollShopRewardAccessor.LoadData to preload everything
 func (a *RollShopRewardAccessor) GroupData() {
+	a._dataRewardID = map[float64]RollShopReward{}
 	for _, d := range a._data {
 		a._dataRewardID[d.RewardID] = d
 	}

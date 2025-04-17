@@ -47,6 +47,7 @@ func (a *Anniversary2NDContentConfigAccessor) Raw() ([]Anniversary2NDContentConf
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with Anniversary2NDContentConfigAccessor.LoadData to preload everything
 func (a *Anniversary2NDContentConfigAccessor) GroupData() {
+	a._dataContentID = map[float64]Anniversary2NDContentConfig{}
 	for _, d := range a._data {
 		a._dataContentID[d.ContentID] = d
 	}

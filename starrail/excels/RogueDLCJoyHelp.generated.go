@@ -45,6 +45,7 @@ func (a *RogueDLCJoyHelpAccessor) Raw() ([]RogueDLCJoyHelp, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCJoyHelpAccessor.LoadData to preload everything
 func (a *RogueDLCJoyHelpAccessor) GroupData() {
+	a._dataAeonDimensionID = map[float64]RogueDLCJoyHelp{}
 	for _, d := range a._data {
 		a._dataAeonDimensionID[d.AeonDimensionID] = d
 	}

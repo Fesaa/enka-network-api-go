@@ -43,6 +43,7 @@ func (a *RogueTournFormulaRandomAccessor) Raw() ([]RogueTournFormulaRandom, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournFormulaRandomAccessor.LoadData to preload everything
 func (a *RogueTournFormulaRandomAccessor) GroupData() {
+	a._dataRandomID = map[float64]RogueTournFormulaRandom{}
 	for _, d := range a._data {
 		a._dataRandomID[d.RandomID] = d
 	}

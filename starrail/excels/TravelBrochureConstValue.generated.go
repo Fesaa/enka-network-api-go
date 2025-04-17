@@ -45,6 +45,7 @@ func (a *TravelBrochureConstValueAccessor) Raw() ([]TravelBrochureConstValue, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TravelBrochureConstValueAccessor.LoadData to preload everything
 func (a *TravelBrochureConstValueAccessor) GroupData() {
+	a._dataConstValueName = map[string]TravelBrochureConstValue{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

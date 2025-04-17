@@ -51,6 +51,9 @@ func (a *MusicRhythmPhaseAccessor) Raw() ([]MusicRhythmPhase, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MusicRhythmPhaseAccessor.LoadData to preload everything
 func (a *MusicRhythmPhaseAccessor) GroupData() {
+	a._dataFinishMissionID = map[float64]MusicRhythmPhase{}
+	a._dataPhase = map[float64]MusicRhythmPhase{}
+	a._dataSongID = map[float64]MusicRhythmPhase{}
 	for _, d := range a._data {
 		a._dataFinishMissionID[d.FinishMissionID] = d
 		a._dataPhase[d.Phase] = d

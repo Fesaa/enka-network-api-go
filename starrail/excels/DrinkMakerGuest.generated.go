@@ -59,6 +59,12 @@ func (a *DrinkMakerGuestAccessor) Raw() ([]DrinkMakerGuest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerGuestAccessor.LoadData to preload everything
 func (a *DrinkMakerGuestAccessor) GroupData() {
+	a._dataBigIconPath = map[string]DrinkMakerGuest{}
+	a._dataFinishQuestID = map[float64]DrinkMakerGuest{}
+	a._dataFinishSubMissionID = map[float64]DrinkMakerGuest{}
+	a._dataGuestID = map[float64]DrinkMakerGuest{}
+	a._dataIconPath = map[string]DrinkMakerGuest{}
+	a._dataLinePath = map[string]DrinkMakerGuest{}
 	for _, d := range a._data {
 		a._dataBigIconPath[d.BigIconPath] = d
 		a._dataFinishQuestID[d.FinishQuestID] = d

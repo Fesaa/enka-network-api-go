@@ -46,6 +46,7 @@ func (a *LinearQuestAccessor) Raw() ([]LinearQuest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with LinearQuestAccessor.LoadData to preload everything
 func (a *LinearQuestAccessor) GroupData() {
+	a._dataLinearID = map[float64]LinearQuest{}
 	for _, d := range a._data {
 		a._dataLinearID[d.LinearID] = d
 	}

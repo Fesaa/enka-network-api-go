@@ -51,6 +51,9 @@ func (a *RndOptionsDataAccessor) Raw() ([]RndOptionsData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RndOptionsDataAccessor.LoadData to preload everything
 func (a *RndOptionsDataAccessor) GroupData() {
+	a._dataID = map[float64]RndOptionsData{}
+	a._dataJsonPath = map[string]RndOptionsData{}
+	a._dataMenuItemID = map[float64]RndOptionsData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataJsonPath[d.JsonPath] = d

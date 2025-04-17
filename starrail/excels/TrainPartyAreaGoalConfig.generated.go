@@ -46,6 +46,8 @@ func (a *TrainPartyAreaGoalConfigAccessor) Raw() ([]TrainPartyAreaGoalConfig, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyAreaGoalConfigAccessor.LoadData to preload everything
 func (a *TrainPartyAreaGoalConfigAccessor) GroupData() {
+	a._dataAreaID = map[float64]TrainPartyAreaGoalConfig{}
+	a._dataID = map[float64]TrainPartyAreaGoalConfig{}
 	for _, d := range a._data {
 		a._dataAreaID[d.AreaID] = d
 		a._dataID[d.ID] = d

@@ -51,6 +51,10 @@ func (a *ActivityNewbiePromoteAccessor) Raw() ([]ActivityNewbiePromote, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityNewbiePromoteAccessor.LoadData to preload everything
 func (a *ActivityNewbiePromoteAccessor) GroupData() {
+	a._dataDisplayItem = map[float64]ActivityNewbiePromote{}
+	a._dataFinishQuest = map[float64]ActivityNewbiePromote{}
+	a._dataID = map[float64]ActivityNewbiePromote{}
+	a._dataSortID = map[float64]ActivityNewbiePromote{}
 	for _, d := range a._data {
 		a._dataDisplayItem[d.DisplayItem] = d
 		a._dataFinishQuest[d.FinishQuest] = d

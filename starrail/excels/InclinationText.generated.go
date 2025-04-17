@@ -45,6 +45,7 @@ func (a *InclinationTextAccessor) Raw() ([]InclinationText, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InclinationTextAccessor.LoadData to preload everything
 func (a *InclinationTextAccessor) GroupData() {
+	a._dataTalkSentenceID = map[float64]InclinationText{}
 	for _, d := range a._data {
 		a._dataTalkSentenceID[d.TalkSentenceID] = d
 	}

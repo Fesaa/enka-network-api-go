@@ -45,6 +45,7 @@ func (a *ChronicleConclusionAccessor) Raw() ([]ChronicleConclusion, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChronicleConclusionAccessor.LoadData to preload everything
 func (a *ChronicleConclusionAccessor) GroupData() {
+	a._dataMissionID = map[float64]ChronicleConclusion{}
 	for _, d := range a._data {
 		a._dataMissionID[d.MissionID] = d
 	}

@@ -45,6 +45,7 @@ func (a *SummonConstValueAccessor) Raw() ([]SummonConstValue, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SummonConstValueAccessor.LoadData to preload everything
 func (a *SummonConstValueAccessor) GroupData() {
+	a._dataConstValueName = map[string]SummonConstValue{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

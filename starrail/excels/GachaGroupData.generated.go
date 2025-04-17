@@ -49,6 +49,9 @@ func (a *GachaGroupDataAccessor) Raw() ([]GachaGroupData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GachaGroupDataAccessor.LoadData to preload everything
 func (a *GachaGroupDataAccessor) GroupData() {
+	a._dataGroupID = map[float64]GachaGroupData{}
+	a._dataPoolLabelIcon = map[string]GachaGroupData{}
+	a._dataPoolLabelIconSelected = map[string]GachaGroupData{}
 	for _, d := range a._data {
 		a._dataGroupID[d.GroupID] = d
 		a._dataPoolLabelIcon[d.PoolLabelIcon] = d

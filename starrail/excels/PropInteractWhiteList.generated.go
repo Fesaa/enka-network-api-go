@@ -43,6 +43,7 @@ func (a *PropInteractWhiteListAccessor) Raw() ([]PropInteractWhiteList, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PropInteractWhiteListAccessor.LoadData to preload everything
 func (a *PropInteractWhiteListAccessor) GroupData() {
+	a._dataPropID = map[float64]PropInteractWhiteList{}
 	for _, d := range a._data {
 		a._dataPropID[d.PropID] = d
 	}

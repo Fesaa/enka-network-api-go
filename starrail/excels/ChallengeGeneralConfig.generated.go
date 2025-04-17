@@ -58,6 +58,9 @@ func (a *ChallengeGeneralConfigAccessor) Raw() ([]ChallengeGeneralConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeGeneralConfigAccessor.LoadData to preload everything
 func (a *ChallengeGeneralConfigAccessor) GroupData() {
+	a._dataChallengeGroupType = map[string]ChallengeGeneralConfig{}
+	a._dataGotoID = map[float64]ChallengeGeneralConfig{}
+	a._dataTabImgPath = map[string]ChallengeGeneralConfig{}
 	for _, d := range a._data {
 		a._dataChallengeGroupType[d.ChallengeGroupType] = d
 		a._dataGotoID[d.GotoID] = d

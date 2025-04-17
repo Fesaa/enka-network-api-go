@@ -45,6 +45,8 @@ func (a *ChimeraMotionAccessor) Raw() ([]ChimeraMotion, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraMotionAccessor.LoadData to preload everything
 func (a *ChimeraMotionAccessor) GroupData() {
+	a._dataMotionID = map[float64]ChimeraMotion{}
+	a._dataMotionKey = map[string]ChimeraMotion{}
 	for _, d := range a._data {
 		a._dataMotionID[d.MotionID] = d
 		a._dataMotionKey[d.MotionKey] = d

@@ -50,6 +50,7 @@ func (a *TreasureDungeonGridBuffAccessor) Raw() ([]TreasureDungeonGridBuff, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TreasureDungeonGridBuffAccessor.LoadData to preload everything
 func (a *TreasureDungeonGridBuffAccessor) GroupData() {
+	a._dataGridBuffID = map[float64]TreasureDungeonGridBuff{}
 	for _, d := range a._data {
 		a._dataGridBuffID[d.GridBuffID] = d
 	}

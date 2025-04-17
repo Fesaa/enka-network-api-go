@@ -58,6 +58,11 @@ func (a *AetherDividePassiveSkillAccessor) Raw() ([]AetherDividePassiveSkill, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDividePassiveSkillAccessor.LoadData to preload everything
 func (a *AetherDividePassiveSkillAccessor) GroupData() {
+	a._dataAbilityName = map[string]AetherDividePassiveSkill{}
+	a._dataItemDescription = map[string]AetherDividePassiveSkill{}
+	a._dataItemID = map[float64]AetherDividePassiveSkill{}
+	a._dataPassiveSkillDescription = map[string]AetherDividePassiveSkill{}
+	a._dataPassiveSkillName = map[string]AetherDividePassiveSkill{}
 	for _, d := range a._data {
 		a._dataAbilityName[d.AbilityName] = d
 		a._dataItemDescription[d.ItemDescription] = d

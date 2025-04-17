@@ -46,6 +46,7 @@ func (a *ItemComefromLimitAccessor) Raw() ([]ItemComefromLimit, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemComefromLimitAccessor.LoadData to preload everything
 func (a *ItemComefromLimitAccessor) GroupData() {
+	a._dataComefromID = map[float64]ItemComefromLimit{}
 	for _, d := range a._data {
 		a._dataComefromID[d.ComefromID] = d
 	}

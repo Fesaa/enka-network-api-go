@@ -47,6 +47,7 @@ func (a *ConvinceGameplayNPCAccessor) Raw() ([]ConvinceGameplayNPC, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ConvinceGameplayNPCAccessor.LoadData to preload everything
 func (a *ConvinceGameplayNPCAccessor) GroupData() {
+	a._dataID = map[float64]ConvinceGameplayNPC{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

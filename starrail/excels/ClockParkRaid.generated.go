@@ -47,6 +47,9 @@ func (a *ClockParkRaidAccessor) Raw() ([]ClockParkRaid, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkRaidAccessor.LoadData to preload everything
 func (a *ClockParkRaidAccessor) GroupData() {
+	a._dataRaidID = map[float64]ClockParkRaid{}
+	a._dataRaidMapinfo = map[float64]ClockParkRaid{}
+	a._dataRaidUnlockProgress = map[float64]ClockParkRaid{}
 	for _, d := range a._data {
 		a._dataRaidID[d.RaidID] = d
 		a._dataRaidMapinfo[d.RaidMapinfo] = d

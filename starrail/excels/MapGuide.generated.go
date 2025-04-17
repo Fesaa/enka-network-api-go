@@ -51,6 +51,9 @@ func (a *MapGuideAccessor) Raw() ([]MapGuide, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MapGuideAccessor.LoadData to preload everything
 func (a *MapGuideAccessor) GroupData() {
+	a._dataID = map[float64]MapGuide{}
+	a._dataSheetID = map[float64]MapGuide{}
+	a._dataSheetType = map[float64]MapGuide{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataSheetID[d.SheetID] = d

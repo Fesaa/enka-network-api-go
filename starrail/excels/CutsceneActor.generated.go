@@ -47,6 +47,8 @@ func (a *CutsceneActorAccessor) Raw() ([]CutsceneActor, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with CutsceneActorAccessor.LoadData to preload everything
 func (a *CutsceneActorAccessor) GroupData() {
+	a._dataActorID = map[string]CutsceneActor{}
+	a._dataActorModelPath = map[string]CutsceneActor{}
 	for _, d := range a._data {
 		a._dataActorID[d.ActorID] = d
 		a._dataActorModelPath[d.ActorModelPath] = d

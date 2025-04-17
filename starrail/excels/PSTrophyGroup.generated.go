@@ -45,6 +45,7 @@ func (a *PSTrophyGroupAccessor) Raw() ([]PSTrophyGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PSTrophyGroupAccessor.LoadData to preload everything
 func (a *PSTrophyGroupAccessor) GroupData() {
+	a._dataPSTrophyGroup = map[float64]PSTrophyGroup{}
 	for _, d := range a._data {
 		a._dataPSTrophyGroup[d.PSTrophyGroup] = d
 	}

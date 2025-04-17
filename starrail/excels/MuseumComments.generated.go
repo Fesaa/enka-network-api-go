@@ -49,6 +49,7 @@ func (a *MuseumCommentsAccessor) Raw() ([]MuseumComments, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumCommentsAccessor.LoadData to preload everything
 func (a *MuseumCommentsAccessor) GroupData() {
+	a._dataCommentID = map[float64]MuseumComments{}
 	for _, d := range a._data {
 		a._dataCommentID[d.CommentID] = d
 	}

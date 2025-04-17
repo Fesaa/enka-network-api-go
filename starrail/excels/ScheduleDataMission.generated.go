@@ -45,6 +45,7 @@ func (a *ScheduleDataMissionAccessor) Raw() ([]ScheduleDataMission, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ScheduleDataMissionAccessor.LoadData to preload everything
 func (a *ScheduleDataMissionAccessor) GroupData() {
+	a._dataID = map[float64]ScheduleDataMission{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

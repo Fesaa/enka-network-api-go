@@ -48,6 +48,7 @@ func (a *ItemRecycleAccessor) Raw() ([]ItemRecycle, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemRecycleAccessor.LoadData to preload everything
 func (a *ItemRecycleAccessor) GroupData() {
+	a._dataItemID = map[float64]ItemRecycle{}
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
 	}

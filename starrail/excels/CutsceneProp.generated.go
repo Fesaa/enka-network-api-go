@@ -47,6 +47,8 @@ func (a *CutscenePropAccessor) Raw() ([]CutsceneProp, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with CutscenePropAccessor.LoadData to preload everything
 func (a *CutscenePropAccessor) GroupData() {
+	a._dataPropID = map[string]CutsceneProp{}
+	a._dataPropModelPath = map[string]CutsceneProp{}
 	for _, d := range a._data {
 		a._dataPropID[d.PropID] = d
 		a._dataPropModelPath[d.PropModelPath] = d

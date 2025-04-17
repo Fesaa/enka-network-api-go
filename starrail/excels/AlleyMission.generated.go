@@ -47,6 +47,7 @@ func (a *AlleyMissionAccessor) Raw() ([]AlleyMission, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyMissionAccessor.LoadData to preload everything
 func (a *AlleyMissionAccessor) GroupData() {
+	a._dataMissionID = map[float64]AlleyMission{}
 	for _, d := range a._data {
 		a._dataMissionID[d.MissionID] = d
 	}

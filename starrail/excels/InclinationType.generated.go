@@ -43,6 +43,7 @@ func (a *InclinationTypeAccessor) Raw() ([]InclinationType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InclinationTypeAccessor.LoadData to preload everything
 func (a *InclinationTypeAccessor) GroupData() {
+	a._dataInclinationTypeID = map[float64]InclinationType{}
 	for _, d := range a._data {
 		a._dataInclinationTypeID[d.InclinationTypeID] = d
 	}

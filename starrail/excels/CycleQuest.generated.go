@@ -52,6 +52,7 @@ func (a *CycleQuestAccessor) Raw() ([]CycleQuest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with CycleQuestAccessor.LoadData to preload everything
 func (a *CycleQuestAccessor) GroupData() {
+	a._dataCycleID = map[float64]CycleQuest{}
 	for _, d := range a._data {
 		a._dataCycleID[d.CycleID] = d
 	}

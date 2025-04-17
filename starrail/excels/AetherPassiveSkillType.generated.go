@@ -46,6 +46,8 @@ func (a *AetherPassiveSkillTypeAccessor) Raw() ([]AetherPassiveSkillType, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherPassiveSkillTypeAccessor.LoadData to preload everything
 func (a *AetherPassiveSkillTypeAccessor) GroupData() {
+	a._dataIconPath = map[string]AetherPassiveSkillType{}
+	a._dataName = map[string]AetherPassiveSkillType{}
 	for _, d := range a._data {
 		a._dataIconPath[d.IconPath] = d
 		a._dataName[d.Name] = d

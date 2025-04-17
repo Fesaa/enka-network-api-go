@@ -47,6 +47,9 @@ func (a *ScheduleDataBattlePassAccessor) Raw() ([]ScheduleDataBattlePass, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ScheduleDataBattlePassAccessor.LoadData to preload everything
 func (a *ScheduleDataBattlePassAccessor) GroupData() {
+	a._dataBeginTime = map[string]ScheduleDataBattlePass{}
+	a._dataEndTime = map[string]ScheduleDataBattlePass{}
+	a._dataID = map[float64]ScheduleDataBattlePass{}
 	for _, d := range a._data {
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d

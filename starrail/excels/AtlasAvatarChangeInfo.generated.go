@@ -49,6 +49,10 @@ func (a *AtlasAvatarChangeInfoAccessor) Raw() ([]AtlasAvatarChangeInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AtlasAvatarChangeInfoAccessor.LoadData to preload everything
 func (a *AtlasAvatarChangeInfoAccessor) GroupData() {
+	a._dataCCOFCKBMMMI = map[float64]AtlasAvatarChangeInfo{}
+	a._dataDJPCAIKIONP = map[float64]AtlasAvatarChangeInfo{}
+	a._dataEBBHGBKEPAA = map[float64]AtlasAvatarChangeInfo{}
+	a._dataOELNFIJLCOL = map[float64]AtlasAvatarChangeInfo{}
 	for _, d := range a._data {
 		a._dataCCOFCKBMMMI[d.CCOFCKBMMMI] = d
 		a._dataDJPCAIKIONP[d.DJPCAIKIONP] = d

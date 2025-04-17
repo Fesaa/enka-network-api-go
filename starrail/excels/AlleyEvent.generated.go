@@ -65,6 +65,8 @@ func (a *AlleyEventAccessor) Raw() ([]AlleyEvent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyEventAccessor.LoadData to preload everything
 func (a *AlleyEventAccessor) GroupData() {
+	a._dataEventID = map[float64]AlleyEvent{}
+	a._dataEventPriority = map[float64]AlleyEvent{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 		a._dataEventPriority[d.EventPriority] = d

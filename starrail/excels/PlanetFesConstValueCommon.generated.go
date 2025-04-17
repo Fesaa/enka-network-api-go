@@ -45,6 +45,7 @@ func (a *PlanetFesConstValueCommonAccessor) Raw() ([]PlanetFesConstValueCommon, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesConstValueCommonAccessor.LoadData to preload everything
 func (a *PlanetFesConstValueCommonAccessor) GroupData() {
+	a._dataConstValueName = map[string]PlanetFesConstValueCommon{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

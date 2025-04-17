@@ -46,6 +46,8 @@ func (a *RogueNousStoryRewardAccessor) Raw() ([]RogueNousStoryReward, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNousStoryRewardAccessor.LoadData to preload everything
 func (a *RogueNousStoryRewardAccessor) GroupData() {
+	a._dataMainStoryReward = map[float64]RogueNousStoryReward{}
+	a._dataQuestID = map[float64]RogueNousStoryReward{}
 	for _, d := range a._data {
 		a._dataMainStoryReward[d.MainStoryReward] = d
 		a._dataQuestID[d.QuestID] = d

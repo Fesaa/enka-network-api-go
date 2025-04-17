@@ -44,6 +44,7 @@ func (a *ConstValueRogueAccessor) Raw() ([]ConstValueRogue, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ConstValueRogueAccessor.LoadData to preload everything
 func (a *ConstValueRogueAccessor) GroupData() {
+	a._dataConstRogueName = map[string]ConstValueRogue{}
 	for _, d := range a._data {
 		a._dataConstRogueName[d.ConstRogueName] = d
 	}

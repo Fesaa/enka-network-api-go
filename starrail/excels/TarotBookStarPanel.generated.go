@@ -44,6 +44,7 @@ func (a *TarotBookStarPanelAccessor) Raw() ([]TarotBookStarPanel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TarotBookStarPanelAccessor.LoadData to preload everything
 func (a *TarotBookStarPanelAccessor) GroupData() {
+	a._dataPosition = map[float64]TarotBookStarPanel{}
 	for _, d := range a._data {
 		a._dataPosition[d.Position] = d
 	}

@@ -45,6 +45,7 @@ func (a *TrainPartyStatusRankAccessor) Raw() ([]TrainPartyStatusRank, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyStatusRankAccessor.LoadData to preload everything
 func (a *TrainPartyStatusRankAccessor) GroupData() {
+	a._dataRank = map[float64]TrainPartyStatusRank{}
 	for _, d := range a._data {
 		a._dataRank[d.Rank] = d
 	}

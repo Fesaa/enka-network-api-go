@@ -45,6 +45,7 @@ func (a *MissionGotoConfigAccessor) Raw() ([]MissionGotoConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MissionGotoConfigAccessor.LoadData to preload everything
 func (a *MissionGotoConfigAccessor) GroupData() {
+	a._dataGotoID = map[float64]MissionGotoConfig{}
 	for _, d := range a._data {
 		a._dataGotoID[d.GotoID] = d
 	}

@@ -46,6 +46,8 @@ func (a *RogueAdventureRoomAccessor) Raw() ([]RogueAdventureRoom, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueAdventureRoomAccessor.LoadData to preload everything
 func (a *RogueAdventureRoomAccessor) GroupData() {
+	a._dataParamGroupID = map[float64]RogueAdventureRoom{}
+	a._dataRoomID = map[float64]RogueAdventureRoom{}
 	for _, d := range a._data {
 		a._dataParamGroupID[d.ParamGroupID] = d
 		a._dataRoomID[d.RoomID] = d

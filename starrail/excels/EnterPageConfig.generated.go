@@ -43,6 +43,7 @@ func (a *EnterPageConfigAccessor) Raw() ([]EnterPageConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EnterPageConfigAccessor.LoadData to preload everything
 func (a *EnterPageConfigAccessor) GroupData() {
+	a._dataKey = map[string]EnterPageConfig{}
 	for _, d := range a._data {
 		a._dataKey[d.Key] = d
 	}

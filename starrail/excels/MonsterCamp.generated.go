@@ -50,6 +50,9 @@ func (a *MonsterCampAccessor) Raw() ([]MonsterCamp, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonsterCampAccessor.LoadData to preload everything
 func (a *MonsterCampAccessor) GroupData() {
+	a._dataID = map[float64]MonsterCamp{}
+	a._dataIconPath = map[string]MonsterCamp{}
+	a._dataSortID = map[float64]MonsterCamp{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d

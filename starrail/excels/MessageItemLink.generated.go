@@ -49,6 +49,8 @@ func (a *MessageItemLinkAccessor) Raw() ([]MessageItemLink, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MessageItemLinkAccessor.LoadData to preload everything
 func (a *MessageItemLinkAccessor) GroupData() {
+	a._dataID = map[float64]MessageItemLink{}
+	a._dataImagePath = map[string]MessageItemLink{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataImagePath[d.ImagePath] = d

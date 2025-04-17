@@ -47,6 +47,7 @@ func (a *BattleCollegeAimListAccessor) Raw() ([]BattleCollegeAimList, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattleCollegeAimListAccessor.LoadData to preload everything
 func (a *BattleCollegeAimListAccessor) GroupData() {
+	a._dataAimID = map[float64]BattleCollegeAimList{}
 	for _, d := range a._data {
 		a._dataAimID[d.AimID] = d
 	}

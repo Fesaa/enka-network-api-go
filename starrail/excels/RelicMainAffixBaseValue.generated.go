@@ -46,6 +46,7 @@ func (a *RelicMainAffixBaseValueAccessor) Raw() ([]RelicMainAffixBaseValue, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RelicMainAffixBaseValueAccessor.LoadData to preload everything
 func (a *RelicMainAffixBaseValueAccessor) GroupData() {
+	a._dataRelicMainAffix = map[string]RelicMainAffixBaseValue{}
 	for _, d := range a._data {
 		a._dataRelicMainAffix[d.RelicMainAffix] = d
 	}

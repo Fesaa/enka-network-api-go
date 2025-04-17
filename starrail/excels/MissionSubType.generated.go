@@ -44,6 +44,7 @@ func (a *MissionSubTypeAccessor) Raw() ([]MissionSubType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MissionSubTypeAccessor.LoadData to preload everything
 func (a *MissionSubTypeAccessor) GroupData() {
+	a._dataTypePriority = map[float64]MissionSubType{}
 	for _, d := range a._data {
 		a._dataTypePriority[d.TypePriority] = d
 	}

@@ -45,6 +45,8 @@ func (a *GameplayGuideConstValueAccessor) Raw() ([]GameplayGuideConstValue, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GameplayGuideConstValueAccessor.LoadData to preload everything
 func (a *GameplayGuideConstValueAccessor) GroupData() {
+	a._dataGameplayGuideConstValueName = map[string]GameplayGuideConstValue{}
+	a._dataValue = map[string]GameplayGuideConstValue{}
 	for _, d := range a._data {
 		a._dataGameplayGuideConstValueName[d.GameplayGuideConstValueName] = d
 		a._dataValue[d.Value] = d

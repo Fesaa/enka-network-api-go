@@ -60,6 +60,7 @@ func (a *ShopConfigAccessor) Raw() ([]ShopConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ShopConfigAccessor.LoadData to preload everything
 func (a *ShopConfigAccessor) GroupData() {
+	a._dataShopID = map[float64]ShopConfig{}
 	for _, d := range a._data {
 		a._dataShopID[d.ShopID] = d
 	}

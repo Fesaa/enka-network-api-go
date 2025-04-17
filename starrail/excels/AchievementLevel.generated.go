@@ -46,6 +46,8 @@ func (a *AchievementLevelAccessor) Raw() ([]AchievementLevel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AchievementLevelAccessor.LoadData to preload everything
 func (a *AchievementLevelAccessor) GroupData() {
+	a._dataCount = map[float64]AchievementLevel{}
+	a._dataLevel = map[float64]AchievementLevel{}
 	for _, d := range a._data {
 		a._dataCount[d.Count] = d
 		a._dataLevel[d.Level] = d

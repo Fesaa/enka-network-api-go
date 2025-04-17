@@ -47,6 +47,8 @@ func (a *RogueCommonModeTitleAccessor) Raw() ([]RogueCommonModeTitle, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueCommonModeTitleAccessor.LoadData to preload everything
 func (a *RogueCommonModeTitleAccessor) GroupData() {
+	a._dataSubMode = map[string]RogueCommonModeTitle{}
+	a._dataTitleIconPath = map[string]RogueCommonModeTitle{}
 	for _, d := range a._data {
 		a._dataSubMode[d.SubMode] = d
 		a._dataTitleIconPath[d.TitleIconPath] = d

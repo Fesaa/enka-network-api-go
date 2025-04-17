@@ -45,6 +45,7 @@ func (a *ExpeditionAssignerAccessor) Raw() ([]ExpeditionAssigner, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ExpeditionAssignerAccessor.LoadData to preload everything
 func (a *ExpeditionAssignerAccessor) GroupData() {
+	a._dataAssignerID = map[float64]ExpeditionAssigner{}
 	for _, d := range a._data {
 		a._dataAssignerID[d.AssignerID] = d
 	}

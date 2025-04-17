@@ -51,6 +51,11 @@ func (a *BoxingClubNatureConfigAccessor) Raw() ([]BoxingClubNatureConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BoxingClubNatureConfigAccessor.LoadData to preload everything
 func (a *BoxingClubNatureConfigAccessor) GroupData() {
+	a._dataBoxingBuffBackground = map[string]BoxingClubNatureConfig{}
+	a._dataBoxingBuffIcon = map[string]BoxingClubNatureConfig{}
+	a._dataBoxingBuffIconBackground = map[string]BoxingClubNatureConfig{}
+	a._dataBoxingClubNatureType = map[string]BoxingClubNatureConfig{}
+	a._dataNatureIconBackGround = map[string]BoxingClubNatureConfig{}
 	for _, d := range a._data {
 		a._dataBoxingBuffBackground[d.BoxingBuffBackground] = d
 		a._dataBoxingBuffIcon[d.BoxingBuffIcon] = d

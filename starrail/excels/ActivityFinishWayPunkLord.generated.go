@@ -45,6 +45,7 @@ func (a *ActivityFinishWayPunkLordAccessor) Raw() ([]ActivityFinishWayPunkLord, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityFinishWayPunkLordAccessor.LoadData to preload everything
 func (a *ActivityFinishWayPunkLordAccessor) GroupData() {
+	a._dataFinishID = map[float64]ActivityFinishWayPunkLord{}
 	for _, d := range a._data {
 		a._dataFinishID[d.FinishID] = d
 	}

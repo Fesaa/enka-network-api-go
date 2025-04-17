@@ -53,6 +53,10 @@ func (a *GuideChallengeTabAccessor) Raw() ([]GuideChallengeTab, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GuideChallengeTabAccessor.LoadData to preload everything
 func (a *GuideChallengeTabAccessor) GroupData() {
+	a._dataGuideType = map[string]GuideChallengeTab{}
+	a._dataID = map[float64]GuideChallengeTab{}
+	a._dataIntroDataID = map[float64]GuideChallengeTab{}
+	a._dataPriority = map[float64]GuideChallengeTab{}
 	for _, d := range a._data {
 		a._dataGuideType[d.GuideType] = d
 		a._dataID[d.ID] = d

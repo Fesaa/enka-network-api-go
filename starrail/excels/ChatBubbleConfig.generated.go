@@ -45,6 +45,7 @@ func (a *ChatBubbleConfigAccessor) Raw() ([]ChatBubbleConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChatBubbleConfigAccessor.LoadData to preload everything
 func (a *ChatBubbleConfigAccessor) GroupData() {
+	a._dataID = map[float64]ChatBubbleConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

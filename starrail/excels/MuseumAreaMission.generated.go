@@ -48,6 +48,8 @@ func (a *MuseumAreaMissionAccessor) Raw() ([]MuseumAreaMission, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumAreaMissionAccessor.LoadData to preload everything
 func (a *MuseumAreaMissionAccessor) GroupData() {
+	a._dataAreaID = map[float64]MuseumAreaMission{}
+	a._dataMissionID = map[float64]MuseumAreaMission{}
 	for _, d := range a._data {
 		a._dataAreaID[d.AreaID] = d
 		a._dataMissionID[d.MissionID] = d

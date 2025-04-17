@@ -47,6 +47,7 @@ func (a *BattleAchievementAccessor) Raw() ([]BattleAchievement, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattleAchievementAccessor.LoadData to preload everything
 func (a *BattleAchievementAccessor) GroupData() {
+	a._dataBattleAchievementID = map[float64]BattleAchievement{}
 	for _, d := range a._data {
 		a._dataBattleAchievementID[d.BattleAchievementID] = d
 	}

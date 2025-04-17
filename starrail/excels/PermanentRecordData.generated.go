@@ -45,6 +45,8 @@ func (a *PermanentRecordDataAccessor) Raw() ([]PermanentRecordData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PermanentRecordDataAccessor.LoadData to preload everything
 func (a *PermanentRecordDataAccessor) GroupData() {
+	a._dataRecordID = map[float64]PermanentRecordData{}
+	a._dataRefreshID = map[float64]PermanentRecordData{}
 	for _, d := range a._data {
 		a._dataRecordID[d.RecordID] = d
 		a._dataRefreshID[d.RefreshID] = d

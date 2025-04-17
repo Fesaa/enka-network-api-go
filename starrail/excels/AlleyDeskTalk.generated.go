@@ -50,6 +50,8 @@ func (a *AlleyDeskTalkAccessor) Raw() ([]AlleyDeskTalk, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyDeskTalkAccessor.LoadData to preload everything
 func (a *AlleyDeskTalkAccessor) GroupData() {
+	a._dataTalkID = map[float64]AlleyDeskTalk{}
+	a._dataTextIDList = map[string]AlleyDeskTalk{}
 	for _, d := range a._data {
 		a._dataTalkID[d.TalkID] = d
 		a._dataTextIDList[d.TextIDList] = d

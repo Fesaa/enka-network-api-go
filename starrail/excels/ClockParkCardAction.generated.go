@@ -53,6 +53,7 @@ func (a *ClockParkCardActionAccessor) Raw() ([]ClockParkCardAction, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkCardActionAccessor.LoadData to preload everything
 func (a *ClockParkCardActionAccessor) GroupData() {
+	a._dataCardActionID = map[float64]ClockParkCardAction{}
 	for _, d := range a._data {
 		a._dataCardActionID[d.CardActionID] = d
 	}

@@ -45,6 +45,7 @@ func (a *RogueTournMiscDisplayAccessor) Raw() ([]RogueTournMiscDisplay, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournMiscDisplayAccessor.LoadData to preload everything
 func (a *RogueTournMiscDisplayAccessor) GroupData() {
+	a._dataDisplayID = map[float64]RogueTournMiscDisplay{}
 	for _, d := range a._data {
 		a._dataDisplayID[d.DisplayID] = d
 	}

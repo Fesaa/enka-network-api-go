@@ -45,6 +45,7 @@ func (a *PlanetFesQuestGroupAccessor) Raw() ([]PlanetFesQuestGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesQuestGroupAccessor.LoadData to preload everything
 func (a *PlanetFesQuestGroupAccessor) GroupData() {
+	a._dataGroupID = map[float64]PlanetFesQuestGroup{}
 	for _, d := range a._data {
 		a._dataGroupID[d.GroupID] = d
 	}

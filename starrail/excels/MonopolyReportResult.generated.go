@@ -53,6 +53,8 @@ func (a *MonopolyReportResultAccessor) Raw() ([]MonopolyReportResult, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyReportResultAccessor.LoadData to preload everything
 func (a *MonopolyReportResultAccessor) GroupData() {
+	a._dataFigurePrefabPath = map[string]MonopolyReportResult{}
+	a._dataID = map[float64]MonopolyReportResult{}
 	for _, d := range a._data {
 		a._dataFigurePrefabPath[d.FigurePrefabPath] = d
 		a._dataID[d.ID] = d

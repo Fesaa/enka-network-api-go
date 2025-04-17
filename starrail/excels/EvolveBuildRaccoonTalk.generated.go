@@ -47,6 +47,8 @@ func (a *EvolveBuildRaccoonTalkAccessor) Raw() ([]EvolveBuildRaccoonTalk, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildRaccoonTalkAccessor.LoadData to preload everything
 func (a *EvolveBuildRaccoonTalkAccessor) GroupData() {
+	a._dataRaccoonPicPath = map[string]EvolveBuildRaccoonTalk{}
+	a._dataRaccoonState = map[string]EvolveBuildRaccoonTalk{}
 	for _, d := range a._data {
 		a._dataRaccoonPicPath[d.RaccoonPicPath] = d
 		a._dataRaccoonState[d.RaccoonState] = d

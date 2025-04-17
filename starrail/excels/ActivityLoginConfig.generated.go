@@ -46,6 +46,8 @@ func (a *ActivityLoginConfigAccessor) Raw() ([]ActivityLoginConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityLoginConfigAccessor.LoadData to preload everything
 func (a *ActivityLoginConfigAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]ActivityLoginConfig{}
+	a._dataID = map[float64]ActivityLoginConfig{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataID[d.ID] = d

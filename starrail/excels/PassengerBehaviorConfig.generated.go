@@ -50,6 +50,9 @@ func (a *PassengerBehaviorConfigAccessor) Raw() ([]PassengerBehaviorConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PassengerBehaviorConfigAccessor.LoadData to preload everything
 func (a *PassengerBehaviorConfigAccessor) GroupData() {
+	a._dataAnchorID = map[float64]PassengerBehaviorConfig{}
+	a._dataBehaviorID = map[float64]PassengerBehaviorConfig{}
+	a._dataNPCOverrideConfig = map[string]PassengerBehaviorConfig{}
 	for _, d := range a._data {
 		a._dataAnchorID[d.AnchorID] = d
 		a._dataBehaviorID[d.BehaviorID] = d

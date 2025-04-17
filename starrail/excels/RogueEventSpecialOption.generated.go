@@ -47,6 +47,9 @@ func (a *RogueEventSpecialOptionAccessor) Raw() ([]RogueEventSpecialOption, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueEventSpecialOptionAccessor.LoadData to preload everything
 func (a *RogueEventSpecialOptionAccessor) GroupData() {
+	a._dataAeonFigure = map[string]RogueEventSpecialOption{}
+	a._dataAeonIcon = map[string]RogueEventSpecialOption{}
+	a._dataSpecialOptionID = map[float64]RogueEventSpecialOption{}
 	for _, d := range a._data {
 		a._dataAeonFigure[d.AeonFigure] = d
 		a._dataAeonIcon[d.AeonIcon] = d

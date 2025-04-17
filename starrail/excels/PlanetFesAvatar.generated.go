@@ -69,6 +69,15 @@ func (a *PlanetFesAvatarAccessor) Raw() ([]PlanetFesAvatar, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesAvatarAccessor.LoadData to preload everything
 func (a *PlanetFesAvatarAccessor) GroupData() {
+	a._dataAnimConfig = map[string]PlanetFesAvatar{}
+	a._dataBody = map[string]PlanetFesAvatar{}
+	a._dataCargoIcon = map[string]PlanetFesAvatar{}
+	a._dataDescription = map[string]PlanetFesAvatar{}
+	a._dataHeadIcon = map[string]PlanetFesAvatar{}
+	a._dataID = map[float64]PlanetFesAvatar{}
+	a._dataItemID = map[float64]PlanetFesAvatar{}
+	a._dataMidIcon = map[string]PlanetFesAvatar{}
+	a._dataMiniIcon = map[string]PlanetFesAvatar{}
 	for _, d := range a._data {
 		a._dataAnimConfig[d.AnimConfig] = d
 		a._dataBody[d.Body] = d

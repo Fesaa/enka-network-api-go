@@ -53,6 +53,12 @@ func (a *PlanetFesGameConfigAccessor) Raw() ([]PlanetFesGameConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesGameConfigAccessor.LoadData to preload everything
 func (a *PlanetFesGameConfigAccessor) GroupData() {
+	a._dataGameID = map[string]PlanetFesGameConfig{}
+	a._dataLandID = map[float64]PlanetFesGameConfig{}
+	a._dataParamInt3 = map[float64]PlanetFesGameConfig{}
+	a._dataParamStr1 = map[string]PlanetFesGameConfig{}
+	a._dataRaiseCurveID = map[float64]PlanetFesGameConfig{}
+	a._dataRewardPool = map[float64]PlanetFesGameConfig{}
 	for _, d := range a._data {
 		a._dataGameID[d.GameID] = d
 		a._dataLandID[d.LandID] = d

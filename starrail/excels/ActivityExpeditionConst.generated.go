@@ -45,6 +45,7 @@ func (a *ActivityExpeditionConstAccessor) Raw() ([]ActivityExpeditionConst, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityExpeditionConstAccessor.LoadData to preload everything
 func (a *ActivityExpeditionConstAccessor) GroupData() {
+	a._dataConstValueName = map[string]ActivityExpeditionConst{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

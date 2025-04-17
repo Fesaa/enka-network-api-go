@@ -50,6 +50,7 @@ func (a *SubMapConfigAccessor) Raw() ([]SubMapConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SubMapConfigAccessor.LoadData to preload everything
 func (a *SubMapConfigAccessor) GroupData() {
+	a._dataID = map[float64]SubMapConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

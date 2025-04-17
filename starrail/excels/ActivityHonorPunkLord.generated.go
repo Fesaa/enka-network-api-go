@@ -47,6 +47,8 @@ func (a *ActivityHonorPunkLordAccessor) Raw() ([]ActivityHonorPunkLord, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityHonorPunkLordAccessor.LoadData to preload everything
 func (a *ActivityHonorPunkLordAccessor) GroupData() {
+	a._dataDisplayPriority = map[float64]ActivityHonorPunkLord{}
+	a._dataHonorID = map[float64]ActivityHonorPunkLord{}
 	for _, d := range a._data {
 		a._dataDisplayPriority[d.DisplayPriority] = d
 		a._dataHonorID[d.HonorID] = d

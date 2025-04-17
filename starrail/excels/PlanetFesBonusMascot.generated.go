@@ -44,6 +44,7 @@ func (a *PlanetFesBonusMascotAccessor) Raw() ([]PlanetFesBonusMascot, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesBonusMascotAccessor.LoadData to preload everything
 func (a *PlanetFesBonusMascotAccessor) GroupData() {
+	a._dataID = map[float64]PlanetFesBonusMascot{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

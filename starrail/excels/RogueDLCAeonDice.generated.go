@@ -61,6 +61,13 @@ func (a *RogueDLCAeonDiceAccessor) Raw() ([]RogueDLCAeonDice, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCAeonDiceAccessor.LoadData to preload everything
 func (a *RogueDLCAeonDiceAccessor) GroupData() {
+	a._dataAeonDiceID = map[float64]RogueDLCAeonDice{}
+	a._dataDiceIcon = map[string]RogueDLCAeonDice{}
+	a._dataDiceModel = map[string]RogueDLCAeonDice{}
+	a._dataSoundReRoll = map[string]RogueDLCAeonDice{}
+	a._dataSoundRoll = map[string]RogueDLCAeonDice{}
+	a._dataSoundSuspensionStart = map[string]RogueDLCAeonDice{}
+	a._dataSoundSuspensionStop = map[string]RogueDLCAeonDice{}
 	for _, d := range a._data {
 		a._dataAeonDiceID[d.AeonDiceID] = d
 		a._dataDiceIcon[d.DiceIcon] = d

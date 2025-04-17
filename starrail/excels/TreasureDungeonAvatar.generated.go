@@ -48,6 +48,7 @@ func (a *TreasureDungeonAvatarAccessor) Raw() ([]TreasureDungeonAvatar, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TreasureDungeonAvatarAccessor.LoadData to preload everything
 func (a *TreasureDungeonAvatarAccessor) GroupData() {
+	a._dataAvatarPickID = map[float64]TreasureDungeonAvatar{}
 	for _, d := range a._data {
 		a._dataAvatarPickID[d.AvatarPickID] = d
 	}

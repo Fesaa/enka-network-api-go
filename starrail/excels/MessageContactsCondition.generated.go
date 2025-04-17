@@ -46,6 +46,8 @@ func (a *MessageContactsConditionAccessor) Raw() ([]MessageContactsCondition, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MessageContactsConditionAccessor.LoadData to preload everything
 func (a *MessageContactsConditionAccessor) GroupData() {
+	a._dataFakeContactID = map[float64]MessageContactsCondition{}
+	a._dataID = map[float64]MessageContactsCondition{}
 	for _, d := range a._data {
 		a._dataFakeContactID[d.FakeContactID] = d
 		a._dataID[d.ID] = d

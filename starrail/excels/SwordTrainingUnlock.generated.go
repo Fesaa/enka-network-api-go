@@ -47,6 +47,8 @@ func (a *SwordTrainingUnlockAccessor) Raw() ([]SwordTrainingUnlock, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SwordTrainingUnlockAccessor.LoadData to preload everything
 func (a *SwordTrainingUnlockAccessor) GroupData() {
+	a._dataFinishWayID = map[float64]SwordTrainingUnlock{}
+	a._dataUnlockID = map[float64]SwordTrainingUnlock{}
 	for _, d := range a._data {
 		a._dataFinishWayID[d.FinishWayID] = d
 		a._dataUnlockID[d.UnlockID] = d

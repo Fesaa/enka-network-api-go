@@ -51,6 +51,7 @@ func (a *AlleyShopAccessor) Raw() ([]AlleyShop, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyShopAccessor.LoadData to preload everything
 func (a *AlleyShopAccessor) GroupData() {
+	a._dataShopID = map[float64]AlleyShop{}
 	for _, d := range a._data {
 		a._dataShopID[d.ShopID] = d
 	}

@@ -65,6 +65,13 @@ func (a *MusicRhythmSongAccessor) Raw() ([]MusicRhythmSong, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MusicRhythmSongAccessor.LoadData to preload everything
 func (a *MusicRhythmSongAccessor) GroupData() {
+	a._dataBGMMenuState = map[string]MusicRhythmSong{}
+	a._dataBGMStageState = map[string]MusicRhythmSong{}
+	a._dataGridTransitionTime = map[float64]MusicRhythmSong{}
+	a._dataID = map[float64]MusicRhythmSong{}
+	a._dataMixingWaveMatPath = map[string]MusicRhythmSong{}
+	a._dataPresetEndGrid = map[float64]MusicRhythmSong{}
+	a._dataUnlockTypeParam = map[float64]MusicRhythmSong{}
 	for _, d := range a._data {
 		a._dataBGMMenuState[d.BGMMenuState] = d
 		a._dataBGMStageState[d.BGMStageState] = d

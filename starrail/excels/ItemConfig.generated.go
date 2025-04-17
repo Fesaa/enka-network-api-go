@@ -64,6 +64,7 @@ func (a *ItemConfigAccessor) Raw() ([]ItemConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemConfigAccessor.LoadData to preload everything
 func (a *ItemConfigAccessor) GroupData() {
+	a._dataID = map[float64]ItemConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

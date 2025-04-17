@@ -44,6 +44,7 @@ func (a *ItemDisplaySortAccessor) Raw() ([]ItemDisplaySort, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemDisplaySortAccessor.LoadData to preload everything
 func (a *ItemDisplaySortAccessor) GroupData() {
+	a._dataID = map[float64]ItemDisplaySort{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

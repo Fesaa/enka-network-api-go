@@ -57,6 +57,10 @@ func (a *SilverWolfTabGroupAccessor) Raw() ([]SilverWolfTabGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SilverWolfTabGroupAccessor.LoadData to preload everything
 func (a *SilverWolfTabGroupAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]SilverWolfTabGroup{}
+	a._dataExploreFigurePath = map[string]SilverWolfTabGroup{}
+	a._dataGroupID = map[float64]SilverWolfTabGroup{}
+	a._dataRaidFigurePath = map[string]SilverWolfTabGroup{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataExploreFigurePath[d.ExploreFigurePath] = d

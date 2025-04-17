@@ -44,6 +44,7 @@ func (a *ItemHintGroupAccessor) Raw() ([]ItemHintGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemHintGroupAccessor.LoadData to preload everything
 func (a *ItemHintGroupAccessor) GroupData() {
+	a._dataHOEMANMFHCH = map[string]ItemHintGroup{}
 	for _, d := range a._data {
 		a._dataHOEMANMFHCH[d.HOEMANMFHCH] = d
 	}

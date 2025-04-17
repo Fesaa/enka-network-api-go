@@ -45,6 +45,7 @@ func (a *ClockParkRoundAccessor) Raw() ([]ClockParkRound, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkRoundAccessor.LoadData to preload everything
 func (a *ClockParkRoundAccessor) GroupData() {
+	a._dataRoundID = map[float64]ClockParkRound{}
 	for _, d := range a._data {
 		a._dataRoundID[d.RoundID] = d
 	}

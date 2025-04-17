@@ -54,6 +54,8 @@ func (a *PerformanceDAccessor) Raw() ([]PerformanceD, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PerformanceDAccessor.LoadData to preload everything
 func (a *PerformanceDAccessor) GroupData() {
+	a._dataPerformanceID = map[float64]PerformanceD{}
+	a._dataPerformancePath = map[string]PerformanceD{}
 	for _, d := range a._data {
 		a._dataPerformanceID[d.PerformanceID] = d
 		a._dataPerformancePath[d.PerformancePath] = d

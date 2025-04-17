@@ -45,6 +45,7 @@ func (a *MatchThreeDmgLimitAccessor) Raw() ([]MatchThreeDmgLimit, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeDmgLimitAccessor.LoadData to preload everything
 func (a *MatchThreeDmgLimitAccessor) GroupData() {
+	a._dataRound = map[float64]MatchThreeDmgLimit{}
 	for _, d := range a._data {
 		a._dataRound[d.Round] = d
 	}

@@ -44,6 +44,7 @@ func (a *MonopolyClickContentConfigAccessor) Raw() ([]MonopolyClickContentConfig
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyClickContentConfigAccessor.LoadData to preload everything
 func (a *MonopolyClickContentConfigAccessor) GroupData() {
+	a._dataID = map[float64]MonopolyClickContentConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

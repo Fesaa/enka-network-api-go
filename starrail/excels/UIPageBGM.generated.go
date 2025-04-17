@@ -44,6 +44,7 @@ func (a *UIPageBGMAccessor) Raw() ([]UIPageBGM, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with UIPageBGMAccessor.LoadData to preload everything
 func (a *UIPageBGMAccessor) GroupData() {
+	a._dataPagePrefab = map[string]UIPageBGM{}
 	for _, d := range a._data {
 		a._dataPagePrefab[d.PagePrefab] = d
 	}

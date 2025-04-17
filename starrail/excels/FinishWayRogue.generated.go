@@ -53,6 +53,7 @@ func (a *FinishWayRogueAccessor) Raw() ([]FinishWayRogue, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FinishWayRogueAccessor.LoadData to preload everything
 func (a *FinishWayRogueAccessor) GroupData() {
+	a._dataID = map[float64]FinishWayRogue{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

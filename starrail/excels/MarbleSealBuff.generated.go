@@ -44,6 +44,7 @@ func (a *MarbleSealBuffAccessor) Raw() ([]MarbleSealBuff, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarbleSealBuffAccessor.LoadData to preload everything
 func (a *MarbleSealBuffAccessor) GroupData() {
+	a._dataID = map[float64]MarbleSealBuff{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

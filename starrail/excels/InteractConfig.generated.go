@@ -54,6 +54,7 @@ func (a *InteractConfigAccessor) Raw() ([]InteractConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InteractConfigAccessor.LoadData to preload everything
 func (a *InteractConfigAccessor) GroupData() {
+	a._dataInteractID = map[float64]InteractConfig{}
 	for _, d := range a._data {
 		a._dataInteractID[d.InteractID] = d
 	}

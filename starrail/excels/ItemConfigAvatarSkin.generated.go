@@ -67,6 +67,16 @@ func (a *ItemConfigAvatarSkinAccessor) Raw() ([]ItemConfigAvatarSkin, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemConfigAvatarSkinAccessor.LoadData to preload everything
 func (a *ItemConfigAvatarSkinAccessor) GroupData() {
+	a._dataID = map[float64]ItemConfigAvatarSkin{}
+	a._dataInventoryDisplayTag = map[float64]ItemConfigAvatarSkin{}
+	a._dataItemAvatarIconPath = map[string]ItemConfigAvatarSkin{}
+	a._dataItemCurrencyIconPath = map[string]ItemConfigAvatarSkin{}
+	a._dataItemFigureIconPath = map[string]ItemConfigAvatarSkin{}
+	a._dataItemIconPath = map[string]ItemConfigAvatarSkin{}
+	a._dataItemMainType = map[string]ItemConfigAvatarSkin{}
+	a._dataItemSubType = map[string]ItemConfigAvatarSkin{}
+	a._dataPileLimit = map[float64]ItemConfigAvatarSkin{}
+	a._dataRarity = map[string]ItemConfigAvatarSkin{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataInventoryDisplayTag[d.InventoryDisplayTag] = d

@@ -60,6 +60,12 @@ func (a *ChimeraDataAccessor) Raw() ([]ChimeraData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraDataAccessor.LoadData to preload everything
 func (a *ChimeraDataAccessor) GroupData() {
+	a._dataBody = map[string]ChimeraData{}
+	a._dataChimeraID = map[float64]ChimeraData{}
+	a._dataChimeraIcon = map[string]ChimeraData{}
+	a._dataDataJson = map[string]ChimeraData{}
+	a._dataDisplayID = map[float64]ChimeraData{}
+	a._dataSort = map[float64]ChimeraData{}
 	for _, d := range a._data {
 		a._dataBody[d.Body] = d
 		a._dataChimeraID[d.ChimeraID] = d

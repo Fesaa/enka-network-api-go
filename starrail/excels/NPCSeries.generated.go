@@ -43,6 +43,7 @@ func (a *NPCSeriesAccessor) Raw() ([]NPCSeries, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with NPCSeriesAccessor.LoadData to preload everything
 func (a *NPCSeriesAccessor) GroupData() {
+	a._dataSeriesID = map[float64]NPCSeries{}
 	for _, d := range a._data {
 		a._dataSeriesID[d.SeriesID] = d
 	}

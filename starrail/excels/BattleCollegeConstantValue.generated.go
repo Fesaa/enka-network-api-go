@@ -45,6 +45,7 @@ func (a *BattleCollegeConstantValueAccessor) Raw() ([]BattleCollegeConstantValue
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattleCollegeConstantValueAccessor.LoadData to preload everything
 func (a *BattleCollegeConstantValueAccessor) GroupData() {
+	a._dataConstValueName = map[string]BattleCollegeConstantValue{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

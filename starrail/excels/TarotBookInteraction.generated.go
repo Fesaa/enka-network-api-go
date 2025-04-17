@@ -57,6 +57,9 @@ func (a *TarotBookInteractionAccessor) Raw() ([]TarotBookInteraction, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TarotBookInteractionAccessor.LoadData to preload everything
 func (a *TarotBookInteractionAccessor) GroupData() {
+	a._dataID = map[float64]TarotBookInteraction{}
+	a._dataJsonPath = map[string]TarotBookInteraction{}
+	a._dataPriority = map[float64]TarotBookInteraction{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataJsonPath[d.JsonPath] = d

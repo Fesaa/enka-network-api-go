@@ -53,6 +53,7 @@ func (a *MarbleMatchTitleAccessor) Raw() ([]MarbleMatchTitle, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarbleMatchTitleAccessor.LoadData to preload everything
 func (a *MarbleMatchTitleAccessor) GroupData() {
+	a._dataID = map[float64]MarbleMatchTitle{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

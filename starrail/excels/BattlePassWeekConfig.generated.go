@@ -46,6 +46,8 @@ func (a *BattlePassWeekConfigAccessor) Raw() ([]BattlePassWeekConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattlePassWeekConfigAccessor.LoadData to preload everything
 func (a *BattlePassWeekConfigAccessor) GroupData() {
+	a._dataBPLevelExp = map[float64]BattlePassWeekConfig{}
+	a._dataID = map[float64]BattlePassWeekConfig{}
 	for _, d := range a._data {
 		a._dataBPLevelExp[d.BPLevelExp] = d
 		a._dataID[d.ID] = d

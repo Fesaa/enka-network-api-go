@@ -45,6 +45,8 @@ func (a *AvatarExpItemConfigAccessor) Raw() ([]AvatarExpItemConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarExpItemConfigAccessor.LoadData to preload everything
 func (a *AvatarExpItemConfigAccessor) GroupData() {
+	a._dataExp = map[float64]AvatarExpItemConfig{}
+	a._dataItemID = map[float64]AvatarExpItemConfig{}
 	for _, d := range a._data {
 		a._dataExp[d.Exp] = d
 		a._dataItemID[d.ItemID] = d

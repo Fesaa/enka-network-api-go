@@ -76,6 +76,7 @@ func (a *StageTestConfigAccessor) Raw() ([]StageTestConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StageTestConfigAccessor.LoadData to preload everything
 func (a *StageTestConfigAccessor) GroupData() {
+	a._dataStageID = map[float64]StageTestConfig{}
 	for _, d := range a._data {
 		a._dataStageID[d.StageID] = d
 	}

@@ -45,6 +45,8 @@ func (a *ActivityConstantFightAccessor) Raw() ([]ActivityConstantFight, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityConstantFightAccessor.LoadData to preload everything
 func (a *ActivityConstantFightAccessor) GroupData() {
+	a._dataConstValueName = map[string]ActivityConstantFight{}
+	a._dataValue = map[string]ActivityConstantFight{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 		a._dataValue[d.Value] = d

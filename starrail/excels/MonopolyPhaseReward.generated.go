@@ -47,6 +47,9 @@ func (a *MonopolyPhaseRewardAccessor) Raw() ([]MonopolyPhaseReward, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyPhaseRewardAccessor.LoadData to preload everything
 func (a *MonopolyPhaseRewardAccessor) GroupData() {
+	a._dataPhaseRewardID = map[float64]MonopolyPhaseReward{}
+	a._dataProgressValue = map[float64]MonopolyPhaseReward{}
+	a._dataRewardID = map[float64]MonopolyPhaseReward{}
 	for _, d := range a._data {
 		a._dataPhaseRewardID[d.PhaseRewardID] = d
 		a._dataProgressValue[d.ProgressValue] = d

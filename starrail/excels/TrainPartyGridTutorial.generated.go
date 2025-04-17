@@ -46,6 +46,8 @@ func (a *TrainPartyGridTutorialAccessor) Raw() ([]TrainPartyGridTutorial, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyGridTutorialAccessor.LoadData to preload everything
 func (a *TrainPartyGridTutorialAccessor) GroupData() {
+	a._dataIKFENEEPFKL = map[string]TrainPartyGridTutorial{}
+	a._dataPDPALBOHGAA = map[float64]TrainPartyGridTutorial{}
 	for _, d := range a._data {
 		a._dataIKFENEEPFKL[d.IKFENEEPFKL] = d
 		a._dataPDPALBOHGAA[d.PDPALBOHGAA] = d

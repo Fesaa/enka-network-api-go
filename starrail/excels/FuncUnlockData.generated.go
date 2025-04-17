@@ -49,6 +49,7 @@ func (a *FuncUnlockDataAccessor) Raw() ([]FuncUnlockData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FuncUnlockDataAccessor.LoadData to preload everything
 func (a *FuncUnlockDataAccessor) GroupData() {
+	a._dataUnlockID = map[float64]FuncUnlockData{}
 	for _, d := range a._data {
 		a._dataUnlockID[d.UnlockID] = d
 	}

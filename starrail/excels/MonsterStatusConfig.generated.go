@@ -55,6 +55,8 @@ func (a *MonsterStatusConfigAccessor) Raw() ([]MonsterStatusConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonsterStatusConfigAccessor.LoadData to preload everything
 func (a *MonsterStatusConfigAccessor) GroupData() {
+	a._dataModifierName = map[string]MonsterStatusConfig{}
+	a._dataStatusID = map[float64]MonsterStatusConfig{}
 	for _, d := range a._data {
 		a._dataModifierName[d.ModifierName] = d
 		a._dataStatusID[d.StatusID] = d

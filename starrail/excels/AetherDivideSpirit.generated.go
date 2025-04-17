@@ -87,6 +87,21 @@ func (a *AetherDivideSpiritAccessor) Raw() ([]AetherDivideSpirit, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideSpiritAccessor.LoadData to preload everything
 func (a *AetherDivideSpiritAccessor) GroupData() {
+	a._dataActionAvatarHeadIconPath = map[string]AetherDivideSpirit{}
+	a._dataAtlasAvatarHeadIconPath = map[string]AetherDivideSpirit{}
+	a._dataAvatarID = map[float64]AetherDivideSpirit{}
+	a._dataAvatarSideIconPath = map[string]AetherDivideSpirit{}
+	a._dataDefaultAvatarHeadIconPath = map[string]AetherDivideSpirit{}
+	a._dataDefaultAvatarModelPath = map[string]AetherDivideSpirit{}
+	a._dataExpItemID = map[float64]AetherDivideSpirit{}
+	a._dataJsonPath = map[string]AetherDivideSpirit{}
+	a._dataManikinAvatarModelPath = map[string]AetherDivideSpirit{}
+	a._dataMiddleAvatarHeadIconPath = map[string]AetherDivideSpirit{}
+	a._dataSideAvatarHeadIconPath = map[string]AetherDivideSpirit{}
+	a._dataTeamLeftPrefabPath = map[string]AetherDivideSpirit{}
+	a._dataTeamRightPrefabPath = map[string]AetherDivideSpirit{}
+	a._dataUltraSkillCutInPrefabPath = map[string]AetherDivideSpirit{}
+	a._dataWaitingAvatarHeadIconPath = map[string]AetherDivideSpirit{}
 	for _, d := range a._data {
 		a._dataActionAvatarHeadIconPath[d.ActionAvatarHeadIconPath] = d
 		a._dataAtlasAvatarHeadIconPath[d.AtlasAvatarHeadIconPath] = d

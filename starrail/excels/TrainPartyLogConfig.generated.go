@@ -47,6 +47,8 @@ func (a *TrainPartyLogConfigAccessor) Raw() ([]TrainPartyLogConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyLogConfigAccessor.LoadData to preload everything
 func (a *TrainPartyLogConfigAccessor) GroupData() {
+	a._dataLogType = map[string]TrainPartyLogConfig{}
+	a._dataPriority = map[float64]TrainPartyLogConfig{}
 	for _, d := range a._data {
 		a._dataLogType[d.LogType] = d
 		a._dataPriority[d.Priority] = d

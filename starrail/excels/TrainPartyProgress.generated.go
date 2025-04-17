@@ -52,6 +52,7 @@ func (a *TrainPartyProgressAccessor) Raw() ([]TrainPartyProgress, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyProgressAccessor.LoadData to preload everything
 func (a *TrainPartyProgressAccessor) GroupData() {
+	a._dataProgressID = map[float64]TrainPartyProgress{}
 	for _, d := range a._data {
 		a._dataProgressID[d.ProgressID] = d
 	}

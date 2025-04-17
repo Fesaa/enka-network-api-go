@@ -51,6 +51,7 @@ func (a *PlanetFesBusinessDayAccessor) Raw() ([]PlanetFesBusinessDay, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesBusinessDayAccessor.LoadData to preload everything
 func (a *PlanetFesBusinessDayAccessor) GroupData() {
+	a._dataBusinessDay = map[float64]PlanetFesBusinessDay{}
 	for _, d := range a._data {
 		a._dataBusinessDay[d.BusinessDay] = d
 	}

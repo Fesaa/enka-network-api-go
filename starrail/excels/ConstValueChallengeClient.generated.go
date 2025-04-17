@@ -45,6 +45,7 @@ func (a *ConstValueChallengeClientAccessor) Raw() ([]ConstValueChallengeClient, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ConstValueChallengeClientAccessor.LoadData to preload everything
 func (a *ConstValueChallengeClientAccessor) GroupData() {
+	a._dataConstValueName = map[string]ConstValueChallengeClient{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

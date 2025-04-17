@@ -51,6 +51,7 @@ func (a *LittleWheelSelectConfigAccessor) Raw() ([]LittleWheelSelectConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with LittleWheelSelectConfigAccessor.LoadData to preload everything
 func (a *LittleWheelSelectConfigAccessor) GroupData() {
+	a._dataGameMode = map[string]LittleWheelSelectConfig{}
 	for _, d := range a._data {
 		a._dataGameMode[d.GameMode] = d
 	}

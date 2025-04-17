@@ -47,6 +47,8 @@ func (a *RogueNousDiceBranchTagAccessor) Raw() ([]RogueNousDiceBranchTag, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNousDiceBranchTagAccessor.LoadData to preload everything
 func (a *RogueNousDiceBranchTagAccessor) GroupData() {
+	a._dataTagID = map[float64]RogueNousDiceBranchTag{}
+	a._dataTagIcon = map[string]RogueNousDiceBranchTag{}
 	for _, d := range a._data {
 		a._dataTagID[d.TagID] = d
 		a._dataTagIcon[d.TagIcon] = d

@@ -44,6 +44,7 @@ func (a *MazeFloorUnlockAccessor) Raw() ([]MazeFloorUnlock, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazeFloorUnlockAccessor.LoadData to preload everything
 func (a *MazeFloorUnlockAccessor) GroupData() {
+	a._dataFloorID = map[float64]MazeFloorUnlock{}
 	for _, d := range a._data {
 		a._dataFloorID[d.FloorID] = d
 	}

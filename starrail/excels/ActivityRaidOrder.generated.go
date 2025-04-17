@@ -53,6 +53,8 @@ func (a *ActivityRaidOrderAccessor) Raw() ([]ActivityRaidOrder, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityRaidOrderAccessor.LoadData to preload everything
 func (a *ActivityRaidOrderAccessor) GroupData() {
+	a._dataOrderID = map[float64]ActivityRaidOrder{}
+	a._dataOrderTips = map[string]ActivityRaidOrder{}
 	for _, d := range a._data {
 		a._dataOrderID[d.OrderID] = d
 		a._dataOrderTips[d.OrderTips] = d

@@ -49,6 +49,7 @@ func (a *AtlasUnlockDataAccessor) Raw() ([]AtlasUnlockData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AtlasUnlockDataAccessor.LoadData to preload everything
 func (a *AtlasUnlockDataAccessor) GroupData() {
+	a._dataUnlockID = map[float64]AtlasUnlockData{}
 	for _, d := range a._data {
 		a._dataUnlockID[d.UnlockID] = d
 	}

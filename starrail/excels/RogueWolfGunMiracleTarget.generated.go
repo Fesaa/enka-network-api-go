@@ -47,6 +47,7 @@ func (a *RogueWolfGunMiracleTargetAccessor) Raw() ([]RogueWolfGunMiracleTarget, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueWolfGunMiracleTargetAccessor.LoadData to preload everything
 func (a *RogueWolfGunMiracleTargetAccessor) GroupData() {
+	a._dataMiracleID = map[float64]RogueWolfGunMiracleTarget{}
 	for _, d := range a._data {
 		a._dataMiracleID[d.MiracleID] = d
 	}

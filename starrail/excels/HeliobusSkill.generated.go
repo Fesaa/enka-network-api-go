@@ -56,6 +56,12 @@ func (a *HeliobusSkillAccessor) Raw() ([]HeliobusSkill, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeliobusSkillAccessor.LoadData to preload everything
 func (a *HeliobusSkillAccessor) GroupData() {
+	a._dataHeliobusSkillID = map[float64]HeliobusSkill{}
+	a._dataRelatedEventID = map[float64]HeliobusSkill{}
+	a._dataSkillIconPath = map[string]HeliobusSkill{}
+	a._dataSkillUIPosition = map[float64]HeliobusSkill{}
+	a._dataUnlockMissionID = map[float64]HeliobusSkill{}
+	a._dataUnlockToastMissionID = map[float64]HeliobusSkill{}
 	for _, d := range a._data {
 		a._dataHeliobusSkillID[d.HeliobusSkillID] = d
 		a._dataRelatedEventID[d.RelatedEventID] = d

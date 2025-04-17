@@ -44,6 +44,7 @@ func (a *ActivityVersionBannerAccessor) Raw() ([]ActivityVersionBanner, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityVersionBannerAccessor.LoadData to preload everything
 func (a *ActivityVersionBannerAccessor) GroupData() {
+	a._dataActivityID = map[float64]ActivityVersionBanner{}
 	for _, d := range a._data {
 		a._dataActivityID[d.ActivityID] = d
 	}

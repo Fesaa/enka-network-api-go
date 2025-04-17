@@ -61,6 +61,7 @@ func (a *RogueTournAreaAccessor) Raw() ([]RogueTournArea, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournAreaAccessor.LoadData to preload everything
 func (a *RogueTournAreaAccessor) GroupData() {
+	a._dataAreaID = map[float64]RogueTournArea{}
 	for _, d := range a._data {
 		a._dataAreaID[d.AreaID] = d
 	}

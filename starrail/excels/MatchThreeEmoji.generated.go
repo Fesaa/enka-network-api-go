@@ -45,6 +45,7 @@ func (a *MatchThreeEmojiAccessor) Raw() ([]MatchThreeEmoji, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeEmojiAccessor.LoadData to preload everything
 func (a *MatchThreeEmojiAccessor) GroupData() {
+	a._dataEmojiID = map[float64]MatchThreeEmoji{}
 	for _, d := range a._data {
 		a._dataEmojiID[d.EmojiID] = d
 	}

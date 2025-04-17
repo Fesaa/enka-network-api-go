@@ -46,6 +46,8 @@ func (a *TrainPartyMTCategoryScoreAccessor) Raw() ([]TrainPartyMTCategoryScore, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyMTCategoryScoreAccessor.LoadData to preload everything
 func (a *TrainPartyMTCategoryScoreAccessor) GroupData() {
+	a._dataCategoryID = map[float64]TrainPartyMTCategoryScore{}
+	a._dataRatio = map[float64]TrainPartyMTCategoryScore{}
 	for _, d := range a._data {
 		a._dataCategoryID[d.CategoryID] = d
 		a._dataRatio[d.Ratio] = d

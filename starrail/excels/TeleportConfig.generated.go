@@ -48,6 +48,7 @@ func (a *TeleportConfigAccessor) Raw() ([]TeleportConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TeleportConfigAccessor.LoadData to preload everything
 func (a *TeleportConfigAccessor) GroupData() {
+	a._dataID = map[float64]TeleportConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

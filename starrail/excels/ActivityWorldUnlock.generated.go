@@ -44,6 +44,7 @@ func (a *ActivityWorldUnlockAccessor) Raw() ([]ActivityWorldUnlock, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityWorldUnlockAccessor.LoadData to preload everything
 func (a *ActivityWorldUnlockAccessor) GroupData() {
+	a._dataActivityID = map[float64]ActivityWorldUnlock{}
 	for _, d := range a._data {
 		a._dataActivityID[d.ActivityID] = d
 	}

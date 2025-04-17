@@ -64,6 +64,7 @@ func (a *ActivityPanelAccessor) Raw() ([]ActivityPanel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityPanelAccessor.LoadData to preload everything
 func (a *ActivityPanelAccessor) GroupData() {
+	a._dataPanelID = map[float64]ActivityPanel{}
 	for _, d := range a._data {
 		a._dataPanelID[d.PanelID] = d
 	}

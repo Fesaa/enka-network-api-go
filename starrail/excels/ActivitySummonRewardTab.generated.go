@@ -48,6 +48,8 @@ func (a *ActivitySummonRewardTabAccessor) Raw() ([]ActivitySummonRewardTab, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivitySummonRewardTabAccessor.LoadData to preload everything
 func (a *ActivitySummonRewardTabAccessor) GroupData() {
+	a._dataGroupID = map[float64]ActivitySummonRewardTab{}
+	a._dataID = map[float64]ActivitySummonRewardTab{}
 	for _, d := range a._data {
 		a._dataGroupID[d.GroupID] = d
 		a._dataID[d.ID] = d

@@ -47,6 +47,9 @@ func (a *ScheduleDataRogueAccessor) Raw() ([]ScheduleDataRogue, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ScheduleDataRogueAccessor.LoadData to preload everything
 func (a *ScheduleDataRogueAccessor) GroupData() {
+	a._dataBeginTime = map[string]ScheduleDataRogue{}
+	a._dataEndTime = map[string]ScheduleDataRogue{}
+	a._dataID = map[float64]ScheduleDataRogue{}
 	for _, d := range a._data {
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d

@@ -50,6 +50,7 @@ func (a *TrainPartyCardConfigAccessor) Raw() ([]TrainPartyCardConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyCardConfigAccessor.LoadData to preload everything
 func (a *TrainPartyCardConfigAccessor) GroupData() {
+	a._dataCardID = map[float64]TrainPartyCardConfig{}
 	for _, d := range a._data {
 		a._dataCardID[d.CardID] = d
 	}

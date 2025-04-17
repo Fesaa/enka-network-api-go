@@ -47,6 +47,7 @@ func (a *RelicSetBonusValueAccessor) Raw() ([]RelicSetBonusValue, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RelicSetBonusValueAccessor.LoadData to preload everything
 func (a *RelicSetBonusValueAccessor) GroupData() {
+	a._dataSetID = map[float64]RelicSetBonusValue{}
 	for _, d := range a._data {
 		a._dataSetID[d.SetID] = d
 	}

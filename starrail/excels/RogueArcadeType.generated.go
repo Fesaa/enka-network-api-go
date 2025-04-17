@@ -49,6 +49,7 @@ func (a *RogueArcadeTypeAccessor) Raw() ([]RogueArcadeType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueArcadeTypeAccessor.LoadData to preload everything
 func (a *RogueArcadeTypeAccessor) GroupData() {
+	a._dataArcadeID = map[float64]RogueArcadeType{}
 	for _, d := range a._data {
 		a._dataArcadeID[d.ArcadeID] = d
 	}

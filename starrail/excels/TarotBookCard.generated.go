@@ -45,6 +45,8 @@ func (a *TarotBookCardAccessor) Raw() ([]TarotBookCard, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TarotBookCardAccessor.LoadData to preload everything
 func (a *TarotBookCardAccessor) GroupData() {
+	a._dataCharacterID = map[float64]TarotBookCard{}
+	a._dataID = map[float64]TarotBookCard{}
 	for _, d := range a._data {
 		a._dataCharacterID[d.CharacterID] = d
 		a._dataID[d.ID] = d

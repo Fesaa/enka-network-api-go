@@ -58,6 +58,8 @@ func (a *BattlePassConfigAccessor) Raw() ([]BattlePassConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattlePassConfigAccessor.LoadData to preload everything
 func (a *BattlePassConfigAccessor) GroupData() {
+	a._dataID = map[float64]BattlePassConfig{}
+	a._dataScheduleDataID = map[float64]BattlePassConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataScheduleDataID[d.ScheduleDataID] = d

@@ -46,6 +46,7 @@ func (a *TravelBrochureDiaryChoiceAccessor) Raw() ([]TravelBrochureDiaryChoice, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TravelBrochureDiaryChoiceAccessor.LoadData to preload everything
 func (a *TravelBrochureDiaryChoiceAccessor) GroupData() {
+	a._dataID = map[float64]TravelBrochureDiaryChoice{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

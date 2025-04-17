@@ -45,6 +45,7 @@ func (a *SettingDisplayModeAccessor) Raw() ([]SettingDisplayMode, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SettingDisplayModeAccessor.LoadData to preload everything
 func (a *SettingDisplayModeAccessor) GroupData() {
+	a._dataID = map[string]SettingDisplayMode{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

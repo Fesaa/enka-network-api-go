@@ -58,6 +58,8 @@ func (a *ActivityResidentPanelAccessor) Raw() ([]ActivityResidentPanel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityResidentPanelAccessor.LoadData to preload everything
 func (a *ActivityResidentPanelAccessor) GroupData() {
+	a._dataPanelID = map[float64]ActivityResidentPanel{}
+	a._dataSortWeight = map[float64]ActivityResidentPanel{}
 	for _, d := range a._data {
 		a._dataPanelID[d.PanelID] = d
 		a._dataSortWeight[d.SortWeight] = d

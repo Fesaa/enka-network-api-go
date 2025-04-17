@@ -46,6 +46,7 @@ func (a *QuestTimeLimitConfigAccessor) Raw() ([]QuestTimeLimitConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with QuestTimeLimitConfigAccessor.LoadData to preload everything
 func (a *QuestTimeLimitConfigAccessor) GroupData() {
+	a._dataQuestID = map[float64]QuestTimeLimitConfig{}
 	for _, d := range a._data {
 		a._dataQuestID[d.QuestID] = d
 	}

@@ -44,6 +44,7 @@ func (a *RogueUpgradeAvatarSubTypeAccessor) Raw() ([]RogueUpgradeAvatarSubType, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueUpgradeAvatarSubTypeAccessor.LoadData to preload everything
 func (a *RogueUpgradeAvatarSubTypeAccessor) GroupData() {
+	a._dataAvatarID = map[float64]RogueUpgradeAvatarSubType{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 	}

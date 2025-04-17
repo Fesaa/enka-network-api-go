@@ -44,6 +44,7 @@ func (a *FantasticStoryBuffSlotIDAccessor) Raw() ([]FantasticStoryBuffSlotID, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FantasticStoryBuffSlotIDAccessor.LoadData to preload everything
 func (a *FantasticStoryBuffSlotIDAccessor) GroupData() {
+	a._dataBuffSlotID = map[float64]FantasticStoryBuffSlotID{}
 	for _, d := range a._data {
 		a._dataBuffSlotID[d.BuffSlotID] = d
 	}

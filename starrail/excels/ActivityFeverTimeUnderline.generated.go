@@ -44,6 +44,7 @@ func (a *ActivityFeverTimeUnderlineAccessor) Raw() ([]ActivityFeverTimeUnderline
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityFeverTimeUnderlineAccessor.LoadData to preload everything
 func (a *ActivityFeverTimeUnderlineAccessor) GroupData() {
+	a._dataAvailableBuffID = map[float64]ActivityFeverTimeUnderline{}
 	for _, d := range a._data {
 		a._dataAvailableBuffID[d.AvailableBuffID] = d
 	}

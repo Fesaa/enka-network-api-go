@@ -47,6 +47,8 @@ func (a *WorldUnlockConfigAccessor) Raw() ([]WorldUnlockConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with WorldUnlockConfigAccessor.LoadData to preload everything
 func (a *WorldUnlockConfigAccessor) GroupData() {
+	a._dataDirectUnlockCondition = map[string]WorldUnlockConfig{}
+	a._dataID = map[float64]WorldUnlockConfig{}
 	for _, d := range a._data {
 		a._dataDirectUnlockCondition[d.DirectUnlockCondition] = d
 		a._dataID[d.ID] = d

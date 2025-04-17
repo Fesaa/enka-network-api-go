@@ -44,6 +44,7 @@ func (a *ChimeraEndlessWorkRoundAccessor) Raw() ([]ChimeraEndlessWorkRound, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraEndlessWorkRoundAccessor.LoadData to preload everything
 func (a *ChimeraEndlessWorkRoundAccessor) GroupData() {
+	a._dataEndlessRoundID = map[float64]ChimeraEndlessWorkRound{}
 	for _, d := range a._data {
 		a._dataEndlessRoundID[d.EndlessRoundID] = d
 	}

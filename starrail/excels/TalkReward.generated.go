@@ -51,6 +51,8 @@ func (a *TalkRewardAccessor) Raw() ([]TalkReward, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TalkRewardAccessor.LoadData to preload everything
 func (a *TalkRewardAccessor) GroupData() {
+	a._dataID = map[float64]TalkReward{}
+	a._dataRewardID = map[float64]TalkReward{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataRewardID[d.RewardID] = d

@@ -59,6 +59,9 @@ func (a *DrinkMakerFormulaAccessor) Raw() ([]DrinkMakerFormula, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerFormulaAccessor.LoadData to preload everything
 func (a *DrinkMakerFormulaAccessor) GroupData() {
+	a._dataFormulaID = map[float64]DrinkMakerFormula{}
+	a._dataIconPath = map[string]DrinkMakerFormula{}
+	a._dataSmallIconPath = map[string]DrinkMakerFormula{}
 	for _, d := range a._data {
 		a._dataFormulaID[d.FormulaID] = d
 		a._dataIconPath[d.IconPath] = d

@@ -50,6 +50,7 @@ func (a *NavMapTabAccessor) Raw() ([]NavMapTab, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with NavMapTabAccessor.LoadData to preload everything
 func (a *NavMapTabAccessor) GroupData() {
+	a._dataID = map[float64]NavMapTab{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

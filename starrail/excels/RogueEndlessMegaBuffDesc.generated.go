@@ -47,6 +47,7 @@ func (a *RogueEndlessMegaBuffDescAccessor) Raw() ([]RogueEndlessMegaBuffDesc, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueEndlessMegaBuffDescAccessor.LoadData to preload everything
 func (a *RogueEndlessMegaBuffDescAccessor) GroupData() {
+	a._dataMazeBuffID = map[float64]RogueEndlessMegaBuffDesc{}
 	for _, d := range a._data {
 		a._dataMazeBuffID[d.MazeBuffID] = d
 	}

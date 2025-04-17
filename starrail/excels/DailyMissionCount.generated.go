@@ -47,6 +47,9 @@ func (a *DailyMissionCountAccessor) Raw() ([]DailyMissionCount, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DailyMissionCountAccessor.LoadData to preload everything
 func (a *DailyMissionCountAccessor) GroupData() {
+	a._dataDailyCount = map[float64]DailyMissionCount{}
+	a._dataDailyMissionType = map[float64]DailyMissionCount{}
+	a._dataID = map[float64]DailyMissionCount{}
 	for _, d := range a._data {
 		a._dataDailyCount[d.DailyCount] = d
 		a._dataDailyMissionType[d.DailyMissionType] = d

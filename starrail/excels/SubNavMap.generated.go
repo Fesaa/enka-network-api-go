@@ -47,6 +47,8 @@ func (a *SubNavMapAccessor) Raw() ([]SubNavMap, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SubNavMapAccessor.LoadData to preload everything
 func (a *SubNavMapAccessor) GroupData() {
+	a._dataFloorID = map[float64]SubNavMap{}
+	a._dataID = map[float64]SubNavMap{}
 	for _, d := range a._data {
 		a._dataFloorID[d.FloorID] = d
 		a._dataID[d.ID] = d

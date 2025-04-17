@@ -44,6 +44,7 @@ func (a *DrinkMakerLevelAccessor) Raw() ([]DrinkMakerLevel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerLevelAccessor.LoadData to preload everything
 func (a *DrinkMakerLevelAccessor) GroupData() {
+	a._dataLevel = map[float64]DrinkMakerLevel{}
 	for _, d := range a._data {
 		a._dataLevel[d.Level] = d
 	}

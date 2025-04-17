@@ -53,6 +53,7 @@ func (a *HeliobusPhaseAccessor) Raw() ([]HeliobusPhase, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeliobusPhaseAccessor.LoadData to preload everything
 func (a *HeliobusPhaseAccessor) GroupData() {
+	a._dataHeliobusPhaseID = map[float64]HeliobusPhase{}
 	for _, d := range a._data {
 		a._dataHeliobusPhaseID[d.HeliobusPhaseID] = d
 	}

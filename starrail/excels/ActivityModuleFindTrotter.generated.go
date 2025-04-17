@@ -60,6 +60,12 @@ func (a *ActivityModuleFindTrotterAccessor) Raw() ([]ActivityModuleFindTrotter, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityModuleFindTrotterAccessor.LoadData to preload everything
 func (a *ActivityModuleFindTrotterAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]ActivityModuleFindTrotter{}
+	a._dataFinishSubMissionID = map[float64]ActivityModuleFindTrotter{}
+	a._dataMissionID = map[float64]ActivityModuleFindTrotter{}
+	a._dataOrder = map[float64]ActivityModuleFindTrotter{}
+	a._dataRewardQuestID = map[float64]ActivityModuleFindTrotter{}
+	a._dataStartSubMissionID = map[float64]ActivityModuleFindTrotter{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataFinishSubMissionID[d.FinishSubMissionID] = d

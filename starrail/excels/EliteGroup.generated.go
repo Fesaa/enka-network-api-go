@@ -49,6 +49,7 @@ func (a *EliteGroupAccessor) Raw() ([]EliteGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EliteGroupAccessor.LoadData to preload everything
 func (a *EliteGroupAccessor) GroupData() {
+	a._dataEliteGroup = map[float64]EliteGroup{}
 	for _, d := range a._data {
 		a._dataEliteGroup[d.EliteGroup] = d
 	}

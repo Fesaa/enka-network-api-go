@@ -45,6 +45,8 @@ func (a *SpecialRestartBattleAccessor) Raw() ([]SpecialRestartBattle, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpecialRestartBattleAccessor.LoadData to preload everything
 func (a *SpecialRestartBattleAccessor) GroupData() {
+	a._dataEventID = map[float64]SpecialRestartBattle{}
+	a._dataTowardEventID = map[float64]SpecialRestartBattle{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 		a._dataTowardEventID[d.TowardEventID] = d

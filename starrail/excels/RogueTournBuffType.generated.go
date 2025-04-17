@@ -55,6 +55,11 @@ func (a *RogueTournBuffTypeAccessor) Raw() ([]RogueTournBuffType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournBuffTypeAccessor.LoadData to preload everything
 func (a *RogueTournBuffTypeAccessor) GroupData() {
+	a._dataRogueBuffType = map[float64]RogueTournBuffType{}
+	a._dataRogueBuffTypeDecoName = map[string]RogueTournBuffType{}
+	a._dataRogueBuffTypeIcon = map[string]RogueTournBuffType{}
+	a._dataRogueBuffTypeLargeIcon = map[string]RogueTournBuffType{}
+	a._dataRogueBuffTypeSmallIcon = map[string]RogueTournBuffType{}
 	for _, d := range a._data {
 		a._dataRogueBuffType[d.RogueBuffType] = d
 		a._dataRogueBuffTypeDecoName[d.RogueBuffTypeDecoName] = d

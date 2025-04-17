@@ -49,6 +49,7 @@ func (a *RogueDLCConstValueClientAccessor) Raw() ([]RogueDLCConstValueClient, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCConstValueClientAccessor.LoadData to preload everything
 func (a *RogueDLCConstValueClientAccessor) GroupData() {
+	a._dataConstValueName = map[string]RogueDLCConstValueClient{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

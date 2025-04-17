@@ -53,6 +53,9 @@ func (a *FightFestCoachSkillAccessor) Raw() ([]FightFestCoachSkill, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FightFestCoachSkillAccessor.LoadData to preload everything
 func (a *FightFestCoachSkillAccessor) GroupData() {
+	a._dataCoachItemID = map[float64]FightFestCoachSkill{}
+	a._dataFigurePath = map[string]FightFestCoachSkill{}
+	a._dataMazeBuffID = map[float64]FightFestCoachSkill{}
 	for _, d := range a._data {
 		a._dataCoachItemID[d.CoachItemID] = d
 		a._dataFigurePath[d.FigurePath] = d

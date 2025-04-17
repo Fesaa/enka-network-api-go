@@ -48,6 +48,8 @@ func (a *TutorialResConfigAccessor) Raw() ([]TutorialResConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TutorialResConfigAccessor.LoadData to preload everything
 func (a *TutorialResConfigAccessor) GroupData() {
+	a._dataID = map[float64]TutorialResConfig{}
+	a._dataPrefabPath = map[string]TutorialResConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataPrefabPath[d.PrefabPath] = d

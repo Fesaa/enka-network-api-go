@@ -49,6 +49,7 @@ func (a *TrainPartyTeamAccessor) Raw() ([]TrainPartyTeam, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyTeamAccessor.LoadData to preload everything
 func (a *TrainPartyTeamAccessor) GroupData() {
+	a._dataTeamID = map[float64]TrainPartyTeam{}
 	for _, d := range a._data {
 		a._dataTeamID[d.TeamID] = d
 	}

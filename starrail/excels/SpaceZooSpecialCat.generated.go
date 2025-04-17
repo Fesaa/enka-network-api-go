@@ -60,6 +60,11 @@ func (a *SpaceZooSpecialCatAccessor) Raw() ([]SpaceZooSpecialCat, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpaceZooSpecialCatAccessor.LoadData to preload everything
 func (a *SpaceZooSpecialCatAccessor) GroupData() {
+	a._dataImagePath = map[string]SpaceZooSpecialCat{}
+	a._dataLargeImagePath = map[string]SpaceZooSpecialCat{}
+	a._dataMatPath = map[string]SpaceZooSpecialCat{}
+	a._dataSpecialCatID = map[float64]SpaceZooSpecialCat{}
+	a._dataSpecialItem = map[float64]SpaceZooSpecialCat{}
 	for _, d := range a._data {
 		a._dataImagePath[d.ImagePath] = d
 		a._dataLargeImagePath[d.LargeImagePath] = d

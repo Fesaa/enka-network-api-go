@@ -47,6 +47,7 @@ func (a *ContentUnlockDescConfigAccessor) Raw() ([]ContentUnlockDescConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ContentUnlockDescConfigAccessor.LoadData to preload everything
 func (a *ContentUnlockDescConfigAccessor) GroupData() {
+	a._dataContentID = map[float64]ContentUnlockDescConfig{}
 	for _, d := range a._data {
 		a._dataContentID[d.ContentID] = d
 	}

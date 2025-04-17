@@ -45,6 +45,7 @@ func (a *ChimeraDisplayAccessor) Raw() ([]ChimeraDisplay, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraDisplayAccessor.LoadData to preload everything
 func (a *ChimeraDisplayAccessor) GroupData() {
+	a._dataDisplayID = map[float64]ChimeraDisplay{}
 	for _, d := range a._data {
 		a._dataDisplayID[d.DisplayID] = d
 	}

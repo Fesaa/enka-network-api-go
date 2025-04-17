@@ -48,6 +48,7 @@ func (a *UIRedDotAccessor) Raw() ([]UIRedDot, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with UIRedDotAccessor.LoadData to preload everything
 func (a *UIRedDotAccessor) GroupData() {
+	a._dataRedDot = map[string]UIRedDot{}
 	for _, d := range a._data {
 		a._dataRedDot[d.RedDot] = d
 	}

@@ -47,6 +47,9 @@ func (a *DecalGameplayConfigAccessor) Raw() ([]DecalGameplayConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DecalGameplayConfigAccessor.LoadData to preload everything
 func (a *DecalGameplayConfigAccessor) GroupData() {
+	a._dataDecalID = map[float64]DecalGameplayConfig{}
+	a._dataIconPath = map[string]DecalGameplayConfig{}
+	a._dataTextureMapPath = map[string]DecalGameplayConfig{}
 	for _, d := range a._data {
 		a._dataDecalID[d.DecalID] = d
 		a._dataIconPath[d.IconPath] = d

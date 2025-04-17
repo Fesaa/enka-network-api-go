@@ -49,6 +49,8 @@ func (a *ActivityThemeAccessor) Raw() ([]ActivityTheme, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityThemeAccessor.LoadData to preload everything
 func (a *ActivityThemeAccessor) GroupData() {
+	a._dataIconPath = map[string]ActivityTheme{}
+	a._dataThemeID = map[float64]ActivityTheme{}
 	for _, d := range a._data {
 		a._dataIconPath[d.IconPath] = d
 		a._dataThemeID[d.ThemeID] = d

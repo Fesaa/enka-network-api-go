@@ -50,6 +50,8 @@ func (a *SpecialNPCMazeSkillAccessor) Raw() ([]SpecialNPCMazeSkill, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpecialNPCMazeSkillAccessor.LoadData to preload everything
 func (a *SpecialNPCMazeSkillAccessor) GroupData() {
+	a._dataMazeSkillId = map[float64]SpecialNPCMazeSkill{}
+	a._dataRelatedAvatarSkill = map[float64]SpecialNPCMazeSkill{}
 	for _, d := range a._data {
 		a._dataMazeSkillId[d.MazeSkillId] = d
 		a._dataRelatedAvatarSkill[d.RelatedAvatarSkill] = d

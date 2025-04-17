@@ -57,6 +57,8 @@ func (a *RogueHandBookEventAccessor) Raw() ([]RogueHandBookEvent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueHandBookEventAccessor.LoadData to preload everything
 func (a *RogueHandBookEventAccessor) GroupData() {
+	a._dataEventHandbookID = map[float64]RogueHandBookEvent{}
+	a._dataOrder = map[float64]RogueHandBookEvent{}
 	for _, d := range a._data {
 		a._dataEventHandbookID[d.EventHandbookID] = d
 		a._dataOrder[d.Order] = d

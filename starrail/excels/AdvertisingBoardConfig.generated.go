@@ -46,6 +46,7 @@ func (a *AdvertisingBoardConfigAccessor) Raw() ([]AdvertisingBoardConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AdvertisingBoardConfigAccessor.LoadData to preload everything
 func (a *AdvertisingBoardConfigAccessor) GroupData() {
+	a._dataAdvertisingBoardID = map[float64]AdvertisingBoardConfig{}
 	for _, d := range a._data {
 		a._dataAdvertisingBoardID[d.AdvertisingBoardID] = d
 	}

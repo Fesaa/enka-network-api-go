@@ -45,6 +45,8 @@ func (a *MapDefaultEntranceAccessor) Raw() ([]MapDefaultEntrance, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MapDefaultEntranceAccessor.LoadData to preload everything
 func (a *MapDefaultEntranceAccessor) GroupData() {
+	a._dataEntranceID = map[float64]MapDefaultEntrance{}
+	a._dataFloorID = map[float64]MapDefaultEntrance{}
 	for _, d := range a._data {
 		a._dataEntranceID[d.EntranceID] = d
 		a._dataFloorID[d.FloorID] = d

@@ -50,6 +50,8 @@ func (a *ChallengeStoryThemeAccessor) Raw() ([]ChallengeStoryTheme, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeStoryThemeAccessor.LoadData to preload everything
 func (a *ChallengeStoryThemeAccessor) GroupData() {
+	a._dataThemeID = map[float64]ChallengeStoryTheme{}
+	a._dataThemePanelPrefabPath = map[string]ChallengeStoryTheme{}
 	for _, d := range a._data {
 		a._dataThemeID[d.ThemeID] = d
 		a._dataThemePanelPrefabPath[d.ThemePanelPrefabPath] = d

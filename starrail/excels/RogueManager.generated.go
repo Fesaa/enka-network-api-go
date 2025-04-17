@@ -51,6 +51,10 @@ func (a *RogueManagerAccessor) Raw() ([]RogueManager, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueManagerAccessor.LoadData to preload everything
 func (a *RogueManagerAccessor) GroupData() {
+	a._dataBeginTime = map[string]RogueManager{}
+	a._dataEndTime = map[string]RogueManager{}
+	a._dataRogueSeason = map[float64]RogueManager{}
+	a._dataScheduleDataID = map[float64]RogueManager{}
 	for _, d := range a._data {
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d

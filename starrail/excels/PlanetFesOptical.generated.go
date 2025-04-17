@@ -50,6 +50,7 @@ func (a *PlanetFesOpticalAccessor) Raw() ([]PlanetFesOptical, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesOpticalAccessor.LoadData to preload everything
 func (a *PlanetFesOpticalAccessor) GroupData() {
+	a._dataQuestID = map[float64]PlanetFesOptical{}
 	for _, d := range a._data {
 		a._dataQuestID[d.QuestID] = d
 	}

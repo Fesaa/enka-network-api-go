@@ -56,6 +56,12 @@ func (a *CityShopConfigAccessor) Raw() ([]CityShopConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with CityShopConfigAccessor.LoadData to preload everything
 func (a *CityShopConfigAccessor) GroupData() {
+	a._dataItemID = map[float64]CityShopConfig{}
+	a._dataMaxLevel = map[float64]CityShopConfig{}
+	a._dataRewardListGroupID = map[float64]CityShopConfig{}
+	a._dataShopID = map[float64]CityShopConfig{}
+	a._dataWorldID = map[float64]CityShopConfig{}
+	a._dataWorldImgPath = map[string]CityShopConfig{}
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
 		a._dataMaxLevel[d.MaxLevel] = d

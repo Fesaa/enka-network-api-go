@@ -44,6 +44,7 @@ func (a *MainMissionPackAccessor) Raw() ([]MainMissionPack, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MainMissionPackAccessor.LoadData to preload everything
 func (a *MainMissionPackAccessor) GroupData() {
+	a._dataMissionPack = map[float64]MainMissionPack{}
 	for _, d := range a._data {
 		a._dataMissionPack[d.MissionPack] = d
 	}

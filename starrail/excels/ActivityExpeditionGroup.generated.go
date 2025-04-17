@@ -46,6 +46,8 @@ func (a *ActivityExpeditionGroupAccessor) Raw() ([]ActivityExpeditionGroup, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityExpeditionGroupAccessor.LoadData to preload everything
 func (a *ActivityExpeditionGroupAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]ActivityExpeditionGroup{}
+	a._dataGroupID = map[float64]ActivityExpeditionGroup{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataGroupID[d.GroupID] = d

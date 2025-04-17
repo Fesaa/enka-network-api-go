@@ -45,6 +45,7 @@ func (a *StoryAtlasTextmapAccessor) Raw() ([]StoryAtlasTextmap, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StoryAtlasTextmapAccessor.LoadData to preload everything
 func (a *StoryAtlasTextmapAccessor) GroupData() {
+	a._dataStoryID = map[float64]StoryAtlasTextmap{}
 	for _, d := range a._data {
 		a._dataStoryID[d.StoryID] = d
 	}

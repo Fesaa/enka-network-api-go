@@ -45,6 +45,7 @@ func (a *ClockParkTalkTextAccessor) Raw() ([]ClockParkTalkText, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkTalkTextAccessor.LoadData to preload everything
 func (a *ClockParkTalkTextAccessor) GroupData() {
+	a._dataTalkID = map[float64]ClockParkTalkText{}
 	for _, d := range a._data {
 		a._dataTalkID[d.TalkID] = d
 	}

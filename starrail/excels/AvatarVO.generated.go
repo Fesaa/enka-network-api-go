@@ -51,6 +51,7 @@ func (a *AvatarVOAccessor) Raw() ([]AvatarVO, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarVOAccessor.LoadData to preload everything
 func (a *AvatarVOAccessor) GroupData() {
+	a._dataVOTag = map[string]AvatarVO{}
 	for _, d := range a._data {
 		a._dataVOTag[d.VOTag] = d
 	}

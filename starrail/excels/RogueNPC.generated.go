@@ -44,6 +44,7 @@ func (a *RogueNPCAccessor) Raw() ([]RogueNPC, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNPCAccessor.LoadData to preload everything
 func (a *RogueNPCAccessor) GroupData() {
+	a._dataRogueNPCID = map[float64]RogueNPC{}
 	for _, d := range a._data {
 		a._dataRogueNPCID[d.RogueNPCID] = d
 	}

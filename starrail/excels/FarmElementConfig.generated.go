@@ -51,6 +51,7 @@ func (a *FarmElementConfigAccessor) Raw() ([]FarmElementConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FarmElementConfigAccessor.LoadData to preload everything
 func (a *FarmElementConfigAccessor) GroupData() {
+	a._dataStageID = map[float64]FarmElementConfig{}
 	for _, d := range a._data {
 		a._dataStageID[d.StageID] = d
 	}

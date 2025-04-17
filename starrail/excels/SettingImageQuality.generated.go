@@ -45,6 +45,7 @@ func (a *SettingImageQualityAccessor) Raw() ([]SettingImageQuality, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SettingImageQualityAccessor.LoadData to preload everything
 func (a *SettingImageQualityAccessor) GroupData() {
+	a._dataID = map[string]SettingImageQuality{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

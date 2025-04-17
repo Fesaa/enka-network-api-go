@@ -52,6 +52,7 @@ func (a *ActivitySummonSkillAccessor) Raw() ([]ActivitySummonSkill, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivitySummonSkillAccessor.LoadData to preload everything
 func (a *ActivitySummonSkillAccessor) GroupData() {
+	a._dataSkillID = map[float64]ActivitySummonSkill{}
 	for _, d := range a._data {
 		a._dataSkillID[d.SkillID] = d
 	}

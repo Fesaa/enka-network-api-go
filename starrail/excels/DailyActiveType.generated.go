@@ -44,6 +44,7 @@ func (a *DailyActiveTypeAccessor) Raw() ([]DailyActiveType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DailyActiveTypeAccessor.LoadData to preload everything
 func (a *DailyActiveTypeAccessor) GroupData() {
+	a._dataType = map[float64]DailyActiveType{}
 	for _, d := range a._data {
 		a._dataType[d.Type] = d
 	}

@@ -46,6 +46,8 @@ func (a *ActivityQuestTabGroupUIAccessor) Raw() ([]ActivityQuestTabGroupUI, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityQuestTabGroupUIAccessor.LoadData to preload everything
 func (a *ActivityQuestTabGroupUIAccessor) GroupData() {
+	a._dataBgPrefabPath = map[string]ActivityQuestTabGroupUI{}
+	a._dataQuestTabGroupID = map[float64]ActivityQuestTabGroupUI{}
 	for _, d := range a._data {
 		a._dataBgPrefabPath[d.BgPrefabPath] = d
 		a._dataQuestTabGroupID[d.QuestTabGroupID] = d

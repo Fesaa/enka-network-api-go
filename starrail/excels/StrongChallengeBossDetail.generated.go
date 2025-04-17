@@ -45,6 +45,7 @@ func (a *StrongChallengeBossDetailAccessor) Raw() ([]StrongChallengeBossDetail, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StrongChallengeBossDetailAccessor.LoadData to preload everything
 func (a *StrongChallengeBossDetailAccessor) GroupData() {
+	a._dataBossDetailID = map[float64]StrongChallengeBossDetail{}
 	for _, d := range a._data {
 		a._dataBossDetailID[d.BossDetailID] = d
 	}

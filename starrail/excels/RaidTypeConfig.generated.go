@@ -45,6 +45,7 @@ func (a *RaidTypeConfigAccessor) Raw() ([]RaidTypeConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RaidTypeConfigAccessor.LoadData to preload everything
 func (a *RaidTypeConfigAccessor) GroupData() {
+	a._dataRaidType = map[string]RaidTypeConfig{}
 	for _, d := range a._data {
 		a._dataRaidType[d.RaidType] = d
 	}

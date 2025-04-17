@@ -45,6 +45,8 @@ func (a *TextSpriteConfigAccessor) Raw() ([]TextSpriteConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TextSpriteConfigAccessor.LoadData to preload everything
 func (a *TextSpriteConfigAccessor) GroupData() {
+	a._dataSpriteName = map[string]TextSpriteConfig{}
+	a._dataSpritePath = map[string]TextSpriteConfig{}
 	for _, d := range a._data {
 		a._dataSpriteName[d.SpriteName] = d
 		a._dataSpritePath[d.SpritePath] = d

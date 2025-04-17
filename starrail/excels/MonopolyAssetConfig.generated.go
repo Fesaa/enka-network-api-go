@@ -52,6 +52,8 @@ func (a *MonopolyAssetConfigAccessor) Raw() ([]MonopolyAssetConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyAssetConfigAccessor.LoadData to preload everything
 func (a *MonopolyAssetConfigAccessor) GroupData() {
+	a._dataAssetID = map[float64]MonopolyAssetConfig{}
+	a._dataFigurePath = map[string]MonopolyAssetConfig{}
 	for _, d := range a._data {
 		a._dataAssetID[d.AssetID] = d
 		a._dataFigurePath[d.FigurePath] = d

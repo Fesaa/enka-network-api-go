@@ -56,6 +56,9 @@ func (a *PamActionAccessor) Raw() ([]PamAction, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PamActionAccessor.LoadData to preload everything
 func (a *PamActionAccessor) GroupData() {
+	a._dataAnimGroupName = map[string]PamAction{}
+	a._dataPamAction = map[string]PamAction{}
+	a._dataPerformanceID = map[float64]PamAction{}
 	for _, d := range a._data {
 		a._dataAnimGroupName[d.AnimGroupName] = d
 		a._dataPamAction[d.PamAction] = d

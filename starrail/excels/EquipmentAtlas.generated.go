@@ -44,6 +44,7 @@ func (a *EquipmentAtlasAccessor) Raw() ([]EquipmentAtlas, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EquipmentAtlasAccessor.LoadData to preload everything
 func (a *EquipmentAtlasAccessor) GroupData() {
+	a._dataEquipmentID = map[float64]EquipmentAtlas{}
 	for _, d := range a._data {
 		a._dataEquipmentID[d.EquipmentID] = d
 	}

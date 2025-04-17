@@ -63,6 +63,7 @@ func (a *MazePropAccessor) Raw() ([]MazeProp, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazePropAccessor.LoadData to preload everything
 func (a *MazePropAccessor) GroupData() {
+	a._dataID = map[float64]MazeProp{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

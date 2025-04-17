@@ -45,6 +45,7 @@ func (a *AvatarDeliverConstValueAccessor) Raw() ([]AvatarDeliverConstValue, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarDeliverConstValueAccessor.LoadData to preload everything
 func (a *AvatarDeliverConstValueAccessor) GroupData() {
+	a._dataConstValueName = map[string]AvatarDeliverConstValue{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

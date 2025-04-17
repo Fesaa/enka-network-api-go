@@ -76,6 +76,20 @@ func (a *AvatarServantConfigAccessor) Raw() ([]AvatarServantConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarServantConfigAccessor.LoadData to preload everything
 func (a *AvatarServantConfigAccessor) GroupData() {
+	a._dataActionServantHeadIconPath = map[string]AvatarServantConfig{}
+	a._dataConfig = map[string]AvatarServantConfig{}
+	a._dataHPBase = map[string]AvatarServantConfig{}
+	a._dataHPInherit = map[string]AvatarServantConfig{}
+	a._dataHeadIcon = map[string]AvatarServantConfig{}
+	a._dataManikinJsonPath = map[string]AvatarServantConfig{}
+	a._dataPrefab = map[string]AvatarServantConfig{}
+	a._dataServantID = map[float64]AvatarServantConfig{}
+	a._dataServantMiniIconPath = map[string]AvatarServantConfig{}
+	a._dataServantSideIconPath = map[string]AvatarServantConfig{}
+	a._dataSpeedSkill = map[float64]AvatarServantConfig{}
+	a._dataUIServantModelPath = map[string]AvatarServantConfig{}
+	a._dataUnCreateHeadIconPath = map[string]AvatarServantConfig{}
+	a._dataWaitingServantHeadIconPath = map[string]AvatarServantConfig{}
 	for _, d := range a._data {
 		a._dataActionServantHeadIconPath[d.ActionServantHeadIconPath] = d
 		a._dataConfig[d.Config] = d

@@ -46,6 +46,7 @@ func (a *RogueTournExhibitionConfigAccessor) Raw() ([]RogueTournExhibitionConfig
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournExhibitionConfigAccessor.LoadData to preload everything
 func (a *RogueTournExhibitionConfigAccessor) GroupData() {
+	a._dataPaintingID = map[float64]RogueTournExhibitionConfig{}
 	for _, d := range a._data {
 		a._dataPaintingID[d.PaintingID] = d
 	}

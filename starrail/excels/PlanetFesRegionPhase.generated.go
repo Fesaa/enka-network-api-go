@@ -54,6 +54,10 @@ func (a *PlanetFesRegionPhaseAccessor) Raw() ([]PlanetFesRegionPhase, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesRegionPhaseAccessor.LoadData to preload everything
 func (a *PlanetFesRegionPhaseAccessor) GroupData() {
+	a._dataBuffID = map[float64]PlanetFesRegionPhase{}
+	a._dataPhaseID = map[float64]PlanetFesRegionPhase{}
+	a._dataPicPath = map[string]PlanetFesRegionPhase{}
+	a._dataProgressValue = map[float64]PlanetFesRegionPhase{}
 	for _, d := range a._data {
 		a._dataBuffID[d.BuffID] = d
 		a._dataPhaseID[d.PhaseID] = d

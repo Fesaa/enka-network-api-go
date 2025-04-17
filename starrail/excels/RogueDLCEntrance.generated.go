@@ -54,6 +54,11 @@ func (a *RogueDLCEntranceAccessor) Raw() ([]RogueDLCEntrance, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCEntranceAccessor.LoadData to preload everything
 func (a *RogueDLCEntranceAccessor) GroupData() {
+	a._dataButtonPath = map[string]RogueDLCEntrance{}
+	a._dataID = map[float64]RogueDLCEntrance{}
+	a._dataPatternBgPath = map[string]RogueDLCEntrance{}
+	a._dataSubType = map[string]RogueDLCEntrance{}
+	a._dataSwitchBannerImgPath = map[string]RogueDLCEntrance{}
 	for _, d := range a._data {
 		a._dataButtonPath[d.ButtonPath] = d
 		a._dataID[d.ID] = d

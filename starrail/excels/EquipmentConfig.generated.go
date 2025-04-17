@@ -64,6 +64,10 @@ func (a *EquipmentConfigAccessor) Raw() ([]EquipmentConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EquipmentConfigAccessor.LoadData to preload everything
 func (a *EquipmentConfigAccessor) GroupData() {
+	a._dataEquipmentID = map[float64]EquipmentConfig{}
+	a._dataImagePath = map[string]EquipmentConfig{}
+	a._dataSkillID = map[float64]EquipmentConfig{}
+	a._dataThumbnailPath = map[string]EquipmentConfig{}
 	for _, d := range a._data {
 		a._dataEquipmentID[d.EquipmentID] = d
 		a._dataImagePath[d.ImagePath] = d

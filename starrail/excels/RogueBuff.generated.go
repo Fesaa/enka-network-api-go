@@ -57,6 +57,7 @@ func (a *RogueBuffAccessor) Raw() ([]RogueBuff, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueBuffAccessor.LoadData to preload everything
 func (a *RogueBuffAccessor) GroupData() {
+	a._dataRogueBuffTag = map[float64]RogueBuff{}
 	for _, d := range a._data {
 		a._dataRogueBuffTag[d.RogueBuffTag] = d
 	}

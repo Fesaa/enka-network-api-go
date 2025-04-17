@@ -54,6 +54,12 @@ func (a *PhoneCaseConfigAccessor) Raw() ([]PhoneCaseConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PhoneCaseConfigAccessor.LoadData to preload everything
 func (a *PhoneCaseConfigAccessor) GroupData() {
+	a._dataCaseID = map[float64]PhoneCaseConfig{}
+	a._dataIconPath = map[string]PhoneCaseConfig{}
+	a._dataImagePath = map[string]PhoneCaseConfig{}
+	a._dataItemFigurePath = map[string]PhoneCaseConfig{}
+	a._dataPrefabPath = map[string]PhoneCaseConfig{}
+	a._dataShowType = map[string]PhoneCaseConfig{}
 	for _, d := range a._data {
 		a._dataCaseID[d.CaseID] = d
 		a._dataIconPath[d.IconPath] = d

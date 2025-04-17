@@ -51,6 +51,10 @@ func (a *PhoneThemeConfigAccessor) Raw() ([]PhoneThemeConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PhoneThemeConfigAccessor.LoadData to preload everything
 func (a *PhoneThemeConfigAccessor) GroupData() {
+	a._dataID = map[float64]PhoneThemeConfig{}
+	a._dataPhoneThemeApp = map[string]PhoneThemeConfig{}
+	a._dataPhoneThemeItem = map[string]PhoneThemeConfig{}
+	a._dataPhoneThemeMain = map[string]PhoneThemeConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataPhoneThemeApp[d.PhoneThemeApp] = d

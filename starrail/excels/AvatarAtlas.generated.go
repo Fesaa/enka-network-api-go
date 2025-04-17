@@ -50,6 +50,7 @@ func (a *AvatarAtlasAccessor) Raw() ([]AvatarAtlas, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarAtlasAccessor.LoadData to preload everything
 func (a *AvatarAtlasAccessor) GroupData() {
+	a._dataAvatarID = map[float64]AvatarAtlas{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 	}

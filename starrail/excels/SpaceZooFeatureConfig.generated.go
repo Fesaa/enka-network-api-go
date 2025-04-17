@@ -50,6 +50,7 @@ func (a *SpaceZooFeatureConfigAccessor) Raw() ([]SpaceZooFeatureConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpaceZooFeatureConfigAccessor.LoadData to preload everything
 func (a *SpaceZooFeatureConfigAccessor) GroupData() {
+	a._dataFeatureID = map[float64]SpaceZooFeatureConfig{}
 	for _, d := range a._data {
 		a._dataFeatureID[d.FeatureID] = d
 	}

@@ -46,6 +46,7 @@ func (a *RogueScoreRewardAccessor) Raw() ([]RogueScoreReward, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueScoreRewardAccessor.LoadData to preload everything
 func (a *RogueScoreRewardAccessor) GroupData() {
+	a._dataReward = map[float64]RogueScoreReward{}
 	for _, d := range a._data {
 		a._dataReward[d.Reward] = d
 	}

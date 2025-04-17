@@ -55,6 +55,10 @@ func (a *MarblePVPRankAccessor) Raw() ([]MarblePVPRank, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarblePVPRankAccessor.LoadData to preload everything
 func (a *MarblePVPRankAccessor) GroupData() {
+	a._dataBigIconPath = map[string]MarblePVPRank{}
+	a._dataID = map[float64]MarblePVPRank{}
+	a._dataIconPath = map[string]MarblePVPRank{}
+	a._dataSmallIconPath = map[string]MarblePVPRank{}
 	for _, d := range a._data {
 		a._dataBigIconPath[d.BigIconPath] = d
 		a._dataID[d.ID] = d

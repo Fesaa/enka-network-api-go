@@ -45,6 +45,7 @@ func (a *MarblePhaseAccessor) Raw() ([]MarblePhase, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarblePhaseAccessor.LoadData to preload everything
 func (a *MarblePhaseAccessor) GroupData() {
+	a._dataID = map[string]MarblePhase{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

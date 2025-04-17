@@ -48,6 +48,9 @@ func (a *TitanAtlasVoicePoolAccessor) Raw() ([]TitanAtlasVoicePool, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TitanAtlasVoicePoolAccessor.LoadData to preload everything
 func (a *TitanAtlasVoicePoolAccessor) GroupData() {
+	a._dataAudioEvent = map[string]TitanAtlasVoicePool{}
+	a._dataTitanVoiceID = map[float64]TitanAtlasVoicePool{}
+	a._dataTitanVoicePoolID = map[float64]TitanAtlasVoicePool{}
 	for _, d := range a._data {
 		a._dataAudioEvent[d.AudioEvent] = d
 		a._dataTitanVoiceID[d.TitanVoiceID] = d

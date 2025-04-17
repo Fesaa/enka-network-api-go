@@ -48,6 +48,8 @@ func (a *ChimeraGalleryTalkAccessor) Raw() ([]ChimeraGalleryTalk, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraGalleryTalkAccessor.LoadData to preload everything
 func (a *ChimeraGalleryTalkAccessor) GroupData() {
+	a._dataConditionType = map[string]ChimeraGalleryTalk{}
+	a._dataSort = map[float64]ChimeraGalleryTalk{}
 	for _, d := range a._data {
 		a._dataConditionType[d.ConditionType] = d
 		a._dataSort[d.Sort] = d

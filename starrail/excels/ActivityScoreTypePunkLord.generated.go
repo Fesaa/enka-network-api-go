@@ -47,6 +47,7 @@ func (a *ActivityScoreTypePunkLordAccessor) Raw() ([]ActivityScoreTypePunkLord, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityScoreTypePunkLordAccessor.LoadData to preload everything
 func (a *ActivityScoreTypePunkLordAccessor) GroupData() {
+	a._dataFinishPoint = map[float64]ActivityScoreTypePunkLord{}
 	for _, d := range a._data {
 		a._dataFinishPoint[d.FinishPoint] = d
 	}

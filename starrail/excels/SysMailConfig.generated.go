@@ -49,6 +49,7 @@ func (a *SysMailConfigAccessor) Raw() ([]SysMailConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SysMailConfigAccessor.LoadData to preload everything
 func (a *SysMailConfigAccessor) GroupData() {
+	a._dataMailID = map[float64]SysMailConfig{}
 	for _, d := range a._data {
 		a._dataMailID[d.MailID] = d
 	}

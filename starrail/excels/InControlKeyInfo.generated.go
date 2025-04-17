@@ -48,6 +48,7 @@ func (a *InControlKeyInfoAccessor) Raw() ([]InControlKeyInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InControlKeyInfoAccessor.LoadData to preload everything
 func (a *InControlKeyInfoAccessor) GroupData() {
+	a._dataKey = map[string]InControlKeyInfo{}
 	for _, d := range a._data {
 		a._dataKey[d.Key] = d
 	}

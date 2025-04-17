@@ -56,6 +56,7 @@ func (a *BattleTargetConfigAccessor) Raw() ([]BattleTargetConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattleTargetConfigAccessor.LoadData to preload everything
 func (a *BattleTargetConfigAccessor) GroupData() {
+	a._dataID = map[float64]BattleTargetConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

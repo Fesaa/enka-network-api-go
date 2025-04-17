@@ -47,6 +47,8 @@ func (a *PlanetFesUnlockAccessor) Raw() ([]PlanetFesUnlock, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesUnlockAccessor.LoadData to preload everything
 func (a *PlanetFesUnlockAccessor) GroupData() {
+	a._dataFinishWayID = map[float64]PlanetFesUnlock{}
+	a._dataUnlockID = map[float64]PlanetFesUnlock{}
 	for _, d := range a._data {
 		a._dataFinishWayID[d.FinishWayID] = d
 		a._dataUnlockID[d.UnlockID] = d

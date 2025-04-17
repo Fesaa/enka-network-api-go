@@ -52,6 +52,7 @@ func (a *RogueDLCFinishWayAccessor) Raw() ([]RogueDLCFinishWay, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCFinishWayAccessor.LoadData to preload everything
 func (a *RogueDLCFinishWayAccessor) GroupData() {
+	a._dataID = map[float64]RogueDLCFinishWay{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

@@ -47,6 +47,7 @@ func (a *PlanetFesFunctionAccessor) Raw() ([]PlanetFesFunction, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesFunctionAccessor.LoadData to preload everything
 func (a *PlanetFesFunctionAccessor) GroupData() {
+	a._dataSkillID = map[float64]PlanetFesFunction{}
 	for _, d := range a._data {
 		a._dataSkillID[d.SkillID] = d
 	}

@@ -45,6 +45,7 @@ func (a *TrainPartySkillEffectAccessor) Raw() ([]TrainPartySkillEffect, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartySkillEffectAccessor.LoadData to preload everything
 func (a *TrainPartySkillEffectAccessor) GroupData() {
+	a._dataEffectID = map[float64]TrainPartySkillEffect{}
 	for _, d := range a._data {
 		a._dataEffectID[d.EffectID] = d
 	}

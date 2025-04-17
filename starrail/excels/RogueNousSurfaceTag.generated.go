@@ -47,6 +47,8 @@ func (a *RogueNousSurfaceTagAccessor) Raw() ([]RogueNousSurfaceTag, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNousSurfaceTagAccessor.LoadData to preload everything
 func (a *RogueNousSurfaceTagAccessor) GroupData() {
+	a._dataSort = map[float64]RogueNousSurfaceTag{}
+	a._dataTagID = map[float64]RogueNousSurfaceTag{}
 	for _, d := range a._data {
 		a._dataSort[d.Sort] = d
 		a._dataTagID[d.TagID] = d

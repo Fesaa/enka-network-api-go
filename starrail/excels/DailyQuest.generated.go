@@ -47,6 +47,7 @@ func (a *DailyQuestAccessor) Raw() ([]DailyQuest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DailyQuestAccessor.LoadData to preload everything
 func (a *DailyQuestAccessor) GroupData() {
+	a._dataDailyID = map[float64]DailyQuest{}
 	for _, d := range a._data {
 		a._dataDailyID[d.DailyID] = d
 	}

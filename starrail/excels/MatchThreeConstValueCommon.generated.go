@@ -50,6 +50,7 @@ func (a *MatchThreeConstValueCommonAccessor) Raw() ([]MatchThreeConstValueCommon
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeConstValueCommonAccessor.LoadData to preload everything
 func (a *MatchThreeConstValueCommonAccessor) GroupData() {
+	a._dataConstValueName = map[string]MatchThreeConstValueCommon{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

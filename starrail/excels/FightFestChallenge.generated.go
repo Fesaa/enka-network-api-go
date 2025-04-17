@@ -70,6 +70,15 @@ func (a *FightFestChallengeAccessor) Raw() ([]FightFestChallenge, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FightFestChallengeAccessor.LoadData to preload everything
 func (a *FightFestChallengeAccessor) GroupData() {
+	a._dataAvatarInfoID = map[float64]FightFestChallenge{}
+	a._dataChallengeID = map[float64]FightFestChallenge{}
+	a._dataEventID = map[float64]FightFestChallenge{}
+	a._dataFigurePath = map[string]FightFestChallenge{}
+	a._dataGroupID = map[float64]FightFestChallenge{}
+	a._dataTabIconPath = map[string]FightFestChallenge{}
+	a._dataTutorialID = map[float64]FightFestChallenge{}
+	a._dataUnlockSubMissionID = map[float64]FightFestChallenge{}
+	a._dataUnlockSubMussionID = map[float64]FightFestChallenge{}
 	for _, d := range a._data {
 		a._dataAvatarInfoID[d.AvatarInfoID] = d
 		a._dataChallengeID[d.ChallengeID] = d

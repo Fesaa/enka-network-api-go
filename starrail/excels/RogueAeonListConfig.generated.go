@@ -48,6 +48,9 @@ func (a *RogueAeonListConfigAccessor) Raw() ([]RogueAeonListConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueAeonListConfigAccessor.LoadData to preload everything
 func (a *RogueAeonListConfigAccessor) GroupData() {
+	a._dataDisplayID = map[float64]RogueAeonListConfig{}
+	a._dataRogueAeonID = map[float64]RogueAeonListConfig{}
+	a._dataSort = map[float64]RogueAeonListConfig{}
 	for _, d := range a._data {
 		a._dataDisplayID[d.DisplayID] = d
 		a._dataRogueAeonID[d.RogueAeonID] = d

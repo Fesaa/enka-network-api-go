@@ -69,6 +69,7 @@ func (a *RewardDataAccessor) Raw() ([]RewardData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RewardDataAccessor.LoadData to preload everything
 func (a *RewardDataAccessor) GroupData() {
+	a._dataRewardID = map[float64]RewardData{}
 	for _, d := range a._data {
 		a._dataRewardID[d.RewardID] = d
 	}

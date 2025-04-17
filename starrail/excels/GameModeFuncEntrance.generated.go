@@ -45,6 +45,7 @@ func (a *GameModeFuncEntranceAccessor) Raw() ([]GameModeFuncEntrance, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GameModeFuncEntranceAccessor.LoadData to preload everything
 func (a *GameModeFuncEntranceAccessor) GroupData() {
+	a._dataGameModeType = map[float64]GameModeFuncEntrance{}
 	for _, d := range a._data {
 		a._dataGameModeType[d.GameModeType] = d
 	}

@@ -55,6 +55,8 @@ func (a *CutSceneConfigAccessor) Raw() ([]CutSceneConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with CutSceneConfigAccessor.LoadData to preload everything
 func (a *CutSceneConfigAccessor) GroupData() {
+	a._dataCutSceneName = map[string]CutSceneConfig{}
+	a._dataCutScenePath = map[string]CutSceneConfig{}
 	for _, d := range a._data {
 		a._dataCutSceneName[d.CutSceneName] = d
 		a._dataCutScenePath[d.CutScenePath] = d

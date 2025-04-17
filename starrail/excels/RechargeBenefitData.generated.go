@@ -48,6 +48,8 @@ func (a *RechargeBenefitDataAccessor) Raw() ([]RechargeBenefitData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RechargeBenefitDataAccessor.LoadData to preload everything
 func (a *RechargeBenefitDataAccessor) GroupData() {
+	a._dataBenefitID = map[float64]RechargeBenefitData{}
+	a._dataReward = map[float64]RechargeBenefitData{}
 	for _, d := range a._data {
 		a._dataBenefitID[d.BenefitID] = d
 		a._dataReward[d.Reward] = d

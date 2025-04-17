@@ -46,6 +46,7 @@ func (a *SubMissionAccessor) Raw() ([]SubMission, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SubMissionAccessor.LoadData to preload everything
 func (a *SubMissionAccessor) GroupData() {
+	a._dataSubMissionID = map[float64]SubMission{}
 	for _, d := range a._data {
 		a._dataSubMissionID[d.SubMissionID] = d
 	}

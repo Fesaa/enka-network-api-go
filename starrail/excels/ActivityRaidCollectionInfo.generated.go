@@ -48,6 +48,8 @@ func (a *ActivityRaidCollectionInfoAccessor) Raw() ([]ActivityRaidCollectionInfo
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityRaidCollectionInfoAccessor.LoadData to preload everything
 func (a *ActivityRaidCollectionInfoAccessor) GroupData() {
+	a._dataActivityID = map[float64]ActivityRaidCollectionInfo{}
+	a._dataRaidCollectionType = map[string]ActivityRaidCollectionInfo{}
 	for _, d := range a._data {
 		a._dataActivityID[d.ActivityID] = d
 		a._dataRaidCollectionType[d.RaidCollectionType] = d

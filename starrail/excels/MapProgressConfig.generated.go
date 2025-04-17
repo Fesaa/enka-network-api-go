@@ -47,6 +47,8 @@ func (a *MapProgressConfigAccessor) Raw() ([]MapProgressConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MapProgressConfigAccessor.LoadData to preload everything
 func (a *MapProgressConfigAccessor) GroupData() {
+	a._dataID = map[string]MapProgressConfig{}
+	a._dataIconPath = map[string]MapProgressConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d

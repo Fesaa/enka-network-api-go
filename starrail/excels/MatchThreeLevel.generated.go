@@ -63,6 +63,7 @@ func (a *MatchThreeLevelAccessor) Raw() ([]MatchThreeLevel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeLevelAccessor.LoadData to preload everything
 func (a *MatchThreeLevelAccessor) GroupData() {
+	a._dataOpponentID = map[float64]MatchThreeLevel{}
 	for _, d := range a._data {
 		a._dataOpponentID[d.OpponentID] = d
 	}

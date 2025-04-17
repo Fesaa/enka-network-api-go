@@ -45,6 +45,7 @@ func (a *MenuItemNameAccessor) Raw() ([]MenuItemName, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MenuItemNameAccessor.LoadData to preload everything
 func (a *MenuItemNameAccessor) GroupData() {
+	a._dataID = map[float64]MenuItemName{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

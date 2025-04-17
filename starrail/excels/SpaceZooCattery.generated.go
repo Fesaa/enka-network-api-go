@@ -47,6 +47,7 @@ func (a *SpaceZooCatteryAccessor) Raw() ([]SpaceZooCattery, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpaceZooCatteryAccessor.LoadData to preload everything
 func (a *SpaceZooCatteryAccessor) GroupData() {
+	a._dataCatteryID = map[float64]SpaceZooCattery{}
 	for _, d := range a._data {
 		a._dataCatteryID[d.CatteryID] = d
 	}

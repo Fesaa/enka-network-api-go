@@ -45,6 +45,7 @@ func (a *MusicRhythmConstValueCommonAccessor) Raw() ([]MusicRhythmConstValueComm
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MusicRhythmConstValueCommonAccessor.LoadData to preload everything
 func (a *MusicRhythmConstValueCommonAccessor) GroupData() {
+	a._dataConstValueName = map[string]MusicRhythmConstValueCommon{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

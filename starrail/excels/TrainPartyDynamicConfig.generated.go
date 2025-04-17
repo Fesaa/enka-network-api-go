@@ -47,6 +47,8 @@ func (a *TrainPartyDynamicConfigAccessor) Raw() ([]TrainPartyDynamicConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyDynamicConfigAccessor.LoadData to preload everything
 func (a *TrainPartyDynamicConfigAccessor) GroupData() {
+	a._dataID = map[float64]TrainPartyDynamicConfig{}
+	a._dataPrefabPath = map[string]TrainPartyDynamicConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataPrefabPath[d.PrefabPath] = d

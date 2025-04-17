@@ -63,6 +63,10 @@ func (a *TrackPhotoStageAccessor) Raw() ([]TrackPhotoStage, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrackPhotoStageAccessor.LoadData to preload everything
 func (a *TrackPhotoStageAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]TrackPhotoStage{}
+	a._dataMainMissionID = map[float64]TrackPhotoStage{}
+	a._dataRaidID = map[float64]TrackPhotoStage{}
+	a._dataStageID = map[float64]TrackPhotoStage{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataMainMissionID[d.MainMissionID] = d

@@ -84,6 +84,25 @@ func (a *AvatarSkinAccessor) Raw() ([]AvatarSkin, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarSkinAccessor.LoadData to preload everything
 func (a *AvatarSkinAccessor) GroupData() {
+	a._dataActionAvatarHeadIconPath = map[string]AvatarSkin{}
+	a._dataAdventureDefaultAvatarHeadIconPath = map[string]AvatarSkin{}
+	a._dataAvatarCutinBgImgPath = map[string]AvatarSkin{}
+	a._dataAvatarCutinFrontImgPath = map[string]AvatarSkin{}
+	a._dataAvatarCutinImgPath = map[string]AvatarSkin{}
+	a._dataAvatarID = map[float64]AvatarSkin{}
+	a._dataAvatarMiniIconPath = map[string]AvatarSkin{}
+	a._dataAvatarSideIconPath = map[string]AvatarSkin{}
+	a._dataDefaultAvatarHeadIconPath = map[string]AvatarSkin{}
+	a._dataDefaultAvatarModelPath = map[string]AvatarSkin{}
+	a._dataFreeStyleCharacterID = map[string]AvatarSkin{}
+	a._dataID = map[float64]AvatarSkin{}
+	a._dataPlayerCardID = map[float64]AvatarSkin{}
+	a._dataPlayerPrefabPath = map[string]AvatarSkin{}
+	a._dataShowType = map[string]AvatarSkin{}
+	a._dataSideAvatarHeadIconPath = map[string]AvatarSkin{}
+	a._dataUIAvatarModelPath = map[string]AvatarSkin{}
+	a._dataUltraSkillCutInPrefabPath = map[string]AvatarSkin{}
+	a._dataWaitingAvatarHeadIconPath = map[string]AvatarSkin{}
 	for _, d := range a._data {
 		a._dataActionAvatarHeadIconPath[d.ActionAvatarHeadIconPath] = d
 		a._dataAdventureDefaultAvatarHeadIconPath[d.AdventureDefaultAvatarHeadIconPath] = d

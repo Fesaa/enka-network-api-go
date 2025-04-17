@@ -53,6 +53,12 @@ func (a *ActivityPanelSevenDayRewardAccessor) Raw() ([]ActivityPanelSevenDayRewa
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityPanelSevenDayRewardAccessor.LoadData to preload everything
 func (a *ActivityPanelSevenDayRewardAccessor) GroupData() {
+	a._dataBGImgPath = map[string]ActivityPanelSevenDayReward{}
+	a._dataCardWidget0ImgPath = map[string]ActivityPanelSevenDayReward{}
+	a._dataCardWidget1ImgPath = map[string]ActivityPanelSevenDayReward{}
+	a._dataCardWidget2ImgPath = map[string]ActivityPanelSevenDayReward{}
+	a._dataID = map[float64]ActivityPanelSevenDayReward{}
+	a._dataPicImgPath = map[string]ActivityPanelSevenDayReward{}
 	for _, d := range a._data {
 		a._dataBGImgPath[d.BGImgPath] = d
 		a._dataCardWidget0ImgPath[d.CardWidget0ImgPath] = d

@@ -51,6 +51,8 @@ func (a *RogueTournKeywordAccessor) Raw() ([]RogueTournKeyword, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournKeywordAccessor.LoadData to preload everything
 func (a *RogueTournKeywordAccessor) GroupData() {
+	a._dataKeywordID = map[float64]RogueTournKeyword{}
+	a._dataMazeBuffID = map[float64]RogueTournKeyword{}
 	for _, d := range a._data {
 		a._dataKeywordID[d.KeywordID] = d
 		a._dataMazeBuffID[d.MazeBuffID] = d

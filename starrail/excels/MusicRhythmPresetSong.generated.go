@@ -46,6 +46,7 @@ func (a *MusicRhythmPresetSongAccessor) Raw() ([]MusicRhythmPresetSong, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MusicRhythmPresetSongAccessor.LoadData to preload everything
 func (a *MusicRhythmPresetSongAccessor) GroupData() {
+	a._dataID = map[float64]MusicRhythmPresetSong{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

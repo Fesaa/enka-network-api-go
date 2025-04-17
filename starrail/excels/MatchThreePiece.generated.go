@@ -47,6 +47,8 @@ func (a *MatchThreePieceAccessor) Raw() ([]MatchThreePiece, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreePieceAccessor.LoadData to preload everything
 func (a *MatchThreePieceAccessor) GroupData() {
+	a._dataImagePath = map[string]MatchThreePiece{}
+	a._dataPieceID = map[float64]MatchThreePiece{}
 	for _, d := range a._data {
 		a._dataImagePath[d.ImagePath] = d
 		a._dataPieceID[d.PieceID] = d

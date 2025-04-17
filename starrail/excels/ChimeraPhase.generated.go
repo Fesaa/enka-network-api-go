@@ -48,6 +48,7 @@ func (a *ChimeraPhaseAccessor) Raw() ([]ChimeraPhase, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraPhaseAccessor.LoadData to preload everything
 func (a *ChimeraPhaseAccessor) GroupData() {
+	a._dataPhaseID = map[float64]ChimeraPhase{}
 	for _, d := range a._data {
 		a._dataPhaseID[d.PhaseID] = d
 	}

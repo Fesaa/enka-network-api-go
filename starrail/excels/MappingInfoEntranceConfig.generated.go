@@ -44,6 +44,7 @@ func (a *MappingInfoEntranceConfigAccessor) Raw() ([]MappingInfoEntranceConfig, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MappingInfoEntranceConfigAccessor.LoadData to preload everything
 func (a *MappingInfoEntranceConfigAccessor) GroupData() {
+	a._dataID = map[float64]MappingInfoEntranceConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

@@ -47,6 +47,7 @@ func (a *PlanetFesSummaryAccessor) Raw() ([]PlanetFesSummary, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesSummaryAccessor.LoadData to preload everything
 func (a *PlanetFesSummaryAccessor) GroupData() {
+	a._dataID = map[string]PlanetFesSummary{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

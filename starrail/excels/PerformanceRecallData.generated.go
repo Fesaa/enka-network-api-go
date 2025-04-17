@@ -58,6 +58,7 @@ func (a *PerformanceRecallDataAccessor) Raw() ([]PerformanceRecallData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PerformanceRecallDataAccessor.LoadData to preload everything
 func (a *PerformanceRecallDataAccessor) GroupData() {
+	a._dataID = map[float64]PerformanceRecallData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

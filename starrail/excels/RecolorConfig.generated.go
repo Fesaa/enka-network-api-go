@@ -45,6 +45,7 @@ func (a *RecolorConfigAccessor) Raw() ([]RecolorConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RecolorConfigAccessor.LoadData to preload everything
 func (a *RecolorConfigAccessor) GroupData() {
+	a._dataID = map[float64]RecolorConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

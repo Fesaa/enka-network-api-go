@@ -51,6 +51,8 @@ func (a *PerformanceVideoAccessor) Raw() ([]PerformanceVideo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PerformanceVideoAccessor.LoadData to preload everything
 func (a *PerformanceVideoAccessor) GroupData() {
+	a._dataPerformanceID = map[float64]PerformanceVideo{}
+	a._dataPerformancePath = map[string]PerformanceVideo{}
 	for _, d := range a._data {
 		a._dataPerformanceID[d.PerformanceID] = d
 		a._dataPerformancePath[d.PerformancePath] = d

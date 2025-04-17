@@ -48,6 +48,8 @@ func (a *VideoConfigAccessor) Raw() ([]VideoConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with VideoConfigAccessor.LoadData to preload everything
 func (a *VideoConfigAccessor) GroupData() {
+	a._dataVideoID = map[float64]VideoConfig{}
+	a._dataVideoPath = map[string]VideoConfig{}
 	for _, d := range a._data {
 		a._dataVideoID[d.VideoID] = d
 		a._dataVideoPath[d.VideoPath] = d

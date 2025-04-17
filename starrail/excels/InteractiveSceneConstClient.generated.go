@@ -45,6 +45,7 @@ func (a *InteractiveSceneConstClientAccessor) Raw() ([]InteractiveSceneConstClie
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InteractiveSceneConstClientAccessor.LoadData to preload everything
 func (a *InteractiveSceneConstClientAccessor) GroupData() {
+	a._dataConstValueName = map[string]InteractiveSceneConstClient{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

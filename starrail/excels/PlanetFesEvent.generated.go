@@ -50,6 +50,8 @@ func (a *PlanetFesEventAccessor) Raw() ([]PlanetFesEvent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesEventAccessor.LoadData to preload everything
 func (a *PlanetFesEventAccessor) GroupData() {
+	a._dataID = map[string]PlanetFesEvent{}
+	a._dataInitialAppearCD = map[float64]PlanetFesEvent{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataInitialAppearCD[d.InitialAppearCD] = d

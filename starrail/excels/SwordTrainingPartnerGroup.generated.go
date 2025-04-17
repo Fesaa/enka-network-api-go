@@ -45,6 +45,7 @@ func (a *SwordTrainingPartnerGroupAccessor) Raw() ([]SwordTrainingPartnerGroup, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SwordTrainingPartnerGroupAccessor.LoadData to preload everything
 func (a *SwordTrainingPartnerGroupAccessor) GroupData() {
+	a._dataPartnerAbilityGroupID = map[float64]SwordTrainingPartnerGroup{}
 	for _, d := range a._data {
 		a._dataPartnerAbilityGroupID[d.PartnerAbilityGroupID] = d
 	}

@@ -47,6 +47,7 @@ func (a *ActionSettingAccessor) Raw() ([]ActionSetting, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActionSettingAccessor.LoadData to preload everything
 func (a *ActionSettingAccessor) GroupData() {
+	a._dataActionName = map[string]ActionSetting{}
 	for _, d := range a._data {
 		a._dataActionName[d.ActionName] = d
 	}

@@ -45,6 +45,7 @@ func (a *RogueTournConstCommonAccessor) Raw() ([]RogueTournConstCommon, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournConstCommonAccessor.LoadData to preload everything
 func (a *RogueTournConstCommonAccessor) GroupData() {
+	a._dataConstValueName = map[string]RogueTournConstCommon{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

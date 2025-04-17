@@ -49,6 +49,10 @@ func (a *PamSkinConfigAccessor) Raw() ([]PamSkinConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PamSkinConfigAccessor.LoadData to preload everything
 func (a *PamSkinConfigAccessor) GroupData() {
+	a._dataConfigEntityPath = map[string]PamSkinConfig{}
+	a._dataJsonPath = map[string]PamSkinConfig{}
+	a._dataSkinID = map[float64]PamSkinConfig{}
+	a._dataSkinIcon = map[string]PamSkinConfig{}
 	for _, d := range a._data {
 		a._dataConfigEntityPath[d.ConfigEntityPath] = d
 		a._dataJsonPath[d.JsonPath] = d

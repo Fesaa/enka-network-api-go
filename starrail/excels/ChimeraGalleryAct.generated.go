@@ -49,6 +49,9 @@ func (a *ChimeraGalleryActAccessor) Raw() ([]ChimeraGalleryAct, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraGalleryActAccessor.LoadData to preload everything
 func (a *ChimeraGalleryActAccessor) GroupData() {
+	a._dataActID = map[float64]ChimeraGalleryAct{}
+	a._dataIcon = map[string]ChimeraGalleryAct{}
+	a._dataSort = map[float64]ChimeraGalleryAct{}
 	for _, d := range a._data {
 		a._dataActID[d.ActID] = d
 		a._dataIcon[d.Icon] = d

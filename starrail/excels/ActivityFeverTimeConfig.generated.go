@@ -66,6 +66,11 @@ func (a *ActivityFeverTimeConfigAccessor) Raw() ([]ActivityFeverTimeConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityFeverTimeConfigAccessor.LoadData to preload everything
 func (a *ActivityFeverTimeConfigAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]ActivityFeverTimeConfig{}
+	a._dataEventID = map[float64]ActivityFeverTimeConfig{}
+	a._dataFeverTimeID = map[float64]ActivityFeverTimeConfig{}
+	a._dataImagePath = map[string]ActivityFeverTimeConfig{}
+	a._dataQuestGroupID = map[float64]ActivityFeverTimeConfig{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataEventID[d.EventID] = d

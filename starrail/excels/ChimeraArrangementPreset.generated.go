@@ -46,6 +46,7 @@ func (a *ChimeraArrangementPresetAccessor) Raw() ([]ChimeraArrangementPreset, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraArrangementPresetAccessor.LoadData to preload everything
 func (a *ChimeraArrangementPresetAccessor) GroupData() {
+	a._dataPresetID = map[float64]ChimeraArrangementPreset{}
 	for _, d := range a._data {
 		a._dataPresetID[d.PresetID] = d
 	}

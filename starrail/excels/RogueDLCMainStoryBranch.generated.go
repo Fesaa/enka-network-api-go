@@ -45,6 +45,7 @@ func (a *RogueDLCMainStoryBranchAccessor) Raw() ([]RogueDLCMainStoryBranch, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCMainStoryBranchAccessor.LoadData to preload everything
 func (a *RogueDLCMainStoryBranchAccessor) GroupData() {
+	a._dataMainStoryBranchID = map[float64]RogueDLCMainStoryBranch{}
 	for _, d := range a._data {
 		a._dataMainStoryBranchID[d.MainStoryBranchID] = d
 	}

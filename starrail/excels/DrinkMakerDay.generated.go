@@ -47,6 +47,8 @@ func (a *DrinkMakerDayAccessor) Raw() ([]DrinkMakerDay, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerDayAccessor.LoadData to preload everything
 func (a *DrinkMakerDayAccessor) GroupData() {
+	a._dataCanStartSubMissionID = map[float64]DrinkMakerDay{}
+	a._dataDayID = map[float64]DrinkMakerDay{}
 	for _, d := range a._data {
 		a._dataCanStartSubMissionID[d.CanStartSubMissionID] = d
 		a._dataDayID[d.DayID] = d

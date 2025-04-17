@@ -105,6 +105,24 @@ func (a *AvatarConfigAccessor) Raw() ([]AvatarConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarConfigAccessor.LoadData to preload everything
 func (a *AvatarConfigAccessor) GroupData() {
+	a._dataActionAvatarHeadIconPath = map[string]AvatarConfig{}
+	a._dataAdventurePlayerID = map[float64]AvatarConfig{}
+	a._dataAvatarCutinBgImgPath = map[string]AvatarConfig{}
+	a._dataAvatarCutinFrontImgPath = map[string]AvatarConfig{}
+	a._dataAvatarCutinImgPath = map[string]AvatarConfig{}
+	a._dataAvatarGachaResultImgPath = map[string]AvatarConfig{}
+	a._dataAvatarID = map[float64]AvatarConfig{}
+	a._dataAvatarMiniIconPath = map[string]AvatarConfig{}
+	a._dataAvatarSideIconPath = map[string]AvatarConfig{}
+	a._dataAvatarVOTag = map[string]AvatarConfig{}
+	a._dataDefaultAvatarHeadIconPath = map[string]AvatarConfig{}
+	a._dataDefaultAvatarModelPath = map[string]AvatarConfig{}
+	a._dataJsonPath = map[string]AvatarConfig{}
+	a._dataManikinJsonPath = map[string]AvatarConfig{}
+	a._dataSideAvatarHeadIconPath = map[string]AvatarConfig{}
+	a._dataUIAvatarModelPath = map[string]AvatarConfig{}
+	a._dataUltraSkillCutInPrefabPath = map[string]AvatarConfig{}
+	a._dataWaitingAvatarHeadIconPath = map[string]AvatarConfig{}
 	for _, d := range a._data {
 		a._dataActionAvatarHeadIconPath[d.ActionAvatarHeadIconPath] = d
 		a._dataAdventurePlayerID[d.AdventurePlayerID] = d

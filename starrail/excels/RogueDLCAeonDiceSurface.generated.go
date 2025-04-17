@@ -57,6 +57,8 @@ func (a *RogueDLCAeonDiceSurfaceAccessor) Raw() ([]RogueDLCAeonDiceSurface, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCAeonDiceSurfaceAccessor.LoadData to preload everything
 func (a *RogueDLCAeonDiceSurfaceAccessor) GroupData() {
+	a._dataAeonSurfaceDiceID = map[float64]RogueDLCAeonDiceSurface{}
+	a._dataDiceSurfaceIcon = map[string]RogueDLCAeonDiceSurface{}
 	for _, d := range a._data {
 		a._dataAeonSurfaceDiceID[d.AeonSurfaceDiceID] = d
 		a._dataDiceSurfaceIcon[d.DiceSurfaceIcon] = d

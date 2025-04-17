@@ -64,6 +64,11 @@ func (a *ActivityGuessSilhouetteAccessor) Raw() ([]ActivityGuessSilhouette, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityGuessSilhouetteAccessor.LoadData to preload everything
 func (a *ActivityGuessSilhouetteAccessor) GroupData() {
+	a._dataAim02 = map[string]ActivityGuessSilhouette{}
+	a._dataKeyIconPath = map[string]ActivityGuessSilhouette{}
+	a._dataSilhouetteID = map[float64]ActivityGuessSilhouette{}
+	a._dataSilhouetteIconPath = map[string]ActivityGuessSilhouette{}
+	a._dataTitle = map[string]ActivityGuessSilhouette{}
 	for _, d := range a._data {
 		a._dataAim02[d.Aim02] = d
 		a._dataKeyIconPath[d.KeyIconPath] = d

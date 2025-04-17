@@ -55,6 +55,12 @@ func (a *ActivityTelevisionSeasonAccessor) Raw() ([]ActivityTelevisionSeason, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityTelevisionSeasonAccessor.LoadData to preload everything
 func (a *ActivityTelevisionSeasonAccessor) GroupData() {
+	a._dataBuffLevelDefaultBackgroundPath = map[string]ActivityTelevisionSeason{}
+	a._dataFirstMainMissionID = map[float64]ActivityTelevisionSeason{}
+	a._dataLastStage = map[float64]ActivityTelevisionSeason{}
+	a._dataLastStageQuest = map[float64]ActivityTelevisionSeason{}
+	a._dataLevelMessageSubmission = map[float64]ActivityTelevisionSeason{}
+	a._dataSeason = map[float64]ActivityTelevisionSeason{}
 	for _, d := range a._data {
 		a._dataBuffLevelDefaultBackgroundPath[d.BuffLevelDefaultBackgroundPath] = d
 		a._dataFirstMainMissionID[d.FirstMainMissionID] = d

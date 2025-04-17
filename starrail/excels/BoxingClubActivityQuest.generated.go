@@ -48,6 +48,9 @@ func (a *BoxingClubActivityQuestAccessor) Raw() ([]BoxingClubActivityQuest, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BoxingClubActivityQuestAccessor.LoadData to preload everything
 func (a *BoxingClubActivityQuestAccessor) GroupData() {
+	a._dataChallengeID = map[float64]BoxingClubActivityQuest{}
+	a._dataID = map[float64]BoxingClubActivityQuest{}
+	a._dataName = map[string]BoxingClubActivityQuest{}
 	for _, d := range a._data {
 		a._dataChallengeID[d.ChallengeID] = d
 		a._dataID[d.ID] = d

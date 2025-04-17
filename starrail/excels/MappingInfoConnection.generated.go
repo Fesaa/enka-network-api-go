@@ -46,6 +46,7 @@ func (a *MappingInfoConnectionAccessor) Raw() ([]MappingInfoConnection, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MappingInfoConnectionAccessor.LoadData to preload everything
 func (a *MappingInfoConnectionAccessor) GroupData() {
+	a._dataSourceMappingInfoID = map[float64]MappingInfoConnection{}
 	for _, d := range a._data {
 		a._dataSourceMappingInfoID[d.SourceMappingInfoID] = d
 	}

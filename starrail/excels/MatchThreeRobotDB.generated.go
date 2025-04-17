@@ -47,6 +47,7 @@ func (a *MatchThreeRobotDBAccessor) Raw() ([]MatchThreeRobotDB, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeRobotDBAccessor.LoadData to preload everything
 func (a *MatchThreeRobotDBAccessor) GroupData() {
+	a._dataRobotID = map[float64]MatchThreeRobotDB{}
 	for _, d := range a._data {
 		a._dataRobotID[d.RobotID] = d
 	}

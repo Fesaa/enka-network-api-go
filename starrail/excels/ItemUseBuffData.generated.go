@@ -60,6 +60,8 @@ func (a *ItemUseBuffDataAccessor) Raw() ([]ItemUseBuffData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemUseBuffDataAccessor.LoadData to preload everything
 func (a *ItemUseBuffDataAccessor) GroupData() {
+	a._dataMazeBuffID = map[float64]ItemUseBuffData{}
+	a._dataUseDataID = map[float64]ItemUseBuffData{}
 	for _, d := range a._data {
 		a._dataMazeBuffID[d.MazeBuffID] = d
 		a._dataUseDataID[d.UseDataID] = d

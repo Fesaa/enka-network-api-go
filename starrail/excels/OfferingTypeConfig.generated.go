@@ -50,6 +50,8 @@ func (a *OfferingTypeConfigAccessor) Raw() ([]OfferingTypeConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with OfferingTypeConfigAccessor.LoadData to preload everything
 func (a *OfferingTypeConfigAccessor) GroupData() {
+	a._dataID = map[float64]OfferingTypeConfig{}
+	a._dataItemID = map[float64]OfferingTypeConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataItemID[d.ItemID] = d

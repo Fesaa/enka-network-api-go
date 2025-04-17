@@ -60,6 +60,12 @@ func (a *ActivityStarFightGroupAccessor) Raw() ([]ActivityStarFightGroup, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityStarFightGroupAccessor.LoadData to preload everything
 func (a *ActivityStarFightGroupAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]ActivityStarFightGroup{}
+	a._dataGroupID = map[float64]ActivityStarFightGroup{}
+	a._dataGroupPicPath = map[string]ActivityStarFightGroup{}
+	a._dataMazeBuffID = map[float64]ActivityStarFightGroup{}
+	a._dataPerfectQuest = map[float64]ActivityStarFightGroup{}
+	a._dataTutorialGuideID = map[float64]ActivityStarFightGroup{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataGroupID[d.GroupID] = d

@@ -45,6 +45,8 @@ func (a *MissionVersionConstAccessor) Raw() ([]MissionVersionConst, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MissionVersionConstAccessor.LoadData to preload everything
 func (a *MissionVersionConstAccessor) GroupData() {
+	a._dataID = map[float64]MissionVersionConst{}
+	a._dataVersionFinalMainMissionID = map[float64]MissionVersionConst{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataVersionFinalMainMissionID[d.VersionFinalMainMissionID] = d

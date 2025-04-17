@@ -49,6 +49,7 @@ func (a *FreeStyleMotionAccessor) Raw() ([]FreeStyleMotion, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FreeStyleMotionAccessor.LoadData to preload everything
 func (a *FreeStyleMotionAccessor) GroupData() {
+	a._dataID = map[float64]FreeStyleMotion{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

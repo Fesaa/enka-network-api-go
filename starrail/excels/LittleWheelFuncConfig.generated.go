@@ -45,6 +45,7 @@ func (a *LittleWheelFuncConfigAccessor) Raw() ([]LittleWheelFuncConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with LittleWheelFuncConfigAccessor.LoadData to preload everything
 func (a *LittleWheelFuncConfigAccessor) GroupData() {
+	a._dataLittleWheelFuncID = map[string]LittleWheelFuncConfig{}
 	for _, d := range a._data {
 		a._dataLittleWheelFuncID[d.LittleWheelFuncID] = d
 	}

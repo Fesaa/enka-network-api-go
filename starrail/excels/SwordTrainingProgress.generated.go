@@ -53,6 +53,7 @@ func (a *SwordTrainingProgressAccessor) Raw() ([]SwordTrainingProgress, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SwordTrainingProgressAccessor.LoadData to preload everything
 func (a *SwordTrainingProgressAccessor) GroupData() {
+	a._dataTurnID = map[float64]SwordTrainingProgress{}
 	for _, d := range a._data {
 		a._dataTurnID[d.TurnID] = d
 	}

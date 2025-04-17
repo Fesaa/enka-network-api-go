@@ -46,6 +46,7 @@ func (a *SFXConfigAccessor) Raw() ([]SFXConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SFXConfigAccessor.LoadData to preload everything
 func (a *SFXConfigAccessor) GroupData() {
+	a._dataSFXID = map[float64]SFXConfig{}
 	for _, d := range a._data {
 		a._dataSFXID[d.SFXID] = d
 	}

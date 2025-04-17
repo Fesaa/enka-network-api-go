@@ -45,6 +45,7 @@ func (a *MuseumMissionAccessor) Raw() ([]MuseumMission, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumMissionAccessor.LoadData to preload everything
 func (a *MuseumMissionAccessor) GroupData() {
+	a._dataMuseumMissionID = map[float64]MuseumMission{}
 	for _, d := range a._data {
 		a._dataMuseumMissionID[d.MuseumMissionID] = d
 	}

@@ -47,6 +47,9 @@ func (a *ScheduleDataDropLimitAccessor) Raw() ([]ScheduleDataDropLimit, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ScheduleDataDropLimitAccessor.LoadData to preload everything
 func (a *ScheduleDataDropLimitAccessor) GroupData() {
+	a._dataBeginTime = map[string]ScheduleDataDropLimit{}
+	a._dataEndTime = map[string]ScheduleDataDropLimit{}
+	a._dataID = map[float64]ScheduleDataDropLimit{}
 	for _, d := range a._data {
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d

@@ -44,6 +44,7 @@ func (a *ActivityConstantSilverWolfAccessor) Raw() ([]ActivityConstantSilverWolf
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityConstantSilverWolfAccessor.LoadData to preload everything
 func (a *ActivityConstantSilverWolfAccessor) GroupData() {
+	a._dataConstValueName = map[string]ActivityConstantSilverWolf{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

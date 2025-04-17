@@ -64,6 +64,12 @@ func (a *BattleCollegeConfigAccessor) Raw() ([]BattleCollegeConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattleCollegeConfigAccessor.LoadData to preload everything
 func (a *BattleCollegeConfigAccessor) GroupData() {
+	a._dataID = map[float64]BattleCollegeConfig{}
+	a._dataRewardID = map[float64]BattleCollegeConfig{}
+	a._dataStageID = map[float64]BattleCollegeConfig{}
+	a._dataTutorialID = map[float64]BattleCollegeConfig{}
+	a._dataVideoAssetID = map[float64]BattleCollegeConfig{}
+	a._dataVideoCoverPath = map[string]BattleCollegeConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataRewardID[d.RewardID] = d

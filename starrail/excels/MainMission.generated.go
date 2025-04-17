@@ -73,6 +73,8 @@ func (a *MainMissionAccessor) Raw() ([]MainMission, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MainMissionAccessor.LoadData to preload everything
 func (a *MainMissionAccessor) GroupData() {
+	a._dataDisplayPriority = map[float64]MainMission{}
+	a._dataMainMissionID = map[float64]MainMission{}
 	for _, d := range a._data {
 		a._dataDisplayPriority[d.DisplayPriority] = d
 		a._dataMainMissionID[d.MainMissionID] = d

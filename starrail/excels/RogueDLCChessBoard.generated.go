@@ -46,6 +46,7 @@ func (a *RogueDLCChessBoardAccessor) Raw() ([]RogueDLCChessBoard, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCChessBoardAccessor.LoadData to preload everything
 func (a *RogueDLCChessBoardAccessor) GroupData() {
+	a._dataChessBoardID = map[float64]RogueDLCChessBoard{}
 	for _, d := range a._data {
 		a._dataChessBoardID[d.ChessBoardID] = d
 	}

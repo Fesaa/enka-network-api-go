@@ -51,6 +51,7 @@ func (a *RechargeConfigAccessor) Raw() ([]RechargeConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RechargeConfigAccessor.LoadData to preload everything
 func (a *RechargeConfigAccessor) GroupData() {
+	a._dataProductID = map[string]RechargeConfig{}
 	for _, d := range a._data {
 		a._dataProductID[d.ProductID] = d
 	}

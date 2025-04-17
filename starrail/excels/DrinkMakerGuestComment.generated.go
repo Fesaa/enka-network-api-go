@@ -51,6 +51,7 @@ func (a *DrinkMakerGuestCommentAccessor) Raw() ([]DrinkMakerGuestComment, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerGuestCommentAccessor.LoadData to preload everything
 func (a *DrinkMakerGuestCommentAccessor) GroupData() {
+	a._dataCommentID = map[float64]DrinkMakerGuestComment{}
 	for _, d := range a._data {
 		a._dataCommentID[d.CommentID] = d
 	}

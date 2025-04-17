@@ -44,6 +44,7 @@ func (a *RogueMonsterGroupAccessor) Raw() ([]RogueMonsterGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMonsterGroupAccessor.LoadData to preload everything
 func (a *RogueMonsterGroupAccessor) GroupData() {
+	a._dataRogueMonsterGroupID = map[float64]RogueMonsterGroup{}
 	for _, d := range a._data {
 		a._dataRogueMonsterGroupID[d.RogueMonsterGroupID] = d
 	}

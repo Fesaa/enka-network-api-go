@@ -50,6 +50,8 @@ func (a *RogueTournTitanBlessAccessor) Raw() ([]RogueTournTitanBless, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournTitanBlessAccessor.LoadData to preload everything
 func (a *RogueTournTitanBlessAccessor) GroupData() {
+	a._dataMazeBuffID = map[float64]RogueTournTitanBless{}
+	a._dataTitanBlessID = map[float64]RogueTournTitanBless{}
 	for _, d := range a._data {
 		a._dataMazeBuffID[d.MazeBuffID] = d
 		a._dataTitanBlessID[d.TitanBlessID] = d

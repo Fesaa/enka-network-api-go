@@ -48,6 +48,7 @@ func (a *GotoConfigAccessor) Raw() ([]GotoConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GotoConfigAccessor.LoadData to preload everything
 func (a *GotoConfigAccessor) GroupData() {
+	a._dataID = map[float64]GotoConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

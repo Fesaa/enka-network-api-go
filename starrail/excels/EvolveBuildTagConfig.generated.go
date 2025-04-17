@@ -52,6 +52,10 @@ func (a *EvolveBuildTagConfigAccessor) Raw() ([]EvolveBuildTagConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildTagConfigAccessor.LoadData to preload everything
 func (a *EvolveBuildTagConfigAccessor) GroupData() {
+	a._dataExtraEffectID = map[float64]EvolveBuildTagConfig{}
+	a._dataID = map[float64]EvolveBuildTagConfig{}
+	a._dataIconPath = map[string]EvolveBuildTagConfig{}
+	a._dataShopSkillID = map[float64]EvolveBuildTagConfig{}
 	for _, d := range a._data {
 		a._dataExtraEffectID[d.ExtraEffectID] = d
 		a._dataID[d.ID] = d

@@ -49,6 +49,9 @@ func (a *SpecialNPCDataAccessor) Raw() ([]SpecialNPCData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpecialNPCDataAccessor.LoadData to preload everything
 func (a *SpecialNPCDataAccessor) GroupData() {
+	a._dataID = map[float64]SpecialNPCData{}
+	a._dataJsonPath = map[string]SpecialNPCData{}
+	a._dataPrefabPath = map[string]SpecialNPCData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataJsonPath[d.JsonPath] = d

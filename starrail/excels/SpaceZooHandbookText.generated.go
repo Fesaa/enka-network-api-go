@@ -44,6 +44,7 @@ func (a *SpaceZooHandbookTextAccessor) Raw() ([]SpaceZooHandbookText, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpaceZooHandbookTextAccessor.LoadData to preload everything
 func (a *SpaceZooHandbookTextAccessor) GroupData() {
+	a._dataSpecialCatID = map[float64]SpaceZooHandbookText{}
 	for _, d := range a._data {
 		a._dataSpecialCatID[d.SpecialCatID] = d
 	}

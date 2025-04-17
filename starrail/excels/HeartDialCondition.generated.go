@@ -47,6 +47,7 @@ func (a *HeartDialConditionAccessor) Raw() ([]HeartDialCondition, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeartDialConditionAccessor.LoadData to preload everything
 func (a *HeartDialConditionAccessor) GroupData() {
+	a._dataID = map[float64]HeartDialCondition{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

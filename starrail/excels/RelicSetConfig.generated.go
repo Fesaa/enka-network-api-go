@@ -57,6 +57,11 @@ func (a *RelicSetConfigAccessor) Raw() ([]RelicSetConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RelicSetConfigAccessor.LoadData to preload everything
 func (a *RelicSetConfigAccessor) GroupData() {
+	a._dataDisplayItemID = map[float64]RelicSetConfig{}
+	a._dataDisplayItemIDRarity4 = map[float64]RelicSetConfig{}
+	a._dataSetID = map[float64]RelicSetConfig{}
+	a._dataSetIconFigurePath = map[string]RelicSetConfig{}
+	a._dataSetIconPath = map[string]RelicSetConfig{}
 	for _, d := range a._data {
 		a._dataDisplayItemID[d.DisplayItemID] = d
 		a._dataDisplayItemIDRarity4[d.DisplayItemIDRarity4] = d

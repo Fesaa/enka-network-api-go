@@ -45,6 +45,8 @@ func (a *GroupSystemUnlockDataAccessor) Raw() ([]GroupSystemUnlockData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GroupSystemUnlockDataAccessor.LoadData to preload everything
 func (a *GroupSystemUnlockDataAccessor) GroupData() {
+	a._dataGroupSystemUnlockID = map[float64]GroupSystemUnlockData{}
+	a._dataUnlockID = map[float64]GroupSystemUnlockData{}
 	for _, d := range a._data {
 		a._dataGroupSystemUnlockID[d.GroupSystemUnlockID] = d
 		a._dataUnlockID[d.UnlockID] = d

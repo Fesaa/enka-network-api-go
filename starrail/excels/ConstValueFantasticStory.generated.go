@@ -44,6 +44,7 @@ func (a *ConstValueFantasticStoryAccessor) Raw() ([]ConstValueFantasticStory, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ConstValueFantasticStoryAccessor.LoadData to preload everything
 func (a *ConstValueFantasticStoryAccessor) GroupData() {
+	a._dataConstValueName = map[string]ConstValueFantasticStory{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

@@ -57,6 +57,8 @@ func (a *PlayerReturnRecommendConfigAccessor) Raw() ([]PlayerReturnRecommendConf
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlayerReturnRecommendConfigAccessor.LoadData to preload everything
 func (a *PlayerReturnRecommendConfigAccessor) GroupData() {
+	a._dataRecommendID = map[float64]PlayerReturnRecommendConfig{}
+	a._dataWeight = map[float64]PlayerReturnRecommendConfig{}
 	for _, d := range a._data {
 		a._dataRecommendID[d.RecommendID] = d
 		a._dataWeight[d.Weight] = d

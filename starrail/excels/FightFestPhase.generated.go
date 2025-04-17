@@ -58,6 +58,9 @@ func (a *FightFestPhaseAccessor) Raw() ([]FightFestPhase, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FightFestPhaseAccessor.LoadData to preload everything
 func (a *FightFestPhaseAccessor) GroupData() {
+	a._dataPhaseID = map[float64]FightFestPhase{}
+	a._dataSortWeight = map[float64]FightFestPhase{}
+	a._dataUnlockSubMissionID = map[float64]FightFestPhase{}
 	for _, d := range a._data {
 		a._dataPhaseID[d.PhaseID] = d
 		a._dataSortWeight[d.SortWeight] = d

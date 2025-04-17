@@ -49,6 +49,7 @@ func (a *PossessionConfigAccessor) Raw() ([]PossessionConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PossessionConfigAccessor.LoadData to preload everything
 func (a *PossessionConfigAccessor) GroupData() {
+	a._dataPossessionName = map[string]PossessionConfig{}
 	for _, d := range a._data {
 		a._dataPossessionName[d.PossessionName] = d
 	}

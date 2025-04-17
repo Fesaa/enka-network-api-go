@@ -44,6 +44,7 @@ func (a *MapEntranceUnlockAccessor) Raw() ([]MapEntranceUnlock, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MapEntranceUnlockAccessor.LoadData to preload everything
 func (a *MapEntranceUnlockAccessor) GroupData() {
+	a._dataEntranceID = map[float64]MapEntranceUnlock{}
 	for _, d := range a._data {
 		a._dataEntranceID[d.EntranceID] = d
 	}

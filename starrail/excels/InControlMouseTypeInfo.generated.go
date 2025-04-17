@@ -44,6 +44,7 @@ func (a *InControlMouseTypeInfoAccessor) Raw() ([]InControlMouseTypeInfo, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InControlMouseTypeInfoAccessor.LoadData to preload everything
 func (a *InControlMouseTypeInfoAccessor) GroupData() {
+	a._dataControlType = map[string]InControlMouseTypeInfo{}
 	for _, d := range a._data {
 		a._dataControlType[d.ControlType] = d
 	}

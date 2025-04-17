@@ -59,6 +59,15 @@ func (a *ItemRarityConfigAccessor) Raw() ([]ItemRarityConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemRarityConfigAccessor.LoadData to preload everything
 func (a *ItemRarityConfigAccessor) GroupData() {
+	a._dataAvatarShowBgPath = map[string]ItemRarityConfig{}
+	a._dataFrameIconRarityPath = map[string]ItemRarityConfig{}
+	a._dataFrameItemRarityBgPath = map[string]ItemRarityConfig{}
+	a._dataFrameItemRarityColor = map[string]ItemRarityConfig{}
+	a._dataFrameItemRarityPath = map[string]ItemRarityConfig{}
+	a._dataItemRarityStarImgPath = map[string]ItemRarityConfig{}
+	a._dataItemShowBgPath = map[string]ItemRarityConfig{}
+	a._dataLineItemRarityColor = map[string]ItemRarityConfig{}
+	a._dataRarity = map[string]ItemRarityConfig{}
 	for _, d := range a._data {
 		a._dataAvatarShowBgPath[d.AvatarShowBgPath] = d
 		a._dataFrameIconRarityPath[d.FrameIconRarityPath] = d

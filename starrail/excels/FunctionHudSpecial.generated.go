@@ -51,6 +51,8 @@ func (a *FunctionHudSpecialAccessor) Raw() ([]FunctionHudSpecial, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FunctionHudSpecialAccessor.LoadData to preload everything
 func (a *FunctionHudSpecialAccessor) GroupData() {
+	a._dataFirstWorldText = map[string]FunctionHudSpecial{}
+	a._dataID = map[float64]FunctionHudSpecial{}
 	for _, d := range a._data {
 		a._dataFirstWorldText[d.FirstWorldText] = d
 		a._dataID[d.ID] = d

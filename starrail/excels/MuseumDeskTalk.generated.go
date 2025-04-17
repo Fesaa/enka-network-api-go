@@ -51,6 +51,8 @@ func (a *MuseumDeskTalkAccessor) Raw() ([]MuseumDeskTalk, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumDeskTalkAccessor.LoadData to preload everything
 func (a *MuseumDeskTalkAccessor) GroupData() {
+	a._dataCustomString = map[string]MuseumDeskTalk{}
+	a._dataTalkID = map[float64]MuseumDeskTalk{}
 	for _, d := range a._data {
 		a._dataCustomString[d.CustomString] = d
 		a._dataTalkID[d.TalkID] = d

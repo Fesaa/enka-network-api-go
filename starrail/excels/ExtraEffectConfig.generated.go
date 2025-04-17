@@ -49,6 +49,7 @@ func (a *ExtraEffectConfigAccessor) Raw() ([]ExtraEffectConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ExtraEffectConfigAccessor.LoadData to preload everything
 func (a *ExtraEffectConfigAccessor) GroupData() {
+	a._dataExtraEffectID = map[float64]ExtraEffectConfig{}
 	for _, d := range a._data {
 		a._dataExtraEffectID[d.ExtraEffectID] = d
 	}

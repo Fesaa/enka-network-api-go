@@ -48,6 +48,7 @@ func (a *PsActivityAccessor) Raw() ([]PsActivity, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PsActivityAccessor.LoadData to preload everything
 func (a *PsActivityAccessor) GroupData() {
+	a._dataActivityID = map[float64]PsActivity{}
 	for _, d := range a._data {
 		a._dataActivityID[d.ActivityID] = d
 	}

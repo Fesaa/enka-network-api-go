@@ -46,6 +46,8 @@ func (a *MultiFloorConflictGroupAccessor) Raw() ([]MultiFloorConflictGroup, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MultiFloorConflictGroupAccessor.LoadData to preload everything
 func (a *MultiFloorConflictGroupAccessor) GroupData() {
+	a._dataGroupID = map[float64]MultiFloorConflictGroup{}
+	a._dataPlaneID = map[float64]MultiFloorConflictGroup{}
 	for _, d := range a._data {
 		a._dataGroupID[d.GroupID] = d
 		a._dataPlaneID[d.PlaneID] = d

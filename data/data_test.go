@@ -1,7 +1,7 @@
 package data
 
 import (
-	"github.com/Fesaa/enka-network-api-go/starrail"
+	"github.com/Fesaa/enka-network-api-go/starrail/excels"
 	"github.com/rs/zerolog"
 	"testing"
 )
@@ -48,31 +48,46 @@ func TestRelicExcels(t *testing.T) {
 	}
 
 	// Castorice
-	skillTree := c.StarRailData().Excels().SkillTree("1407")
-
-	if skillTree[starrail.AnchorBasic].PointID != 1407001 {
-		t.Errorf("Expected Basic(1407001) got %d", skillTree[starrail.AnchorBasic].PointID)
+	accessor := excels.AvatarSkillTreeConfigAccessor{}
+	skillTrees, err := accessor.Raw()
+	if err != nil {
+		t.Error(err)
 		t.FailNow()
 	}
 
-	if skillTree[starrail.AnchorTalent].PointID != 1407004 {
-		t.Errorf("Expected Talent(1407004) got %d", skillTree[starrail.AnchorTalent].PointID)
+	castoriceData := map[string]excels.AvatarSkillTreeConfig{}
+	for _, skillTree := range skillTrees {
+		if skillTree.AvatarID != 1407 {
+			continue
+		}
+
+		castoriceData[skillTree.Anchor] = skillTree
+	}
+
+	if castoriceData["Point01"].PointID != 1407001 {
+		t.Errorf("Expected Basic(1407001) got %f", castoriceData["Point01"].PointID)
 		t.FailNow()
 	}
 
-	if skillTree[starrail.AnchorMemoTalent].PointID != 1407302 {
-		t.Errorf("Expected MemoTalent(1407302) got %d", skillTree[starrail.AnchorMemoTalent].PointID)
+	if castoriceData["Point04"].PointID != 1407004 {
+		t.Errorf("Expected Talent(1407004) got %f", castoriceData["Point04"].PointID)
 		t.FailNow()
 	}
 
-	if skillTree[starrail.AnchorMajor3].PointID != 1407103 {
-		t.Errorf("Expected Major3(1407103) got %d", skillTree[starrail.AnchorMajor3].PointID)
+	if castoriceData["Point20"].PointID != 1407302 {
+		t.Errorf("Expected MemoTalent(1407302) got %f", castoriceData["Point20"].PointID)
 		t.FailNow()
 	}
 
-	set, ok := c.StarRailData().Excels().RelicSetConfig("101")
-	if !ok {
-		t.Error("Expected some data got nil")
+	if castoriceData["Point08"].PointID != 1407103 {
+		t.Errorf("Expected Major3(1407103) got %f", castoriceData["Point08"].PointID)
+		t.FailNow()
+	}
+
+	relicAccessor := excels.RelicSetConfigAccessor{}
+	set, err := relicAccessor.BySetID(101)
+	if err != nil {
+		t.Error(err)
 		t.FailNow()
 	}
 
@@ -81,9 +96,10 @@ func TestRelicExcels(t *testing.T) {
 		t.FailNow()
 	}
 
-	setItem, ok := c.StarRailData().Excels().RelicConfig("31011")
-	if !ok {
-		t.Error("Expected some data got nil")
+	relicSetItemAccessor := excels.RelicConfigAccessor{}
+	setItem, err := relicSetItemAccessor.ByID(31011)
+	if err != nil {
+		t.Error(err)
 		t.FailNow()
 	}
 

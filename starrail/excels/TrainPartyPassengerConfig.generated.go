@@ -61,6 +61,14 @@ func (a *TrainPartyPassengerConfigAccessor) Raw() ([]TrainPartyPassengerConfig, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyPassengerConfigAccessor.LoadData to preload everything
 func (a *TrainPartyPassengerConfigAccessor) GroupData() {
+	a._dataAvatarCardPrefabPath = map[string]TrainPartyPassengerConfig{}
+	a._dataAvatarRoundIconPath = map[string]TrainPartyPassengerConfig{}
+	a._dataDiaryOrder = map[float64]TrainPartyPassengerConfig{}
+	a._dataIconPath = map[string]TrainPartyPassengerConfig{}
+	a._dataMeetingIconPath = map[string]TrainPartyPassengerConfig{}
+	a._dataMiniIconPath = map[string]TrainPartyPassengerConfig{}
+	a._dataPassengerID = map[float64]TrainPartyPassengerConfig{}
+	a._dataPassengerQuest = map[float64]TrainPartyPassengerConfig{}
 	for _, d := range a._data {
 		a._dataAvatarCardPrefabPath[d.AvatarCardPrefabPath] = d
 		a._dataAvatarRoundIconPath[d.AvatarRoundIconPath] = d

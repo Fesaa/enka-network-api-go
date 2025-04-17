@@ -81,6 +81,20 @@ func (a *ActivitySummonGroupAccessor) Raw() ([]ActivitySummonGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivitySummonGroupAccessor.LoadData to preload everything
 func (a *ActivitySummonGroupAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]ActivitySummonGroup{}
+	a._dataEntranceID = map[float64]ActivitySummonGroup{}
+	a._dataGotoID = map[float64]ActivitySummonGroup{}
+	a._dataGroupID = map[float64]ActivitySummonGroup{}
+	a._dataImagePath = map[string]ActivitySummonGroup{}
+	a._dataMappingInfo = map[float64]ActivitySummonGroup{}
+	a._dataMazeBuffID = map[float64]ActivitySummonGroup{}
+	a._dataMiniImagePath = map[string]ActivitySummonGroup{}
+	a._dataMonsterEventID = map[float64]ActivitySummonGroup{}
+	a._dataMonsterImagePath = map[string]ActivitySummonGroup{}
+	a._dataMonsterMiddleIcon = map[string]ActivitySummonGroup{}
+	a._dataOriginalImagePath = map[string]ActivitySummonGroup{}
+	a._dataOriginalMiniImagePath = map[string]ActivitySummonGroup{}
+	a._dataSubMissionID = map[float64]ActivitySummonGroup{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataEntranceID[d.EntranceID] = d

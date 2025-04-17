@@ -52,6 +52,7 @@ func (a *ActivityFightConfigAccessor) Raw() ([]ActivityFightConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityFightConfigAccessor.LoadData to preload everything
 func (a *ActivityFightConfigAccessor) GroupData() {
+	a._dataFightEventID = map[float64]ActivityFightConfig{}
 	for _, d := range a._data {
 		a._dataFightEventID[d.FightEventID] = d
 	}

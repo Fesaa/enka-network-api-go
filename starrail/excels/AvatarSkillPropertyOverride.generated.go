@@ -47,6 +47,8 @@ func (a *AvatarSkillPropertyOverrideAccessor) Raw() ([]AvatarSkillPropertyOverri
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarSkillPropertyOverrideAccessor.LoadData to preload everything
 func (a *AvatarSkillPropertyOverrideAccessor) GroupData() {
+	a._dataReplacePointIconPrefab = map[string]AvatarSkillPropertyOverride{}
+	a._dataSkillID = map[float64]AvatarSkillPropertyOverride{}
 	for _, d := range a._data {
 		a._dataReplacePointIconPrefab[d.ReplacePointIconPrefab] = d
 		a._dataSkillID[d.SkillID] = d

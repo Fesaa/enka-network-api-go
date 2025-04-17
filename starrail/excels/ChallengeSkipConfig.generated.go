@@ -44,6 +44,7 @@ func (a *ChallengeSkipConfigAccessor) Raw() ([]ChallengeSkipConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeSkipConfigAccessor.LoadData to preload everything
 func (a *ChallengeSkipConfigAccessor) GroupData() {
+	a._dataChallengeGroupType = map[string]ChallengeSkipConfig{}
 	for _, d := range a._data {
 		a._dataChallengeGroupType[d.ChallengeGroupType] = d
 	}

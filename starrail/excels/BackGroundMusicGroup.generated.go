@@ -47,6 +47,8 @@ func (a *BackGroundMusicGroupAccessor) Raw() ([]BackGroundMusicGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BackGroundMusicGroupAccessor.LoadData to preload everything
 func (a *BackGroundMusicGroupAccessor) GroupData() {
+	a._dataGroupIcon = map[string]BackGroundMusicGroup{}
+	a._dataID = map[float64]BackGroundMusicGroup{}
 	for _, d := range a._data {
 		a._dataGroupIcon[d.GroupIcon] = d
 		a._dataID[d.ID] = d

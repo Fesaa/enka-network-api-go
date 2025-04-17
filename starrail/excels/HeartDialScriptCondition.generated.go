@@ -48,6 +48,7 @@ func (a *HeartDialScriptConditionAccessor) Raw() ([]HeartDialScriptCondition, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeartDialScriptConditionAccessor.LoadData to preload everything
 func (a *HeartDialScriptConditionAccessor) GroupData() {
+	a._dataScriptID = map[float64]HeartDialScriptCondition{}
 	for _, d := range a._data {
 		a._dataScriptID[d.ScriptID] = d
 	}

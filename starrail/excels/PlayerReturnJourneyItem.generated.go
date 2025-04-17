@@ -55,6 +55,10 @@ func (a *PlayerReturnJourneyItemAccessor) Raw() ([]PlayerReturnJourneyItem, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlayerReturnJourneyItemAccessor.LoadData to preload everything
 func (a *PlayerReturnJourneyItemAccessor) GroupData() {
+	a._dataBgPath = map[string]PlayerReturnJourneyItem{}
+	a._dataID = map[float64]PlayerReturnJourneyItem{}
+	a._dataSort = map[float64]PlayerReturnJourneyItem{}
+	a._dataType = map[string]PlayerReturnJourneyItem{}
 	for _, d := range a._data {
 		a._dataBgPath[d.BgPath] = d
 		a._dataID[d.ID] = d

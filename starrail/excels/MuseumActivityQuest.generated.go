@@ -47,6 +47,8 @@ func (a *MuseumActivityQuestAccessor) Raw() ([]MuseumActivityQuest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumActivityQuestAccessor.LoadData to preload everything
 func (a *MuseumActivityQuestAccessor) GroupData() {
+	a._dataID = map[float64]MuseumActivityQuest{}
+	a._dataName = map[string]MuseumActivityQuest{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataName[d.Name] = d

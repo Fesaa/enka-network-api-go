@@ -46,6 +46,7 @@ func (a *RogueMagicUnitDisplayAccessor) Raw() ([]RogueMagicUnitDisplay, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMagicUnitDisplayAccessor.LoadData to preload everything
 func (a *RogueMagicUnitDisplayAccessor) GroupData() {
+	a._dataMagicUnitID = map[float64]RogueMagicUnitDisplay{}
 	for _, d := range a._data {
 		a._dataMagicUnitID[d.MagicUnitID] = d
 	}

@@ -53,6 +53,8 @@ func (a *RogueUpgradeAvatarAccessor) Raw() ([]RogueUpgradeAvatar, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueUpgradeAvatarAccessor.LoadData to preload everything
 func (a *RogueUpgradeAvatarAccessor) GroupData() {
+	a._dataAvatarLevel = map[float64]RogueUpgradeAvatar{}
+	a._dataEquipmentLevel = map[float64]RogueUpgradeAvatar{}
 	for _, d := range a._data {
 		a._dataAvatarLevel[d.AvatarLevel] = d
 		a._dataEquipmentLevel[d.EquipmentLevel] = d

@@ -49,6 +49,7 @@ func (a *MazePuzzleWolfBroAccessor) Raw() ([]MazePuzzleWolfBro, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazePuzzleWolfBroAccessor.LoadData to preload everything
 func (a *MazePuzzleWolfBroAccessor) GroupData() {
+	a._dataWolfBroID = map[float64]MazePuzzleWolfBro{}
 	for _, d := range a._data {
 		a._dataWolfBroID[d.WolfBroID] = d
 	}

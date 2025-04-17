@@ -51,6 +51,8 @@ func (a *RogueMagicStoryAccessor) Raw() ([]RogueMagicStory, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMagicStoryAccessor.LoadData to preload everything
 func (a *RogueMagicStoryAccessor) GroupData() {
+	a._dataLevelGraphPath = map[string]RogueMagicStory{}
+	a._dataStoryID = map[float64]RogueMagicStory{}
 	for _, d := range a._data {
 		a._dataLevelGraphPath[d.LevelGraphPath] = d
 		a._dataStoryID[d.StoryID] = d

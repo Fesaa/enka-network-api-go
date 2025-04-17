@@ -54,6 +54,11 @@ func (a *PlanetFesAvatarRarityAccessor) Raw() ([]PlanetFesAvatarRarity, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesAvatarRarityAccessor.LoadData to preload everything
 func (a *PlanetFesAvatarRarityAccessor) GroupData() {
+	a._dataCostParam = map[float64]PlanetFesAvatarRarity{}
+	a._dataIconPath = map[string]PlanetFesAvatarRarity{}
+	a._dataIncomeParam = map[float64]PlanetFesAvatarRarity{}
+	a._dataPieceTransferNum = map[float64]PlanetFesAvatarRarity{}
+	a._dataRarity = map[float64]PlanetFesAvatarRarity{}
 	for _, d := range a._data {
 		a._dataCostParam[d.CostParam] = d
 		a._dataIconPath[d.IconPath] = d

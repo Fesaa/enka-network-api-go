@@ -49,6 +49,8 @@ func (a *StoryPropAccessor) Raw() ([]StoryProp, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StoryPropAccessor.LoadData to preload everything
 func (a *StoryPropAccessor) GroupData() {
+	a._dataStoryCharacterID = map[string]StoryProp{}
+	a._dataStoryCharacterUniqueName = map[string]StoryProp{}
 	for _, d := range a._data {
 		a._dataStoryCharacterID[d.StoryCharacterID] = d
 		a._dataStoryCharacterUniqueName[d.StoryCharacterUniqueName] = d

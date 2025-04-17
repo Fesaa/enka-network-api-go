@@ -46,6 +46,7 @@ func (a *VoiceConfigAccessor) Raw() ([]VoiceConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with VoiceConfigAccessor.LoadData to preload everything
 func (a *VoiceConfigAccessor) GroupData() {
+	a._dataVoiceID = map[float64]VoiceConfig{}
 	for _, d := range a._data {
 		a._dataVoiceID[d.VoiceID] = d
 	}

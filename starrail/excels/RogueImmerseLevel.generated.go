@@ -45,6 +45,8 @@ func (a *RogueImmerseLevelAccessor) Raw() ([]RogueImmerseLevel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueImmerseLevelAccessor.LoadData to preload everything
 func (a *RogueImmerseLevelAccessor) GroupData() {
+	a._dataLevel = map[float64]RogueImmerseLevel{}
+	a._dataUnlockID = map[float64]RogueImmerseLevel{}
 	for _, d := range a._data {
 		a._dataLevel[d.Level] = d
 		a._dataUnlockID[d.UnlockID] = d

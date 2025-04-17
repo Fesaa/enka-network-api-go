@@ -47,6 +47,9 @@ func (a *ScheduleDataChallengeStoryAccessor) Raw() ([]ScheduleDataChallengeStory
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ScheduleDataChallengeStoryAccessor.LoadData to preload everything
 func (a *ScheduleDataChallengeStoryAccessor) GroupData() {
+	a._dataBeginTime = map[string]ScheduleDataChallengeStory{}
+	a._dataEndTime = map[string]ScheduleDataChallengeStory{}
+	a._dataID = map[float64]ScheduleDataChallengeStory{}
 	for _, d := range a._data {
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d

@@ -51,6 +51,7 @@ func (a *PasterConfigAccessor) Raw() ([]PasterConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PasterConfigAccessor.LoadData to preload everything
 func (a *PasterConfigAccessor) GroupData() {
+	a._dataID = map[float64]PasterConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

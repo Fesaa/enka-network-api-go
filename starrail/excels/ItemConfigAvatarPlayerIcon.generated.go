@@ -59,6 +59,8 @@ func (a *ItemConfigAvatarPlayerIconAccessor) Raw() ([]ItemConfigAvatarPlayerIcon
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemConfigAvatarPlayerIconAccessor.LoadData to preload everything
 func (a *ItemConfigAvatarPlayerIconAccessor) GroupData() {
+	a._dataID = map[float64]ItemConfigAvatarPlayerIcon{}
+	a._dataItemIconPath = map[string]ItemConfigAvatarPlayerIcon{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataItemIconPath[d.ItemIconPath] = d

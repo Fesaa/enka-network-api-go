@@ -48,6 +48,8 @@ func (a *LoopCGConfigAccessor) Raw() ([]LoopCGConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with LoopCGConfigAccessor.LoadData to preload everything
 func (a *LoopCGConfigAccessor) GroupData() {
+	a._dataVideoID = map[float64]LoopCGConfig{}
+	a._dataVideoPath = map[string]LoopCGConfig{}
 	for _, d := range a._data {
 		a._dataVideoID[d.VideoID] = d
 		a._dataVideoPath[d.VideoPath] = d

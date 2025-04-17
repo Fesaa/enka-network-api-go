@@ -46,6 +46,7 @@ func (a *ChimeraTeamTalkAccessor) Raw() ([]ChimeraTeamTalk, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraTeamTalkAccessor.LoadData to preload everything
 func (a *ChimeraTeamTalkAccessor) GroupData() {
+	a._dataTalkID = map[float64]ChimeraTeamTalk{}
 	for _, d := range a._data {
 		a._dataTalkID[d.TalkID] = d
 	}

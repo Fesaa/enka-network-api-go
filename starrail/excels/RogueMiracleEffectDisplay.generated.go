@@ -48,6 +48,7 @@ func (a *RogueMiracleEffectDisplayAccessor) Raw() ([]RogueMiracleEffectDisplay, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMiracleEffectDisplayAccessor.LoadData to preload everything
 func (a *RogueMiracleEffectDisplayAccessor) GroupData() {
+	a._dataMiracleEffectDisplayID = map[float64]RogueMiracleEffectDisplay{}
 	for _, d := range a._data {
 		a._dataMiracleEffectDisplayID[d.MiracleEffectDisplayID] = d
 	}

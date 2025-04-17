@@ -50,6 +50,8 @@ func (a *RogueBonusAccessor) Raw() ([]RogueBonus, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueBonusAccessor.LoadData to preload everything
 func (a *RogueBonusAccessor) GroupData() {
+	a._dataBonusEvent = map[float64]RogueBonus{}
+	a._dataBonusID = map[float64]RogueBonus{}
 	for _, d := range a._data {
 		a._dataBonusEvent[d.BonusEvent] = d
 		a._dataBonusID[d.BonusID] = d

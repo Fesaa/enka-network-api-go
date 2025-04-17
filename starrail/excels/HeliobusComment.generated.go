@@ -51,6 +51,7 @@ func (a *HeliobusCommentAccessor) Raw() ([]HeliobusComment, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeliobusCommentAccessor.LoadData to preload everything
 func (a *HeliobusCommentAccessor) GroupData() {
+	a._dataHeliobusCommentID = map[float64]HeliobusComment{}
 	for _, d := range a._data {
 		a._dataHeliobusCommentID[d.HeliobusCommentID] = d
 	}

@@ -45,6 +45,7 @@ func (a *ActivityRaidCollectionConstAccessor) Raw() ([]ActivityRaidCollectionCon
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityRaidCollectionConstAccessor.LoadData to preload everything
 func (a *ActivityRaidCollectionConstAccessor) GroupData() {
+	a._dataConstValueName = map[string]ActivityRaidCollectionConst{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

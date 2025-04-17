@@ -46,6 +46,7 @@ func (a *TeamLimitTypeEventAccessor) Raw() ([]TeamLimitTypeEvent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TeamLimitTypeEventAccessor.LoadData to preload everything
 func (a *TeamLimitTypeEventAccessor) GroupData() {
+	a._dataLimitType = map[string]TeamLimitTypeEvent{}
 	for _, d := range a._data {
 		a._dataLimitType[d.LimitType] = d
 	}

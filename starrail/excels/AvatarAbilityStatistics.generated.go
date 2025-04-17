@@ -44,6 +44,7 @@ func (a *AvatarAbilityStatisticsAccessor) Raw() ([]AvatarAbilityStatistics, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarAbilityStatisticsAccessor.LoadData to preload everything
 func (a *AvatarAbilityStatisticsAccessor) GroupData() {
+	a._dataAvatarID = map[float64]AvatarAbilityStatistics{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 	}

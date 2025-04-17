@@ -46,6 +46,7 @@ func (a *TarotBookClueAccessor) Raw() ([]TarotBookClue, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TarotBookClueAccessor.LoadData to preload everything
 func (a *TarotBookClueAccessor) GroupData() {
+	a._dataID = map[float64]TarotBookClue{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

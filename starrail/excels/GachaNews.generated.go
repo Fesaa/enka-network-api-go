@@ -49,6 +49,8 @@ func (a *GachaNewsAccessor) Raw() ([]GachaNews, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GachaNewsAccessor.LoadData to preload everything
 func (a *GachaNewsAccessor) GroupData() {
+	a._dataDecideID = map[float64]GachaNews{}
+	a._dataNewsID = map[float64]GachaNews{}
 	for _, d := range a._data {
 		a._dataDecideID[d.DecideID] = d
 		a._dataNewsID[d.NewsID] = d

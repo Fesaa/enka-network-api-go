@@ -56,6 +56,13 @@ func (a *PlayerPersonalCardAccessor) Raw() ([]PlayerPersonalCard, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlayerPersonalCardAccessor.LoadData to preload everything
 func (a *PlayerPersonalCardAccessor) GroupData() {
+	a._dataCardID = map[float64]PlayerPersonalCard{}
+	a._dataCardPrefabPath = map[string]PlayerPersonalCard{}
+	a._dataChatPrefabPath = map[string]PlayerPersonalCard{}
+	a._dataFriendPrefabPath = map[string]PlayerPersonalCard{}
+	a._dataReplaceIconPath = map[string]PlayerPersonalCard{}
+	a._dataShowType = map[string]PlayerPersonalCard{}
+	a._dataSupportPrefabPath = map[string]PlayerPersonalCard{}
 	for _, d := range a._data {
 		a._dataCardID[d.CardID] = d
 		a._dataCardPrefabPath[d.CardPrefabPath] = d

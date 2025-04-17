@@ -46,6 +46,7 @@ func (a *StoryLineFloorDataAccessor) Raw() ([]StoryLineFloorData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StoryLineFloorDataAccessor.LoadData to preload everything
 func (a *StoryLineFloorDataAccessor) GroupData() {
+	a._dataConditionExpression = map[string]StoryLineFloorData{}
 	for _, d := range a._data {
 		a._dataConditionExpression[d.ConditionExpression] = d
 	}

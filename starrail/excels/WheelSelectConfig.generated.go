@@ -47,6 +47,8 @@ func (a *WheelSelectConfigAccessor) Raw() ([]WheelSelectConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with WheelSelectConfigAccessor.LoadData to preload everything
 func (a *WheelSelectConfigAccessor) GroupData() {
+	a._dataFunctionHudID = map[float64]WheelSelectConfig{}
+	a._dataIndexID = map[float64]WheelSelectConfig{}
 	for _, d := range a._data {
 		a._dataFunctionHudID[d.FunctionHudID] = d
 		a._dataIndexID[d.IndexID] = d

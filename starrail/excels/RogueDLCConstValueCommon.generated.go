@@ -45,6 +45,7 @@ func (a *RogueDLCConstValueCommonAccessor) Raw() ([]RogueDLCConstValueCommon, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCConstValueCommonAccessor.LoadData to preload everything
 func (a *RogueDLCConstValueCommonAccessor) GroupData() {
+	a._dataConstValueName = map[string]RogueDLCConstValueCommon{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

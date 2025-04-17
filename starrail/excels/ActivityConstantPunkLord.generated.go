@@ -45,6 +45,7 @@ func (a *ActivityConstantPunkLordAccessor) Raw() ([]ActivityConstantPunkLord, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityConstantPunkLordAccessor.LoadData to preload everything
 func (a *ActivityConstantPunkLordAccessor) GroupData() {
+	a._dataConstValueName = map[string]ActivityConstantPunkLord{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

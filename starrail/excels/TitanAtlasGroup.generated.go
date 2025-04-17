@@ -48,6 +48,8 @@ func (a *TitanAtlasGroupAccessor) Raw() ([]TitanAtlasGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TitanAtlasGroupAccessor.LoadData to preload everything
 func (a *TitanAtlasGroupAccessor) GroupData() {
+	a._dataTitanGroupID = map[float64]TitanAtlasGroup{}
+	a._dataTitleBGColor = map[string]TitanAtlasGroup{}
 	for _, d := range a._data {
 		a._dataTitanGroupID[d.TitanGroupID] = d
 		a._dataTitleBGColor[d.TitleBGColor] = d

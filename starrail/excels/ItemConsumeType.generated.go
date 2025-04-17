@@ -47,6 +47,8 @@ func (a *ItemConsumeTypeAccessor) Raw() ([]ItemConsumeType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemConsumeTypeAccessor.LoadData to preload everything
 func (a *ItemConsumeTypeAccessor) GroupData() {
+	a._dataTypeID = map[float64]ItemConsumeType{}
+	a._dataTypeIconPath = map[string]ItemConsumeType{}
 	for _, d := range a._data {
 		a._dataTypeID[d.TypeID] = d
 		a._dataTypeIconPath[d.TypeIconPath] = d

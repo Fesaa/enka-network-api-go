@@ -51,6 +51,9 @@ func (a *MonopolyDisplayCellAccessor) Raw() ([]MonopolyDisplayCell, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyDisplayCellAccessor.LoadData to preload everything
 func (a *MonopolyDisplayCellAccessor) GroupData() {
+	a._dataDisplayID = map[float64]MonopolyDisplayCell{}
+	a._dataDisplaySort = map[float64]MonopolyDisplayCell{}
+	a._dataIconPath = map[string]MonopolyDisplayCell{}
 	for _, d := range a._data {
 		a._dataDisplayID[d.DisplayID] = d
 		a._dataDisplaySort[d.DisplaySort] = d

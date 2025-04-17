@@ -49,6 +49,7 @@ func (a *SilverWolfSubTabAccessor) Raw() ([]SilverWolfSubTab, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SilverWolfSubTabAccessor.LoadData to preload everything
 func (a *SilverWolfSubTabAccessor) GroupData() {
+	a._dataFinalQuest = map[float64]SilverWolfSubTab{}
 	for _, d := range a._data {
 		a._dataFinalQuest[d.FinalQuest] = d
 	}

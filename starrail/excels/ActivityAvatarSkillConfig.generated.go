@@ -77,6 +77,7 @@ func (a *ActivityAvatarSkillConfigAccessor) Raw() ([]ActivityAvatarSkillConfig, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityAvatarSkillConfigAccessor.LoadData to preload everything
 func (a *ActivityAvatarSkillConfigAccessor) GroupData() {
+	a._dataSkillID = map[float64]ActivityAvatarSkillConfig{}
 	for _, d := range a._data {
 		a._dataSkillID[d.SkillID] = d
 	}

@@ -44,6 +44,7 @@ func (a *TitanAtlasChangeInfoAccessor) Raw() ([]TitanAtlasChangeInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TitanAtlasChangeInfoAccessor.LoadData to preload everything
 func (a *TitanAtlasChangeInfoAccessor) GroupData() {
+	a._dataTitanID = map[float64]TitanAtlasChangeInfo{}
 	for _, d := range a._data {
 		a._dataTitanID[d.TitanID] = d
 	}

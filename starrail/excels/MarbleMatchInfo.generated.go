@@ -60,6 +60,9 @@ func (a *MarbleMatchInfoAccessor) Raw() ([]MarbleMatchInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarbleMatchInfoAccessor.LoadData to preload everything
 func (a *MarbleMatchInfoAccessor) GroupData() {
+	a._dataID = map[float64]MarbleMatchInfo{}
+	a._dataLevelID = map[float64]MarbleMatchInfo{}
+	a._dataPlayerID = map[float64]MarbleMatchInfo{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataLevelID[d.LevelID] = d

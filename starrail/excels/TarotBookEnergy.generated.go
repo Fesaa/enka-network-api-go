@@ -46,6 +46,7 @@ func (a *TarotBookEnergyAccessor) Raw() ([]TarotBookEnergy, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TarotBookEnergyAccessor.LoadData to preload everything
 func (a *TarotBookEnergyAccessor) GroupData() {
+	a._dataSubmissionID = map[float64]TarotBookEnergy{}
 	for _, d := range a._data {
 		a._dataSubmissionID[d.SubmissionID] = d
 	}

@@ -60,6 +60,7 @@ func (a *EvolveBuildStagePeriodAccessor) Raw() ([]EvolveBuildStagePeriod, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildStagePeriodAccessor.LoadData to preload everything
 func (a *EvolveBuildStagePeriodAccessor) GroupData() {
+	a._dataStagePeriodID = map[float64]EvolveBuildStagePeriod{}
 	for _, d := range a._data {
 		a._dataStagePeriodID[d.StagePeriodID] = d
 	}

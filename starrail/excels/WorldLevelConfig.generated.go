@@ -49,6 +49,7 @@ func (a *WorldLevelConfigAccessor) Raw() ([]WorldLevelConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with WorldLevelConfigAccessor.LoadData to preload everything
 func (a *WorldLevelConfigAccessor) GroupData() {
+	a._dataMaxPlayerLevel = map[float64]WorldLevelConfig{}
 	for _, d := range a._data {
 		a._dataMaxPlayerLevel[d.MaxPlayerLevel] = d
 	}

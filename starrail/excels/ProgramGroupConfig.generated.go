@@ -50,6 +50,7 @@ func (a *ProgramGroupConfigAccessor) Raw() ([]ProgramGroupConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ProgramGroupConfigAccessor.LoadData to preload everything
 func (a *ProgramGroupConfigAccessor) GroupData() {
+	a._dataID = map[float64]ProgramGroupConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

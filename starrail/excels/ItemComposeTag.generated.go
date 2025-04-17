@@ -46,6 +46,8 @@ func (a *ItemComposeTagAccessor) Raw() ([]ItemComposeTag, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemComposeTagAccessor.LoadData to preload everything
 func (a *ItemComposeTagAccessor) GroupData() {
+	a._dataItemComposeTagID = map[float64]ItemComposeTag{}
+	a._dataTagTextmapID = map[string]ItemComposeTag{}
 	for _, d := range a._data {
 		a._dataItemComposeTagID[d.ItemComposeTagID] = d
 		a._dataTagTextmapID[d.TagTextmapID] = d

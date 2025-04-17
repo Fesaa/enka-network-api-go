@@ -48,6 +48,8 @@ func (a *RogueTournWorkbenchFuncAccessor) Raw() ([]RogueTournWorkbenchFunc, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournWorkbenchFuncAccessor.LoadData to preload everything
 func (a *RogueTournWorkbenchFuncAccessor) GroupData() {
+	a._dataFuncID = map[float64]RogueTournWorkbenchFunc{}
+	a._dataFuncType = map[string]RogueTournWorkbenchFunc{}
 	for _, d := range a._data {
 		a._dataFuncID[d.FuncID] = d
 		a._dataFuncType[d.FuncType] = d

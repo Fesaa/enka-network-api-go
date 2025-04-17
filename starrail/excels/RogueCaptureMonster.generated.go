@@ -47,6 +47,7 @@ func (a *RogueCaptureMonsterAccessor) Raw() ([]RogueCaptureMonster, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueCaptureMonsterAccessor.LoadData to preload everything
 func (a *RogueCaptureMonsterAccessor) GroupData() {
+	a._dataParamGroupID = map[float64]RogueCaptureMonster{}
 	for _, d := range a._data {
 		a._dataParamGroupID[d.ParamGroupID] = d
 	}

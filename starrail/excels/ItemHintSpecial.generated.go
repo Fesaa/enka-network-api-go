@@ -44,6 +44,7 @@ func (a *ItemHintSpecialAccessor) Raw() ([]ItemHintSpecial, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemHintSpecialAccessor.LoadData to preload everything
 func (a *ItemHintSpecialAccessor) GroupData() {
+	a._dataIGIDDGDHAGI = map[float64]ItemHintSpecial{}
 	for _, d := range a._data {
 		a._dataIGIDDGDHAGI[d.IGIDDGDHAGI] = d
 	}

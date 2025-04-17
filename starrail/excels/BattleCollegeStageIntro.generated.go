@@ -43,6 +43,7 @@ func (a *BattleCollegeStageIntroAccessor) Raw() ([]BattleCollegeStageIntro, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattleCollegeStageIntroAccessor.LoadData to preload everything
 func (a *BattleCollegeStageIntroAccessor) GroupData() {
+	a._dataStageIntroDescID = map[float64]BattleCollegeStageIntro{}
 	for _, d := range a._data {
 		a._dataStageIntroDescID[d.StageIntroDescID] = d
 	}

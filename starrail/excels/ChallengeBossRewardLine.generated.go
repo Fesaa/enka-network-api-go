@@ -46,6 +46,8 @@ func (a *ChallengeBossRewardLineAccessor) Raw() ([]ChallengeBossRewardLine, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeBossRewardLineAccessor.LoadData to preload everything
 func (a *ChallengeBossRewardLineAccessor) GroupData() {
+	a._dataRewardID = map[float64]ChallengeBossRewardLine{}
+	a._dataStarCount = map[float64]ChallengeBossRewardLine{}
 	for _, d := range a._data {
 		a._dataRewardID[d.RewardID] = d
 		a._dataStarCount[d.StarCount] = d

@@ -47,6 +47,7 @@ func (a *AetherDivideActivityQuestAccessor) Raw() ([]AetherDivideActivityQuest, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideActivityQuestAccessor.LoadData to preload everything
 func (a *AetherDivideActivityQuestAccessor) GroupData() {
+	a._dataID = map[float64]AetherDivideActivityQuest{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

@@ -46,6 +46,7 @@ func (a *RogueMiracleAccessor) Raw() ([]RogueMiracle, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMiracleAccessor.LoadData to preload everything
 func (a *RogueMiracleAccessor) GroupData() {
+	a._dataMiracleID = map[float64]RogueMiracle{}
 	for _, d := range a._data {
 		a._dataMiracleID[d.MiracleID] = d
 	}

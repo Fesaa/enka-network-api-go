@@ -64,6 +64,10 @@ func (a *AllowedTextLanguageAccessor) Raw() ([]AllowedTextLanguage, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AllowedTextLanguageAccessor.LoadData to preload everything
 func (a *AllowedTextLanguageAccessor) GroupData() {
+	a._dataLanguageCultureCode = map[string]AllowedTextLanguage{}
+	a._dataLanguageType = map[float64]AllowedTextLanguage{}
+	a._dataSDKkey = map[string]AllowedTextLanguage{}
+	a._dataTextLanguageKey = map[string]AllowedTextLanguage{}
 	for _, d := range a._data {
 		a._dataLanguageCultureCode[d.LanguageCultureCode] = d
 		a._dataLanguageType[d.LanguageType] = d

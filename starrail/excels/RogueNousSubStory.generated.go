@@ -57,6 +57,10 @@ func (a *RogueNousSubStoryAccessor) Raw() ([]RogueNousSubStory, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNousSubStoryAccessor.LoadData to preload everything
 func (a *RogueNousSubStoryAccessor) GroupData() {
+	a._dataLevelGraphPath = map[string]RogueNousSubStory{}
+	a._dataQuestID = map[float64]RogueNousSubStory{}
+	a._dataStoryID = map[float64]RogueNousSubStory{}
+	a._dataTalkNameID = map[float64]RogueNousSubStory{}
 	for _, d := range a._data {
 		a._dataLevelGraphPath[d.LevelGraphPath] = d
 		a._dataQuestID[d.QuestID] = d

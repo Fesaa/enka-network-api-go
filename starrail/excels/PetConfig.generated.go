@@ -47,6 +47,9 @@ func (a *PetConfigAccessor) Raw() ([]PetConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PetConfigAccessor.LoadData to preload everything
 func (a *PetConfigAccessor) GroupData() {
+	a._dataPetID = map[float64]PetConfig{}
+	a._dataPetItemID = map[float64]PetConfig{}
+	a._dataSummonUnitID = map[float64]PetConfig{}
 	for _, d := range a._data {
 		a._dataPetID[d.PetID] = d
 		a._dataPetItemID[d.PetItemID] = d

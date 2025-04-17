@@ -45,6 +45,8 @@ func (a *RogueCommonDialogueAccessor) Raw() ([]RogueCommonDialogue, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueCommonDialogueAccessor.LoadData to preload everything
 func (a *RogueCommonDialogueAccessor) GroupData() {
+	a._dataDialogueID = map[float64]RogueCommonDialogue{}
+	a._dataDialoguePath = map[string]RogueCommonDialogue{}
 	for _, d := range a._data {
 		a._dataDialogueID[d.DialogueID] = d
 		a._dataDialoguePath[d.DialoguePath] = d

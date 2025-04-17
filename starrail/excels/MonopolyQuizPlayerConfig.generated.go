@@ -47,6 +47,8 @@ func (a *MonopolyQuizPlayerConfigAccessor) Raw() ([]MonopolyQuizPlayerConfig, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyQuizPlayerConfigAccessor.LoadData to preload everything
 func (a *MonopolyQuizPlayerConfigAccessor) GroupData() {
+	a._dataIconPath = map[string]MonopolyQuizPlayerConfig{}
+	a._dataQuizPlayerID = map[float64]MonopolyQuizPlayerConfig{}
 	for _, d := range a._data {
 		a._dataIconPath[d.IconPath] = d
 		a._dataQuizPlayerID[d.QuizPlayerID] = d

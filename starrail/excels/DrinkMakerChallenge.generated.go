@@ -53,6 +53,10 @@ func (a *DrinkMakerChallengeAccessor) Raw() ([]DrinkMakerChallenge, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerChallengeAccessor.LoadData to preload everything
 func (a *DrinkMakerChallengeAccessor) GroupData() {
+	a._dataChallengeID = map[float64]DrinkMakerChallenge{}
+	a._dataChallengePic = map[string]DrinkMakerChallenge{}
+	a._dataChallengeRequest = map[float64]DrinkMakerChallenge{}
+	a._dataChallengeRewardID = map[float64]DrinkMakerChallenge{}
 	for _, d := range a._data {
 		a._dataChallengeID[d.ChallengeID] = d
 		a._dataChallengePic[d.ChallengePic] = d

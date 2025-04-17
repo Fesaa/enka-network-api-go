@@ -59,6 +59,9 @@ func (a *RogueNousDiceSurfaceAccessor) Raw() ([]RogueNousDiceSurface, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNousDiceSurfaceAccessor.LoadData to preload everything
 func (a *RogueNousDiceSurfaceAccessor) GroupData() {
+	a._dataItemID = map[float64]RogueNousDiceSurface{}
+	a._dataSort = map[float64]RogueNousDiceSurface{}
+	a._dataSurfaceID = map[float64]RogueNousDiceSurface{}
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
 		a._dataSort[d.Sort] = d

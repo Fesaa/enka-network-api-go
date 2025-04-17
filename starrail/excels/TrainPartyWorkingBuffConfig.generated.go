@@ -48,6 +48,8 @@ func (a *TrainPartyWorkingBuffConfigAccessor) Raw() ([]TrainPartyWorkingBuffConf
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyWorkingBuffConfigAccessor.LoadData to preload everything
 func (a *TrainPartyWorkingBuffConfigAccessor) GroupData() {
+	a._dataIconPath = map[string]TrainPartyWorkingBuffConfig{}
+	a._dataWorkingBuffID = map[float64]TrainPartyWorkingBuffConfig{}
 	for _, d := range a._data {
 		a._dataIconPath[d.IconPath] = d
 		a._dataWorkingBuffID[d.WorkingBuffID] = d

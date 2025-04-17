@@ -44,6 +44,7 @@ func (a *TreasureDungeonMapAccessor) Raw() ([]TreasureDungeonMap, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TreasureDungeonMapAccessor.LoadData to preload everything
 func (a *TreasureDungeonMapAccessor) GroupData() {
+	a._dataMapID = map[float64]TreasureDungeonMap{}
 	for _, d := range a._data {
 		a._dataMapID[d.MapID] = d
 	}

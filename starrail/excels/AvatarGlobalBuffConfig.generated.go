@@ -61,6 +61,9 @@ func (a *AvatarGlobalBuffConfigAccessor) Raw() ([]AvatarGlobalBuffConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarGlobalBuffConfigAccessor.LoadData to preload everything
 func (a *AvatarGlobalBuffConfigAccessor) GroupData() {
+	a._dataAvatarID = map[float64]AvatarGlobalBuffConfig{}
+	a._dataMazeBuffID = map[float64]AvatarGlobalBuffConfig{}
+	a._dataSkillID = map[float64]AvatarGlobalBuffConfig{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataMazeBuffID[d.MazeBuffID] = d

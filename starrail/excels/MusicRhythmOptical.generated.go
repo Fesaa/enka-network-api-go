@@ -50,6 +50,7 @@ func (a *MusicRhythmOpticalAccessor) Raw() ([]MusicRhythmOptical, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MusicRhythmOpticalAccessor.LoadData to preload everything
 func (a *MusicRhythmOpticalAccessor) GroupData() {
+	a._dataQuestID = map[float64]MusicRhythmOptical{}
 	for _, d := range a._data {
 		a._dataQuestID[d.QuestID] = d
 	}

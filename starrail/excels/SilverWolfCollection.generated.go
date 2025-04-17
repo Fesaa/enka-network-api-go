@@ -47,6 +47,8 @@ func (a *SilverWolfCollectionAccessor) Raw() ([]SilverWolfCollection, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SilverWolfCollectionAccessor.LoadData to preload everything
 func (a *SilverWolfCollectionAccessor) GroupData() {
+	a._dataQuestID = map[float64]SilverWolfCollection{}
+	a._dataTypeParam = map[float64]SilverWolfCollection{}
 	for _, d := range a._data {
 		a._dataQuestID[d.QuestID] = d
 		a._dataTypeParam[d.TypeParam] = d

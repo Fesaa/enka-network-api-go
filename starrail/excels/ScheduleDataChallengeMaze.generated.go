@@ -47,6 +47,9 @@ func (a *ScheduleDataChallengeMazeAccessor) Raw() ([]ScheduleDataChallengeMaze, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ScheduleDataChallengeMazeAccessor.LoadData to preload everything
 func (a *ScheduleDataChallengeMazeAccessor) GroupData() {
+	a._dataBeginTime = map[string]ScheduleDataChallengeMaze{}
+	a._dataEndTime = map[string]ScheduleDataChallengeMaze{}
+	a._dataID = map[float64]ScheduleDataChallengeMaze{}
 	for _, d := range a._data {
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d

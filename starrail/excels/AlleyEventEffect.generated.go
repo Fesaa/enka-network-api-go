@@ -46,6 +46,7 @@ func (a *AlleyEventEffectAccessor) Raw() ([]AlleyEventEffect, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyEventEffectAccessor.LoadData to preload everything
 func (a *AlleyEventEffectAccessor) GroupData() {
+	a._dataEventEffectID = map[float64]AlleyEventEffect{}
 	for _, d := range a._data {
 		a._dataEventEffectID[d.EventEffectID] = d
 	}

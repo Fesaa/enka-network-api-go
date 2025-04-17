@@ -49,6 +49,7 @@ func (a *FuncUnlockHintAccessor) Raw() ([]FuncUnlockHint, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FuncUnlockHintAccessor.LoadData to preload everything
 func (a *FuncUnlockHintAccessor) GroupData() {
+	a._dataUnlockID = map[float64]FuncUnlockHint{}
 	for _, d := range a._data {
 		a._dataUnlockID[d.UnlockID] = d
 	}

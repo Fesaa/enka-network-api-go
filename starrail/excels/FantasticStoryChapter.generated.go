@@ -51,6 +51,9 @@ func (a *FantasticStoryChapterAccessor) Raw() ([]FantasticStoryChapter, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FantasticStoryChapterAccessor.LoadData to preload everything
 func (a *FantasticStoryChapterAccessor) GroupData() {
+	a._dataChapterID = map[float64]FantasticStoryChapter{}
+	a._dataFigurePath = map[string]FantasticStoryChapter{}
+	a._dataMissionID = map[float64]FantasticStoryChapter{}
 	for _, d := range a._data {
 		a._dataChapterID[d.ChapterID] = d
 		a._dataFigurePath[d.FigurePath] = d

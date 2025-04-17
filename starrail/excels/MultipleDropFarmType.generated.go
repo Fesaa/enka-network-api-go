@@ -46,6 +46,8 @@ func (a *MultipleDropFarmTypeAccessor) Raw() ([]MultipleDropFarmType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MultipleDropFarmTypeAccessor.LoadData to preload everything
 func (a *MultipleDropFarmTypeAccessor) GroupData() {
+	a._dataMultipleDropType = map[string]MultipleDropFarmType{}
+	a._dataUnlockID = map[float64]MultipleDropFarmType{}
 	for _, d := range a._data {
 		a._dataMultipleDropType[d.MultipleDropType] = d
 		a._dataUnlockID[d.UnlockID] = d

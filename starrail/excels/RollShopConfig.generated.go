@@ -62,6 +62,11 @@ func (a *RollShopConfigAccessor) Raw() ([]RollShopConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RollShopConfigAccessor.LoadData to preload everything
 func (a *RollShopConfigAccessor) GroupData() {
+	a._dataIntroduceID = map[float64]RollShopConfig{}
+	a._dataRollShopID = map[float64]RollShopConfig{}
+	a._dataT2GroupID = map[float64]RollShopConfig{}
+	a._dataT3GroupID = map[float64]RollShopConfig{}
+	a._dataT4GroupID = map[float64]RollShopConfig{}
 	for _, d := range a._data {
 		a._dataIntroduceID[d.IntroduceID] = d
 		a._dataRollShopID[d.RollShopID] = d

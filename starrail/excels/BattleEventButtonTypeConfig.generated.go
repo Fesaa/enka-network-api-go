@@ -48,6 +48,8 @@ func (a *BattleEventButtonTypeConfigAccessor) Raw() ([]BattleEventButtonTypeConf
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattleEventButtonTypeConfigAccessor.LoadData to preload everything
 func (a *BattleEventButtonTypeConfigAccessor) GroupData() {
+	a._dataButtonPath = map[string]BattleEventButtonTypeConfig{}
+	a._dataID = map[float64]BattleEventButtonTypeConfig{}
 	for _, d := range a._data {
 		a._dataButtonPath[d.ButtonPath] = d
 		a._dataID[d.ID] = d

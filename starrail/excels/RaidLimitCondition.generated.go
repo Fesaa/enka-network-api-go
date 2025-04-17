@@ -50,6 +50,8 @@ func (a *RaidLimitConditionAccessor) Raw() ([]RaidLimitCondition, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RaidLimitConditionAccessor.LoadData to preload everything
 func (a *RaidLimitConditionAccessor) GroupData() {
+	a._dataID = map[float64]RaidLimitCondition{}
+	a._dataParamInt1 = map[float64]RaidLimitCondition{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataParamInt1[d.ParamInt1] = d

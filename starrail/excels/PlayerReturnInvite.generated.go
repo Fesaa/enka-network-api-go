@@ -51,6 +51,9 @@ func (a *PlayerReturnInviteAccessor) Raw() ([]PlayerReturnInvite, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlayerReturnInviteAccessor.LoadData to preload everything
 func (a *PlayerReturnInviteAccessor) GroupData() {
+	a._dataAPILabel = map[string]PlayerReturnInvite{}
+	a._dataActivityModuleID = map[float64]PlayerReturnInvite{}
+	a._dataID = map[float64]PlayerReturnInvite{}
 	for _, d := range a._data {
 		a._dataAPILabel[d.APILabel] = d
 		a._dataActivityModuleID[d.ActivityModuleID] = d

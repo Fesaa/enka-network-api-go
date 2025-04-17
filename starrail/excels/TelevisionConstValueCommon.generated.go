@@ -45,6 +45,7 @@ func (a *TelevisionConstValueCommonAccessor) Raw() ([]TelevisionConstValueCommon
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TelevisionConstValueCommonAccessor.LoadData to preload everything
 func (a *TelevisionConstValueCommonAccessor) GroupData() {
+	a._dataConstValueName = map[string]TelevisionConstValueCommon{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

@@ -44,6 +44,7 @@ func (a *GameModeGroupAccessor) Raw() ([]GameModeGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GameModeGroupAccessor.LoadData to preload everything
 func (a *GameModeGroupAccessor) GroupData() {
+	a._dataGameModeGroupID = map[float64]GameModeGroup{}
 	for _, d := range a._data {
 		a._dataGameModeGroupID[d.GameModeGroupID] = d
 	}

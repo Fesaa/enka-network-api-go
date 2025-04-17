@@ -60,6 +60,8 @@ func (a *InventoryTabDataAccessor) Raw() ([]InventoryTabData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InventoryTabDataAccessor.LoadData to preload everything
 func (a *InventoryTabDataAccessor) GroupData() {
+	a._dataID = map[float64]InventoryTabData{}
+	a._dataTabSortWeight = map[float64]InventoryTabData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataTabSortWeight[d.TabSortWeight] = d

@@ -45,6 +45,8 @@ func (a *ClockParkProgressRewardAccessor) Raw() ([]ClockParkProgressReward, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkProgressRewardAccessor.LoadData to preload everything
 func (a *ClockParkProgressRewardAccessor) GroupData() {
+	a._dataQuestID = map[float64]ClockParkProgressReward{}
+	a._dataQuestProgress = map[float64]ClockParkProgressReward{}
 	for _, d := range a._data {
 		a._dataQuestID[d.QuestID] = d
 		a._dataQuestProgress[d.QuestProgress] = d

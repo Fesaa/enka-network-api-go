@@ -47,6 +47,7 @@ func (a *PerformanceCategoryDataAccessor) Raw() ([]PerformanceCategoryData, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PerformanceCategoryDataAccessor.LoadData to preload everything
 func (a *PerformanceCategoryDataAccessor) GroupData() {
+	a._dataCategoryID = map[float64]PerformanceCategoryData{}
 	for _, d := range a._data {
 		a._dataCategoryID[d.CategoryID] = d
 	}

@@ -53,6 +53,8 @@ func (a *EvolveBuildGearCollectionAccessor) Raw() ([]EvolveBuildGearCollection, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildGearCollectionAccessor.LoadData to preload everything
 func (a *EvolveBuildGearCollectionAccessor) GroupData() {
+	a._dataID = map[float64]EvolveBuildGearCollection{}
+	a._dataItemIcon = map[string]EvolveBuildGearCollection{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataItemIcon[d.ItemIcon] = d

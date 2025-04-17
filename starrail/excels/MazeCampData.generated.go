@@ -44,6 +44,7 @@ func (a *MazeCampDataAccessor) Raw() ([]MazeCampData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazeCampDataAccessor.LoadData to preload everything
 func (a *MazeCampDataAccessor) GroupData() {
+	a._dataCampID = map[string]MazeCampData{}
 	for _, d := range a._data {
 		a._dataCampID[d.CampID] = d
 	}

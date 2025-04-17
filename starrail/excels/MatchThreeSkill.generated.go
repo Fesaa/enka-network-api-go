@@ -50,6 +50,8 @@ func (a *MatchThreeSkillAccessor) Raw() ([]MatchThreeSkill, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeSkillAccessor.LoadData to preload everything
 func (a *MatchThreeSkillAccessor) GroupData() {
+	a._dataSkillID = map[float64]MatchThreeSkill{}
+	a._dataSkillJson = map[string]MatchThreeSkill{}
 	for _, d := range a._data {
 		a._dataSkillID[d.SkillID] = d
 		a._dataSkillJson[d.SkillJson] = d

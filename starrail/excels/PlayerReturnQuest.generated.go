@@ -45,6 +45,7 @@ func (a *PlayerReturnQuestAccessor) Raw() ([]PlayerReturnQuest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlayerReturnQuestAccessor.LoadData to preload everything
 func (a *PlayerReturnQuestAccessor) GroupData() {
+	a._dataID = map[float64]PlayerReturnQuest{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

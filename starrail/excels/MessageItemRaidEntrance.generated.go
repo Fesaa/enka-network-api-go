@@ -47,6 +47,8 @@ func (a *MessageItemRaidEntranceAccessor) Raw() ([]MessageItemRaidEntrance, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MessageItemRaidEntranceAccessor.LoadData to preload everything
 func (a *MessageItemRaidEntranceAccessor) GroupData() {
+	a._dataID = map[float64]MessageItemRaidEntrance{}
+	a._dataRaidID = map[float64]MessageItemRaidEntrance{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataRaidID[d.RaidID] = d

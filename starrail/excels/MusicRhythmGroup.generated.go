@@ -70,6 +70,15 @@ func (a *MusicRhythmGroupAccessor) Raw() ([]MusicRhythmGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MusicRhythmGroupAccessor.LoadData to preload everything
 func (a *MusicRhythmGroupAccessor) GroupData() {
+	a._dataBGMpath = map[string]MusicRhythmGroup{}
+	a._dataEntityGroup = map[float64]MusicRhythmGroup{}
+	a._dataEntityGroupMission = map[float64]MusicRhythmGroup{}
+	a._dataEntranceID = map[float64]MusicRhythmGroup{}
+	a._dataGotoID = map[float64]MusicRhythmGroup{}
+	a._dataGroupCoverImgPath = map[string]MusicRhythmGroup{}
+	a._dataID = map[float64]MusicRhythmGroup{}
+	a._dataMapInfoID = map[float64]MusicRhythmGroup{}
+	a._dataTakeMissionID = map[float64]MusicRhythmGroup{}
 	for _, d := range a._data {
 		a._dataBGMpath[d.BGMpath] = d
 		a._dataEntityGroup[d.EntityGroup] = d

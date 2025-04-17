@@ -73,6 +73,8 @@ func (a *EvolveBuildStageConfigAccessor) Raw() ([]EvolveBuildStageConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildStageConfigAccessor.LoadData to preload everything
 func (a *EvolveBuildStageConfigAccessor) GroupData() {
+	a._dataStageMergedID = map[float64]EvolveBuildStageConfig{}
+	a._dataTeamBonusMazeBuffID = map[float64]EvolveBuildStageConfig{}
 	for _, d := range a._data {
 		a._dataStageMergedID[d.StageMergedID] = d
 		a._dataTeamBonusMazeBuffID[d.TeamBonusMazeBuffID] = d

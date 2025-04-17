@@ -53,6 +53,7 @@ func (a *ChallengeBossGroupExtraAccessor) Raw() ([]ChallengeBossGroupExtra, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeBossGroupExtraAccessor.LoadData to preload everything
 func (a *ChallengeBossGroupExtraAccessor) GroupData() {
+	a._dataGroupID = map[float64]ChallengeBossGroupExtra{}
 	for _, d := range a._data {
 		a._dataGroupID[d.GroupID] = d
 	}

@@ -45,6 +45,8 @@ func (a *EvolveBuildMonsteCollectionAccessor) Raw() ([]EvolveBuildMonsteCollecti
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildMonsteCollectionAccessor.LoadData to preload everything
 func (a *EvolveBuildMonsteCollectionAccessor) GroupData() {
+	a._dataID = map[float64]EvolveBuildMonsteCollection{}
+	a._dataUnlockQuest = map[float64]EvolveBuildMonsteCollection{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataUnlockQuest[d.UnlockQuest] = d

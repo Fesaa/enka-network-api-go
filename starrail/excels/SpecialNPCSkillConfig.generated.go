@@ -73,6 +73,8 @@ func (a *SpecialNPCSkillConfigAccessor) Raw() ([]SpecialNPCSkillConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpecialNPCSkillConfigAccessor.LoadData to preload everything
 func (a *SpecialNPCSkillConfigAccessor) GroupData() {
+	a._dataSkillID = map[float64]SpecialNPCSkillConfig{}
+	a._dataSkillIcon = map[string]SpecialNPCSkillConfig{}
 	for _, d := range a._data {
 		a._dataSkillID[d.SkillID] = d
 		a._dataSkillIcon[d.SkillIcon] = d

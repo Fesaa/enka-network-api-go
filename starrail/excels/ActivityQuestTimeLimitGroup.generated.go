@@ -53,6 +53,9 @@ func (a *ActivityQuestTimeLimitGroupAccessor) Raw() ([]ActivityQuestTimeLimitGro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityQuestTimeLimitGroupAccessor.LoadData to preload everything
 func (a *ActivityQuestTimeLimitGroupAccessor) GroupData() {
+	a._dataFigurePath = map[string]ActivityQuestTimeLimitGroup{}
+	a._dataQuestTimeLimitGroupID = map[float64]ActivityQuestTimeLimitGroup{}
+	a._dataUIPanelType = map[string]ActivityQuestTimeLimitGroup{}
 	for _, d := range a._data {
 		a._dataFigurePath[d.FigurePath] = d
 		a._dataQuestTimeLimitGroupID[d.QuestTimeLimitGroupID] = d

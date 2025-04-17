@@ -62,6 +62,9 @@ func (a *SwordTrainingSkillAccessor) Raw() ([]SwordTrainingSkill, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SwordTrainingSkillAccessor.LoadData to preload everything
 func (a *SwordTrainingSkillAccessor) GroupData() {
+	a._dataCondition = map[float64]SwordTrainingSkill{}
+	a._dataMazeBuffID = map[float64]SwordTrainingSkill{}
+	a._dataSkillID = map[float64]SwordTrainingSkill{}
 	for _, d := range a._data {
 		a._dataCondition[d.Condition] = d
 		a._dataMazeBuffID[d.MazeBuffID] = d

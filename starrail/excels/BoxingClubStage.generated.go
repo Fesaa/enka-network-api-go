@@ -50,6 +50,7 @@ func (a *BoxingClubStageAccessor) Raw() ([]BoxingClubStage, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BoxingClubStageAccessor.LoadData to preload everything
 func (a *BoxingClubStageAccessor) GroupData() {
+	a._dataEventID = map[float64]BoxingClubStage{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 	}

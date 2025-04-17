@@ -46,6 +46,7 @@ func (a *RogueTournRoomAccessor) Raw() ([]RogueTournRoom, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournRoomAccessor.LoadData to preload everything
 func (a *RogueTournRoomAccessor) GroupData() {
+	a._dataRogueRoomID = map[float64]RogueTournRoom{}
 	for _, d := range a._data {
 		a._dataRogueRoomID[d.RogueRoomID] = d
 	}

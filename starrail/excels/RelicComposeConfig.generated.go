@@ -55,6 +55,9 @@ func (a *RelicComposeConfigAccessor) Raw() ([]RelicComposeConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RelicComposeConfigAccessor.LoadData to preload everything
 func (a *RelicComposeConfigAccessor) GroupData() {
+	a._dataID = map[float64]RelicComposeConfig{}
+	a._dataItemID = map[float64]RelicComposeConfig{}
+	a._dataOrder = map[float64]RelicComposeConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataItemID[d.ItemID] = d

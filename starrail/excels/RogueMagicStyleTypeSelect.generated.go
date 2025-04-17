@@ -50,6 +50,9 @@ func (a *RogueMagicStyleTypeSelectAccessor) Raw() ([]RogueMagicStyleTypeSelect, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMagicStyleTypeSelectAccessor.LoadData to preload everything
 func (a *RogueMagicStyleTypeSelectAccessor) GroupData() {
+	a._dataDisplayID = map[float64]RogueMagicStyleTypeSelect{}
+	a._dataEnumType = map[string]RogueMagicStyleTypeSelect{}
+	a._dataIconPath = map[string]RogueMagicStyleTypeSelect{}
 	for _, d := range a._data {
 		a._dataDisplayID[d.DisplayID] = d
 		a._dataEnumType[d.EnumType] = d

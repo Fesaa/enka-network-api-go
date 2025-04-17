@@ -50,6 +50,7 @@ func (a *RogueTournWeeklyDisplayAccessor) Raw() ([]RogueTournWeeklyDisplay, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournWeeklyDisplayAccessor.LoadData to preload everything
 func (a *RogueTournWeeklyDisplayAccessor) GroupData() {
+	a._dataWeeklyDisplayID = map[float64]RogueTournWeeklyDisplay{}
 	for _, d := range a._data {
 		a._dataWeeklyDisplayID[d.WeeklyDisplayID] = d
 	}

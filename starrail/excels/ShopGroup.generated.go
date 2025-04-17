@@ -47,6 +47,8 @@ func (a *ShopGroupAccessor) Raw() ([]ShopGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ShopGroupAccessor.LoadData to preload everything
 func (a *ShopGroupAccessor) GroupData() {
+	a._dataID = map[float64]ShopGroup{}
+	a._dataIconPath = map[string]ShopGroup{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d

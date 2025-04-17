@@ -45,6 +45,8 @@ func (a *PlanetFesGameBingoSymbolAccessor) Raw() ([]PlanetFesGameBingoSymbol, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesGameBingoSymbolAccessor.LoadData to preload everything
 func (a *PlanetFesGameBingoSymbolAccessor) GroupData() {
+	a._dataID = map[float64]PlanetFesGameBingoSymbol{}
+	a._dataIconPath = map[string]PlanetFesGameBingoSymbol{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d

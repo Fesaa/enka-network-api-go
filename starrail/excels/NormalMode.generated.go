@@ -49,6 +49,9 @@ func (a *NormalModeAccessor) Raw() ([]NormalMode, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with NormalModeAccessor.LoadData to preload everything
 func (a *NormalModeAccessor) GroupData() {
+	a._dataDesc01 = map[string]NormalMode{}
+	a._dataNormalModeID = map[float64]NormalMode{}
+	a._dataTitle = map[string]NormalMode{}
 	for _, d := range a._data {
 		a._dataDesc01[d.Desc01] = d
 		a._dataNormalModeID[d.NormalModeID] = d

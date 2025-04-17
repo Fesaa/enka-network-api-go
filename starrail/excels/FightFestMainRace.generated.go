@@ -57,6 +57,11 @@ func (a *FightFestMainRaceAccessor) Raw() ([]FightFestMainRace, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FightFestMainRaceAccessor.LoadData to preload everything
 func (a *FightFestMainRaceAccessor) GroupData() {
+	a._dataEventID = map[float64]FightFestMainRace{}
+	a._dataMainRaceID = map[float64]FightFestMainRace{}
+	a._dataRedAvatarID = map[float64]FightFestMainRace{}
+	a._dataRewardID = map[float64]FightFestMainRace{}
+	a._dataTutorialID = map[float64]FightFestMainRace{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 		a._dataMainRaceID[d.MainRaceID] = d

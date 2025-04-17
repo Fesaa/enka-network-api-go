@@ -50,6 +50,7 @@ func (a *AreaMapConfigAccessor) Raw() ([]AreaMapConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AreaMapConfigAccessor.LoadData to preload everything
 func (a *AreaMapConfigAccessor) GroupData() {
+	a._dataID = map[float64]AreaMapConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

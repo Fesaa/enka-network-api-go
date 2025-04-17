@@ -49,6 +49,10 @@ func (a *ScheduleDataGlobalAccessor) Raw() ([]ScheduleDataGlobal, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ScheduleDataGlobalAccessor.LoadData to preload everything
 func (a *ScheduleDataGlobalAccessor) GroupData() {
+	a._dataBeginTime = map[string]ScheduleDataGlobal{}
+	a._dataEndTime = map[string]ScheduleDataGlobal{}
+	a._dataGlobalEndTime = map[string]ScheduleDataGlobal{}
+	a._dataID = map[float64]ScheduleDataGlobal{}
 	for _, d := range a._data {
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d

@@ -44,6 +44,7 @@ func (a *ActivityAvatarDemoAccessor) Raw() ([]ActivityAvatarDemo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityAvatarDemoAccessor.LoadData to preload everything
 func (a *ActivityAvatarDemoAccessor) GroupData() {
+	a._dataActivityID = map[float64]ActivityAvatarDemo{}
 	for _, d := range a._data {
 		a._dataActivityID[d.ActivityID] = d
 	}

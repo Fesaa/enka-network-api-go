@@ -49,6 +49,7 @@ func (a *HeartDialConstValueAccessor) Raw() ([]HeartDialConstValue, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeartDialConstValueAccessor.LoadData to preload everything
 func (a *HeartDialConstValueAccessor) GroupData() {
+	a._dataConstValueName = map[string]HeartDialConstValue{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

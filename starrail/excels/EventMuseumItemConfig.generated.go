@@ -53,6 +53,10 @@ func (a *EventMuseumItemConfigAccessor) Raw() ([]EventMuseumItemConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EventMuseumItemConfigAccessor.LoadData to preload everything
 func (a *EventMuseumItemConfigAccessor) GroupData() {
+	a._dataEventMuseumItemID = map[float64]EventMuseumItemConfig{}
+	a._dataMissionID = map[float64]EventMuseumItemConfig{}
+	a._dataMissionStartString = map[string]EventMuseumItemConfig{}
+	a._dataMuseumItemID = map[float64]EventMuseumItemConfig{}
 	for _, d := range a._data {
 		a._dataEventMuseumItemID[d.EventMuseumItemID] = d
 		a._dataMissionID[d.MissionID] = d

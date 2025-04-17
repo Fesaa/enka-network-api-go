@@ -45,6 +45,7 @@ func (a *ResourceOverallConfigAccessor) Raw() ([]ResourceOverallConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ResourceOverallConfigAccessor.LoadData to preload everything
 func (a *ResourceOverallConfigAccessor) GroupData() {
+	a._dataPageKey = map[string]ResourceOverallConfig{}
 	for _, d := range a._data {
 		a._dataPageKey[d.PageKey] = d
 	}

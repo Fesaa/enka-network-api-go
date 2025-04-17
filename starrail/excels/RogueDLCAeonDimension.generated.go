@@ -50,6 +50,9 @@ func (a *RogueDLCAeonDimensionAccessor) Raw() ([]RogueDLCAeonDimension, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCAeonDimensionAccessor.LoadData to preload everything
 func (a *RogueDLCAeonDimensionAccessor) GroupData() {
+	a._dataAeonDimensionID = map[float64]RogueDLCAeonDimension{}
+	a._dataAeonIcon = map[string]RogueDLCAeonDimension{}
+	a._dataDimensionIcon = map[string]RogueDLCAeonDimension{}
 	for _, d := range a._data {
 		a._dataAeonDimensionID[d.AeonDimensionID] = d
 		a._dataAeonIcon[d.AeonIcon] = d

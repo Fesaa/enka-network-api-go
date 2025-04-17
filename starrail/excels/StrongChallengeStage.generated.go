@@ -67,6 +67,8 @@ func (a *StrongChallengeStageAccessor) Raw() ([]StrongChallengeStage, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StrongChallengeStageAccessor.LoadData to preload everything
 func (a *StrongChallengeStageAccessor) GroupData() {
+	a._dataEventID = map[float64]StrongChallengeStage{}
+	a._dataStrongChallengeStageID = map[float64]StrongChallengeStage{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 		a._dataStrongChallengeStageID[d.StrongChallengeStageID] = d

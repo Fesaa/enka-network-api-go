@@ -51,6 +51,9 @@ func (a *AetherDivideTrainerLevelAccessor) Raw() ([]AetherDivideTrainerLevel, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideTrainerLevelAccessor.LoadData to preload everything
 func (a *AetherDivideTrainerLevelAccessor) GroupData() {
+	a._dataID = map[float64]AetherDivideTrainerLevel{}
+	a._dataIconPath = map[string]AetherDivideTrainerLevel{}
+	a._dataQuestID = map[float64]AetherDivideTrainerLevel{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d

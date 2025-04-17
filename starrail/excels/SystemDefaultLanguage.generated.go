@@ -46,6 +46,8 @@ func (a *SystemDefaultLanguageAccessor) Raw() ([]SystemDefaultLanguage, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SystemDefaultLanguageAccessor.LoadData to preload everything
 func (a *SystemDefaultLanguageAccessor) GroupData() {
+	a._dataDefaultTextLanguage = map[string]SystemDefaultLanguage{}
+	a._dataSystemLanguage = map[string]SystemDefaultLanguage{}
 	for _, d := range a._data {
 		a._dataDefaultTextLanguage[d.DefaultTextLanguage] = d
 		a._dataSystemLanguage[d.SystemLanguage] = d

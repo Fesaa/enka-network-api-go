@@ -53,6 +53,7 @@ func (a *MonopolyEventConfigAccessor) Raw() ([]MonopolyEventConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyEventConfigAccessor.LoadData to preload everything
 func (a *MonopolyEventConfigAccessor) GroupData() {
+	a._dataEventID = map[float64]MonopolyEventConfig{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 	}

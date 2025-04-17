@@ -45,6 +45,7 @@ func (a *ConstValuePamSkinAccessor) Raw() ([]ConstValuePamSkin, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ConstValuePamSkinAccessor.LoadData to preload everything
 func (a *ConstValuePamSkinAccessor) GroupData() {
+	a._dataConstValueName = map[string]ConstValuePamSkin{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

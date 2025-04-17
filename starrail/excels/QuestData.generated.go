@@ -53,6 +53,7 @@ func (a *QuestDataAccessor) Raw() ([]QuestData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with QuestDataAccessor.LoadData to preload everything
 func (a *QuestDataAccessor) GroupData() {
+	a._dataQuestID = map[float64]QuestData{}
 	for _, d := range a._data {
 		a._dataQuestID[d.QuestID] = d
 	}

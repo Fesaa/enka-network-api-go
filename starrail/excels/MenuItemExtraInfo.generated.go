@@ -47,6 +47,8 @@ func (a *MenuItemExtraInfoAccessor) Raw() ([]MenuItemExtraInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MenuItemExtraInfoAccessor.LoadData to preload everything
 func (a *MenuItemExtraInfoAccessor) GroupData() {
+	a._dataCondition = map[string]MenuItemExtraInfo{}
+	a._dataID = map[float64]MenuItemExtraInfo{}
 	for _, d := range a._data {
 		a._dataCondition[d.Condition] = d
 		a._dataID[d.ID] = d

@@ -45,6 +45,8 @@ func (a *TestHotUpdateExcelAccessor) Raw() ([]TestHotUpdateExcel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TestHotUpdateExcelAccessor.LoadData to preload everything
 func (a *TestHotUpdateExcelAccessor) GroupData() {
+	a._dataAvatarID = map[float64]TestHotUpdateExcel{}
+	a._dataAvatarName = map[string]TestHotUpdateExcel{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataAvatarName[d.AvatarName] = d

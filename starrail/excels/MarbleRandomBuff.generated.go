@@ -56,6 +56,8 @@ func (a *MarbleRandomBuffAccessor) Raw() ([]MarbleRandomBuff, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarbleRandomBuffAccessor.LoadData to preload everything
 func (a *MarbleRandomBuffAccessor) GroupData() {
+	a._dataEffectParam = map[float64]MarbleRandomBuff{}
+	a._dataID = map[float64]MarbleRandomBuff{}
 	for _, d := range a._data {
 		a._dataEffectParam[d.EffectParam] = d
 		a._dataID[d.ID] = d

@@ -50,6 +50,7 @@ func (a *NPCDataAccessor) Raw() ([]NPCData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with NPCDataAccessor.LoadData to preload everything
 func (a *NPCDataAccessor) GroupData() {
+	a._dataID = map[float64]NPCData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

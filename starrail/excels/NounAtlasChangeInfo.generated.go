@@ -44,6 +44,7 @@ func (a *NounAtlasChangeInfoAccessor) Raw() ([]NounAtlasChangeInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with NounAtlasChangeInfoAccessor.LoadData to preload everything
 func (a *NounAtlasChangeInfoAccessor) GroupData() {
+	a._dataNounID = map[float64]NounAtlasChangeInfo{}
 	for _, d := range a._data {
 		a._dataNounID[d.NounID] = d
 	}

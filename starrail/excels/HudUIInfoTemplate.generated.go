@@ -47,6 +47,7 @@ func (a *HudUIInfoTemplateAccessor) Raw() ([]HudUIInfoTemplate, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HudUIInfoTemplateAccessor.LoadData to preload everything
 func (a *HudUIInfoTemplateAccessor) GroupData() {
+	a._dataID = map[float64]HudUIInfoTemplate{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

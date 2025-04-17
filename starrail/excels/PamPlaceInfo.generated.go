@@ -44,6 +44,7 @@ func (a *PamPlaceInfoAccessor) Raw() ([]PamPlaceInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PamPlaceInfoAccessor.LoadData to preload everything
 func (a *PamPlaceInfoAccessor) GroupData() {
+	a._dataPamPlaceType = map[string]PamPlaceInfo{}
 	for _, d := range a._data {
 		a._dataPamPlaceType[d.PamPlaceType] = d
 	}

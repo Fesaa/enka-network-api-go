@@ -45,6 +45,8 @@ func (a *ActivityModulePunkLordAccessor) Raw() ([]ActivityModulePunkLord, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityModulePunkLordAccessor.LoadData to preload everything
 func (a *ActivityModulePunkLordAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]ActivityModulePunkLord{}
+	a._dataID = map[float64]ActivityModulePunkLord{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataID[d.ID] = d

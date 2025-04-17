@@ -45,6 +45,7 @@ func (a *FreeStyleCharacterInfoAccessor) Raw() ([]FreeStyleCharacterInfo, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FreeStyleCharacterInfoAccessor.LoadData to preload everything
 func (a *FreeStyleCharacterInfoAccessor) GroupData() {
+	a._dataFreeStyleCharacterID = map[string]FreeStyleCharacterInfo{}
 	for _, d := range a._data {
 		a._dataFreeStyleCharacterID[d.FreeStyleCharacterID] = d
 	}

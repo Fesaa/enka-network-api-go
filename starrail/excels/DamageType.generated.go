@@ -90,6 +90,29 @@ func (a *DamageTypeAccessor) Raw() ([]DamageType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DamageTypeAccessor.LoadData to preload everything
 func (a *DamageTypeAccessor) GroupData() {
+	a._dataColor = map[string]DamageType{}
+	a._dataCriticalDamage = map[string]DamageType{}
+	a._dataDamageTypeIconPath = map[string]DamageType{}
+	a._dataID = map[string]DamageType{}
+	a._dataIconNatureColor = map[string]DamageType{}
+	a._dataIconNatureColorSimple = map[string]DamageType{}
+	a._dataIconNatureForWeakActive = map[string]DamageType{}
+	a._dataIconNatureForWeakUnactive = map[string]DamageType{}
+	a._dataIconNatureWhite = map[string]DamageType{}
+	a._dataLight1Color = map[string]DamageType{}
+	a._dataLightColor = map[string]DamageType{}
+	a._dataMazeEnterBattleWeakIconPath = map[string]DamageType{}
+	a._dataNormalDamage = map[string]DamageType{}
+	a._dataSPInfoEffFront = map[string]DamageType{}
+	a._dataSPInfoEffFrontDouble = map[string]DamageType{}
+	a._dataSPMazeInfoEffFront = map[string]DamageType{}
+	a._dataShaderColor = map[string]DamageType{}
+	a._dataSkillBtnEff = map[string]DamageType{}
+	a._dataSkillTreeDecoColor = map[string]DamageType{}
+	a._dataSkillTreeLeftPanelColor = map[string]DamageType{}
+	a._dataSkillTreeLightColor = map[string]DamageType{}
+	a._dataSkillTreePanelPath = map[string]DamageType{}
+	a._dataUnfullColor = map[string]DamageType{}
 	for _, d := range a._data {
 		a._dataColor[d.Color] = d
 		a._dataCriticalDamage[d.CriticalDamage] = d

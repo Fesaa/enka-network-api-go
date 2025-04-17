@@ -48,6 +48,8 @@ func (a *AvatarUltraSkillConfigAccessor) Raw() ([]AvatarUltraSkillConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarUltraSkillConfigAccessor.LoadData to preload everything
 func (a *AvatarUltraSkillConfigAccessor) GroupData() {
+	a._dataAvatarID = map[float64]AvatarUltraSkillConfig{}
+	a._dataUltraSkillResourcePath = map[string]AvatarUltraSkillConfig{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataUltraSkillResourcePath[d.UltraSkillResourcePath] = d

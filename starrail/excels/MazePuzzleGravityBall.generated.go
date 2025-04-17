@@ -46,6 +46,8 @@ func (a *MazePuzzleGravityBallAccessor) Raw() ([]MazePuzzleGravityBall, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazePuzzleGravityBallAccessor.LoadData to preload everything
 func (a *MazePuzzleGravityBallAccessor) GroupData() {
+	a._dataPuzzleID = map[float64]MazePuzzleGravityBall{}
+	a._dataWallPrefab = map[string]MazePuzzleGravityBall{}
 	for _, d := range a._data {
 		a._dataPuzzleID[d.PuzzleID] = d
 		a._dataWallPrefab[d.WallPrefab] = d

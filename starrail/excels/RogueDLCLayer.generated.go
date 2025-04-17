@@ -47,6 +47,7 @@ func (a *RogueDLCLayerAccessor) Raw() ([]RogueDLCLayer, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCLayerAccessor.LoadData to preload everything
 func (a *RogueDLCLayerAccessor) GroupData() {
+	a._dataLayerID = map[float64]RogueDLCLayer{}
 	for _, d := range a._data {
 		a._dataLayerID[d.LayerID] = d
 	}

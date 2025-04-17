@@ -45,6 +45,7 @@ func (a *RogueBuffHintAccessor) Raw() ([]RogueBuffHint, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueBuffHintAccessor.LoadData to preload everything
 func (a *RogueBuffHintAccessor) GroupData() {
+	a._dataHintID = map[float64]RogueBuffHint{}
 	for _, d := range a._data {
 		a._dataHintID[d.HintID] = d
 	}

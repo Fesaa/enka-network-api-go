@@ -45,6 +45,7 @@ func (a *AetherDivideBadgeAccessor) Raw() ([]AetherDivideBadge, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideBadgeAccessor.LoadData to preload everything
 func (a *AetherDivideBadgeAccessor) GroupData() {
+	a._dataMaxSpiritLevel = map[float64]AetherDivideBadge{}
 	for _, d := range a._data {
 		a._dataMaxSpiritLevel[d.MaxSpiritLevel] = d
 	}

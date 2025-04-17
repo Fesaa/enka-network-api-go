@@ -58,6 +58,7 @@ func (a *ActivityFarmMultipleDropAccessor) Raw() ([]ActivityFarmMultipleDrop, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityFarmMultipleDropAccessor.LoadData to preload everything
 func (a *ActivityFarmMultipleDropAccessor) GroupData() {
+	a._dataID = map[float64]ActivityFarmMultipleDrop{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

@@ -44,6 +44,7 @@ func (a *RogueTournLayerAccessor) Raw() ([]RogueTournLayer, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournLayerAccessor.LoadData to preload everything
 func (a *RogueTournLayerAccessor) GroupData() {
+	a._dataLayerID = map[float64]RogueTournLayer{}
 	for _, d := range a._data {
 		a._dataLayerID[d.LayerID] = d
 	}

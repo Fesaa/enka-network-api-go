@@ -47,6 +47,7 @@ func (a *MonsterDifficultyGuideAccessor) Raw() ([]MonsterDifficultyGuide, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonsterDifficultyGuideAccessor.LoadData to preload everything
 func (a *MonsterDifficultyGuideAccessor) GroupData() {
+	a._dataDifficultyGuideID = map[float64]MonsterDifficultyGuide{}
 	for _, d := range a._data {
 		a._dataDifficultyGuideID[d.DifficultyGuideID] = d
 	}

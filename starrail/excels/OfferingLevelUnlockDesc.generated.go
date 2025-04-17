@@ -45,6 +45,7 @@ func (a *OfferingLevelUnlockDescAccessor) Raw() ([]OfferingLevelUnlockDesc, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with OfferingLevelUnlockDescAccessor.LoadData to preload everything
 func (a *OfferingLevelUnlockDescAccessor) GroupData() {
+	a._dataUnlockID = map[float64]OfferingLevelUnlockDesc{}
 	for _, d := range a._data {
 		a._dataUnlockID[d.UnlockID] = d
 	}

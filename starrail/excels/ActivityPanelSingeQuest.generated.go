@@ -47,6 +47,8 @@ func (a *ActivityPanelSingeQuestAccessor) Raw() ([]ActivityPanelSingeQuest, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityPanelSingeQuestAccessor.LoadData to preload everything
 func (a *ActivityPanelSingeQuestAccessor) GroupData() {
+	a._dataAvatarID = map[float64]ActivityPanelSingeQuest{}
+	a._dataID = map[float64]ActivityPanelSingeQuest{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataID[d.ID] = d

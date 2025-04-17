@@ -53,6 +53,11 @@ func (a *RecommendConfigAccessor) Raw() ([]RecommendConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RecommendConfigAccessor.LoadData to preload everything
 func (a *RecommendConfigAccessor) GroupData() {
+	a._dataID = map[float64]RecommendConfig{}
+	a._dataImagePath = map[string]RecommendConfig{}
+	a._dataNameText = map[string]RecommendConfig{}
+	a._dataOrder = map[float64]RecommendConfig{}
+	a._dataType = map[float64]RecommendConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataImagePath[d.ImagePath] = d

@@ -47,6 +47,8 @@ func (a *RogueTournGambleUnitAccessor) Raw() ([]RogueTournGambleUnit, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournGambleUnitAccessor.LoadData to preload everything
 func (a *RogueTournGambleUnitAccessor) GroupData() {
+	a._dataGambleUnitID = map[float64]RogueTournGambleUnit{}
+	a._dataGambleUnitParam = map[float64]RogueTournGambleUnit{}
 	for _, d := range a._data {
 		a._dataGambleUnitID[d.GambleUnitID] = d
 		a._dataGambleUnitParam[d.GambleUnitParam] = d

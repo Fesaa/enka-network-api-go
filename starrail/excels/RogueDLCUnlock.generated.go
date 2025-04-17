@@ -46,6 +46,7 @@ func (a *RogueDLCUnlockAccessor) Raw() ([]RogueDLCUnlock, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCUnlockAccessor.LoadData to preload everything
 func (a *RogueDLCUnlockAccessor) GroupData() {
+	a._dataRogueUnlockID = map[float64]RogueDLCUnlock{}
 	for _, d := range a._data {
 		a._dataRogueUnlockID[d.RogueUnlockID] = d
 	}

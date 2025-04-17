@@ -54,6 +54,10 @@ func (a *RogueTournCollectionAccessor) Raw() ([]RogueTournCollection, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournCollectionAccessor.LoadData to preload everything
 func (a *RogueTournCollectionAccessor) GroupData() {
+	a._dataCollectionID = map[float64]RogueTournCollection{}
+	a._dataIconPath = map[string]RogueTournCollection{}
+	a._dataPrefabPath = map[string]RogueTournCollection{}
+	a._dataUnlockID = map[float64]RogueTournCollection{}
 	for _, d := range a._data {
 		a._dataCollectionID[d.CollectionID] = d
 		a._dataIconPath[d.IconPath] = d

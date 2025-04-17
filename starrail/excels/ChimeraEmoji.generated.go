@@ -45,6 +45,8 @@ func (a *ChimeraEmojiAccessor) Raw() ([]ChimeraEmoji, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraEmojiAccessor.LoadData to preload everything
 func (a *ChimeraEmojiAccessor) GroupData() {
+	a._dataEmojiID = map[float64]ChimeraEmoji{}
+	a._dataEmojiPath = map[string]ChimeraEmoji{}
 	for _, d := range a._data {
 		a._dataEmojiID[d.EmojiID] = d
 		a._dataEmojiPath[d.EmojiPath] = d

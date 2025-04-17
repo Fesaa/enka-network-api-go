@@ -51,6 +51,10 @@ func (a *EventStuffConfigAccessor) Raw() ([]EventStuffConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EventStuffConfigAccessor.LoadData to preload everything
 func (a *EventStuffConfigAccessor) GroupData() {
+	a._dataEventStuffID = map[float64]EventStuffConfig{}
+	a._dataMissionID = map[float64]EventStuffConfig{}
+	a._dataMissionStartString = map[string]EventStuffConfig{}
+	a._dataStuffID = map[float64]EventStuffConfig{}
 	for _, d := range a._data {
 		a._dataEventStuffID[d.EventStuffID] = d
 		a._dataMissionID[d.MissionID] = d

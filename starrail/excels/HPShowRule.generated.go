@@ -47,6 +47,8 @@ func (a *HPShowRuleAccessor) Raw() ([]HPShowRule, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HPShowRuleAccessor.LoadData to preload everything
 func (a *HPShowRuleAccessor) GroupData() {
+	a._dataID = map[float64]HPShowRule{}
+	a._dataMax = map[float64]HPShowRule{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataMax[d.Max] = d

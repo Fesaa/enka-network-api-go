@@ -48,6 +48,7 @@ func (a *TrainPartyStaticConfigAccessor) Raw() ([]TrainPartyStaticConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyStaticConfigAccessor.LoadData to preload everything
 func (a *TrainPartyStaticConfigAccessor) GroupData() {
+	a._dataID = map[float64]TrainPartyStaticConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

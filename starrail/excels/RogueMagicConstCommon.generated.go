@@ -49,6 +49,7 @@ func (a *RogueMagicConstCommonAccessor) Raw() ([]RogueMagicConstCommon, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMagicConstCommonAccessor.LoadData to preload everything
 func (a *RogueMagicConstCommonAccessor) GroupData() {
+	a._dataConstValueName = map[string]RogueMagicConstCommon{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

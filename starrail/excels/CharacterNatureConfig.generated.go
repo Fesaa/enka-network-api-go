@@ -45,6 +45,7 @@ func (a *CharacterNatureConfigAccessor) Raw() ([]CharacterNatureConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with CharacterNatureConfigAccessor.LoadData to preload everything
 func (a *CharacterNatureConfigAccessor) GroupData() {
+	a._dataNatureID = map[float64]CharacterNatureConfig{}
 	for _, d := range a._data {
 		a._dataNatureID[d.NatureID] = d
 	}

@@ -45,6 +45,7 @@ func (a *RogueMagicLayerAccessor) Raw() ([]RogueMagicLayer, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMagicLayerAccessor.LoadData to preload everything
 func (a *RogueMagicLayerAccessor) GroupData() {
+	a._dataLayerID = map[float64]RogueMagicLayer{}
 	for _, d := range a._data {
 		a._dataLayerID[d.LayerID] = d
 	}

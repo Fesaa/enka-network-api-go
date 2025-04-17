@@ -55,6 +55,12 @@ func (a *AetherSpiritTypeAccessor) Raw() ([]AetherSpiritType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherSpiritTypeAccessor.LoadData to preload everything
 func (a *AetherSpiritTypeAccessor) GroupData() {
+	a._dataColor = map[string]AetherSpiritType{}
+	a._dataIconPath = map[string]AetherSpiritType{}
+	a._dataName = map[string]AetherSpiritType{}
+	a._dataSPInfoEffFront = map[string]AetherSpiritType{}
+	a._dataSmallIconPath = map[string]AetherSpiritType{}
+	a._dataUnfullColor = map[string]AetherSpiritType{}
 	for _, d := range a._data {
 		a._dataColor[d.Color] = d
 		a._dataIconPath[d.IconPath] = d

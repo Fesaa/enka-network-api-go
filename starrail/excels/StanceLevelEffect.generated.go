@@ -46,6 +46,7 @@ func (a *StanceLevelEffectAccessor) Raw() ([]StanceLevelEffect, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StanceLevelEffectAccessor.LoadData to preload everything
 func (a *StanceLevelEffectAccessor) GroupData() {
+	a._dataID = map[float64]StanceLevelEffect{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

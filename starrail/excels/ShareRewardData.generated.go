@@ -47,6 +47,9 @@ func (a *ShareRewardDataAccessor) Raw() ([]ShareRewardData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ShareRewardDataAccessor.LoadData to preload everything
 func (a *ShareRewardDataAccessor) GroupData() {
+	a._dataID = map[float64]ShareRewardData{}
+	a._dataRewardID = map[float64]ShareRewardData{}
+	a._dataRewardNum = map[float64]ShareRewardData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataRewardID[d.RewardID] = d

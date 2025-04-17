@@ -45,6 +45,8 @@ func (a *ModelIconConfigAccessor) Raw() ([]ModelIconConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ModelIconConfigAccessor.LoadData to preload everything
 func (a *ModelIconConfigAccessor) GroupData() {
+	a._dataID = map[float64]ModelIconConfig{}
+	a._dataPrefabPath = map[string]ModelIconConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataPrefabPath[d.PrefabPath] = d

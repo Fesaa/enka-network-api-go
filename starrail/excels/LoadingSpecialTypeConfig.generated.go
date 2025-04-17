@@ -46,6 +46,7 @@ func (a *LoadingSpecialTypeConfigAccessor) Raw() ([]LoadingSpecialTypeConfig, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with LoadingSpecialTypeConfigAccessor.LoadData to preload everything
 func (a *LoadingSpecialTypeConfigAccessor) GroupData() {
+	a._dataSubMissionID = map[float64]LoadingSpecialTypeConfig{}
 	for _, d := range a._data {
 		a._dataSubMissionID[d.SubMissionID] = d
 	}

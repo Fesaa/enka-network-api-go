@@ -46,6 +46,7 @@ func (a *PSTrophyAccessor) Raw() ([]PSTrophy, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PSTrophyAccessor.LoadData to preload everything
 func (a *PSTrophyAccessor) GroupData() {
+	a._dataAchievementID = map[float64]PSTrophy{}
 	for _, d := range a._data {
 		a._dataAchievementID[d.AchievementID] = d
 	}

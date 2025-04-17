@@ -52,6 +52,8 @@ func (a *AetherDivideChallengeRankAccessor) Raw() ([]AetherDivideChallengeRank, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideChallengeRankAccessor.LoadData to preload everything
 func (a *AetherDivideChallengeRankAccessor) GroupData() {
+	a._dataChallengeRank = map[float64]AetherDivideChallengeRank{}
+	a._dataIconPath = map[string]AetherDivideChallengeRank{}
 	for _, d := range a._data {
 		a._dataChallengeRank[d.ChallengeRank] = d
 		a._dataIconPath[d.IconPath] = d

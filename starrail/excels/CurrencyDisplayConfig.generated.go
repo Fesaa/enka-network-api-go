@@ -45,6 +45,7 @@ func (a *CurrencyDisplayConfigAccessor) Raw() ([]CurrencyDisplayConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with CurrencyDisplayConfigAccessor.LoadData to preload everything
 func (a *CurrencyDisplayConfigAccessor) GroupData() {
+	a._dataCurrencyID = map[float64]CurrencyDisplayConfig{}
 	for _, d := range a._data {
 		a._dataCurrencyID[d.CurrencyID] = d
 	}

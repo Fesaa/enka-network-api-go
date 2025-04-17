@@ -45,6 +45,8 @@ func (a *RogueTournNPCAccessor) Raw() ([]RogueTournNPC, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournNPCAccessor.LoadData to preload everything
 func (a *RogueTournNPCAccessor) GroupData() {
+	a._dataNPCJsonPath = map[string]RogueTournNPC{}
+	a._dataRogueNPCID = map[float64]RogueTournNPC{}
 	for _, d := range a._data {
 		a._dataNPCJsonPath[d.NPCJsonPath] = d
 		a._dataRogueNPCID[d.RogueNPCID] = d

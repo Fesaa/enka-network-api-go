@@ -47,6 +47,7 @@ func (a *AvatarPropertyOverrideAccessor) Raw() ([]AvatarPropertyOverride, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarPropertyOverrideAccessor.LoadData to preload everything
 func (a *AvatarPropertyOverrideAccessor) GroupData() {
+	a._dataAvatarID = map[float64]AvatarPropertyOverride{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 	}

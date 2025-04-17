@@ -44,6 +44,7 @@ func (a *PSObjectMissionMapAccessor) Raw() ([]PSObjectMissionMap, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PSObjectMissionMapAccessor.LoadData to preload everything
 func (a *PSObjectMissionMapAccessor) GroupData() {
+	a._dataObjectID = map[float64]PSObjectMissionMap{}
 	for _, d := range a._data {
 		a._dataObjectID[d.ObjectID] = d
 	}

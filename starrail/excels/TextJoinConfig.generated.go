@@ -47,6 +47,7 @@ func (a *TextJoinConfigAccessor) Raw() ([]TextJoinConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TextJoinConfigAccessor.LoadData to preload everything
 func (a *TextJoinConfigAccessor) GroupData() {
+	a._dataTextJoinID = map[float64]TextJoinConfig{}
 	for _, d := range a._data {
 		a._dataTextJoinID[d.TextJoinID] = d
 	}

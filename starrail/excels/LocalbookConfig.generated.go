@@ -50,6 +50,7 @@ func (a *LocalbookConfigAccessor) Raw() ([]LocalbookConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with LocalbookConfigAccessor.LoadData to preload everything
 func (a *LocalbookConfigAccessor) GroupData() {
+	a._dataBookID = map[float64]LocalbookConfig{}
 	for _, d := range a._data {
 		a._dataBookID[d.BookID] = d
 	}

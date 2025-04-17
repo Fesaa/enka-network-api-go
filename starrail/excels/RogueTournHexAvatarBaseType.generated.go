@@ -45,6 +45,7 @@ func (a *RogueTournHexAvatarBaseTypeAccessor) Raw() ([]RogueTournHexAvatarBaseTy
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournHexAvatarBaseTypeAccessor.LoadData to preload everything
 func (a *RogueTournHexAvatarBaseTypeAccessor) GroupData() {
+	a._dataMiracleID = map[float64]RogueTournHexAvatarBaseType{}
 	for _, d := range a._data {
 		a._dataMiracleID[d.MiracleID] = d
 	}

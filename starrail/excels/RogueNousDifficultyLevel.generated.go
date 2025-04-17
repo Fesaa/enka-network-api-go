@@ -49,6 +49,7 @@ func (a *RogueNousDifficultyLevelAccessor) Raw() ([]RogueNousDifficultyLevel, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNousDifficultyLevelAccessor.LoadData to preload everything
 func (a *RogueNousDifficultyLevelAccessor) GroupData() {
+	a._dataDifficultyID = map[float64]RogueNousDifficultyLevel{}
 	for _, d := range a._data {
 		a._dataDifficultyID[d.DifficultyID] = d
 	}

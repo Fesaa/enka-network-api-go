@@ -52,6 +52,7 @@ func (a *ShareChannelConfigAccessor) Raw() ([]ShareChannelConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ShareChannelConfigAccessor.LoadData to preload everything
 func (a *ShareChannelConfigAccessor) GroupData() {
+	a._dataShareChannelID = map[float64]ShareChannelConfig{}
 	for _, d := range a._data {
 		a._dataShareChannelID[d.ShareChannelID] = d
 	}

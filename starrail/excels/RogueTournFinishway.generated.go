@@ -53,6 +53,7 @@ func (a *RogueTournFinishwayAccessor) Raw() ([]RogueTournFinishway, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournFinishwayAccessor.LoadData to preload everything
 func (a *RogueTournFinishwayAccessor) GroupData() {
+	a._dataID = map[float64]RogueTournFinishway{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

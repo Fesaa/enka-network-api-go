@@ -47,6 +47,8 @@ func (a *ChallengeRaidAccessor) Raw() ([]ChallengeRaid, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChallengeRaidAccessor.LoadData to preload everything
 func (a *ChallengeRaidAccessor) GroupData() {
+	a._dataChallengeID = map[float64]ChallengeRaid{}
+	a._dataScoringGroupID = map[float64]ChallengeRaid{}
 	for _, d := range a._data {
 		a._dataChallengeID[d.ChallengeID] = d
 		a._dataScoringGroupID[d.ScoringGroupID] = d

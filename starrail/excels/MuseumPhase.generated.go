@@ -55,6 +55,10 @@ func (a *MuseumPhaseAccessor) Raw() ([]MuseumPhase, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumPhaseAccessor.LoadData to preload everything
 func (a *MuseumPhaseAccessor) GroupData() {
+	a._dataMuseumPhaseID = map[float64]MuseumPhase{}
+	a._dataPhaseIconPath = map[string]MuseumPhase{}
+	a._dataPhaseQuestID = map[float64]MuseumPhase{}
+	a._dataRenewPointCost = map[float64]MuseumPhase{}
 	for _, d := range a._data {
 		a._dataMuseumPhaseID[d.MuseumPhaseID] = d
 		a._dataPhaseIconPath[d.PhaseIconPath] = d

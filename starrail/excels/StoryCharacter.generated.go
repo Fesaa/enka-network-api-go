@@ -47,6 +47,7 @@ func (a *StoryCharacterAccessor) Raw() ([]StoryCharacter, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StoryCharacterAccessor.LoadData to preload everything
 func (a *StoryCharacterAccessor) GroupData() {
+	a._dataStoryCharacterID = map[string]StoryCharacter{}
 	for _, d := range a._data {
 		a._dataStoryCharacterID[d.StoryCharacterID] = d
 	}

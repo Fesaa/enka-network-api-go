@@ -44,6 +44,7 @@ func (a *DifficultyAdjustmentStageAccessor) Raw() ([]DifficultyAdjustmentStage, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DifficultyAdjustmentStageAccessor.LoadData to preload everything
 func (a *DifficultyAdjustmentStageAccessor) GroupData() {
+	a._dataID = map[float64]DifficultyAdjustmentStage{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

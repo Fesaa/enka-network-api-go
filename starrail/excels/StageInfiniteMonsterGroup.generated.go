@@ -45,6 +45,7 @@ func (a *StageInfiniteMonsterGroupAccessor) Raw() ([]StageInfiniteMonsterGroup, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StageInfiniteMonsterGroupAccessor.LoadData to preload everything
 func (a *StageInfiniteMonsterGroupAccessor) GroupData() {
+	a._dataInfiniteMonsterGroupID = map[float64]StageInfiniteMonsterGroup{}
 	for _, d := range a._data {
 		a._dataInfiniteMonsterGroupID[d.InfiniteMonsterGroupID] = d
 	}

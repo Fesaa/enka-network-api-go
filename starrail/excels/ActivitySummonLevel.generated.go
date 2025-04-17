@@ -52,6 +52,7 @@ func (a *ActivitySummonLevelAccessor) Raw() ([]ActivitySummonLevel, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivitySummonLevelAccessor.LoadData to preload everything
 func (a *ActivitySummonLevelAccessor) GroupData() {
+	a._dataEventID = map[float64]ActivitySummonLevel{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 	}

@@ -48,6 +48,7 @@ func (a *ClockParkBuffAccessor) Raw() ([]ClockParkBuff, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkBuffAccessor.LoadData to preload everything
 func (a *ClockParkBuffAccessor) GroupData() {
+	a._dataBuffID = map[float64]ClockParkBuff{}
 	for _, d := range a._data {
 		a._dataBuffID[d.BuffID] = d
 	}

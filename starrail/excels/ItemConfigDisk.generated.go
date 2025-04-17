@@ -60,6 +60,7 @@ func (a *ItemConfigDiskAccessor) Raw() ([]ItemConfigDisk, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemConfigDiskAccessor.LoadData to preload everything
 func (a *ItemConfigDiskAccessor) GroupData() {
+	a._dataID = map[float64]ItemConfigDisk{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

@@ -45,6 +45,8 @@ func (a *AetherDivideMaxSpiritLevelAccessor) Raw() ([]AetherDivideMaxSpiritLevel
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideMaxSpiritLevelAccessor.LoadData to preload everything
 func (a *AetherDivideMaxSpiritLevelAccessor) GroupData() {
+	a._dataMaxSpiritLevel = map[float64]AetherDivideMaxSpiritLevel{}
+	a._dataUnlockID = map[float64]AetherDivideMaxSpiritLevel{}
 	for _, d := range a._data {
 		a._dataMaxSpiritLevel[d.MaxSpiritLevel] = d
 		a._dataUnlockID[d.UnlockID] = d

@@ -48,6 +48,7 @@ func (a *StarFightStageConfigAccessor) Raw() ([]StarFightStageConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StarFightStageConfigAccessor.LoadData to preload everything
 func (a *StarFightStageConfigAccessor) GroupData() {
+	a._dataEventID = map[float64]StarFightStageConfig{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 	}

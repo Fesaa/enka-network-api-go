@@ -46,6 +46,7 @@ func (a *ToastManagerAccessor) Raw() ([]ToastManager, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ToastManagerAccessor.LoadData to preload everything
 func (a *ToastManagerAccessor) GroupData() {
+	a._dataFuncName = map[string]ToastManager{}
 	for _, d := range a._data {
 		a._dataFuncName[d.FuncName] = d
 	}

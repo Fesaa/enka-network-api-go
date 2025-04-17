@@ -49,6 +49,9 @@ func (a *BookSeriesWorldAccessor) Raw() ([]BookSeriesWorld, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BookSeriesWorldAccessor.LoadData to preload everything
 func (a *BookSeriesWorldAccessor) GroupData() {
+	a._dataBookSeriesWorld = map[float64]BookSeriesWorld{}
+	a._dataBookSeriesWorldBackgroundPath = map[string]BookSeriesWorld{}
+	a._dataBookSeriesWorldIconPath = map[string]BookSeriesWorld{}
 	for _, d := range a._data {
 		a._dataBookSeriesWorld[d.BookSeriesWorld] = d
 		a._dataBookSeriesWorldBackgroundPath[d.BookSeriesWorldBackgroundPath] = d

@@ -46,6 +46,7 @@ func (a *ActivityBonusRewardPunkLordAccessor) Raw() ([]ActivityBonusRewardPunkLo
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityBonusRewardPunkLordAccessor.LoadData to preload everything
 func (a *ActivityBonusRewardPunkLordAccessor) GroupData() {
+	a._dataBonusID = map[float64]ActivityBonusRewardPunkLord{}
 	for _, d := range a._data {
 		a._dataBonusID[d.BonusID] = d
 	}

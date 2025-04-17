@@ -47,6 +47,8 @@ func (a *MarbleSealTalkAccessor) Raw() ([]MarbleSealTalk, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarbleSealTalkAccessor.LoadData to preload everything
 func (a *MarbleSealTalkAccessor) GroupData() {
+	a._dataID = map[float64]MarbleSealTalk{}
+	a._dataVoiceEvt = map[string]MarbleSealTalk{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataVoiceEvt[d.VoiceEvt] = d

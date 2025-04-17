@@ -50,6 +50,7 @@ func (a *BattlePassConstValueAccessor) Raw() ([]BattlePassConstValue, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BattlePassConstValueAccessor.LoadData to preload everything
 func (a *BattlePassConstValueAccessor) GroupData() {
+	a._dataConstValueName = map[string]BattlePassConstValue{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

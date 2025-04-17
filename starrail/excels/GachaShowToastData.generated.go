@@ -51,6 +51,11 @@ func (a *GachaShowToastDataAccessor) Raw() ([]GachaShowToastData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GachaShowToastDataAccessor.LoadData to preload everything
 func (a *GachaShowToastDataAccessor) GroupData() {
+	a._dataGachaID = map[float64]GachaShowToastData{}
+	a._dataLoopBGMState = map[string]GachaShowToastData{}
+	a._dataLoopBGMandUIOpenTime = map[float64]GachaShowToastData{}
+	a._dataLoopVideoID = map[float64]GachaShowToastData{}
+	a._dataShowVideoID = map[float64]GachaShowToastData{}
 	for _, d := range a._data {
 		a._dataGachaID[d.GachaID] = d
 		a._dataLoopBGMState[d.LoopBGMState] = d

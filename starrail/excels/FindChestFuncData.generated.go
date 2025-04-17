@@ -54,6 +54,9 @@ func (a *FindChestFuncDataAccessor) Raw() ([]FindChestFuncData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FindChestFuncDataAccessor.LoadData to preload everything
 func (a *FindChestFuncDataAccessor) GroupData() {
+	a._dataFuncID = map[float64]FindChestFuncData{}
+	a._dataMappingInfoID = map[float64]FindChestFuncData{}
+	a._dataSpecialMappinginfo = map[float64]FindChestFuncData{}
 	for _, d := range a._data {
 		a._dataFuncID[d.FuncID] = d
 		a._dataMappingInfoID[d.MappingInfoID] = d

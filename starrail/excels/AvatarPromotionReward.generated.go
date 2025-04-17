@@ -44,6 +44,7 @@ func (a *AvatarPromotionRewardAccessor) Raw() ([]AvatarPromotionReward, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarPromotionRewardAccessor.LoadData to preload everything
 func (a *AvatarPromotionRewardAccessor) GroupData() {
+	a._dataPromotion = map[float64]AvatarPromotionReward{}
 	for _, d := range a._data {
 		a._dataPromotion[d.Promotion] = d
 	}

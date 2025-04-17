@@ -46,6 +46,7 @@ func (a *MessageGroupConfigAccessor) Raw() ([]MessageGroupConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MessageGroupConfigAccessor.LoadData to preload everything
 func (a *MessageGroupConfigAccessor) GroupData() {
+	a._dataID = map[float64]MessageGroupConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

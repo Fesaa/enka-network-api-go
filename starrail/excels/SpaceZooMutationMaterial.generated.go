@@ -48,6 +48,7 @@ func (a *SpaceZooMutationMaterialAccessor) Raw() ([]SpaceZooMutationMaterial, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpaceZooMutationMaterialAccessor.LoadData to preload everything
 func (a *SpaceZooMutationMaterialAccessor) GroupData() {
+	a._dataItemID = map[float64]SpaceZooMutationMaterial{}
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
 	}

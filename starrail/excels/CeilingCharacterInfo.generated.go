@@ -45,6 +45,7 @@ func (a *CeilingCharacterInfoAccessor) Raw() ([]CeilingCharacterInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with CeilingCharacterInfoAccessor.LoadData to preload everything
 func (a *CeilingCharacterInfoAccessor) GroupData() {
+	a._dataCharacterID = map[float64]CeilingCharacterInfo{}
 	for _, d := range a._data {
 		a._dataCharacterID[d.CharacterID] = d
 	}

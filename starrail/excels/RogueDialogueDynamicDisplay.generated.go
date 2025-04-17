@@ -45,6 +45,7 @@ func (a *RogueDialogueDynamicDisplayAccessor) Raw() ([]RogueDialogueDynamicDispl
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDialogueDynamicDisplayAccessor.LoadData to preload everything
 func (a *RogueDialogueDynamicDisplayAccessor) GroupData() {
+	a._dataDisplayID = map[float64]RogueDialogueDynamicDisplay{}
 	for _, d := range a._data {
 		a._dataDisplayID[d.DisplayID] = d
 	}

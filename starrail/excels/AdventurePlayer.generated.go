@@ -54,6 +54,11 @@ func (a *AdventurePlayerAccessor) Raw() ([]AdventurePlayer, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AdventurePlayerAccessor.LoadData to preload everything
 func (a *AdventurePlayerAccessor) GroupData() {
+	a._dataAvatarID = map[float64]AdventurePlayer{}
+	a._dataDefaultAvatarHeadIconPath = map[string]AdventurePlayer{}
+	a._dataID = map[float64]AdventurePlayer{}
+	a._dataPlayerJsonPath = map[string]AdventurePlayer{}
+	a._dataPlayerPrefabPath = map[string]AdventurePlayer{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 		a._dataDefaultAvatarHeadIconPath[d.DefaultAvatarHeadIconPath] = d

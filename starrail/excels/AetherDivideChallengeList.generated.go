@@ -58,6 +58,8 @@ func (a *AetherDivideChallengeListAccessor) Raw() ([]AetherDivideChallengeList, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideChallengeListAccessor.LoadData to preload everything
 func (a *AetherDivideChallengeListAccessor) GroupData() {
+	a._dataEventID = map[float64]AetherDivideChallengeList{}
+	a._dataID = map[float64]AetherDivideChallengeList{}
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
 		a._dataID[d.ID] = d

@@ -45,6 +45,8 @@ func (a *AudioBookDataAccessor) Raw() ([]AudioBookData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AudioBookDataAccessor.LoadData to preload everything
 func (a *AudioBookDataAccessor) GroupData() {
+	a._dataAudioEvent = map[string]AudioBookData{}
+	a._dataBookID = map[float64]AudioBookData{}
 	for _, d := range a._data {
 		a._dataAudioEvent[d.AudioEvent] = d
 		a._dataBookID[d.BookID] = d

@@ -51,6 +51,9 @@ func (a *BelobogShopUIConfigAccessor) Raw() ([]BelobogShopUIConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BelobogShopUIConfigAccessor.LoadData to preload everything
 func (a *BelobogShopUIConfigAccessor) GroupData() {
+	a._dataID = map[float64]BelobogShopUIConfig{}
+	a._dataIconPath = map[string]BelobogShopUIConfig{}
+	a._dataImgPath = map[string]BelobogShopUIConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d

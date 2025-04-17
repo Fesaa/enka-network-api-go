@@ -47,6 +47,7 @@ func (a *StroyLineTrialAvatarDataAccessor) Raw() ([]StroyLineTrialAvatarData, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StroyLineTrialAvatarDataAccessor.LoadData to preload everything
 func (a *StroyLineTrialAvatarDataAccessor) GroupData() {
+	a._dataStoryLineID = map[float64]StroyLineTrialAvatarData{}
 	for _, d := range a._data {
 		a._dataStoryLineID[d.StoryLineID] = d
 	}

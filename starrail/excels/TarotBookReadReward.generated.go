@@ -47,6 +47,9 @@ func (a *TarotBookReadRewardAccessor) Raw() ([]TarotBookReadReward, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TarotBookReadRewardAccessor.LoadData to preload everything
 func (a *TarotBookReadRewardAccessor) GroupData() {
+	a._dataID = map[float64]TarotBookReadReward{}
+	a._dataNumber = map[float64]TarotBookReadReward{}
+	a._dataQuest = map[float64]TarotBookReadReward{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataNumber[d.Number] = d

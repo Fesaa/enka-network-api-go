@@ -47,6 +47,7 @@ func (a *AetherDivideMonsterAccessor) Raw() ([]AetherDivideMonster, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideMonsterAccessor.LoadData to preload everything
 func (a *AetherDivideMonsterAccessor) GroupData() {
+	a._dataMonsterID = map[float64]AetherDivideMonster{}
 	for _, d := range a._data {
 		a._dataMonsterID[d.MonsterID] = d
 	}

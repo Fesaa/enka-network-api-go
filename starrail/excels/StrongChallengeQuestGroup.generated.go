@@ -45,6 +45,7 @@ func (a *StrongChallengeQuestGroupAccessor) Raw() ([]StrongChallengeQuestGroup, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StrongChallengeQuestGroupAccessor.LoadData to preload everything
 func (a *StrongChallengeQuestGroupAccessor) GroupData() {
+	a._dataQuestGroupID = map[float64]StrongChallengeQuestGroup{}
 	for _, d := range a._data {
 		a._dataQuestGroupID[d.QuestGroupID] = d
 	}

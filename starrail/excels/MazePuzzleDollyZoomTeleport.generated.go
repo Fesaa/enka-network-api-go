@@ -53,6 +53,7 @@ func (a *MazePuzzleDollyZoomTeleportAccessor) Raw() ([]MazePuzzleDollyZoomTelepo
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazePuzzleDollyZoomTeleportAccessor.LoadData to preload everything
 func (a *MazePuzzleDollyZoomTeleportAccessor) GroupData() {
+	a._dataID = map[float64]MazePuzzleDollyZoomTeleport{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

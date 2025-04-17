@@ -44,6 +44,7 @@ func (a *RogueMonsterEliteDropItemAccessor) Raw() ([]RogueMonsterEliteDropItem, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMonsterEliteDropItemAccessor.LoadData to preload everything
 func (a *RogueMonsterEliteDropItemAccessor) GroupData() {
+	a._dataMonsterEliteDropItemID = map[float64]RogueMonsterEliteDropItem{}
 	for _, d := range a._data {
 		a._dataMonsterEliteDropItemID[d.MonsterEliteDropItemID] = d
 	}

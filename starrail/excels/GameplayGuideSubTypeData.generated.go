@@ -48,6 +48,8 @@ func (a *GameplayGuideSubTypeDataAccessor) Raw() ([]GameplayGuideSubTypeData, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GameplayGuideSubTypeDataAccessor.LoadData to preload everything
 func (a *GameplayGuideSubTypeDataAccessor) GroupData() {
+	a._dataSubTypeID = map[float64]GameplayGuideSubTypeData{}
+	a._dataTabIconPath = map[string]GameplayGuideSubTypeData{}
 	for _, d := range a._data {
 		a._dataSubTypeID[d.SubTypeID] = d
 		a._dataTabIconPath[d.TabIconPath] = d

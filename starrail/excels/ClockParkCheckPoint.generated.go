@@ -51,6 +51,7 @@ func (a *ClockParkCheckPointAccessor) Raw() ([]ClockParkCheckPoint, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkCheckPointAccessor.LoadData to preload everything
 func (a *ClockParkCheckPointAccessor) GroupData() {
+	a._dataCheckPointID = map[float64]ClockParkCheckPoint{}
 	for _, d := range a._data {
 		a._dataCheckPointID[d.CheckPointID] = d
 	}

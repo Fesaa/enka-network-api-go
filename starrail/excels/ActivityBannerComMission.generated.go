@@ -55,6 +55,8 @@ func (a *ActivityBannerComMissionAccessor) Raw() ([]ActivityBannerComMission, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityBannerComMissionAccessor.LoadData to preload everything
 func (a *ActivityBannerComMissionAccessor) GroupData() {
+	a._dataBannerID = map[float64]ActivityBannerComMission{}
+	a._dataMainImagePath = map[string]ActivityBannerComMission{}
 	for _, d := range a._data {
 		a._dataBannerID[d.BannerID] = d
 		a._dataMainImagePath[d.MainImagePath] = d

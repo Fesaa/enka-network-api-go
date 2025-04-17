@@ -50,6 +50,7 @@ func (a *InControlActionMapAccessor) Raw() ([]InControlActionMap, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with InControlActionMapAccessor.LoadData to preload everything
 func (a *InControlActionMapAccessor) GroupData() {
+	a._dataActionName = map[string]InControlActionMap{}
 	for _, d := range a._data {
 		a._dataActionName[d.ActionName] = d
 	}

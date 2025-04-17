@@ -48,6 +48,8 @@ func (a *PlanetFesCardThemeAccessor) Raw() ([]PlanetFesCardTheme, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesCardThemeAccessor.LoadData to preload everything
 func (a *PlanetFesCardThemeAccessor) GroupData() {
+	a._dataIconPath = map[string]PlanetFesCardTheme{}
+	a._dataThemeID = map[float64]PlanetFesCardTheme{}
 	for _, d := range a._data {
 		a._dataIconPath[d.IconPath] = d
 		a._dataThemeID[d.ThemeID] = d

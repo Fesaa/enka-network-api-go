@@ -49,6 +49,7 @@ func (a *SpecialAvatarRelicAccessor) Raw() ([]SpecialAvatarRelic, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpecialAvatarRelicAccessor.LoadData to preload everything
 func (a *SpecialAvatarRelicAccessor) GroupData() {
+	a._dataRelicPropertyType = map[float64]SpecialAvatarRelic{}
 	for _, d := range a._data {
 		a._dataRelicPropertyType[d.RelicPropertyType] = d
 	}

@@ -55,6 +55,8 @@ func (a *AlleyOrderAccessor) Raw() ([]AlleyOrder, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyOrderAccessor.LoadData to preload everything
 func (a *AlleyOrderAccessor) GroupData() {
+	a._dataOrderID = map[float64]AlleyOrder{}
+	a._dataOrderTips = map[string]AlleyOrder{}
 	for _, d := range a._data {
 		a._dataOrderID[d.OrderID] = d
 		a._dataOrderTips[d.OrderTips] = d

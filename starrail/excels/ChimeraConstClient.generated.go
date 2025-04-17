@@ -52,6 +52,7 @@ func (a *ChimeraConstClientAccessor) Raw() ([]ChimeraConstClient, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraConstClientAccessor.LoadData to preload everything
 func (a *ChimeraConstClientAccessor) GroupData() {
+	a._dataConstValueName = map[string]ChimeraConstClient{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

@@ -58,6 +58,7 @@ func (a *LoadingFuncConfigAccessor) Raw() ([]LoadingFuncConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with LoadingFuncConfigAccessor.LoadData to preload everything
 func (a *LoadingFuncConfigAccessor) GroupData() {
+	a._dataLoadingFuncID = map[float64]LoadingFuncConfig{}
 	for _, d := range a._data {
 		a._dataLoadingFuncID[d.LoadingFuncID] = d
 	}

@@ -46,6 +46,7 @@ func (a *PlanetFesSkillTreePhaseAccessor) Raw() ([]PlanetFesSkillTreePhase, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesSkillTreePhaseAccessor.LoadData to preload everything
 func (a *PlanetFesSkillTreePhaseAccessor) GroupData() {
+	a._dataPhase = map[float64]PlanetFesSkillTreePhase{}
 	for _, d := range a._data {
 		a._dataPhase[d.Phase] = d
 	}

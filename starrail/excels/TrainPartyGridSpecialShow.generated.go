@@ -45,6 +45,8 @@ func (a *TrainPartyGridSpecialShowAccessor) Raw() ([]TrainPartyGridSpecialShow, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TrainPartyGridSpecialShowAccessor.LoadData to preload everything
 func (a *TrainPartyGridSpecialShowAccessor) GroupData() {
+	a._dataGridID = map[float64]TrainPartyGridSpecialShow{}
+	a._dataGridSpecialShowImagePath = map[string]TrainPartyGridSpecialShow{}
 	for _, d := range a._data {
 		a._dataGridID[d.GridID] = d
 		a._dataGridSpecialShowImagePath[d.GridSpecialShowImagePath] = d

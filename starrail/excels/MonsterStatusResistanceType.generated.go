@@ -45,6 +45,8 @@ func (a *MonsterStatusResistanceTypeAccessor) Raw() ([]MonsterStatusResistanceTy
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonsterStatusResistanceTypeAccessor.LoadData to preload everything
 func (a *MonsterStatusResistanceTypeAccessor) GroupData() {
+	a._dataIcon = map[string]MonsterStatusResistanceType{}
+	a._dataType = map[string]MonsterStatusResistanceType{}
 	for _, d := range a._data {
 		a._dataIcon[d.Icon] = d
 		a._dataType[d.Type] = d

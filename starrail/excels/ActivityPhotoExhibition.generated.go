@@ -50,6 +50,7 @@ func (a *ActivityPhotoExhibitionAccessor) Raw() ([]ActivityPhotoExhibition, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityPhotoExhibitionAccessor.LoadData to preload everything
 func (a *ActivityPhotoExhibitionAccessor) GroupData() {
+	a._dataGroupID = map[float64]ActivityPhotoExhibition{}
 	for _, d := range a._data {
 		a._dataGroupID[d.GroupID] = d
 	}

@@ -51,6 +51,10 @@ func (a *PlanetFesLandTypeAccessor) Raw() ([]PlanetFesLandType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesLandTypeAccessor.LoadData to preload everything
 func (a *PlanetFesLandTypeAccessor) GroupData() {
+	a._dataBigBuffIconPath = map[string]PlanetFesLandType{}
+	a._dataIconPath = map[string]PlanetFesLandType{}
+	a._dataSmallBuffIconPath = map[string]PlanetFesLandType{}
+	a._dataType = map[string]PlanetFesLandType{}
 	for _, d := range a._data {
 		a._dataBigBuffIconPath[d.BigBuffIconPath] = d
 		a._dataIconPath[d.IconPath] = d

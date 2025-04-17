@@ -45,6 +45,7 @@ func (a *RogueTournModuleAccessor) Raw() ([]RogueTournModule, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournModuleAccessor.LoadData to preload everything
 func (a *RogueTournModuleAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]RogueTournModule{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 	}

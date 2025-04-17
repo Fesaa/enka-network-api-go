@@ -51,6 +51,7 @@ func (a *MazePlaneAccessor) Raw() ([]MazePlane, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazePlaneAccessor.LoadData to preload everything
 func (a *MazePlaneAccessor) GroupData() {
+	a._dataPlaneID = map[float64]MazePlane{}
 	for _, d := range a._data {
 		a._dataPlaneID[d.PlaneID] = d
 	}

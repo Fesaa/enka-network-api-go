@@ -46,6 +46,7 @@ func (a *OpenURLWebViewRuleAccessor) Raw() ([]OpenURLWebViewRule, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with OpenURLWebViewRuleAccessor.LoadData to preload everything
 func (a *OpenURLWebViewRuleAccessor) GroupData() {
+	a._dataRuleID = map[float64]OpenURLWebViewRule{}
 	for _, d := range a._data {
 		a._dataRuleID[d.RuleID] = d
 	}

@@ -45,6 +45,7 @@ func (a *BoxingBreakBuffSelectConfigAccessor) Raw() ([]BoxingBreakBuffSelectConf
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with BoxingBreakBuffSelectConfigAccessor.LoadData to preload everything
 func (a *BoxingBreakBuffSelectConfigAccessor) GroupData() {
+	a._dataBoxingClubBuffID = map[float64]BoxingBreakBuffSelectConfig{}
 	for _, d := range a._data {
 		a._dataBoxingClubBuffID[d.BoxingClubBuffID] = d
 	}

@@ -54,6 +54,11 @@ func (a *EvolveGearTypeConfigAccessor) Raw() ([]EvolveGearTypeConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveGearTypeConfigAccessor.LoadData to preload everything
 func (a *EvolveGearTypeConfigAccessor) GroupData() {
+	a._dataFontColor = map[string]EvolveGearTypeConfig{}
+	a._dataMixDetailPropsInfoBg = map[string]EvolveGearTypeConfig{}
+	a._dataName = map[string]EvolveGearTypeConfig{}
+	a._dataTypeImgColor = map[string]EvolveGearTypeConfig{}
+	a._dataWeaponToastEffectBg = map[string]EvolveGearTypeConfig{}
 	for _, d := range a._data {
 		a._dataFontColor[d.FontColor] = d
 		a._dataMixDetailPropsInfoBg[d.MixDetailPropsInfoBg] = d

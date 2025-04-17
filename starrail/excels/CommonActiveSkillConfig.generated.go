@@ -44,6 +44,7 @@ func (a *CommonActiveSkillConfigAccessor) Raw() ([]CommonActiveSkillConfig, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with CommonActiveSkillConfigAccessor.LoadData to preload everything
 func (a *CommonActiveSkillConfigAccessor) GroupData() {
+	a._dataCommonActiveSkillID = map[float64]CommonActiveSkillConfig{}
 	for _, d := range a._data {
 		a._dataCommonActiveSkillID[d.CommonActiveSkillID] = d
 	}

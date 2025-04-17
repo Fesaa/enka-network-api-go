@@ -47,6 +47,8 @@ func (a *MessageContactsTypeAccessor) Raw() ([]MessageContactsType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MessageContactsTypeAccessor.LoadData to preload everything
 func (a *MessageContactsTypeAccessor) GroupData() {
+	a._dataContactsType = map[float64]MessageContactsType{}
+	a._dataSortID = map[float64]MessageContactsType{}
 	for _, d := range a._data {
 		a._dataContactsType[d.ContactsType] = d
 		a._dataSortID[d.SortID] = d

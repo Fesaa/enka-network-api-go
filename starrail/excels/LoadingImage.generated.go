@@ -45,6 +45,8 @@ func (a *LoadingImageAccessor) Raw() ([]LoadingImage, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with LoadingImageAccessor.LoadData to preload everything
 func (a *LoadingImageAccessor) GroupData() {
+	a._dataID = map[float64]LoadingImage{}
+	a._dataImagePath = map[string]LoadingImage{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataImagePath[d.ImagePath] = d

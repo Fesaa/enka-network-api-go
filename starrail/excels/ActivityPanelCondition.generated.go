@@ -59,6 +59,7 @@ func (a *ActivityPanelConditionAccessor) Raw() ([]ActivityPanelCondition, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityPanelConditionAccessor.LoadData to preload everything
 func (a *ActivityPanelConditionAccessor) GroupData() {
+	a._dataPanelID = map[float64]ActivityPanelCondition{}
 	for _, d := range a._data {
 		a._dataPanelID[d.PanelID] = d
 	}

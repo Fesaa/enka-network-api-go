@@ -53,6 +53,10 @@ func (a *RogueTournDivisionAccessor) Raw() ([]RogueTournDivision, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournDivisionAccessor.LoadData to preload everything
 func (a *RogueTournDivisionAccessor) GroupData() {
+	a._dataDivisionIconPath = map[string]RogueTournDivision{}
+	a._dataDivisionIconPrefabPath = map[string]RogueTournDivision{}
+	a._dataDivisionLevel = map[float64]RogueTournDivision{}
+	a._dataDivisionSmallIconPath = map[string]RogueTournDivision{}
 	for _, d := range a._data {
 		a._dataDivisionIconPath[d.DivisionIconPath] = d
 		a._dataDivisionIconPrefabPath[d.DivisionIconPrefabPath] = d

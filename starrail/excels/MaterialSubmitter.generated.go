@@ -55,6 +55,10 @@ func (a *MaterialSubmitterAccessor) Raw() ([]MaterialSubmitter, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MaterialSubmitterAccessor.LoadData to preload everything
 func (a *MaterialSubmitterAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]MaterialSubmitter{}
+	a._dataID = map[float64]MaterialSubmitter{}
+	a._dataMissionID = map[float64]MaterialSubmitter{}
+	a._dataRewardID = map[float64]MaterialSubmitter{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataID[d.ID] = d

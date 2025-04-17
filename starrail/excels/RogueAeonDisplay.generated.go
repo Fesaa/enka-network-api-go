@@ -55,6 +55,11 @@ func (a *RogueAeonDisplayAccessor) Raw() ([]RogueAeonDisplay, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueAeonDisplayAccessor.LoadData to preload everything
 func (a *RogueAeonDisplayAccessor) GroupData() {
+	a._dataAeonBuffIcon = map[string]RogueAeonDisplay{}
+	a._dataAeonFigure = map[string]RogueAeonDisplay{}
+	a._dataAeonIcon = map[string]RogueAeonDisplay{}
+	a._dataAeonImage = map[string]RogueAeonDisplay{}
+	a._dataDisplayID = map[float64]RogueAeonDisplay{}
 	for _, d := range a._data {
 		a._dataAeonBuffIcon[d.AeonBuffIcon] = d
 		a._dataAeonFigure[d.AeonFigure] = d

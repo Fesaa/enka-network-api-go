@@ -46,6 +46,7 @@ func (a *ActivityFeverTimeQuestAccessor) Raw() ([]ActivityFeverTimeQuest, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityFeverTimeQuestAccessor.LoadData to preload everything
 func (a *ActivityFeverTimeQuestAccessor) GroupData() {
+	a._dataQuestGroupID = map[float64]ActivityFeverTimeQuest{}
 	for _, d := range a._data {
 		a._dataQuestGroupID[d.QuestGroupID] = d
 	}

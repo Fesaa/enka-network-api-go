@@ -60,6 +60,12 @@ func (a *TarotBookCharacterAccessor) Raw() ([]TarotBookCharacter, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TarotBookCharacterAccessor.LoadData to preload everything
 func (a *TarotBookCharacterAccessor) GroupData() {
+	a._dataID = map[float64]TarotBookCharacter{}
+	a._dataPosition = map[float64]TarotBookCharacter{}
+	a._dataPrefabPath = map[string]TarotBookCharacter{}
+	a._dataRectIconPath = map[string]TarotBookCharacter{}
+	a._dataRoundIconPath = map[string]TarotBookCharacter{}
+	a._dataTabIconPath = map[string]TarotBookCharacter{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataPosition[d.Position] = d

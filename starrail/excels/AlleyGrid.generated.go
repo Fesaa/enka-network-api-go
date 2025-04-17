@@ -51,6 +51,7 @@ func (a *AlleyGridAccessor) Raw() ([]AlleyGrid, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyGridAccessor.LoadData to preload everything
 func (a *AlleyGridAccessor) GroupData() {
+	a._dataGridID = map[float64]AlleyGrid{}
 	for _, d := range a._data {
 		a._dataGridID[d.GridID] = d
 	}

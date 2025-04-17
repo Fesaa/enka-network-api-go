@@ -48,6 +48,7 @@ func (a *HeliobusActivityQuestAccessor) Raw() ([]HeliobusActivityQuest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeliobusActivityQuestAccessor.LoadData to preload everything
 func (a *HeliobusActivityQuestAccessor) GroupData() {
+	a._dataQuestTabID = map[float64]HeliobusActivityQuest{}
 	for _, d := range a._data {
 		a._dataQuestTabID[d.QuestTabID] = d
 	}

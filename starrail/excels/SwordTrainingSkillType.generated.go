@@ -49,6 +49,9 @@ func (a *SwordTrainingSkillTypeAccessor) Raw() ([]SwordTrainingSkillType, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SwordTrainingSkillTypeAccessor.LoadData to preload everything
 func (a *SwordTrainingSkillTypeAccessor) GroupData() {
+	a._dataSkillTypeID = map[float64]SwordTrainingSkillType{}
+	a._dataSkillTypeIcon = map[string]SwordTrainingSkillType{}
+	a._dataStatusID = map[float64]SwordTrainingSkillType{}
 	for _, d := range a._data {
 		a._dataSkillTypeID[d.SkillTypeID] = d
 		a._dataSkillTypeIcon[d.SkillTypeIcon] = d

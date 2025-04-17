@@ -46,6 +46,8 @@ func (a *RaidPerformanceAccessor) Raw() ([]RaidPerformance, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RaidPerformanceAccessor.LoadData to preload everything
 func (a *RaidPerformanceAccessor) GroupData() {
+	a._dataPerformanceID = map[float64]RaidPerformance{}
+	a._dataRaidID = map[float64]RaidPerformance{}
 	for _, d := range a._data {
 		a._dataPerformanceID[d.PerformanceID] = d
 		a._dataRaidID[d.RaidID] = d

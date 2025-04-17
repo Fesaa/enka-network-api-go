@@ -48,6 +48,9 @@ func (a *WorldLevelStageUnlockConfigAccessor) Raw() ([]WorldLevelStageUnlockConf
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with WorldLevelStageUnlockConfigAccessor.LoadData to preload everything
 func (a *WorldLevelStageUnlockConfigAccessor) GroupData() {
+	a._dataRaidID = map[float64]WorldLevelStageUnlockConfig{}
+	a._dataUIEntranceBgPath = map[string]WorldLevelStageUnlockConfig{}
+	a._dataUIEnviromentParam = map[float64]WorldLevelStageUnlockConfig{}
 	for _, d := range a._data {
 		a._dataRaidID[d.RaidID] = d
 		a._dataUIEntranceBgPath[d.UIEntranceBgPath] = d

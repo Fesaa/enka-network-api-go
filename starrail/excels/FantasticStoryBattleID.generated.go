@@ -71,6 +71,10 @@ func (a *FantasticStoryBattleIDAccessor) Raw() ([]FantasticStoryBattleID, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FantasticStoryBattleIDAccessor.LoadData to preload everything
 func (a *FantasticStoryBattleIDAccessor) GroupData() {
+	a._dataBattleID = map[float64]FantasticStoryBattleID{}
+	a._dataEventID = map[float64]FantasticStoryBattleID{}
+	a._dataFigurePath = map[string]FantasticStoryBattleID{}
+	a._dataFinishQuest = map[float64]FantasticStoryBattleID{}
 	for _, d := range a._data {
 		a._dataBattleID[d.BattleID] = d
 		a._dataEventID[d.EventID] = d

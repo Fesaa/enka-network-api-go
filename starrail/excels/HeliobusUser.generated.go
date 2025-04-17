@@ -47,6 +47,8 @@ func (a *HeliobusUserAccessor) Raw() ([]HeliobusUser, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeliobusUserAccessor.LoadData to preload everything
 func (a *HeliobusUserAccessor) GroupData() {
+	a._dataHeliobusUserID = map[float64]HeliobusUser{}
+	a._dataUserIconPath = map[string]HeliobusUser{}
 	for _, d := range a._data {
 		a._dataHeliobusUserID[d.HeliobusUserID] = d
 		a._dataUserIconPath[d.UserIconPath] = d

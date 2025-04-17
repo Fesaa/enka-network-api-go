@@ -45,6 +45,7 @@ func (a *RogueTournKeywordParamAccessor) Raw() ([]RogueTournKeywordParam, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournKeywordParamAccessor.LoadData to preload everything
 func (a *RogueTournKeywordParamAccessor) GroupData() {
+	a._dataKeywordID = map[float64]RogueTournKeywordParam{}
 	for _, d := range a._data {
 		a._dataKeywordID[d.KeywordID] = d
 	}

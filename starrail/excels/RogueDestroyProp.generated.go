@@ -46,6 +46,7 @@ func (a *RogueDestroyPropAccessor) Raw() ([]RogueDestroyProp, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDestroyPropAccessor.LoadData to preload everything
 func (a *RogueDestroyPropAccessor) GroupData() {
+	a._dataParamGroupID = map[float64]RogueDestroyProp{}
 	for _, d := range a._data {
 		a._dataParamGroupID[d.ParamGroupID] = d
 	}

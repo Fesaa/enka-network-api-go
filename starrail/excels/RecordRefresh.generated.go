@@ -45,6 +45,7 @@ func (a *RecordRefreshAccessor) Raw() ([]RecordRefresh, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RecordRefreshAccessor.LoadData to preload everything
 func (a *RecordRefreshAccessor) GroupData() {
+	a._dataRefreshID = map[float64]RecordRefresh{}
 	for _, d := range a._data {
 		a._dataRefreshID[d.RefreshID] = d
 	}

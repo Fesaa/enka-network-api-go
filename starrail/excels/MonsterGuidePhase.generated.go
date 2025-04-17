@@ -50,6 +50,7 @@ func (a *MonsterGuidePhaseAccessor) Raw() ([]MonsterGuidePhase, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonsterGuidePhaseAccessor.LoadData to preload everything
 func (a *MonsterGuidePhaseAccessor) GroupData() {
+	a._dataPhaseID = map[float64]MonsterGuidePhase{}
 	for _, d := range a._data {
 		a._dataPhaseID[d.PhaseID] = d
 	}

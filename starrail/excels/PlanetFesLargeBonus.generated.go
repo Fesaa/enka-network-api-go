@@ -56,6 +56,8 @@ func (a *PlanetFesLargeBonusAccessor) Raw() ([]PlanetFesLargeBonus, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlanetFesLargeBonusAccessor.LoadData to preload everything
 func (a *PlanetFesLargeBonusAccessor) GroupData() {
+	a._dataActivityRewardID = map[float64]PlanetFesLargeBonus{}
+	a._dataID = map[float64]PlanetFesLargeBonus{}
 	for _, d := range a._data {
 		a._dataActivityRewardID[d.ActivityRewardID] = d
 		a._dataID[d.ID] = d

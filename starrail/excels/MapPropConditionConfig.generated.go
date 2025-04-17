@@ -55,6 +55,9 @@ func (a *MapPropConditionConfigAccessor) Raw() ([]MapPropConditionConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MapPropConditionConfigAccessor.LoadData to preload everything
 func (a *MapPropConditionConfigAccessor) GroupData() {
+	a._dataActivityModuleID = map[float64]MapPropConditionConfig{}
+	a._dataID = map[float64]MapPropConditionConfig{}
+	a._dataMappingInfoID = map[float64]MapPropConditionConfig{}
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataID[d.ID] = d

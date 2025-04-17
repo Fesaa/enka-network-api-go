@@ -47,6 +47,7 @@ func (a *RogueDLCAeonCrossAccessor) Raw() ([]RogueDLCAeonCross, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCAeonCrossAccessor.LoadData to preload everything
 func (a *RogueDLCAeonCrossAccessor) GroupData() {
+	a._dataBuffGroup = map[float64]RogueDLCAeonCross{}
 	for _, d := range a._data {
 		a._dataBuffGroup[d.BuffGroup] = d
 	}

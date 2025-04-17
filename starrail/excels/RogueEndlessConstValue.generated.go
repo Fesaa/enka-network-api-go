@@ -45,6 +45,7 @@ func (a *RogueEndlessConstValueAccessor) Raw() ([]RogueEndlessConstValue, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueEndlessConstValueAccessor.LoadData to preload everything
 func (a *RogueEndlessConstValueAccessor) GroupData() {
+	a._dataConstValueName = map[string]RogueEndlessConstValue{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

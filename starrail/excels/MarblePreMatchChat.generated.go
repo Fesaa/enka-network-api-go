@@ -46,6 +46,8 @@ func (a *MarblePreMatchChatAccessor) Raw() ([]MarblePreMatchChat, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarblePreMatchChatAccessor.LoadData to preload everything
 func (a *MarblePreMatchChatAccessor) GroupData() {
+	a._dataMatchID = map[float64]MarblePreMatchChat{}
+	a._dataSealID = map[float64]MarblePreMatchChat{}
 	for _, d := range a._data {
 		a._dataMatchID[d.MatchID] = d
 		a._dataSealID[d.SealID] = d

@@ -48,6 +48,7 @@ func (a *MatchThreeTemplateApplyRuleAccessor) Raw() ([]MatchThreeTemplateApplyRu
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeTemplateApplyRuleAccessor.LoadData to preload everything
 func (a *MatchThreeTemplateApplyRuleAccessor) GroupData() {
+	a._dataID = map[float64]MatchThreeTemplateApplyRule{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

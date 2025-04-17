@@ -47,6 +47,9 @@ func (a *AlleyShipAccessor) Raw() ([]AlleyShip, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyShipAccessor.LoadData to preload everything
 func (a *AlleyShipAccessor) GroupData() {
+	a._dataShipConfig = map[string]AlleyShip{}
+	a._dataShipID = map[float64]AlleyShip{}
+	a._dataShipType = map[string]AlleyShip{}
 	for _, d := range a._data {
 		a._dataShipConfig[d.ShipConfig] = d
 		a._dataShipID[d.ShipID] = d

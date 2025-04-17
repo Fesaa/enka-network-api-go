@@ -47,6 +47,9 @@ func (a *AvatarDetailTabConfigAccessor) Raw() ([]AvatarDetailTabConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarDetailTabConfigAccessor.LoadData to preload everything
 func (a *AvatarDetailTabConfigAccessor) GroupData() {
+	a._dataID = map[float64]AvatarDetailTabConfig{}
+	a._dataIconPath = map[string]AvatarDetailTabConfig{}
+	a._dataTabName = map[string]AvatarDetailTabConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d

@@ -51,6 +51,7 @@ func (a *SwordTrainingPowerRankAccessor) Raw() ([]SwordTrainingPowerRank, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SwordTrainingPowerRankAccessor.LoadData to preload everything
 func (a *SwordTrainingPowerRankAccessor) GroupData() {
+	a._dataRankID = map[float64]SwordTrainingPowerRank{}
 	for _, d := range a._data {
 		a._dataRankID[d.RankID] = d
 	}

@@ -45,6 +45,8 @@ func (a *PlayerReturnConstValueAccessor) Raw() ([]PlayerReturnConstValue, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PlayerReturnConstValueAccessor.LoadData to preload everything
 func (a *PlayerReturnConstValueAccessor) GroupData() {
+	a._dataPlayerReturnConstValueName = map[string]PlayerReturnConstValue{}
+	a._dataValue = map[string]PlayerReturnConstValue{}
 	for _, d := range a._data {
 		a._dataPlayerReturnConstValueName[d.PlayerReturnConstValueName] = d
 		a._dataValue[d.Value] = d

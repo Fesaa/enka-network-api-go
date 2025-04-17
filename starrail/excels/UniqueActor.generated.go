@@ -44,6 +44,7 @@ func (a *UniqueActorAccessor) Raw() ([]UniqueActor, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with UniqueActorAccessor.LoadData to preload everything
 func (a *UniqueActorAccessor) GroupData() {
+	a._dataUniqueName = map[string]UniqueActor{}
 	for _, d := range a._data {
 		a._dataUniqueName[d.UniqueName] = d
 	}

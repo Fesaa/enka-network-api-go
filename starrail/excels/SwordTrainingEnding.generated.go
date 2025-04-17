@@ -54,6 +54,11 @@ func (a *SwordTrainingEndingAccessor) Raw() ([]SwordTrainingEnding, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SwordTrainingEndingAccessor.LoadData to preload everything
 func (a *SwordTrainingEndingAccessor) GroupData() {
+	a._dataEndingID = map[float64]SwordTrainingEnding{}
+	a._dataQuestID = map[float64]SwordTrainingEnding{}
+	a._dataStoryID = map[float64]SwordTrainingEnding{}
+	a._dataStoryImage = map[string]SwordTrainingEnding{}
+	a._dataStoryUnlockImage = map[string]SwordTrainingEnding{}
 	for _, d := range a._data {
 		a._dataEndingID[d.EndingID] = d
 		a._dataQuestID[d.QuestID] = d

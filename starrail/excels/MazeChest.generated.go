@@ -45,6 +45,7 @@ func (a *MazeChestAccessor) Raw() ([]MazeChest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazeChestAccessor.LoadData to preload everything
 func (a *MazeChestAccessor) GroupData() {
+	a._dataID = map[float64]MazeChest{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

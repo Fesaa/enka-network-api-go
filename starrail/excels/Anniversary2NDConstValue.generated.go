@@ -45,6 +45,7 @@ func (a *Anniversary2NDConstValueAccessor) Raw() ([]Anniversary2NDConstValue, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with Anniversary2NDConstValueAccessor.LoadData to preload everything
 func (a *Anniversary2NDConstValueAccessor) GroupData() {
+	a._dataConstValueName = map[string]Anniversary2NDConstValue{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

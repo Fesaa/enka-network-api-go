@@ -45,6 +45,8 @@ func (a *MessageStateIconAccessor) Raw() ([]MessageStateIcon, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MessageStateIconAccessor.LoadData to preload everything
 func (a *MessageStateIconAccessor) GroupData() {
+	a._dataID = map[string]MessageStateIcon{}
+	a._dataIconPath = map[string]MessageStateIcon{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d

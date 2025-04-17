@@ -52,6 +52,7 @@ func (a *ActivityFightGroupAccessor) Raw() ([]ActivityFightGroup, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityFightGroupAccessor.LoadData to preload everything
 func (a *ActivityFightGroupAccessor) GroupData() {
+	a._dataActivityFightGroupID = map[float64]ActivityFightGroup{}
 	for _, d := range a._data {
 		a._dataActivityFightGroupID[d.ActivityFightGroupID] = d
 	}

@@ -57,6 +57,12 @@ func (a *ReShaRouteDisplayAccessor) Raw() ([]ReShaRouteDisplay, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ReShaRouteDisplayAccessor.LoadData to preload everything
 func (a *ReShaRouteDisplayAccessor) GroupData() {
+	a._dataAssistantImagePanelPrefab = map[string]ReShaRouteDisplay{}
+	a._dataAssistantItemID = map[float64]ReShaRouteDisplay{}
+	a._dataHiddenRouteClearFloorSavedValueKey = map[string]ReShaRouteDisplay{}
+	a._dataHiddenRouteUnlockFloorSavedValueKey = map[string]ReShaRouteDisplay{}
+	a._dataID = map[float64]ReShaRouteDisplay{}
+	a._dataRoutePanelPrefab = map[string]ReShaRouteDisplay{}
 	for _, d := range a._data {
 		a._dataAssistantImagePanelPrefab[d.AssistantImagePanelPrefab] = d
 		a._dataAssistantItemID[d.AssistantItemID] = d

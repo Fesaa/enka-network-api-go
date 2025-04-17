@@ -45,6 +45,7 @@ func (a *MarbleConstValueCommonAccessor) Raw() ([]MarbleConstValueCommon, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MarbleConstValueCommonAccessor.LoadData to preload everything
 func (a *MarbleConstValueCommonAccessor) GroupData() {
+	a._dataConstValueName = map[string]MarbleConstValueCommon{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

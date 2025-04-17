@@ -51,6 +51,7 @@ func (a *EmojiConfigAccessor) Raw() ([]EmojiConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EmojiConfigAccessor.LoadData to preload everything
 func (a *EmojiConfigAccessor) GroupData() {
+	a._dataEmojiID = map[float64]EmojiConfig{}
 	for _, d := range a._data {
 		a._dataEmojiID[d.EmojiID] = d
 	}

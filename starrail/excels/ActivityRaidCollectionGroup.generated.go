@@ -50,6 +50,8 @@ func (a *ActivityRaidCollectionGroupAccessor) Raw() ([]ActivityRaidCollectionGro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityRaidCollectionGroupAccessor.LoadData to preload everything
 func (a *ActivityRaidCollectionGroupAccessor) GroupData() {
+	a._dataGroupEntrancePrefabPath = map[string]ActivityRaidCollectionGroup{}
+	a._dataRaidCollectionGroupID = map[float64]ActivityRaidCollectionGroup{}
 	for _, d := range a._data {
 		a._dataGroupEntrancePrefabPath[d.GroupEntrancePrefabPath] = d
 		a._dataRaidCollectionGroupID[d.RaidCollectionGroupID] = d

@@ -47,6 +47,7 @@ func (a *MonopolyGameResourceAccessor) Raw() ([]MonopolyGameResource, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyGameResourceAccessor.LoadData to preload everything
 func (a *MonopolyGameResourceAccessor) GroupData() {
+	a._dataResourceID = map[float64]MonopolyGameResource{}
 	for _, d := range a._data {
 		a._dataResourceID[d.ResourceID] = d
 	}

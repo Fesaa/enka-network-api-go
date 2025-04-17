@@ -45,6 +45,8 @@ func (a *ActivityConstantFindTrotterAccessor) Raw() ([]ActivityConstantFindTrott
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityConstantFindTrotterAccessor.LoadData to preload everything
 func (a *ActivityConstantFindTrotterAccessor) GroupData() {
+	a._dataConstValueName = map[string]ActivityConstantFindTrotter{}
+	a._dataValue = map[string]ActivityConstantFindTrotter{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 		a._dataValue[d.Value] = d

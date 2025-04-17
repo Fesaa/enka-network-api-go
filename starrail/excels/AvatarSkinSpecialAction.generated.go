@@ -49,6 +49,10 @@ func (a *AvatarSkinSpecialActionAccessor) Raw() ([]AvatarSkinSpecialAction, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarSkinSpecialActionAccessor.LoadData to preload everything
 func (a *AvatarSkinSpecialActionAccessor) GroupData() {
+	a._dataID = map[float64]AvatarSkinSpecialAction{}
+	a._dataSkinID = map[float64]AvatarSkinSpecialAction{}
+	a._dataSkinSpecialActionPrefabPath = map[string]AvatarSkinSpecialAction{}
+	a._dataSpecialActionPrefabPath = map[string]AvatarSkinSpecialAction{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataSkinID[d.SkinID] = d

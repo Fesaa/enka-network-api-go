@@ -47,6 +47,8 @@ func (a *ActivityRankIconAccessor) Raw() ([]ActivityRankIcon, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityRankIconAccessor.LoadData to preload everything
 func (a *ActivityRankIconAccessor) GroupData() {
+	a._dataCommonRankIconPath = map[string]ActivityRankIcon{}
+	a._dataID = map[string]ActivityRankIcon{}
 	for _, d := range a._data {
 		a._dataCommonRankIconPath[d.CommonRankIconPath] = d
 		a._dataID[d.ID] = d

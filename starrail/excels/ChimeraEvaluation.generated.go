@@ -49,6 +49,8 @@ func (a *ChimeraEvaluationAccessor) Raw() ([]ChimeraEvaluation, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ChimeraEvaluationAccessor.LoadData to preload everything
 func (a *ChimeraEvaluationAccessor) GroupData() {
+	a._dataConditionJson = map[string]ChimeraEvaluation{}
+	a._dataEvaluationID = map[float64]ChimeraEvaluation{}
 	for _, d := range a._data {
 		a._dataConditionJson[d.ConditionJson] = d
 		a._dataEvaluationID[d.EvaluationID] = d

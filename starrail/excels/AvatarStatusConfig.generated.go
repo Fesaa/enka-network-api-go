@@ -55,6 +55,8 @@ func (a *AvatarStatusConfigAccessor) Raw() ([]AvatarStatusConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarStatusConfigAccessor.LoadData to preload everything
 func (a *AvatarStatusConfigAccessor) GroupData() {
+	a._dataModifierName = map[string]AvatarStatusConfig{}
+	a._dataStatusID = map[float64]AvatarStatusConfig{}
 	for _, d := range a._data {
 		a._dataModifierName[d.ModifierName] = d
 		a._dataStatusID[d.StatusID] = d

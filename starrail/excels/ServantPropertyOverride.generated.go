@@ -46,6 +46,7 @@ func (a *ServantPropertyOverrideAccessor) Raw() ([]ServantPropertyOverride, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ServantPropertyOverrideAccessor.LoadData to preload everything
 func (a *ServantPropertyOverrideAccessor) GroupData() {
+	a._dataServantID = map[float64]ServantPropertyOverride{}
 	for _, d := range a._data {
 		a._dataServantID[d.ServantID] = d
 	}

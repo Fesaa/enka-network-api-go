@@ -60,6 +60,9 @@ func (a *ItemConfigTrainDynamicAccessor) Raw() ([]ItemConfigTrainDynamic, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemConfigTrainDynamicAccessor.LoadData to preload everything
 func (a *ItemConfigTrainDynamicAccessor) GroupData() {
+	a._dataID = map[float64]ItemConfigTrainDynamic{}
+	a._dataItemFigureIconPath = map[string]ItemConfigTrainDynamic{}
+	a._dataItemIconPath = map[string]ItemConfigTrainDynamic{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataItemFigureIconPath[d.ItemFigureIconPath] = d

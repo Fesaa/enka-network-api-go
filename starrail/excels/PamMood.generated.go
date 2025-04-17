@@ -48,6 +48,8 @@ func (a *PamMoodAccessor) Raw() ([]PamMood, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PamMoodAccessor.LoadData to preload everything
 func (a *PamMoodAccessor) GroupData() {
+	a._dataPamMood = map[string]PamMood{}
+	a._dataPerformanceID = map[float64]PamMood{}
 	for _, d := range a._data {
 		a._dataPamMood[d.PamMood] = d
 		a._dataPerformanceID[d.PerformanceID] = d

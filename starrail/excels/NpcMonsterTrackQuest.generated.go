@@ -47,6 +47,9 @@ func (a *NpcMonsterTrackQuestAccessor) Raw() ([]NpcMonsterTrackQuest, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with NpcMonsterTrackQuestAccessor.LoadData to preload everything
 func (a *NpcMonsterTrackQuestAccessor) GroupData() {
+	a._dataMapInfoID = map[float64]NpcMonsterTrackQuest{}
+	a._dataNpcMonsterTrackID = map[float64]NpcMonsterTrackQuest{}
+	a._dataQuestID = map[float64]NpcMonsterTrackQuest{}
 	for _, d := range a._data {
 		a._dataMapInfoID[d.MapInfoID] = d
 		a._dataNpcMonsterTrackID[d.NpcMonsterTrackID] = d

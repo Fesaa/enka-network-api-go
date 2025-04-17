@@ -45,6 +45,7 @@ func (a *RogueNousValueAreaLimitAccessor) Raw() ([]RogueNousValueAreaLimit, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNousValueAreaLimitAccessor.LoadData to preload everything
 func (a *RogueNousValueAreaLimitAccessor) GroupData() {
+	a._dataAreaID = map[float64]RogueNousValueAreaLimit{}
 	for _, d := range a._data {
 		a._dataAreaID[d.AreaID] = d
 	}

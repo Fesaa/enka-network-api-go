@@ -51,6 +51,7 @@ func (a *MonopolyBuffConfigAccessor) Raw() ([]MonopolyBuffConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonopolyBuffConfigAccessor.LoadData to preload everything
 func (a *MonopolyBuffConfigAccessor) GroupData() {
+	a._dataBuffID = map[float64]MonopolyBuffConfig{}
 	for _, d := range a._data {
 		a._dataBuffID[d.BuffID] = d
 	}

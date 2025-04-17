@@ -46,6 +46,7 @@ func (a *TutorialGuideTalkDataAccessor) Raw() ([]TutorialGuideTalkData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TutorialGuideTalkDataAccessor.LoadData to preload everything
 func (a *TutorialGuideTalkDataAccessor) GroupData() {
+	a._dataID = map[float64]TutorialGuideTalkData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

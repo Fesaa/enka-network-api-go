@@ -55,6 +55,12 @@ func (a *RelicDataInfoAccessor) Raw() ([]RelicDataInfo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RelicDataInfoAccessor.LoadData to preload everything
 func (a *RelicDataInfoAccessor) GroupData() {
+	a._dataBGStoryContent = map[string]RelicDataInfo{}
+	a._dataBGStoryTitle = map[string]RelicDataInfo{}
+	a._dataIconPath = map[string]RelicDataInfo{}
+	a._dataItemBGDesc = map[string]RelicDataInfo{}
+	a._dataItemFigureIconPath = map[string]RelicDataInfo{}
+	a._dataRelicName = map[string]RelicDataInfo{}
 	for _, d := range a._data {
 		a._dataBGStoryContent[d.BGStoryContent] = d
 		a._dataBGStoryTitle[d.BGStoryTitle] = d

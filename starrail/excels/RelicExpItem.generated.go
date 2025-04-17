@@ -47,6 +47,9 @@ func (a *RelicExpItemAccessor) Raw() ([]RelicExpItem, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RelicExpItemAccessor.LoadData to preload everything
 func (a *RelicExpItemAccessor) GroupData() {
+	a._dataCoinCost = map[float64]RelicExpItem{}
+	a._dataExpProvide = map[float64]RelicExpItem{}
+	a._dataItemID = map[float64]RelicExpItem{}
 	for _, d := range a._data {
 		a._dataCoinCost[d.CoinCost] = d
 		a._dataExpProvide[d.ExpProvide] = d

@@ -51,6 +51,9 @@ func (a *MatchThreeEnvironmentAccessor) Raw() ([]MatchThreeEnvironment, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeEnvironmentAccessor.LoadData to preload everything
 func (a *MatchThreeEnvironmentAccessor) GroupData() {
+	a._dataEnvironmentID = map[float64]MatchThreeEnvironment{}
+	a._dataIconPath = map[string]MatchThreeEnvironment{}
+	a._dataImagePath = map[string]MatchThreeEnvironment{}
 	for _, d := range a._data {
 		a._dataEnvironmentID[d.EnvironmentID] = d
 		a._dataIconPath[d.IconPath] = d

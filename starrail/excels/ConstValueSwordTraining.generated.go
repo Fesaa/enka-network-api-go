@@ -45,6 +45,7 @@ func (a *ConstValueSwordTrainingAccessor) Raw() ([]ConstValueSwordTraining, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ConstValueSwordTrainingAccessor.LoadData to preload everything
 func (a *ConstValueSwordTrainingAccessor) GroupData() {
+	a._dataConstValueName = map[string]ConstValueSwordTraining{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

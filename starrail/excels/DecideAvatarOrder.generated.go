@@ -45,6 +45,8 @@ func (a *DecideAvatarOrderAccessor) Raw() ([]DecideAvatarOrder, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DecideAvatarOrderAccessor.LoadData to preload everything
 func (a *DecideAvatarOrderAccessor) GroupData() {
+	a._dataItemID = map[float64]DecideAvatarOrder{}
+	a._dataOrder = map[float64]DecideAvatarOrder{}
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
 		a._dataOrder[d.Order] = d

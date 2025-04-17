@@ -56,6 +56,7 @@ func (a *AvatarPropertyConfigAccessor) Raw() ([]AvatarPropertyConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AvatarPropertyConfigAccessor.LoadData to preload everything
 func (a *AvatarPropertyConfigAccessor) GroupData() {
+	a._dataPropertyType = map[string]AvatarPropertyConfig{}
 	for _, d := range a._data {
 		a._dataPropertyType[d.PropertyType] = d
 	}

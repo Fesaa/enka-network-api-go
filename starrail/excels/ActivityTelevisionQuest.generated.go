@@ -47,6 +47,7 @@ func (a *ActivityTelevisionQuestAccessor) Raw() ([]ActivityTelevisionQuest, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityTelevisionQuestAccessor.LoadData to preload everything
 func (a *ActivityTelevisionQuestAccessor) GroupData() {
+	a._dataQuestGroupID = map[float64]ActivityTelevisionQuest{}
 	for _, d := range a._data {
 		a._dataQuestGroupID[d.QuestGroupID] = d
 	}

@@ -58,6 +58,7 @@ func (a *MiniMapIconAccessor) Raw() ([]MiniMapIcon, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MiniMapIconAccessor.LoadData to preload everything
 func (a *MiniMapIconAccessor) GroupData() {
+	a._dataID = map[float64]MiniMapIcon{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

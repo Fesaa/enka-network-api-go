@@ -48,6 +48,7 @@ func (a *MonsterGuideSkillAccessor) Raw() ([]MonsterGuideSkill, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MonsterGuideSkillAccessor.LoadData to preload everything
 func (a *MonsterGuideSkillAccessor) GroupData() {
+	a._dataSkillID = map[float64]MonsterGuideSkill{}
 	for _, d := range a._data {
 		a._dataSkillID[d.SkillID] = d
 	}

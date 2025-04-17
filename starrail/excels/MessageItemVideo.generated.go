@@ -47,6 +47,9 @@ func (a *MessageItemVideoAccessor) Raw() ([]MessageItemVideo, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MessageItemVideoAccessor.LoadData to preload everything
 func (a *MessageItemVideoAccessor) GroupData() {
+	a._dataID = map[float64]MessageItemVideo{}
+	a._dataImagePath = map[string]MessageItemVideo{}
+	a._dataVideoID = map[float64]MessageItemVideo{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataImagePath[d.ImagePath] = d

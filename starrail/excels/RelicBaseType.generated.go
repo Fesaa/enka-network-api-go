@@ -47,6 +47,7 @@ func (a *RelicBaseTypeAccessor) Raw() ([]RelicBaseType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RelicBaseTypeAccessor.LoadData to preload everything
 func (a *RelicBaseTypeAccessor) GroupData() {
+	a._dataBaseTypeIconPath = map[string]RelicBaseType{}
 	for _, d := range a._data {
 		a._dataBaseTypeIconPath[d.BaseTypeIconPath] = d
 	}

@@ -46,6 +46,7 @@ func (a *TarotBookCardPoolAccessor) Raw() ([]TarotBookCardPool, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with TarotBookCardPoolAccessor.LoadData to preload everything
 func (a *TarotBookCardPoolAccessor) GroupData() {
+	a._dataID = map[float64]TarotBookCardPool{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

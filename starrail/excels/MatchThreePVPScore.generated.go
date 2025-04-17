@@ -53,6 +53,7 @@ func (a *MatchThreePVPScoreAccessor) Raw() ([]MatchThreePVPScore, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreePVPScoreAccessor.LoadData to preload everything
 func (a *MatchThreePVPScoreAccessor) GroupData() {
+	a._dataScoreID = map[float64]MatchThreePVPScore{}
 	for _, d := range a._data {
 		a._dataScoreID[d.ScoreID] = d
 	}

@@ -47,6 +47,7 @@ func (a *MuseumItemSkillConfigAccessor) Raw() ([]MuseumItemSkillConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumItemSkillConfigAccessor.LoadData to preload everything
 func (a *MuseumItemSkillConfigAccessor) GroupData() {
+	a._dataItemSkillID = map[float64]MuseumItemSkillConfig{}
 	for _, d := range a._data {
 		a._dataItemSkillID[d.ItemSkillID] = d
 	}

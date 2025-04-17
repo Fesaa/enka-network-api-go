@@ -58,6 +58,7 @@ func (a *RogueTournWeeklyChallengeAccessor) Raw() ([]RogueTournWeeklyChallenge, 
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournWeeklyChallengeAccessor.LoadData to preload everything
 func (a *RogueTournWeeklyChallengeAccessor) GroupData() {
+	a._dataChallengeID = map[float64]RogueTournWeeklyChallenge{}
 	for _, d := range a._data {
 		a._dataChallengeID[d.ChallengeID] = d
 	}

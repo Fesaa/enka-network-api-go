@@ -49,6 +49,10 @@ func (a *PropTriggerEventAccessor) Raw() ([]PropTriggerEvent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PropTriggerEventAccessor.LoadData to preload everything
 func (a *PropTriggerEventAccessor) GroupData() {
+	a._dataExitJsonPath = map[string]PropTriggerEvent{}
+	a._dataID = map[float64]PropTriggerEvent{}
+	a._dataJsonPath = map[string]PropTriggerEvent{}
+	a._dataName = map[string]PropTriggerEvent{}
 	for _, d := range a._data {
 		a._dataExitJsonPath[d.ExitJsonPath] = d
 		a._dataID[d.ID] = d

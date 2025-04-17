@@ -45,6 +45,7 @@ func (a *AetherDivideConstClientAccessor) Raw() ([]AetherDivideConstClient, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AetherDivideConstClientAccessor.LoadData to preload everything
 func (a *AetherDivideConstClientAccessor) GroupData() {
+	a._dataConstValueName = map[string]AetherDivideConstClient{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

@@ -51,6 +51,8 @@ func (a *AlleyMapGradeAccessor) Raw() ([]AlleyMapGrade, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with AlleyMapGradeAccessor.LoadData to preload everything
 func (a *AlleyMapGradeAccessor) GroupData() {
+	a._dataGradeID = map[float64]AlleyMapGrade{}
+	a._dataMapConfig = map[string]AlleyMapGrade{}
 	for _, d := range a._data {
 		a._dataGradeID[d.GradeID] = d
 		a._dataMapConfig[d.MapConfig] = d

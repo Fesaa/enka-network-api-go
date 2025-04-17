@@ -62,6 +62,9 @@ func (a *ItemPlayerCardAccessor) Raw() ([]ItemPlayerCard, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemPlayerCardAccessor.LoadData to preload everything
 func (a *ItemPlayerCardAccessor) GroupData() {
+	a._dataID = map[float64]ItemPlayerCard{}
+	a._dataItemFigureIconPath = map[string]ItemPlayerCard{}
+	a._dataItemIconPath = map[string]ItemPlayerCard{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataItemFigureIconPath[d.ItemFigureIconPath] = d

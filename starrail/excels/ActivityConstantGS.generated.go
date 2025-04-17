@@ -45,6 +45,8 @@ func (a *ActivityConstantGSAccessor) Raw() ([]ActivityConstantGS, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityConstantGSAccessor.LoadData to preload everything
 func (a *ActivityConstantGSAccessor) GroupData() {
+	a._dataConstValueName = map[string]ActivityConstantGS{}
+	a._dataValue = map[string]ActivityConstantGS{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 		a._dataValue[d.Value] = d

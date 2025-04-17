@@ -52,6 +52,7 @@ func (a *MazePuzzleWolfGunPlayLevelAccessor) Raw() ([]MazePuzzleWolfGunPlayLevel
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MazePuzzleWolfGunPlayLevelAccessor.LoadData to preload everything
 func (a *MazePuzzleWolfGunPlayLevelAccessor) GroupData() {
+	a._dataTriggerCustomString = map[string]MazePuzzleWolfGunPlayLevel{}
 	for _, d := range a._data {
 		a._dataTriggerCustomString[d.TriggerCustomString] = d
 	}

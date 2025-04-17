@@ -51,6 +51,8 @@ func (a *DrinkMakerIceDataAccessor) Raw() ([]DrinkMakerIceData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerIceDataAccessor.LoadData to preload everything
 func (a *DrinkMakerIceDataAccessor) GroupData() {
+	a._dataAudioEvent = map[string]DrinkMakerIceData{}
+	a._dataIconPath = map[string]DrinkMakerIceData{}
 	for _, d := range a._data {
 		a._dataAudioEvent[d.AudioEvent] = d
 		a._dataIconPath[d.IconPath] = d

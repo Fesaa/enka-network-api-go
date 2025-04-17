@@ -53,6 +53,9 @@ func (a *RogueDLCBlockIntroAccessor) Raw() ([]RogueDLCBlockIntro, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueDLCBlockIntroAccessor.LoadData to preload everything
 func (a *RogueDLCBlockIntroAccessor) GroupData() {
+	a._dataBlockIntroID = map[float64]RogueDLCBlockIntro{}
+	a._dataBlockIntroIcon = map[string]RogueDLCBlockIntro{}
+	a._dataSort = map[float64]RogueDLCBlockIntro{}
 	for _, d := range a._data {
 		a._dataBlockIntroID[d.BlockIntroID] = d
 		a._dataBlockIntroIcon[d.BlockIntroIcon] = d

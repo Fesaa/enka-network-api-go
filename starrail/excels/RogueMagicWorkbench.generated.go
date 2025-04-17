@@ -44,6 +44,7 @@ func (a *RogueMagicWorkbenchAccessor) Raw() ([]RogueMagicWorkbench, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueMagicWorkbenchAccessor.LoadData to preload everything
 func (a *RogueMagicWorkbenchAccessor) GroupData() {
+	a._dataWorkbenchID = map[float64]RogueMagicWorkbench{}
 	for _, d := range a._data {
 		a._dataWorkbenchID[d.WorkbenchID] = d
 	}

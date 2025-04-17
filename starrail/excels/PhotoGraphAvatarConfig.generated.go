@@ -44,6 +44,7 @@ func (a *PhotoGraphAvatarConfigAccessor) Raw() ([]PhotoGraphAvatarConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with PhotoGraphAvatarConfigAccessor.LoadData to preload everything
 func (a *PhotoGraphAvatarConfigAccessor) GroupData() {
+	a._dataAvatarID = map[float64]PhotoGraphAvatarConfig{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 	}

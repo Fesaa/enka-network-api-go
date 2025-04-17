@@ -45,6 +45,7 @@ func (a *HealPoolAccessor) Raw() ([]HealPool, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HealPoolAccessor.LoadData to preload everything
 func (a *HealPoolAccessor) GroupData() {
+	a._dataPlayerLevel = map[float64]HealPool{}
 	for _, d := range a._data {
 		a._dataPlayerLevel[d.PlayerLevel] = d
 	}

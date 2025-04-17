@@ -45,6 +45,8 @@ func (a *ResourceDeletionVPListAccessor) Raw() ([]ResourceDeletionVPList, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ResourceDeletionVPListAccessor.LoadData to preload everything
 func (a *ResourceDeletionVPListAccessor) GroupData() {
+	a._dataID = map[float64]ResourceDeletionVPList{}
+	a._dataPath = map[string]ResourceDeletionVPList{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataPath[d.Path] = d

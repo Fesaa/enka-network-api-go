@@ -60,6 +60,10 @@ func (a *ActivityItemConfigAvatarAccessor) Raw() ([]ActivityItemConfigAvatar, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ActivityItemConfigAvatarAccessor.LoadData to preload everything
 func (a *ActivityItemConfigAvatarAccessor) GroupData() {
+	a._dataID = map[float64]ActivityItemConfigAvatar{}
+	a._dataItemAvatarIconPath = map[string]ActivityItemConfigAvatar{}
+	a._dataItemFigureIconPath = map[string]ActivityItemConfigAvatar{}
+	a._dataItemIconPath = map[string]ActivityItemConfigAvatar{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 		a._dataItemAvatarIconPath[d.ItemAvatarIconPath] = d

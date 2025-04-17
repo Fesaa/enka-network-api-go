@@ -55,6 +55,7 @@ func (a *GuideChallengeDataAccessor) Raw() ([]GuideChallengeData, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with GuideChallengeDataAccessor.LoadData to preload everything
 func (a *GuideChallengeDataAccessor) GroupData() {
+	a._dataID = map[float64]GuideChallengeData{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

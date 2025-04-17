@@ -45,6 +45,7 @@ func (a *MultiplePathAvatarAtlasAccessor) Raw() ([]MultiplePathAvatarAtlas, erro
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MultiplePathAvatarAtlasAccessor.LoadData to preload everything
 func (a *MultiplePathAvatarAtlasAccessor) GroupData() {
+	a._dataAvatarID = map[float64]MultiplePathAvatarAtlas{}
 	for _, d := range a._data {
 		a._dataAvatarID[d.AvatarID] = d
 	}

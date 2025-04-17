@@ -47,6 +47,7 @@ func (a *HeliobusPostTypeConfigAccessor) Raw() ([]HeliobusPostTypeConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with HeliobusPostTypeConfigAccessor.LoadData to preload everything
 func (a *HeliobusPostTypeConfigAccessor) GroupData() {
+	a._dataPostType = map[string]HeliobusPostTypeConfig{}
 	for _, d := range a._data {
 		a._dataPostType[d.PostType] = d
 	}

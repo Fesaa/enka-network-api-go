@@ -51,6 +51,7 @@ func (a *ClockParkLotteryAccessor) Raw() ([]ClockParkLottery, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ClockParkLotteryAccessor.LoadData to preload everything
 func (a *ClockParkLotteryAccessor) GroupData() {
+	a._dataLotteryID = map[float64]ClockParkLottery{}
 	for _, d := range a._data {
 		a._dataLotteryID[d.LotteryID] = d
 	}

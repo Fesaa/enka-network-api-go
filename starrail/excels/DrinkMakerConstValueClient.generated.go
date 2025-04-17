@@ -51,6 +51,7 @@ func (a *DrinkMakerConstValueClientAccessor) Raw() ([]DrinkMakerConstValueClient
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with DrinkMakerConstValueClientAccessor.LoadData to preload everything
 func (a *DrinkMakerConstValueClientAccessor) GroupData() {
+	a._dataConstValueName = map[string]DrinkMakerConstValueClient{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

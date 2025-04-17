@@ -60,6 +60,11 @@ func (a *FightFestPaperAccessor) Raw() ([]FightFestPaper, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FightFestPaperAccessor.LoadData to preload everything
 func (a *FightFestPaperAccessor) GroupData() {
+	a._dataCollectionBgPath = map[string]FightFestPaper{}
+	a._dataCollectionFgPath = map[string]FightFestPaper{}
+	a._dataInterviewFgPath = map[string]FightFestPaper{}
+	a._dataPaperID = map[float64]FightFestPaper{}
+	a._dataUnlockSubMissionID = map[float64]FightFestPaper{}
 	for _, d := range a._data {
 		a._dataCollectionBgPath[d.CollectionBgPath] = d
 		a._dataCollectionFgPath[d.CollectionFgPath] = d

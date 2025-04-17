@@ -45,6 +45,7 @@ func (a *ItemPurposeAccessor) Raw() ([]ItemPurpose, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with ItemPurposeAccessor.LoadData to preload everything
 func (a *ItemPurposeAccessor) GroupData() {
+	a._dataID = map[float64]ItemPurpose{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
 	}

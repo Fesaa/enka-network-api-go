@@ -48,6 +48,7 @@ func (a *RogueNousDiceSlotAccessor) Raw() ([]RogueNousDiceSlot, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueNousDiceSlotAccessor.LoadData to preload everything
 func (a *RogueNousDiceSlotAccessor) GroupData() {
+	a._dataSlotID = map[float64]RogueNousDiceSlot{}
 	for _, d := range a._data {
 		a._dataSlotID[d.SlotID] = d
 	}

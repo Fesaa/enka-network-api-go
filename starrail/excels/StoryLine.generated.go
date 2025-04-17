@@ -60,6 +60,8 @@ func (a *StoryLineAccessor) Raw() ([]StoryLine, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with StoryLineAccessor.LoadData to preload everything
 func (a *StoryLineAccessor) GroupData() {
+	a._dataShowCondition = map[string]StoryLine{}
+	a._dataStoryLineID = map[float64]StoryLine{}
 	for _, d := range a._data {
 		a._dataShowCondition[d.ShowCondition] = d
 		a._dataStoryLineID[d.StoryLineID] = d

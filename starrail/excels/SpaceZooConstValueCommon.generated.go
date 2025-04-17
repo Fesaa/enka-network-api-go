@@ -50,6 +50,7 @@ func (a *SpaceZooConstValueCommonAccessor) Raw() ([]SpaceZooConstValueCommon, er
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with SpaceZooConstValueCommonAccessor.LoadData to preload everything
 func (a *SpaceZooConstValueCommonAccessor) GroupData() {
+	a._dataConstValueName = map[string]SpaceZooConstValueCommon{}
 	for _, d := range a._data {
 		a._dataConstValueName[d.ConstValueName] = d
 	}

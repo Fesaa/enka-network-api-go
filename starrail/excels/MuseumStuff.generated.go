@@ -60,6 +60,8 @@ func (a *MuseumStuffAccessor) Raw() ([]MuseumStuff, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MuseumStuffAccessor.LoadData to preload everything
 func (a *MuseumStuffAccessor) GroupData() {
+	a._dataItemID = map[float64]MuseumStuff{}
+	a._dataScenePropID = map[float64]MuseumStuff{}
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
 		a._dataScenePropID[d.ScenePropID] = d
