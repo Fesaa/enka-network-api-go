@@ -16,19 +16,6 @@ type StarRailData interface {
 	AvatarKey(string) string
 	RelicData(string) *starrail.RelicData
 	LightConeData(string) *starrail.LightConeData
-	Excels() HSRExcels
-}
-
-// HSRExcels load data almost directly from the ExcelOutput, these are NOT loaded at startup, rather the request is made
-// only when a method is called. If this fails, it'll be called each time as the underlying data stays nil.
-// We're not returning an error as this isn't expected to error, this make working with them nicer
-type HSRExcels interface {
-	RelicMainAffix() []starrail.RelicMainAffixConfig
-	RelicSubAffixConfig() []starrail.RelicSubAffixConfig
-	RelicSetConfig(string) (*starrail.RelicSetConfig, bool)
-	RelicConfig(string) (*starrail.RelicConfig, bool)
-	SkillTree(string) map[starrail.SkillTreeAnchor]starrail.SkillTreeNode
-	MultiplePathAvatarConfig(string) (*starrail.MultiplePathAvatarConfig, bool)
 }
 
 type GenshinData interface {

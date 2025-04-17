@@ -37,3 +37,27 @@ type UInt64 struct {
 func (h UInt64) GetHash() string {
 	return fmt.Sprint(h.Hash)
 }
+
+type Hash struct {
+	Hash float64 `json:"Value"`
+}
+
+func (h Hash) GetHash() string {
+	return fmt.Sprint(h.Hash)
+}
+
+type IntValue struct {
+	IntValue float64 `json:"IntValue"`
+}
+
+func (i IntValue) GetHash() string {
+	return fmt.Sprint(i.IntValue)
+}
+
+type StringValue struct {
+	StringValue string `json:"StringValue"`
+}
+
+func (s StringValue) GetHash() string {
+	return s.StringValue
+}

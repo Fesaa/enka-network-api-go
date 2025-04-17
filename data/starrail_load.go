@@ -9,9 +9,7 @@ import (
 )
 
 func newStarRail(log zerolog.Logger) (StarRailData, error) {
-	srData := &starRailData{
-		excels: NewExcels(log),
-	}
+	srData := &starRailData{}
 
 	var starRailCharacterData map[string]*starrail.CharacterData
 	err := json.Unmarshal(starRailCharacterJson, &starRailCharacterData)
