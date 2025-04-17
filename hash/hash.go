@@ -39,7 +39,7 @@ func (h UInt64) GetHash() string {
 }
 
 type Hash struct {
-	Hash float64 `json:"Value"`
+	Hash float64 `json:"Hash"`
 }
 
 func (h Hash) GetHash() string {
