@@ -69,7 +69,6 @@ func (a *StageTestConfigAccessor) Raw() ([]StageTestConfig, error) {
 		if err != nil {
 			return []StageTestConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -87,9 +86,11 @@ func (a *StageTestConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StageTestConfigAccessor) ByStageID(identifier float64) (StageTestConfig, error) {
 	if a._dataStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StageTestConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StageTestConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

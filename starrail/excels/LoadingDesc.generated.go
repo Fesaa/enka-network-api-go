@@ -74,7 +74,6 @@ func (a *LoadingDescAccessor) Raw() ([]LoadingDesc, error) {
 		if err != nil {
 			return []LoadingDesc{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -92,9 +91,11 @@ func (a *LoadingDescAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *LoadingDescAccessor) ByID(identifier float64) (LoadingDesc, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LoadingDesc{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LoadingDesc{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -39,7 +39,6 @@ func (a *CityShopRewardListAccessor) Raw() ([]CityShopRewardList, error) {
 		if err != nil {
 			return []CityShopRewardList{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

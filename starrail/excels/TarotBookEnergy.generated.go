@@ -39,7 +39,6 @@ func (a *TarotBookEnergyAccessor) Raw() ([]TarotBookEnergy, error) {
 		if err != nil {
 			return []TarotBookEnergy{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *TarotBookEnergyAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TarotBookEnergyAccessor) BySubmissionID(identifier float64) (TarotBookEnergy, error) {
 	if a._dataSubmissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookEnergy{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookEnergy{}, err
+			}
 		}
 		a.GroupData()
 	}

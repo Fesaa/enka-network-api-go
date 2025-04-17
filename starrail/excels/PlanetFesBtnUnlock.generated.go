@@ -37,7 +37,6 @@ func (a *PlanetFesBtnUnlockAccessor) Raw() ([]PlanetFesBtnUnlock, error) {
 		if err != nil {
 			return []PlanetFesBtnUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *PlanetFesBtnUnlockAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesBtnUnlockAccessor) ByID(identifier string) (PlanetFesBtnUnlock, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesBtnUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesBtnUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}

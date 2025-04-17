@@ -27,8 +27,8 @@ type RogueMagicTalentDescParams struct {
 }
 type RogueMagicTalentAccessor struct {
 	_data         []RogueMagicTalent
-	_dataTalentID map[float64]RogueMagicTalent
 	_dataLevel    map[float64]RogueMagicTalent
+	_dataTalentID map[float64]RogueMagicTalent
 }
 
 // LoadData retrieves the data. Must be called before RogueMagicTalent.GroupData
@@ -52,7 +52,6 @@ func (a *RogueMagicTalentAccessor) Raw() ([]RogueMagicTalent, error) {
 		if err != nil {
 			return []RogueMagicTalent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,23 +60,9 @@ func (a *RogueMagicTalentAccessor) Raw() ([]RogueMagicTalent, error) {
 // Can be called manually in conjunction with RogueMagicTalentAccessor.LoadData to preload everything
 func (a *RogueMagicTalentAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTalentID[d.TalentID] = d
 		a._dataLevel[d.Level] = d
+		a._dataTalentID[d.TalentID] = d
 	}
-}
-
-// ByTalentID returns the RogueMagicTalent uniquely identified by TalentID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueMagicTalentAccessor) ByTalentID(identifier float64) (RogueMagicTalent, error) {
-	if a._dataTalentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicTalent{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTalentID[identifier], nil
 }
 
 // ByLevel returns the RogueMagicTalent uniquely identified by Level
@@ -85,11 +70,29 @@ func (a *RogueMagicTalentAccessor) ByTalentID(identifier float64) (RogueMagicTal
 // Error is only non-nil if the source errors out
 func (a *RogueMagicTalentAccessor) ByLevel(identifier float64) (RogueMagicTalent, error) {
 	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicTalent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicTalent{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLevel[identifier], nil
+}
+
+// ByTalentID returns the RogueMagicTalent uniquely identified by TalentID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueMagicTalentAccessor) ByTalentID(identifier float64) (RogueMagicTalent, error) {
+	if a._dataTalentID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicTalent{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTalentID[identifier], nil
 }

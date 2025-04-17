@@ -44,7 +44,6 @@ func (a *MatchThreeEnvironmentAccessor) Raw() ([]MatchThreeEnvironment, error) {
 		if err != nil {
 			return []MatchThreeEnvironment{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *MatchThreeEnvironmentAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeEnvironmentAccessor) ByEnvironmentID(identifier float64) (MatchThreeEnvironment, error) {
 	if a._dataEnvironmentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeEnvironment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeEnvironment{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *MatchThreeEnvironmentAccessor) ByEnvironmentID(identifier float64) (Mat
 // Error is only non-nil if the source errors out
 func (a *MatchThreeEnvironmentAccessor) ByIconPath(identifier string) (MatchThreeEnvironment, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeEnvironment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeEnvironment{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -92,9 +95,11 @@ func (a *MatchThreeEnvironmentAccessor) ByIconPath(identifier string) (MatchThre
 // Error is only non-nil if the source errors out
 func (a *MatchThreeEnvironmentAccessor) ByImagePath(identifier string) (MatchThreeEnvironment, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeEnvironment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeEnvironment{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -40,7 +40,6 @@ func (a *ActivityPanelSingeQuestAccessor) Raw() ([]ActivityPanelSingeQuest, erro
 		if err != nil {
 			return []ActivityPanelSingeQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ActivityPanelSingeQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityPanelSingeQuestAccessor) ByAvatarID(identifier float64) (ActivityPanelSingeQuest, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSingeQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSingeQuest{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *ActivityPanelSingeQuestAccessor) ByAvatarID(identifier float64) (Activi
 // Error is only non-nil if the source errors out
 func (a *ActivityPanelSingeQuestAccessor) ByID(identifier float64) (ActivityPanelSingeQuest, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSingeQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSingeQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

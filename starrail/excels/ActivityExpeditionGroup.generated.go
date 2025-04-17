@@ -14,8 +14,8 @@ type ActivityExpeditionGroup struct {
 }
 type ActivityExpeditionGroupAccessor struct {
 	_data                 []ActivityExpeditionGroup
-	_dataGroupID          map[float64]ActivityExpeditionGroup
 	_dataActivityModuleID map[float64]ActivityExpeditionGroup
+	_dataGroupID          map[float64]ActivityExpeditionGroup
 }
 
 // LoadData retrieves the data. Must be called before ActivityExpeditionGroup.GroupData
@@ -39,7 +39,6 @@ func (a *ActivityExpeditionGroupAccessor) Raw() ([]ActivityExpeditionGroup, erro
 		if err != nil {
 			return []ActivityExpeditionGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *ActivityExpeditionGroupAccessor) Raw() ([]ActivityExpeditionGroup, erro
 // Can be called manually in conjunction with ActivityExpeditionGroupAccessor.LoadData to preload everything
 func (a *ActivityExpeditionGroupAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataGroupID[d.GroupID] = d
 		a._dataActivityModuleID[d.ActivityModuleID] = d
+		a._dataGroupID[d.GroupID] = d
 	}
-}
-
-// ByGroupID returns the ActivityExpeditionGroup uniquely identified by GroupID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityExpeditionGroupAccessor) ByGroupID(identifier float64) (ActivityExpeditionGroup, error) {
-	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityExpeditionGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGroupID[identifier], nil
 }
 
 // ByActivityModuleID returns the ActivityExpeditionGroup uniquely identified by ActivityModuleID
@@ -72,11 +57,29 @@ func (a *ActivityExpeditionGroupAccessor) ByGroupID(identifier float64) (Activit
 // Error is only non-nil if the source errors out
 func (a *ActivityExpeditionGroupAccessor) ByActivityModuleID(identifier float64) (ActivityExpeditionGroup, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityExpeditionGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityExpeditionGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityModuleID[identifier], nil
+}
+
+// ByGroupID returns the ActivityExpeditionGroup uniquely identified by GroupID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityExpeditionGroupAccessor) ByGroupID(identifier float64) (ActivityExpeditionGroup, error) {
+	if a._dataGroupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityExpeditionGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGroupID[identifier], nil
 }

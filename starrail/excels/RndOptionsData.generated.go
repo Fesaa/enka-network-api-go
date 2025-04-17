@@ -19,8 +19,8 @@ type RndOptionsData struct {
 type RndOptionsDataAccessor struct {
 	_data           []RndOptionsData
 	_dataID         map[float64]RndOptionsData
-	_dataMenuItemID map[float64]RndOptionsData
 	_dataJsonPath   map[string]RndOptionsData
+	_dataMenuItemID map[float64]RndOptionsData
 }
 
 // LoadData retrieves the data. Must be called before RndOptionsData.GroupData
@@ -44,7 +44,6 @@ func (a *RndOptionsDataAccessor) Raw() ([]RndOptionsData, error) {
 		if err != nil {
 			return []RndOptionsData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,8 +53,8 @@ func (a *RndOptionsDataAccessor) Raw() ([]RndOptionsData, error) {
 func (a *RndOptionsDataAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
-		a._dataMenuItemID[d.MenuItemID] = d
 		a._dataJsonPath[d.JsonPath] = d
+		a._dataMenuItemID[d.MenuItemID] = d
 	}
 }
 
@@ -64,27 +63,15 @@ func (a *RndOptionsDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RndOptionsDataAccessor) ByID(identifier float64) (RndOptionsData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RndOptionsData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RndOptionsData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
-}
-
-// ByMenuItemID returns the RndOptionsData uniquely identified by MenuItemID
-//
-// Error is only non-nil if the source errors out
-func (a *RndOptionsDataAccessor) ByMenuItemID(identifier float64) (RndOptionsData, error) {
-	if a._dataMenuItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RndOptionsData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMenuItemID[identifier], nil
 }
 
 // ByJsonPath returns the RndOptionsData uniquely identified by JsonPath
@@ -92,11 +79,29 @@ func (a *RndOptionsDataAccessor) ByMenuItemID(identifier float64) (RndOptionsDat
 // Error is only non-nil if the source errors out
 func (a *RndOptionsDataAccessor) ByJsonPath(identifier string) (RndOptionsData, error) {
 	if a._dataJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RndOptionsData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RndOptionsData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataJsonPath[identifier], nil
+}
+
+// ByMenuItemID returns the RndOptionsData uniquely identified by MenuItemID
+//
+// Error is only non-nil if the source errors out
+func (a *RndOptionsDataAccessor) ByMenuItemID(identifier float64) (RndOptionsData, error) {
+	if a._dataMenuItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RndOptionsData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMenuItemID[identifier], nil
 }

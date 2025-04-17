@@ -44,7 +44,6 @@ func (a *SwordTrainingPowerRankAccessor) Raw() ([]SwordTrainingPowerRank, error)
 		if err != nil {
 			return []SwordTrainingPowerRank{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *SwordTrainingPowerRankAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingPowerRankAccessor) ByRankID(identifier float64) (SwordTrainingPowerRank, error) {
 	if a._dataRankID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingPowerRank{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingPowerRank{}, err
+			}
 		}
 		a.GroupData()
 	}

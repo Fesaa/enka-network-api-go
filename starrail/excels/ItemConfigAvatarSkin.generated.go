@@ -27,16 +27,16 @@ type ItemConfigAvatarSkin struct {
 }
 type ItemConfigAvatarSkinAccessor struct {
 	_data                     []ItemConfigAvatarSkin
-	_dataItemAvatarIconPath   map[string]ItemConfigAvatarSkin
-	_dataItemSubType          map[string]ItemConfigAvatarSkin
-	_dataInventoryDisplayTag  map[float64]ItemConfigAvatarSkin
-	_dataPileLimit            map[float64]ItemConfigAvatarSkin
-	_dataItemCurrencyIconPath map[string]ItemConfigAvatarSkin
 	_dataID                   map[float64]ItemConfigAvatarSkin
-	_dataItemMainType         map[string]ItemConfigAvatarSkin
-	_dataRarity               map[string]ItemConfigAvatarSkin
-	_dataItemIconPath         map[string]ItemConfigAvatarSkin
+	_dataInventoryDisplayTag  map[float64]ItemConfigAvatarSkin
+	_dataItemAvatarIconPath   map[string]ItemConfigAvatarSkin
+	_dataItemCurrencyIconPath map[string]ItemConfigAvatarSkin
 	_dataItemFigureIconPath   map[string]ItemConfigAvatarSkin
+	_dataItemIconPath         map[string]ItemConfigAvatarSkin
+	_dataItemMainType         map[string]ItemConfigAvatarSkin
+	_dataItemSubType          map[string]ItemConfigAvatarSkin
+	_dataPileLimit            map[float64]ItemConfigAvatarSkin
+	_dataRarity               map[string]ItemConfigAvatarSkin
 }
 
 // LoadData retrieves the data. Must be called before ItemConfigAvatarSkin.GroupData
@@ -60,7 +60,6 @@ func (a *ItemConfigAvatarSkinAccessor) Raw() ([]ItemConfigAvatarSkin, error) {
 		if err != nil {
 			return []ItemConfigAvatarSkin{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,87 +68,17 @@ func (a *ItemConfigAvatarSkinAccessor) Raw() ([]ItemConfigAvatarSkin, error) {
 // Can be called manually in conjunction with ItemConfigAvatarSkinAccessor.LoadData to preload everything
 func (a *ItemConfigAvatarSkinAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataItemAvatarIconPath[d.ItemAvatarIconPath] = d
-		a._dataItemSubType[d.ItemSubType] = d
-		a._dataInventoryDisplayTag[d.InventoryDisplayTag] = d
-		a._dataPileLimit[d.PileLimit] = d
-		a._dataItemCurrencyIconPath[d.ItemCurrencyIconPath] = d
 		a._dataID[d.ID] = d
-		a._dataItemMainType[d.ItemMainType] = d
-		a._dataRarity[d.Rarity] = d
-		a._dataItemIconPath[d.ItemIconPath] = d
+		a._dataInventoryDisplayTag[d.InventoryDisplayTag] = d
+		a._dataItemAvatarIconPath[d.ItemAvatarIconPath] = d
+		a._dataItemCurrencyIconPath[d.ItemCurrencyIconPath] = d
 		a._dataItemFigureIconPath[d.ItemFigureIconPath] = d
+		a._dataItemIconPath[d.ItemIconPath] = d
+		a._dataItemMainType[d.ItemMainType] = d
+		a._dataItemSubType[d.ItemSubType] = d
+		a._dataPileLimit[d.PileLimit] = d
+		a._dataRarity[d.Rarity] = d
 	}
-}
-
-// ByItemAvatarIconPath returns the ItemConfigAvatarSkin uniquely identified by ItemAvatarIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *ItemConfigAvatarSkinAccessor) ByItemAvatarIconPath(identifier string) (ItemConfigAvatarSkin, error) {
-	if a._dataItemAvatarIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemAvatarIconPath[identifier], nil
-}
-
-// ByItemSubType returns the ItemConfigAvatarSkin uniquely identified by ItemSubType
-//
-// Error is only non-nil if the source errors out
-func (a *ItemConfigAvatarSkinAccessor) ByItemSubType(identifier string) (ItemConfigAvatarSkin, error) {
-	if a._dataItemSubType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemSubType[identifier], nil
-}
-
-// ByInventoryDisplayTag returns the ItemConfigAvatarSkin uniquely identified by InventoryDisplayTag
-//
-// Error is only non-nil if the source errors out
-func (a *ItemConfigAvatarSkinAccessor) ByInventoryDisplayTag(identifier float64) (ItemConfigAvatarSkin, error) {
-	if a._dataInventoryDisplayTag == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataInventoryDisplayTag[identifier], nil
-}
-
-// ByPileLimit returns the ItemConfigAvatarSkin uniquely identified by PileLimit
-//
-// Error is only non-nil if the source errors out
-func (a *ItemConfigAvatarSkinAccessor) ByPileLimit(identifier float64) (ItemConfigAvatarSkin, error) {
-	if a._dataPileLimit == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPileLimit[identifier], nil
-}
-
-// ByItemCurrencyIconPath returns the ItemConfigAvatarSkin uniquely identified by ItemCurrencyIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *ItemConfigAvatarSkinAccessor) ByItemCurrencyIconPath(identifier string) (ItemConfigAvatarSkin, error) {
-	if a._dataItemCurrencyIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemCurrencyIconPath[identifier], nil
 }
 
 // ByID returns the ItemConfigAvatarSkin uniquely identified by ID
@@ -157,55 +86,63 @@ func (a *ItemConfigAvatarSkinAccessor) ByItemCurrencyIconPath(identifier string)
 // Error is only non-nil if the source errors out
 func (a *ItemConfigAvatarSkinAccessor) ByID(identifier float64) (ItemConfigAvatarSkin, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
 }
 
-// ByItemMainType returns the ItemConfigAvatarSkin uniquely identified by ItemMainType
+// ByInventoryDisplayTag returns the ItemConfigAvatarSkin uniquely identified by InventoryDisplayTag
 //
 // Error is only non-nil if the source errors out
-func (a *ItemConfigAvatarSkinAccessor) ByItemMainType(identifier string) (ItemConfigAvatarSkin, error) {
-	if a._dataItemMainType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
+func (a *ItemConfigAvatarSkinAccessor) ByInventoryDisplayTag(identifier float64) (ItemConfigAvatarSkin, error) {
+	if a._dataInventoryDisplayTag == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataItemMainType[identifier], nil
+	return a._dataInventoryDisplayTag[identifier], nil
 }
 
-// ByRarity returns the ItemConfigAvatarSkin uniquely identified by Rarity
+// ByItemAvatarIconPath returns the ItemConfigAvatarSkin uniquely identified by ItemAvatarIconPath
 //
 // Error is only non-nil if the source errors out
-func (a *ItemConfigAvatarSkinAccessor) ByRarity(identifier string) (ItemConfigAvatarSkin, error) {
-	if a._dataRarity == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
+func (a *ItemConfigAvatarSkinAccessor) ByItemAvatarIconPath(identifier string) (ItemConfigAvatarSkin, error) {
+	if a._dataItemAvatarIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataRarity[identifier], nil
+	return a._dataItemAvatarIconPath[identifier], nil
 }
 
-// ByItemIconPath returns the ItemConfigAvatarSkin uniquely identified by ItemIconPath
+// ByItemCurrencyIconPath returns the ItemConfigAvatarSkin uniquely identified by ItemCurrencyIconPath
 //
 // Error is only non-nil if the source errors out
-func (a *ItemConfigAvatarSkinAccessor) ByItemIconPath(identifier string) (ItemConfigAvatarSkin, error) {
-	if a._dataItemIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
+func (a *ItemConfigAvatarSkinAccessor) ByItemCurrencyIconPath(identifier string) (ItemConfigAvatarSkin, error) {
+	if a._dataItemCurrencyIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataItemIconPath[identifier], nil
+	return a._dataItemCurrencyIconPath[identifier], nil
 }
 
 // ByItemFigureIconPath returns the ItemConfigAvatarSkin uniquely identified by ItemFigureIconPath
@@ -213,11 +150,93 @@ func (a *ItemConfigAvatarSkinAccessor) ByItemIconPath(identifier string) (ItemCo
 // Error is only non-nil if the source errors out
 func (a *ItemConfigAvatarSkinAccessor) ByItemFigureIconPath(identifier string) (ItemConfigAvatarSkin, error) {
 	if a._dataItemFigureIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarSkin{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataItemFigureIconPath[identifier], nil
+}
+
+// ByItemIconPath returns the ItemConfigAvatarSkin uniquely identified by ItemIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *ItemConfigAvatarSkinAccessor) ByItemIconPath(identifier string) (ItemConfigAvatarSkin, error) {
+	if a._dataItemIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemIconPath[identifier], nil
+}
+
+// ByItemMainType returns the ItemConfigAvatarSkin uniquely identified by ItemMainType
+//
+// Error is only non-nil if the source errors out
+func (a *ItemConfigAvatarSkinAccessor) ByItemMainType(identifier string) (ItemConfigAvatarSkin, error) {
+	if a._dataItemMainType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemMainType[identifier], nil
+}
+
+// ByItemSubType returns the ItemConfigAvatarSkin uniquely identified by ItemSubType
+//
+// Error is only non-nil if the source errors out
+func (a *ItemConfigAvatarSkinAccessor) ByItemSubType(identifier string) (ItemConfigAvatarSkin, error) {
+	if a._dataItemSubType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemSubType[identifier], nil
+}
+
+// ByPileLimit returns the ItemConfigAvatarSkin uniquely identified by PileLimit
+//
+// Error is only non-nil if the source errors out
+func (a *ItemConfigAvatarSkinAccessor) ByPileLimit(identifier float64) (ItemConfigAvatarSkin, error) {
+	if a._dataPileLimit == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPileLimit[identifier], nil
+}
+
+// ByRarity returns the ItemConfigAvatarSkin uniquely identified by Rarity
+//
+// Error is only non-nil if the source errors out
+func (a *ItemConfigAvatarSkinAccessor) ByRarity(identifier string) (ItemConfigAvatarSkin, error) {
+	if a._dataRarity == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRarity[identifier], nil
 }

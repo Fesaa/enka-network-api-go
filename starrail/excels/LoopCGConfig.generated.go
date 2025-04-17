@@ -41,7 +41,6 @@ func (a *LoopCGConfigAccessor) Raw() ([]LoopCGConfig, error) {
 		if err != nil {
 			return []LoopCGConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *LoopCGConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *LoopCGConfigAccessor) ByVideoID(identifier float64) (LoopCGConfig, error) {
 	if a._dataVideoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LoopCGConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LoopCGConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *LoopCGConfigAccessor) ByVideoID(identifier float64) (LoopCGConfig, erro
 // Error is only non-nil if the source errors out
 func (a *LoopCGConfigAccessor) ByVideoPath(identifier string) (LoopCGConfig, error) {
 	if a._dataVideoPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LoopCGConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LoopCGConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -30,17 +30,17 @@ type ActivityTelevisionStage struct {
 }
 type ActivityTelevisionStageAccessor struct {
 	_data                      []ActivityTelevisionStage
-	_dataTelevisionID          map[float64]ActivityTelevisionStage
 	_dataActivityModuleID      map[float64]ActivityTelevisionStage
 	_dataEntranceID            map[float64]ActivityTelevisionStage
-	_dataImagePath             map[string]ActivityTelevisionStage
-	_dataOriginalMiniImagePath map[string]ActivityTelevisionStage
 	_dataGotoID                map[float64]ActivityTelevisionStage
-	_dataQuestGroupID          map[float64]ActivityTelevisionStage
+	_dataImagePath             map[string]ActivityTelevisionStage
+	_dataMappingInfo           map[float64]ActivityTelevisionStage
+	_dataMiniImagePath         map[string]ActivityTelevisionStage
 	_dataMissionID             map[float64]ActivityTelevisionStage
 	_dataOriginalImagePath     map[string]ActivityTelevisionStage
-	_dataMiniImagePath         map[string]ActivityTelevisionStage
-	_dataMappingInfo           map[float64]ActivityTelevisionStage
+	_dataOriginalMiniImagePath map[string]ActivityTelevisionStage
+	_dataQuestGroupID          map[float64]ActivityTelevisionStage
+	_dataTelevisionID          map[float64]ActivityTelevisionStage
 }
 
 // LoadData retrieves the data. Must be called before ActivityTelevisionStage.GroupData
@@ -64,7 +64,6 @@ func (a *ActivityTelevisionStageAccessor) Raw() ([]ActivityTelevisionStage, erro
 		if err != nil {
 			return []ActivityTelevisionStage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -73,32 +72,18 @@ func (a *ActivityTelevisionStageAccessor) Raw() ([]ActivityTelevisionStage, erro
 // Can be called manually in conjunction with ActivityTelevisionStageAccessor.LoadData to preload everything
 func (a *ActivityTelevisionStageAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTelevisionID[d.TelevisionID] = d
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataEntranceID[d.EntranceID] = d
-		a._dataImagePath[d.ImagePath] = d
-		a._dataOriginalMiniImagePath[d.OriginalMiniImagePath] = d
 		a._dataGotoID[d.GotoID] = d
-		a._dataQuestGroupID[d.QuestGroupID] = d
+		a._dataImagePath[d.ImagePath] = d
+		a._dataMappingInfo[d.MappingInfo] = d
+		a._dataMiniImagePath[d.MiniImagePath] = d
 		a._dataMissionID[d.MissionID] = d
 		a._dataOriginalImagePath[d.OriginalImagePath] = d
-		a._dataMiniImagePath[d.MiniImagePath] = d
-		a._dataMappingInfo[d.MappingInfo] = d
+		a._dataOriginalMiniImagePath[d.OriginalMiniImagePath] = d
+		a._dataQuestGroupID[d.QuestGroupID] = d
+		a._dataTelevisionID[d.TelevisionID] = d
 	}
-}
-
-// ByTelevisionID returns the ActivityTelevisionStage uniquely identified by TelevisionID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityTelevisionStageAccessor) ByTelevisionID(identifier float64) (ActivityTelevisionStage, error) {
-	if a._dataTelevisionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTelevisionID[identifier], nil
 }
 
 // ByActivityModuleID returns the ActivityTelevisionStage uniquely identified by ActivityModuleID
@@ -106,9 +91,11 @@ func (a *ActivityTelevisionStageAccessor) ByTelevisionID(identifier float64) (Ac
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionStageAccessor) ByActivityModuleID(identifier float64) (ActivityTelevisionStage, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -120,41 +107,15 @@ func (a *ActivityTelevisionStageAccessor) ByActivityModuleID(identifier float64)
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionStageAccessor) ByEntranceID(identifier float64) (ActivityTelevisionStage, error) {
 	if a._dataEntranceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEntranceID[identifier], nil
-}
-
-// ByImagePath returns the ActivityTelevisionStage uniquely identified by ImagePath
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityTelevisionStageAccessor) ByImagePath(identifier string) (ActivityTelevisionStage, error) {
-	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataImagePath[identifier], nil
-}
-
-// ByOriginalMiniImagePath returns the ActivityTelevisionStage uniquely identified by OriginalMiniImagePath
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityTelevisionStageAccessor) ByOriginalMiniImagePath(identifier string) (ActivityTelevisionStage, error) {
-	if a._dataOriginalMiniImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOriginalMiniImagePath[identifier], nil
 }
 
 // ByGotoID returns the ActivityTelevisionStage uniquely identified by GotoID
@@ -162,27 +123,63 @@ func (a *ActivityTelevisionStageAccessor) ByOriginalMiniImagePath(identifier str
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionStageAccessor) ByGotoID(identifier float64) (ActivityTelevisionStage, error) {
 	if a._dataGotoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGotoID[identifier], nil
 }
 
-// ByQuestGroupID returns the ActivityTelevisionStage uniquely identified by QuestGroupID
+// ByImagePath returns the ActivityTelevisionStage uniquely identified by ImagePath
 //
 // Error is only non-nil if the source errors out
-func (a *ActivityTelevisionStageAccessor) ByQuestGroupID(identifier float64) (ActivityTelevisionStage, error) {
-	if a._dataQuestGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
+func (a *ActivityTelevisionStageAccessor) ByImagePath(identifier string) (ActivityTelevisionStage, error) {
+	if a._dataImagePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataQuestGroupID[identifier], nil
+	return a._dataImagePath[identifier], nil
+}
+
+// ByMappingInfo returns the ActivityTelevisionStage uniquely identified by MappingInfo
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityTelevisionStageAccessor) ByMappingInfo(identifier float64) (ActivityTelevisionStage, error) {
+	if a._dataMappingInfo == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMappingInfo[identifier], nil
+}
+
+// ByMiniImagePath returns the ActivityTelevisionStage uniquely identified by MiniImagePath
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityTelevisionStageAccessor) ByMiniImagePath(identifier string) (ActivityTelevisionStage, error) {
+	if a._dataMiniImagePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMiniImagePath[identifier], nil
 }
 
 // ByMissionID returns the ActivityTelevisionStage uniquely identified by MissionID
@@ -190,9 +187,11 @@ func (a *ActivityTelevisionStageAccessor) ByQuestGroupID(identifier float64) (Ac
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionStageAccessor) ByMissionID(identifier float64) (ActivityTelevisionStage, error) {
 	if a._dataMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -204,39 +203,61 @@ func (a *ActivityTelevisionStageAccessor) ByMissionID(identifier float64) (Activ
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionStageAccessor) ByOriginalImagePath(identifier string) (ActivityTelevisionStage, error) {
 	if a._dataOriginalImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataOriginalImagePath[identifier], nil
 }
 
-// ByMiniImagePath returns the ActivityTelevisionStage uniquely identified by MiniImagePath
+// ByOriginalMiniImagePath returns the ActivityTelevisionStage uniquely identified by OriginalMiniImagePath
 //
 // Error is only non-nil if the source errors out
-func (a *ActivityTelevisionStageAccessor) ByMiniImagePath(identifier string) (ActivityTelevisionStage, error) {
-	if a._dataMiniImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
+func (a *ActivityTelevisionStageAccessor) ByOriginalMiniImagePath(identifier string) (ActivityTelevisionStage, error) {
+	if a._dataOriginalMiniImagePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataMiniImagePath[identifier], nil
+	return a._dataOriginalMiniImagePath[identifier], nil
 }
 
-// ByMappingInfo returns the ActivityTelevisionStage uniquely identified by MappingInfo
+// ByQuestGroupID returns the ActivityTelevisionStage uniquely identified by QuestGroupID
 //
 // Error is only non-nil if the source errors out
-func (a *ActivityTelevisionStageAccessor) ByMappingInfo(identifier float64) (ActivityTelevisionStage, error) {
-	if a._dataMappingInfo == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionStage{}, err
+func (a *ActivityTelevisionStageAccessor) ByQuestGroupID(identifier float64) (ActivityTelevisionStage, error) {
+	if a._dataQuestGroupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataMappingInfo[identifier], nil
+	return a._dataQuestGroupID[identifier], nil
+}
+
+// ByTelevisionID returns the ActivityTelevisionStage uniquely identified by TelevisionID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityTelevisionStageAccessor) ByTelevisionID(identifier float64) (ActivityTelevisionStage, error) {
+	if a._dataTelevisionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionStage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTelevisionID[identifier], nil
 }

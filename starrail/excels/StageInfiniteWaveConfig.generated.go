@@ -43,7 +43,6 @@ func (a *StageInfiniteWaveConfigAccessor) Raw() ([]StageInfiniteWaveConfig, erro
 		if err != nil {
 			return []StageInfiniteWaveConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *StageInfiniteWaveConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StageInfiniteWaveConfigAccessor) ByInfiniteWaveID(identifier float64) (StageInfiniteWaveConfig, error) {
 	if a._dataInfiniteWaveID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StageInfiniteWaveConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StageInfiniteWaveConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

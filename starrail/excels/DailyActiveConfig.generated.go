@@ -39,7 +39,6 @@ func (a *DailyActiveConfigAccessor) Raw() ([]DailyActiveConfig, error) {
 		if err != nil {
 			return []DailyActiveConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *DailyActiveConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DailyActiveConfigAccessor) ByDailyActiveReward(identifier float64) (DailyActiveConfig, error) {
 	if a._dataDailyActiveReward == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DailyActiveConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DailyActiveConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

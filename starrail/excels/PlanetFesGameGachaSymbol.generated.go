@@ -13,8 +13,8 @@ type PlanetFesGameGachaSymbol struct {
 }
 type PlanetFesGameGachaSymbolAccessor struct {
 	_data         []PlanetFesGameGachaSymbol
-	_dataIconPath map[string]PlanetFesGameGachaSymbol
 	_dataID       map[float64]PlanetFesGameGachaSymbol
+	_dataIconPath map[string]PlanetFesGameGachaSymbol
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesGameGachaSymbol.GroupData
@@ -38,7 +38,6 @@ func (a *PlanetFesGameGachaSymbolAccessor) Raw() ([]PlanetFesGameGachaSymbol, er
 		if err != nil {
 			return []PlanetFesGameGachaSymbol{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *PlanetFesGameGachaSymbolAccessor) Raw() ([]PlanetFesGameGachaSymbol, er
 // Can be called manually in conjunction with PlanetFesGameGachaSymbolAccessor.LoadData to preload everything
 func (a *PlanetFesGameGachaSymbolAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIconPath[d.IconPath] = d
 		a._dataID[d.ID] = d
+		a._dataIconPath[d.IconPath] = d
 	}
-}
-
-// ByIconPath returns the PlanetFesGameGachaSymbol uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesGameGachaSymbolAccessor) ByIconPath(identifier string) (PlanetFesGameGachaSymbol, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameGachaSymbol{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByID returns the PlanetFesGameGachaSymbol uniquely identified by ID
@@ -71,11 +56,29 @@ func (a *PlanetFesGameGachaSymbolAccessor) ByIconPath(identifier string) (Planet
 // Error is only non-nil if the source errors out
 func (a *PlanetFesGameGachaSymbolAccessor) ByID(identifier float64) (PlanetFesGameGachaSymbol, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameGachaSymbol{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameGachaSymbol{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByIconPath returns the PlanetFesGameGachaSymbol uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesGameGachaSymbolAccessor) ByIconPath(identifier string) (PlanetFesGameGachaSymbol, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameGachaSymbol{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
 }

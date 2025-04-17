@@ -18,8 +18,8 @@ type PassengerBehaviorConfig struct {
 type PassengerBehaviorConfigAccessor struct {
 	_data                  []PassengerBehaviorConfig
 	_dataAnchorID          map[float64]PassengerBehaviorConfig
-	_dataNPCOverrideConfig map[string]PassengerBehaviorConfig
 	_dataBehaviorID        map[float64]PassengerBehaviorConfig
+	_dataNPCOverrideConfig map[string]PassengerBehaviorConfig
 }
 
 // LoadData retrieves the data. Must be called before PassengerBehaviorConfig.GroupData
@@ -43,7 +43,6 @@ func (a *PassengerBehaviorConfigAccessor) Raw() ([]PassengerBehaviorConfig, erro
 		if err != nil {
 			return []PassengerBehaviorConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,8 +52,8 @@ func (a *PassengerBehaviorConfigAccessor) Raw() ([]PassengerBehaviorConfig, erro
 func (a *PassengerBehaviorConfigAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataAnchorID[d.AnchorID] = d
-		a._dataNPCOverrideConfig[d.NPCOverrideConfig] = d
 		a._dataBehaviorID[d.BehaviorID] = d
+		a._dataNPCOverrideConfig[d.NPCOverrideConfig] = d
 	}
 }
 
@@ -63,27 +62,15 @@ func (a *PassengerBehaviorConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PassengerBehaviorConfigAccessor) ByAnchorID(identifier float64) (PassengerBehaviorConfig, error) {
 	if a._dataAnchorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PassengerBehaviorConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PassengerBehaviorConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAnchorID[identifier], nil
-}
-
-// ByNPCOverrideConfig returns the PassengerBehaviorConfig uniquely identified by NPCOverrideConfig
-//
-// Error is only non-nil if the source errors out
-func (a *PassengerBehaviorConfigAccessor) ByNPCOverrideConfig(identifier string) (PassengerBehaviorConfig, error) {
-	if a._dataNPCOverrideConfig == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PassengerBehaviorConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataNPCOverrideConfig[identifier], nil
 }
 
 // ByBehaviorID returns the PassengerBehaviorConfig uniquely identified by BehaviorID
@@ -91,11 +78,29 @@ func (a *PassengerBehaviorConfigAccessor) ByNPCOverrideConfig(identifier string)
 // Error is only non-nil if the source errors out
 func (a *PassengerBehaviorConfigAccessor) ByBehaviorID(identifier float64) (PassengerBehaviorConfig, error) {
 	if a._dataBehaviorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PassengerBehaviorConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PassengerBehaviorConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBehaviorID[identifier], nil
+}
+
+// ByNPCOverrideConfig returns the PassengerBehaviorConfig uniquely identified by NPCOverrideConfig
+//
+// Error is only non-nil if the source errors out
+func (a *PassengerBehaviorConfigAccessor) ByNPCOverrideConfig(identifier string) (PassengerBehaviorConfig, error) {
+	if a._dataNPCOverrideConfig == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PassengerBehaviorConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataNPCOverrideConfig[identifier], nil
 }

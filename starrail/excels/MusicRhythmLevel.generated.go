@@ -43,7 +43,6 @@ func (a *MusicRhythmLevelAccessor) Raw() ([]MusicRhythmLevel, error) {
 		if err != nil {
 			return []MusicRhythmLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *MusicRhythmLevelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmLevelAccessor) ByID(identifier float64) (MusicRhythmLevel, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmLevel{}, err
+			}
 		}
 		a.GroupData()
 	}

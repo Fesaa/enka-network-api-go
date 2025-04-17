@@ -45,7 +45,6 @@ func (a *HeliobusTemplateAccessor) Raw() ([]HeliobusTemplate, error) {
 		if err != nil {
 			return []HeliobusTemplate{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *HeliobusTemplateAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusTemplateAccessor) ByHeliobusTemplateID(identifier float64) (HeliobusTemplate, error) {
 	if a._dataHeliobusTemplateID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusTemplate{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusTemplate{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *HeliobusTemplateAccessor) ByHeliobusTemplateID(identifier float64) (Hel
 // Error is only non-nil if the source errors out
 func (a *HeliobusTemplateAccessor) ByPrefabPathNormal(identifier string) (HeliobusTemplate, error) {
 	if a._dataPrefabPathNormal == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusTemplate{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusTemplate{}, err
+			}
 		}
 		a.GroupData()
 	}

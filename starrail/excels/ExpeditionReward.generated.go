@@ -16,8 +16,8 @@ type ExpeditionReward struct {
 }
 type ExpeditionRewardAccessor struct {
 	_data              []ExpeditionReward
-	_dataRewardID      map[float64]ExpeditionReward
 	_dataExtraRewardID map[float64]ExpeditionReward
+	_dataRewardID      map[float64]ExpeditionReward
 }
 
 // LoadData retrieves the data. Must be called before ExpeditionReward.GroupData
@@ -41,7 +41,6 @@ func (a *ExpeditionRewardAccessor) Raw() ([]ExpeditionReward, error) {
 		if err != nil {
 			return []ExpeditionReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,23 +49,9 @@ func (a *ExpeditionRewardAccessor) Raw() ([]ExpeditionReward, error) {
 // Can be called manually in conjunction with ExpeditionRewardAccessor.LoadData to preload everything
 func (a *ExpeditionRewardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRewardID[d.RewardID] = d
 		a._dataExtraRewardID[d.ExtraRewardID] = d
+		a._dataRewardID[d.RewardID] = d
 	}
-}
-
-// ByRewardID returns the ExpeditionReward uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *ExpeditionRewardAccessor) ByRewardID(identifier float64) (ExpeditionReward, error) {
-	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ExpeditionReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
 }
 
 // ByExtraRewardID returns the ExpeditionReward uniquely identified by ExtraRewardID
@@ -74,11 +59,29 @@ func (a *ExpeditionRewardAccessor) ByRewardID(identifier float64) (ExpeditionRew
 // Error is only non-nil if the source errors out
 func (a *ExpeditionRewardAccessor) ByExtraRewardID(identifier float64) (ExpeditionReward, error) {
 	if a._dataExtraRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ExpeditionReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ExpeditionReward{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataExtraRewardID[identifier], nil
+}
+
+// ByRewardID returns the ExpeditionReward uniquely identified by RewardID
+//
+// Error is only non-nil if the source errors out
+func (a *ExpeditionRewardAccessor) ByRewardID(identifier float64) (ExpeditionReward, error) {
+	if a._dataRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ExpeditionReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardID[identifier], nil
 }

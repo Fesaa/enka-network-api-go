@@ -38,7 +38,6 @@ func (a *StrongChallengeQuestGroupAccessor) Raw() ([]StrongChallengeQuestGroup, 
 		if err != nil {
 			return []StrongChallengeQuestGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *StrongChallengeQuestGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StrongChallengeQuestGroupAccessor) ByQuestGroupID(identifier float64) (StrongChallengeQuestGroup, error) {
 	if a._dataQuestGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StrongChallengeQuestGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StrongChallengeQuestGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

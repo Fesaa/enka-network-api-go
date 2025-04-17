@@ -37,7 +37,6 @@ func (a *ChallengeMazeRewardLineAccessor) Raw() ([]ChallengeMazeRewardLine, erro
 		if err != nil {
 			return []ChallengeMazeRewardLine{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

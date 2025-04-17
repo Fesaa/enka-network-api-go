@@ -38,7 +38,6 @@ func (a *ServerInteractVerificationAccessor) Raw() ([]ServerInteractVerification
 		if err != nil {
 			return []ServerInteractVerification{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ServerInteractVerificationAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ServerInteractVerificationAccessor) ByID(identifier float64) (ServerInteractVerification, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ServerInteractVerification{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ServerInteractVerification{}, err
+			}
 		}
 		a.GroupData()
 	}

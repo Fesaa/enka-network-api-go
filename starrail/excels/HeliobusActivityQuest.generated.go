@@ -41,7 +41,6 @@ func (a *HeliobusActivityQuestAccessor) Raw() ([]HeliobusActivityQuest, error) {
 		if err != nil {
 			return []HeliobusActivityQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *HeliobusActivityQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusActivityQuestAccessor) ByQuestTabID(identifier float64) (HeliobusActivityQuest, error) {
 	if a._dataQuestTabID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusActivityQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusActivityQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

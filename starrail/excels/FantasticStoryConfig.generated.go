@@ -42,7 +42,6 @@ func (a *FantasticStoryConfigAccessor) Raw() ([]FantasticStoryConfig, error) {
 		if err != nil {
 			return []FantasticStoryConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *FantasticStoryConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryConfigAccessor) ByActivityModuleID(identifier float64) (FantasticStoryConfig, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -75,9 +76,11 @@ func (a *FantasticStoryConfigAccessor) ByActivityModuleID(identifier float64) (F
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryConfigAccessor) ByFantasticStoryID(identifier float64) (FantasticStoryConfig, error) {
 	if a._dataFantasticStoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -44,7 +44,6 @@ func (a *ClockParkCheckPointAccessor) Raw() ([]ClockParkCheckPoint, error) {
 		if err != nil {
 			return []ClockParkCheckPoint{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *ClockParkCheckPointAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClockParkCheckPointAccessor) ByCheckPointID(identifier float64) (ClockParkCheckPoint, error) {
 	if a._dataCheckPointID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkCheckPoint{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkCheckPoint{}, err
+			}
 		}
 		a.GroupData()
 	}

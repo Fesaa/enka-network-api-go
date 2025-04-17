@@ -44,7 +44,6 @@ func (a *PerformanceCGAccessor) Raw() ([]PerformanceCG, error) {
 		if err != nil {
 			return []PerformanceCG{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *PerformanceCGAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PerformanceCGAccessor) ByPerformanceID(identifier float64) (PerformanceCG, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceCG{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceCG{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *PerformanceCGAccessor) ByPerformanceID(identifier float64) (Performance
 // Error is only non-nil if the source errors out
 func (a *PerformanceCGAccessor) ByPerformancePath(identifier string) (PerformanceCG, error) {
 	if a._dataPerformancePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceCG{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceCG{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -40,7 +40,6 @@ func (a *ContentUnlockDescConfigAccessor) Raw() ([]ContentUnlockDescConfig, erro
 		if err != nil {
 			return []ContentUnlockDescConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ContentUnlockDescConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ContentUnlockDescConfigAccessor) ByContentID(identifier float64) (ContentUnlockDescConfig, error) {
 	if a._dataContentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ContentUnlockDescConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ContentUnlockDescConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

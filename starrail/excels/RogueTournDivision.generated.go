@@ -21,8 +21,8 @@ type RogueTournDivisionAccessor struct {
 	_data                       []RogueTournDivision
 	_dataDivisionIconPath       map[string]RogueTournDivision
 	_dataDivisionIconPrefabPath map[string]RogueTournDivision
-	_dataDivisionSmallIconPath  map[string]RogueTournDivision
 	_dataDivisionLevel          map[float64]RogueTournDivision
+	_dataDivisionSmallIconPath  map[string]RogueTournDivision
 }
 
 // LoadData retrieves the data. Must be called before RogueTournDivision.GroupData
@@ -46,7 +46,6 @@ func (a *RogueTournDivisionAccessor) Raw() ([]RogueTournDivision, error) {
 		if err != nil {
 			return []RogueTournDivision{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,8 +56,8 @@ func (a *RogueTournDivisionAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataDivisionIconPath[d.DivisionIconPath] = d
 		a._dataDivisionIconPrefabPath[d.DivisionIconPrefabPath] = d
-		a._dataDivisionSmallIconPath[d.DivisionSmallIconPath] = d
 		a._dataDivisionLevel[d.DivisionLevel] = d
+		a._dataDivisionSmallIconPath[d.DivisionSmallIconPath] = d
 	}
 }
 
@@ -67,9 +66,11 @@ func (a *RogueTournDivisionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournDivisionAccessor) ByDivisionIconPath(identifier string) (RogueTournDivision, error) {
 	if a._dataDivisionIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournDivision{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournDivision{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,27 +82,15 @@ func (a *RogueTournDivisionAccessor) ByDivisionIconPath(identifier string) (Rogu
 // Error is only non-nil if the source errors out
 func (a *RogueTournDivisionAccessor) ByDivisionIconPrefabPath(identifier string) (RogueTournDivision, error) {
 	if a._dataDivisionIconPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournDivision{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournDivision{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDivisionIconPrefabPath[identifier], nil
-}
-
-// ByDivisionSmallIconPath returns the RogueTournDivision uniquely identified by DivisionSmallIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *RogueTournDivisionAccessor) ByDivisionSmallIconPath(identifier string) (RogueTournDivision, error) {
-	if a._dataDivisionSmallIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournDivision{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDivisionSmallIconPath[identifier], nil
 }
 
 // ByDivisionLevel returns the RogueTournDivision uniquely identified by DivisionLevel
@@ -109,11 +98,29 @@ func (a *RogueTournDivisionAccessor) ByDivisionSmallIconPath(identifier string) 
 // Error is only non-nil if the source errors out
 func (a *RogueTournDivisionAccessor) ByDivisionLevel(identifier float64) (RogueTournDivision, error) {
 	if a._dataDivisionLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournDivision{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournDivision{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDivisionLevel[identifier], nil
+}
+
+// ByDivisionSmallIconPath returns the RogueTournDivision uniquely identified by DivisionSmallIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournDivisionAccessor) ByDivisionSmallIconPath(identifier string) (RogueTournDivision, error) {
+	if a._dataDivisionSmallIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournDivision{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDivisionSmallIconPath[identifier], nil
 }

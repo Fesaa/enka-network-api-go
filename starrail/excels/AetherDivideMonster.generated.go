@@ -40,7 +40,6 @@ func (a *AetherDivideMonsterAccessor) Raw() ([]AetherDivideMonster, error) {
 		if err != nil {
 			return []AetherDivideMonster{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *AetherDivideMonsterAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AetherDivideMonsterAccessor) ByMonsterID(identifier float64) (AetherDivideMonster, error) {
 	if a._dataMonsterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideMonster{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideMonster{}, err
+			}
 		}
 		a.GroupData()
 	}

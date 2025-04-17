@@ -15,9 +15,9 @@ type BoxingClubActivityQuest struct {
 }
 type BoxingClubActivityQuestAccessor struct {
 	_data            []BoxingClubActivityQuest
+	_dataChallengeID map[float64]BoxingClubActivityQuest
 	_dataID          map[float64]BoxingClubActivityQuest
 	_dataName        map[string]BoxingClubActivityQuest
-	_dataChallengeID map[float64]BoxingClubActivityQuest
 }
 
 // LoadData retrieves the data. Must be called before BoxingClubActivityQuest.GroupData
@@ -41,7 +41,6 @@ func (a *BoxingClubActivityQuestAccessor) Raw() ([]BoxingClubActivityQuest, erro
 		if err != nil {
 			return []BoxingClubActivityQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,10 +49,26 @@ func (a *BoxingClubActivityQuestAccessor) Raw() ([]BoxingClubActivityQuest, erro
 // Can be called manually in conjunction with BoxingClubActivityQuestAccessor.LoadData to preload everything
 func (a *BoxingClubActivityQuestAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataChallengeID[d.ChallengeID] = d
 		a._dataID[d.ID] = d
 		a._dataName[d.Name] = d
-		a._dataChallengeID[d.ChallengeID] = d
 	}
+}
+
+// ByChallengeID returns the BoxingClubActivityQuest uniquely identified by ChallengeID
+//
+// Error is only non-nil if the source errors out
+func (a *BoxingClubActivityQuestAccessor) ByChallengeID(identifier float64) (BoxingClubActivityQuest, error) {
+	if a._dataChallengeID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubActivityQuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataChallengeID[identifier], nil
 }
 
 // ByID returns the BoxingClubActivityQuest uniquely identified by ID
@@ -61,9 +76,11 @@ func (a *BoxingClubActivityQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BoxingClubActivityQuestAccessor) ByID(identifier float64) (BoxingClubActivityQuest, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubActivityQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubActivityQuest{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -75,25 +92,13 @@ func (a *BoxingClubActivityQuestAccessor) ByID(identifier float64) (BoxingClubAc
 // Error is only non-nil if the source errors out
 func (a *BoxingClubActivityQuestAccessor) ByName(identifier string) (BoxingClubActivityQuest, error) {
 	if a._dataName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubActivityQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubActivityQuest{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataName[identifier], nil
-}
-
-// ByChallengeID returns the BoxingClubActivityQuest uniquely identified by ChallengeID
-//
-// Error is only non-nil if the source errors out
-func (a *BoxingClubActivityQuestAccessor) ByChallengeID(identifier float64) (BoxingClubActivityQuest, error) {
-	if a._dataChallengeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubActivityQuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataChallengeID[identifier], nil
 }

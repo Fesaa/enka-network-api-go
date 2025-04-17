@@ -37,7 +37,6 @@ func (a *InControlMouseTypeInfoAccessor) Raw() ([]InControlMouseTypeInfo, error)
 		if err != nil {
 			return []InControlMouseTypeInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *InControlMouseTypeInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *InControlMouseTypeInfoAccessor) BycontrolType(identifier string) (InControlMouseTypeInfo, error) {
 	if a._dataControlType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InControlMouseTypeInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InControlMouseTypeInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

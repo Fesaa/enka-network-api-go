@@ -13,8 +13,8 @@ type ItemGotoData struct {
 }
 type ItemGotoDataAccessor struct {
 	_data       []ItemGotoData
-	_dataID     map[float64]ItemGotoData
 	_dataGotoID map[float64]ItemGotoData
+	_dataID     map[float64]ItemGotoData
 }
 
 // LoadData retrieves the data. Must be called before ItemGotoData.GroupData
@@ -38,7 +38,6 @@ func (a *ItemGotoDataAccessor) Raw() ([]ItemGotoData, error) {
 		if err != nil {
 			return []ItemGotoData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *ItemGotoDataAccessor) Raw() ([]ItemGotoData, error) {
 // Can be called manually in conjunction with ItemGotoDataAccessor.LoadData to preload everything
 func (a *ItemGotoDataAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataGotoID[d.GotoID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the ItemGotoData uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *ItemGotoDataAccessor) ByID(identifier float64) (ItemGotoData, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemGotoData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByGotoID returns the ItemGotoData uniquely identified by GotoID
@@ -71,11 +56,29 @@ func (a *ItemGotoDataAccessor) ByID(identifier float64) (ItemGotoData, error) {
 // Error is only non-nil if the source errors out
 func (a *ItemGotoDataAccessor) ByGotoID(identifier float64) (ItemGotoData, error) {
 	if a._dataGotoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemGotoData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemGotoData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGotoID[identifier], nil
+}
+
+// ByID returns the ItemGotoData uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ItemGotoDataAccessor) ByID(identifier float64) (ItemGotoData, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemGotoData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

@@ -15,8 +15,8 @@ type BackGroundMusicGroup struct {
 }
 type BackGroundMusicGroupAccessor struct {
 	_data          []BackGroundMusicGroup
-	_dataID        map[float64]BackGroundMusicGroup
 	_dataGroupIcon map[string]BackGroundMusicGroup
+	_dataID        map[float64]BackGroundMusicGroup
 }
 
 // LoadData retrieves the data. Must be called before BackGroundMusicGroup.GroupData
@@ -40,7 +40,6 @@ func (a *BackGroundMusicGroupAccessor) Raw() ([]BackGroundMusicGroup, error) {
 		if err != nil {
 			return []BackGroundMusicGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *BackGroundMusicGroupAccessor) Raw() ([]BackGroundMusicGroup, error) {
 // Can be called manually in conjunction with BackGroundMusicGroupAccessor.LoadData to preload everything
 func (a *BackGroundMusicGroupAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataGroupIcon[d.GroupIcon] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the BackGroundMusicGroup uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *BackGroundMusicGroupAccessor) ByID(identifier float64) (BackGroundMusicGroup, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BackGroundMusicGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByGroupIcon returns the BackGroundMusicGroup uniquely identified by GroupIcon
@@ -73,11 +58,29 @@ func (a *BackGroundMusicGroupAccessor) ByID(identifier float64) (BackGroundMusic
 // Error is only non-nil if the source errors out
 func (a *BackGroundMusicGroupAccessor) ByGroupIcon(identifier string) (BackGroundMusicGroup, error) {
 	if a._dataGroupIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BackGroundMusicGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BackGroundMusicGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGroupIcon[identifier], nil
+}
+
+// ByID returns the BackGroundMusicGroup uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *BackGroundMusicGroupAccessor) ByID(identifier float64) (BackGroundMusicGroup, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BackGroundMusicGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

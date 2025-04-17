@@ -46,7 +46,6 @@ func (a *RogueTournTitanTypeAccessor) Raw() ([]RogueTournTitanType, error) {
 		if err != nil {
 			return []RogueTournTitanType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -65,9 +64,11 @@ func (a *RogueTournTitanTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournTitanTypeAccessor) ByRogueTitanTalentIcon(identifier string) (RogueTournTitanType, error) {
 	if a._dataRogueTitanTalentIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournTitanType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournTitanType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -79,9 +80,11 @@ func (a *RogueTournTitanTypeAccessor) ByRogueTitanTalentIcon(identifier string) 
 // Error is only non-nil if the source errors out
 func (a *RogueTournTitanTypeAccessor) ByRogueTitanType(identifier string) (RogueTournTitanType, error) {
 	if a._dataRogueTitanType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournTitanType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournTitanType{}, err
+			}
 		}
 		a.GroupData()
 	}

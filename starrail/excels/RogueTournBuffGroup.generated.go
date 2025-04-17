@@ -38,7 +38,6 @@ func (a *RogueTournBuffGroupAccessor) Raw() ([]RogueTournBuffGroup, error) {
 		if err != nil {
 			return []RogueTournBuffGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueTournBuffGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournBuffGroupAccessor) ByRogueBuffGroupID(identifier float64) (RogueTournBuffGroup, error) {
 	if a._dataRogueBuffGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournBuffGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournBuffGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *ActivityConstantFightAccessor) Raw() ([]ActivityConstantFight, error) {
 		if err != nil {
 			return []ActivityConstantFight{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ActivityConstantFightAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityConstantFightAccessor) ByConstValueName(identifier string) (ActivityConstantFight, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityConstantFight{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityConstantFight{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *ActivityConstantFightAccessor) ByConstValueName(identifier string) (Act
 // Error is only non-nil if the source errors out
 func (a *ActivityConstantFightAccessor) ByValue(identifier string) (ActivityConstantFight, error) {
 	if a._dataValue == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityConstantFight{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityConstantFight{}, err
+			}
 		}
 		a.GroupData()
 	}

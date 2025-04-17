@@ -14,8 +14,8 @@ type BattlePassWeekConfig struct {
 }
 type BattlePassWeekConfigAccessor struct {
 	_data           []BattlePassWeekConfig
-	_dataID         map[float64]BattlePassWeekConfig
 	_dataBPLevelExp map[float64]BattlePassWeekConfig
+	_dataID         map[float64]BattlePassWeekConfig
 }
 
 // LoadData retrieves the data. Must be called before BattlePassWeekConfig.GroupData
@@ -39,7 +39,6 @@ func (a *BattlePassWeekConfigAccessor) Raw() ([]BattlePassWeekConfig, error) {
 		if err != nil {
 			return []BattlePassWeekConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *BattlePassWeekConfigAccessor) Raw() ([]BattlePassWeekConfig, error) {
 // Can be called manually in conjunction with BattlePassWeekConfigAccessor.LoadData to preload everything
 func (a *BattlePassWeekConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataBPLevelExp[d.BPLevelExp] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the BattlePassWeekConfig uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *BattlePassWeekConfigAccessor) ByID(identifier float64) (BattlePassWeekConfig, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattlePassWeekConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByBPLevelExp returns the BattlePassWeekConfig uniquely identified by BPLevelExp
@@ -72,11 +57,29 @@ func (a *BattlePassWeekConfigAccessor) ByID(identifier float64) (BattlePassWeekC
 // Error is only non-nil if the source errors out
 func (a *BattlePassWeekConfigAccessor) ByBPLevelExp(identifier float64) (BattlePassWeekConfig, error) {
 	if a._dataBPLevelExp == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattlePassWeekConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattlePassWeekConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBPLevelExp[identifier], nil
+}
+
+// ByID returns the BattlePassWeekConfig uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *BattlePassWeekConfigAccessor) ByID(identifier float64) (BattlePassWeekConfig, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattlePassWeekConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

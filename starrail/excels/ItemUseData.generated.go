@@ -39,7 +39,6 @@ func (a *ItemUseDataAccessor) Raw() ([]ItemUseData, error) {
 		if err != nil {
 			return []ItemUseData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ItemUseDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemUseDataAccessor) ByUseDataID(identifier float64) (ItemUseData, error) {
 	if a._dataUseDataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemUseData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemUseData{}, err
+			}
 		}
 		a.GroupData()
 	}

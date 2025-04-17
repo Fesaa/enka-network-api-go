@@ -19,10 +19,10 @@ type EventMuseumItemConfig struct {
 }
 type EventMuseumItemConfigAccessor struct {
 	_data                   []EventMuseumItemConfig
-	_dataMuseumItemID       map[float64]EventMuseumItemConfig
+	_dataEventMuseumItemID  map[float64]EventMuseumItemConfig
 	_dataMissionID          map[float64]EventMuseumItemConfig
 	_dataMissionStartString map[string]EventMuseumItemConfig
-	_dataEventMuseumItemID  map[float64]EventMuseumItemConfig
+	_dataMuseumItemID       map[float64]EventMuseumItemConfig
 }
 
 // LoadData retrieves the data. Must be called before EventMuseumItemConfig.GroupData
@@ -46,7 +46,6 @@ func (a *EventMuseumItemConfigAccessor) Raw() ([]EventMuseumItemConfig, error) {
 		if err != nil {
 			return []EventMuseumItemConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,25 +54,27 @@ func (a *EventMuseumItemConfigAccessor) Raw() ([]EventMuseumItemConfig, error) {
 // Can be called manually in conjunction with EventMuseumItemConfigAccessor.LoadData to preload everything
 func (a *EventMuseumItemConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataMuseumItemID[d.MuseumItemID] = d
+		a._dataEventMuseumItemID[d.EventMuseumItemID] = d
 		a._dataMissionID[d.MissionID] = d
 		a._dataMissionStartString[d.MissionStartString] = d
-		a._dataEventMuseumItemID[d.EventMuseumItemID] = d
+		a._dataMuseumItemID[d.MuseumItemID] = d
 	}
 }
 
-// ByMuseumItemID returns the EventMuseumItemConfig uniquely identified by MuseumItemID
+// ByEventMuseumItemID returns the EventMuseumItemConfig uniquely identified by EventMuseumItemID
 //
 // Error is only non-nil if the source errors out
-func (a *EventMuseumItemConfigAccessor) ByMuseumItemID(identifier float64) (EventMuseumItemConfig, error) {
-	if a._dataMuseumItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventMuseumItemConfig{}, err
+func (a *EventMuseumItemConfigAccessor) ByEventMuseumItemID(identifier float64) (EventMuseumItemConfig, error) {
+	if a._dataEventMuseumItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventMuseumItemConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataMuseumItemID[identifier], nil
+	return a._dataEventMuseumItemID[identifier], nil
 }
 
 // ByMissionID returns the EventMuseumItemConfig uniquely identified by MissionID
@@ -81,9 +82,11 @@ func (a *EventMuseumItemConfigAccessor) ByMuseumItemID(identifier float64) (Even
 // Error is only non-nil if the source errors out
 func (a *EventMuseumItemConfigAccessor) ByMissionID(identifier float64) (EventMuseumItemConfig, error) {
 	if a._dataMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventMuseumItemConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventMuseumItemConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -95,25 +98,29 @@ func (a *EventMuseumItemConfigAccessor) ByMissionID(identifier float64) (EventMu
 // Error is only non-nil if the source errors out
 func (a *EventMuseumItemConfigAccessor) ByMissionStartString(identifier string) (EventMuseumItemConfig, error) {
 	if a._dataMissionStartString == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventMuseumItemConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventMuseumItemConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMissionStartString[identifier], nil
 }
 
-// ByEventMuseumItemID returns the EventMuseumItemConfig uniquely identified by EventMuseumItemID
+// ByMuseumItemID returns the EventMuseumItemConfig uniquely identified by MuseumItemID
 //
 // Error is only non-nil if the source errors out
-func (a *EventMuseumItemConfigAccessor) ByEventMuseumItemID(identifier float64) (EventMuseumItemConfig, error) {
-	if a._dataEventMuseumItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventMuseumItemConfig{}, err
+func (a *EventMuseumItemConfigAccessor) ByMuseumItemID(identifier float64) (EventMuseumItemConfig, error) {
+	if a._dataMuseumItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventMuseumItemConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataEventMuseumItemID[identifier], nil
+	return a._dataMuseumItemID[identifier], nil
 }

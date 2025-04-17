@@ -37,7 +37,6 @@ func (a *MappingInfoEntranceConfigAccessor) Raw() ([]MappingInfoEntranceConfig, 
 		if err != nil {
 			return []MappingInfoEntranceConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MappingInfoEntranceConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MappingInfoEntranceConfigAccessor) ByID(identifier float64) (MappingInfoEntranceConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MappingInfoEntranceConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MappingInfoEntranceConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

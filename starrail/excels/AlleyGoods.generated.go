@@ -42,7 +42,6 @@ func (a *AlleyGoodsAccessor) Raw() ([]AlleyGoods, error) {
 		if err != nil {
 			return []AlleyGoods{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *AlleyGoodsAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AlleyGoodsAccessor) ByGoodsID(identifier float64) (AlleyGoods, error) {
 	if a._dataGoodsID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyGoods{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyGoods{}, err
+			}
 		}
 		a.GroupData()
 	}

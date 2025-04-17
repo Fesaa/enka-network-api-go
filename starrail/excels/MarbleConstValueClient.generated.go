@@ -38,7 +38,6 @@ func (a *MarbleConstValueClientAccessor) Raw() ([]MarbleConstValueClient, error)
 		if err != nil {
 			return []MarbleConstValueClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MarbleConstValueClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleConstValueClientAccessor) ByConstValueName(identifier string) (MarbleConstValueClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleConstValueClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleConstValueClient{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -39,7 +39,6 @@ func (a *ActivityRaidCollectionQuestAccessor) Raw() ([]ActivityRaidCollectionQue
 		if err != nil {
 			return []ActivityRaidCollectionQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ActivityRaidCollectionQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityRaidCollectionQuestAccessor) ByQuestTabID(identifier float64) (ActivityRaidCollectionQuest, error) {
 	if a._dataQuestTabID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidCollectionQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidCollectionQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

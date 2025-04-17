@@ -17,8 +17,8 @@ type SpecialNPCData struct {
 type SpecialNPCDataAccessor struct {
 	_data           []SpecialNPCData
 	_dataID         map[float64]SpecialNPCData
-	_dataPrefabPath map[string]SpecialNPCData
 	_dataJsonPath   map[string]SpecialNPCData
+	_dataPrefabPath map[string]SpecialNPCData
 }
 
 // LoadData retrieves the data. Must be called before SpecialNPCData.GroupData
@@ -42,7 +42,6 @@ func (a *SpecialNPCDataAccessor) Raw() ([]SpecialNPCData, error) {
 		if err != nil {
 			return []SpecialNPCData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,8 +51,8 @@ func (a *SpecialNPCDataAccessor) Raw() ([]SpecialNPCData, error) {
 func (a *SpecialNPCDataAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
-		a._dataPrefabPath[d.PrefabPath] = d
 		a._dataJsonPath[d.JsonPath] = d
+		a._dataPrefabPath[d.PrefabPath] = d
 	}
 }
 
@@ -62,27 +61,15 @@ func (a *SpecialNPCDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpecialNPCDataAccessor) ByID(identifier float64) (SpecialNPCData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialNPCData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialNPCData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
-}
-
-// ByPrefabPath returns the SpecialNPCData uniquely identified by PrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *SpecialNPCDataAccessor) ByPrefabPath(identifier string) (SpecialNPCData, error) {
-	if a._dataPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialNPCData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPrefabPath[identifier], nil
 }
 
 // ByJsonPath returns the SpecialNPCData uniquely identified by JsonPath
@@ -90,11 +77,29 @@ func (a *SpecialNPCDataAccessor) ByPrefabPath(identifier string) (SpecialNPCData
 // Error is only non-nil if the source errors out
 func (a *SpecialNPCDataAccessor) ByJsonPath(identifier string) (SpecialNPCData, error) {
 	if a._dataJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialNPCData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialNPCData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataJsonPath[identifier], nil
+}
+
+// ByPrefabPath returns the SpecialNPCData uniquely identified by PrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *SpecialNPCDataAccessor) ByPrefabPath(identifier string) (SpecialNPCData, error) {
+	if a._dataPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialNPCData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPrefabPath[identifier], nil
 }

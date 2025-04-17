@@ -19,11 +19,11 @@ type RogueDLCEntrance struct {
 }
 type RogueDLCEntranceAccessor struct {
 	_data                    []RogueDLCEntrance
-	_dataSwitchBannerImgPath map[string]RogueDLCEntrance
-	_dataID                  map[float64]RogueDLCEntrance
-	_dataSubType             map[string]RogueDLCEntrance
 	_dataButtonPath          map[string]RogueDLCEntrance
+	_dataID                  map[float64]RogueDLCEntrance
 	_dataPatternBgPath       map[string]RogueDLCEntrance
+	_dataSubType             map[string]RogueDLCEntrance
+	_dataSwitchBannerImgPath map[string]RogueDLCEntrance
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCEntrance.GroupData
@@ -47,7 +47,6 @@ func (a *RogueDLCEntranceAccessor) Raw() ([]RogueDLCEntrance, error) {
 		if err != nil {
 			return []RogueDLCEntrance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,54 +55,12 @@ func (a *RogueDLCEntranceAccessor) Raw() ([]RogueDLCEntrance, error) {
 // Can be called manually in conjunction with RogueDLCEntranceAccessor.LoadData to preload everything
 func (a *RogueDLCEntranceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSwitchBannerImgPath[d.SwitchBannerImgPath] = d
-		a._dataID[d.ID] = d
-		a._dataSubType[d.SubType] = d
 		a._dataButtonPath[d.ButtonPath] = d
+		a._dataID[d.ID] = d
 		a._dataPatternBgPath[d.PatternBgPath] = d
+		a._dataSubType[d.SubType] = d
+		a._dataSwitchBannerImgPath[d.SwitchBannerImgPath] = d
 	}
-}
-
-// BySwitchBannerImgPath returns the RogueDLCEntrance uniquely identified by SwitchBannerImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCEntranceAccessor) BySwitchBannerImgPath(identifier string) (RogueDLCEntrance, error) {
-	if a._dataSwitchBannerImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCEntrance{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSwitchBannerImgPath[identifier], nil
-}
-
-// ByID returns the RogueDLCEntrance uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCEntranceAccessor) ByID(identifier float64) (RogueDLCEntrance, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCEntrance{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
-}
-
-// BySubType returns the RogueDLCEntrance uniquely identified by SubType
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCEntranceAccessor) BySubType(identifier string) (RogueDLCEntrance, error) {
-	if a._dataSubType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCEntrance{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSubType[identifier], nil
 }
 
 // ByButtonPath returns the RogueDLCEntrance uniquely identified by ButtonPath
@@ -111,13 +68,31 @@ func (a *RogueDLCEntranceAccessor) BySubType(identifier string) (RogueDLCEntranc
 // Error is only non-nil if the source errors out
 func (a *RogueDLCEntranceAccessor) ByButtonPath(identifier string) (RogueDLCEntrance, error) {
 	if a._dataButtonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataButtonPath[identifier], nil
+}
+
+// ByID returns the RogueDLCEntrance uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCEntranceAccessor) ByID(identifier float64) (RogueDLCEntrance, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCEntrance{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }
 
 // ByPatternBgPath returns the RogueDLCEntrance uniquely identified by PatternBgPath
@@ -125,11 +100,45 @@ func (a *RogueDLCEntranceAccessor) ByButtonPath(identifier string) (RogueDLCEntr
 // Error is only non-nil if the source errors out
 func (a *RogueDLCEntranceAccessor) ByPatternBgPath(identifier string) (RogueDLCEntrance, error) {
 	if a._dataPatternBgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPatternBgPath[identifier], nil
+}
+
+// BySubType returns the RogueDLCEntrance uniquely identified by SubType
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCEntranceAccessor) BySubType(identifier string) (RogueDLCEntrance, error) {
+	if a._dataSubType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCEntrance{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSubType[identifier], nil
+}
+
+// BySwitchBannerImgPath returns the RogueDLCEntrance uniquely identified by SwitchBannerImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCEntranceAccessor) BySwitchBannerImgPath(identifier string) (RogueDLCEntrance, error) {
+	if a._dataSwitchBannerImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCEntrance{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSwitchBannerImgPath[identifier], nil
 }

@@ -27,10 +27,10 @@ type RogueDLCAeonCabinetFinishAeonDimensionPointList struct {
 }
 type RogueDLCAeonCabinetAccessor struct {
 	_data            []RogueDLCAeonCabinet
+	_dataCabinetID   map[float64]RogueDLCAeonCabinet
 	_dataCabinetIcon map[string]RogueDLCAeonCabinet
 	_dataQuestID     map[float64]RogueDLCAeonCabinet
 	_dataSort        map[float64]RogueDLCAeonCabinet
-	_dataCabinetID   map[float64]RogueDLCAeonCabinet
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCAeonCabinet.GroupData
@@ -54,7 +54,6 @@ func (a *RogueDLCAeonCabinetAccessor) Raw() ([]RogueDLCAeonCabinet, error) {
 		if err != nil {
 			return []RogueDLCAeonCabinet{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,11 +62,27 @@ func (a *RogueDLCAeonCabinetAccessor) Raw() ([]RogueDLCAeonCabinet, error) {
 // Can be called manually in conjunction with RogueDLCAeonCabinetAccessor.LoadData to preload everything
 func (a *RogueDLCAeonCabinetAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataCabinetID[d.CabinetID] = d
 		a._dataCabinetIcon[d.CabinetIcon] = d
 		a._dataQuestID[d.QuestID] = d
 		a._dataSort[d.Sort] = d
-		a._dataCabinetID[d.CabinetID] = d
 	}
+}
+
+// ByCabinetID returns the RogueDLCAeonCabinet uniquely identified by CabinetID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonCabinetAccessor) ByCabinetID(identifier float64) (RogueDLCAeonCabinet, error) {
+	if a._dataCabinetID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonCabinet{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataCabinetID[identifier], nil
 }
 
 // ByCabinetIcon returns the RogueDLCAeonCabinet uniquely identified by CabinetIcon
@@ -75,9 +90,11 @@ func (a *RogueDLCAeonCabinetAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonCabinetAccessor) ByCabinetIcon(identifier string) (RogueDLCAeonCabinet, error) {
 	if a._dataCabinetIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonCabinet{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonCabinet{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -89,9 +106,11 @@ func (a *RogueDLCAeonCabinetAccessor) ByCabinetIcon(identifier string) (RogueDLC
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonCabinetAccessor) ByQuestID(identifier float64) (RogueDLCAeonCabinet, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonCabinet{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonCabinet{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -103,25 +122,13 @@ func (a *RogueDLCAeonCabinetAccessor) ByQuestID(identifier float64) (RogueDLCAeo
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonCabinetAccessor) BySort(identifier float64) (RogueDLCAeonCabinet, error) {
 	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonCabinet{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonCabinet{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSort[identifier], nil
-}
-
-// ByCabinetID returns the RogueDLCAeonCabinet uniquely identified by CabinetID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonCabinetAccessor) ByCabinetID(identifier float64) (RogueDLCAeonCabinet, error) {
-	if a._dataCabinetID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonCabinet{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataCabinetID[identifier], nil
 }

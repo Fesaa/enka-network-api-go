@@ -41,7 +41,6 @@ func (a *PamMoodAccessor) Raw() ([]PamMood, error) {
 		if err != nil {
 			return []PamMood{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *PamMoodAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PamMoodAccessor) ByPamMood(identifier string) (PamMood, error) {
 	if a._dataPamMood == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamMood{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamMood{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *PamMoodAccessor) ByPamMood(identifier string) (PamMood, error) {
 // Error is only non-nil if the source errors out
 func (a *PamMoodAccessor) ByPerformanceID(identifier float64) (PamMood, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamMood{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamMood{}, err
+			}
 		}
 		a.GroupData()
 	}

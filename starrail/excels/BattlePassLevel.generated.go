@@ -41,7 +41,6 @@ func (a *BattlePassLevelAccessor) Raw() ([]BattlePassLevel, error) {
 		if err != nil {
 			return []BattlePassLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

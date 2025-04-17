@@ -40,7 +40,6 @@ func (a *StroyLineTrialAvatarDataAccessor) Raw() ([]StroyLineTrialAvatarData, er
 		if err != nil {
 			return []StroyLineTrialAvatarData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *StroyLineTrialAvatarDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StroyLineTrialAvatarDataAccessor) ByStoryLineID(identifier float64) (StroyLineTrialAvatarData, error) {
 	if a._dataStoryLineID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StroyLineTrialAvatarData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StroyLineTrialAvatarData{}, err
+			}
 		}
 		a.GroupData()
 	}

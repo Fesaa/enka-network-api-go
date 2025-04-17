@@ -26,11 +26,11 @@ type ActivityExpedition struct {
 }
 type ActivityExpeditionAccessor struct {
 	_data                    []ActivityExpedition
-	_dataRewardID            map[float64]ActivityExpedition
 	_dataExpeditionID        map[float64]ActivityExpedition
 	_dataGrade1ExtraRewardID map[float64]ActivityExpedition
 	_dataGrade2ExtraRewardID map[float64]ActivityExpedition
 	_dataGrade3ExtraRewardID map[float64]ActivityExpedition
+	_dataRewardID            map[float64]ActivityExpedition
 }
 
 // LoadData retrieves the data. Must be called before ActivityExpedition.GroupData
@@ -54,7 +54,6 @@ func (a *ActivityExpeditionAccessor) Raw() ([]ActivityExpedition, error) {
 		if err != nil {
 			return []ActivityExpedition{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,26 +62,12 @@ func (a *ActivityExpeditionAccessor) Raw() ([]ActivityExpedition, error) {
 // Can be called manually in conjunction with ActivityExpeditionAccessor.LoadData to preload everything
 func (a *ActivityExpeditionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRewardID[d.RewardID] = d
 		a._dataExpeditionID[d.ExpeditionID] = d
 		a._dataGrade1ExtraRewardID[d.Grade1ExtraRewardID] = d
 		a._dataGrade2ExtraRewardID[d.Grade2ExtraRewardID] = d
 		a._dataGrade3ExtraRewardID[d.Grade3ExtraRewardID] = d
+		a._dataRewardID[d.RewardID] = d
 	}
-}
-
-// ByRewardID returns the ActivityExpedition uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityExpeditionAccessor) ByRewardID(identifier float64) (ActivityExpedition, error) {
-	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityExpedition{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
 }
 
 // ByExpeditionID returns the ActivityExpedition uniquely identified by ExpeditionID
@@ -90,9 +75,11 @@ func (a *ActivityExpeditionAccessor) ByRewardID(identifier float64) (ActivityExp
 // Error is only non-nil if the source errors out
 func (a *ActivityExpeditionAccessor) ByExpeditionID(identifier float64) (ActivityExpedition, error) {
 	if a._dataExpeditionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityExpedition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityExpedition{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -104,9 +91,11 @@ func (a *ActivityExpeditionAccessor) ByExpeditionID(identifier float64) (Activit
 // Error is only non-nil if the source errors out
 func (a *ActivityExpeditionAccessor) ByGrade1ExtraRewardID(identifier float64) (ActivityExpedition, error) {
 	if a._dataGrade1ExtraRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityExpedition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityExpedition{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -118,9 +107,11 @@ func (a *ActivityExpeditionAccessor) ByGrade1ExtraRewardID(identifier float64) (
 // Error is only non-nil if the source errors out
 func (a *ActivityExpeditionAccessor) ByGrade2ExtraRewardID(identifier float64) (ActivityExpedition, error) {
 	if a._dataGrade2ExtraRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityExpedition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityExpedition{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -132,11 +123,29 @@ func (a *ActivityExpeditionAccessor) ByGrade2ExtraRewardID(identifier float64) (
 // Error is only non-nil if the source errors out
 func (a *ActivityExpeditionAccessor) ByGrade3ExtraRewardID(identifier float64) (ActivityExpedition, error) {
 	if a._dataGrade3ExtraRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityExpedition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityExpedition{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGrade3ExtraRewardID[identifier], nil
+}
+
+// ByRewardID returns the ActivityExpedition uniquely identified by RewardID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityExpeditionAccessor) ByRewardID(identifier float64) (ActivityExpedition, error) {
+	if a._dataRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityExpedition{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardID[identifier], nil
 }

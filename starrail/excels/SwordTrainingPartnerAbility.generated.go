@@ -43,7 +43,6 @@ func (a *SwordTrainingPartnerAbilityAccessor) Raw() ([]SwordTrainingPartnerAbili
 		if err != nil {
 			return []SwordTrainingPartnerAbility{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *SwordTrainingPartnerAbilityAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingPartnerAbilityAccessor) ByPartnerAbilityID(identifier float64) (SwordTrainingPartnerAbility, error) {
 	if a._dataPartnerAbilityID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingPartnerAbility{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingPartnerAbility{}, err
+			}
 		}
 		a.GroupData()
 	}

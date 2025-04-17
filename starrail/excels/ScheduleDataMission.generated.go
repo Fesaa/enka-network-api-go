@@ -38,7 +38,6 @@ func (a *ScheduleDataMissionAccessor) Raw() ([]ScheduleDataMission, error) {
 		if err != nil {
 			return []ScheduleDataMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ScheduleDataMissionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataMissionAccessor) ByID(identifier float64) (ScheduleDataMission, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataMission{}, err
+			}
 		}
 		a.GroupData()
 	}

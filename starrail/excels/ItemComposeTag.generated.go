@@ -39,7 +39,6 @@ func (a *ItemComposeTagAccessor) Raw() ([]ItemComposeTag, error) {
 		if err != nil {
 			return []ItemComposeTag{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ItemComposeTagAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemComposeTagAccessor) ByItemComposeTagID(identifier float64) (ItemComposeTag, error) {
 	if a._dataItemComposeTagID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemComposeTag{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemComposeTag{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *ItemComposeTagAccessor) ByItemComposeTagID(identifier float64) (ItemCom
 // Error is only non-nil if the source errors out
 func (a *ItemComposeTagAccessor) ByTagTextmapID(identifier string) (ItemComposeTag, error) {
 	if a._dataTagTextmapID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemComposeTag{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemComposeTag{}, err
+			}
 		}
 		a.GroupData()
 	}

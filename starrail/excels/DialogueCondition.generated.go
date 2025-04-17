@@ -39,7 +39,6 @@ func (a *DialogueConditionAccessor) Raw() ([]DialogueCondition, error) {
 		if err != nil {
 			return []DialogueCondition{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *DialogueConditionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DialogueConditionAccessor) ByID(identifier float64) (DialogueCondition, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DialogueCondition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DialogueCondition{}, err
+			}
 		}
 		a.GroupData()
 	}

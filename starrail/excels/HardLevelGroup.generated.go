@@ -45,7 +45,6 @@ func (a *HardLevelGroupAccessor) Raw() ([]HardLevelGroup, error) {
 		if err != nil {
 			return []HardLevelGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

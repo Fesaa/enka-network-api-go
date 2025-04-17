@@ -24,13 +24,13 @@ type RogueDLCAeonDice struct {
 }
 type RogueDLCAeonDiceAccessor struct {
 	_data                     []RogueDLCAeonDice
-	_dataSoundRoll            map[string]RogueDLCAeonDice
-	_dataDiceIcon             map[string]RogueDLCAeonDice
-	_dataSoundSuspensionStart map[string]RogueDLCAeonDice
-	_dataSoundSuspensionStop  map[string]RogueDLCAeonDice
 	_dataAeonDiceID           map[float64]RogueDLCAeonDice
+	_dataDiceIcon             map[string]RogueDLCAeonDice
 	_dataDiceModel            map[string]RogueDLCAeonDice
 	_dataSoundReRoll          map[string]RogueDLCAeonDice
+	_dataSoundRoll            map[string]RogueDLCAeonDice
+	_dataSoundSuspensionStart map[string]RogueDLCAeonDice
+	_dataSoundSuspensionStop  map[string]RogueDLCAeonDice
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCAeonDice.GroupData
@@ -54,7 +54,6 @@ func (a *RogueDLCAeonDiceAccessor) Raw() ([]RogueDLCAeonDice, error) {
 		if err != nil {
 			return []RogueDLCAeonDice{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,70 +62,14 @@ func (a *RogueDLCAeonDiceAccessor) Raw() ([]RogueDLCAeonDice, error) {
 // Can be called manually in conjunction with RogueDLCAeonDiceAccessor.LoadData to preload everything
 func (a *RogueDLCAeonDiceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSoundRoll[d.SoundRoll] = d
-		a._dataDiceIcon[d.DiceIcon] = d
-		a._dataSoundSuspensionStart[d.SoundSuspensionStart] = d
-		a._dataSoundSuspensionStop[d.SoundSuspensionStop] = d
 		a._dataAeonDiceID[d.AeonDiceID] = d
+		a._dataDiceIcon[d.DiceIcon] = d
 		a._dataDiceModel[d.DiceModel] = d
 		a._dataSoundReRoll[d.SoundReRoll] = d
+		a._dataSoundRoll[d.SoundRoll] = d
+		a._dataSoundSuspensionStart[d.SoundSuspensionStart] = d
+		a._dataSoundSuspensionStop[d.SoundSuspensionStop] = d
 	}
-}
-
-// BySoundRoll returns the RogueDLCAeonDice uniquely identified by SoundRoll
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonDiceAccessor) BySoundRoll(identifier string) (RogueDLCAeonDice, error) {
-	if a._dataSoundRoll == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDice{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSoundRoll[identifier], nil
-}
-
-// ByDiceIcon returns the RogueDLCAeonDice uniquely identified by DiceIcon
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonDiceAccessor) ByDiceIcon(identifier string) (RogueDLCAeonDice, error) {
-	if a._dataDiceIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDice{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDiceIcon[identifier], nil
-}
-
-// BySoundSuspensionStart returns the RogueDLCAeonDice uniquely identified by SoundSuspensionStart
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonDiceAccessor) BySoundSuspensionStart(identifier string) (RogueDLCAeonDice, error) {
-	if a._dataSoundSuspensionStart == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDice{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSoundSuspensionStart[identifier], nil
-}
-
-// BySoundSuspensionStop returns the RogueDLCAeonDice uniquely identified by SoundSuspensionStop
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonDiceAccessor) BySoundSuspensionStop(identifier string) (RogueDLCAeonDice, error) {
-	if a._dataSoundSuspensionStop == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDice{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSoundSuspensionStop[identifier], nil
 }
 
 // ByAeonDiceID returns the RogueDLCAeonDice uniquely identified by AeonDiceID
@@ -134,13 +77,31 @@ func (a *RogueDLCAeonDiceAccessor) BySoundSuspensionStop(identifier string) (Rog
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonDiceAccessor) ByAeonDiceID(identifier float64) (RogueDLCAeonDice, error) {
 	if a._dataAeonDiceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDice{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDice{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAeonDiceID[identifier], nil
+}
+
+// ByDiceIcon returns the RogueDLCAeonDice uniquely identified by DiceIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonDiceAccessor) ByDiceIcon(identifier string) (RogueDLCAeonDice, error) {
+	if a._dataDiceIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDice{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDiceIcon[identifier], nil
 }
 
 // ByDiceModel returns the RogueDLCAeonDice uniquely identified by DiceModel
@@ -148,9 +109,11 @@ func (a *RogueDLCAeonDiceAccessor) ByAeonDiceID(identifier float64) (RogueDLCAeo
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonDiceAccessor) ByDiceModel(identifier string) (RogueDLCAeonDice, error) {
 	if a._dataDiceModel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDice{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDice{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -162,11 +125,61 @@ func (a *RogueDLCAeonDiceAccessor) ByDiceModel(identifier string) (RogueDLCAeonD
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonDiceAccessor) BySoundReRoll(identifier string) (RogueDLCAeonDice, error) {
 	if a._dataSoundReRoll == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDice{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDice{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSoundReRoll[identifier], nil
+}
+
+// BySoundRoll returns the RogueDLCAeonDice uniquely identified by SoundRoll
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonDiceAccessor) BySoundRoll(identifier string) (RogueDLCAeonDice, error) {
+	if a._dataSoundRoll == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDice{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSoundRoll[identifier], nil
+}
+
+// BySoundSuspensionStart returns the RogueDLCAeonDice uniquely identified by SoundSuspensionStart
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonDiceAccessor) BySoundSuspensionStart(identifier string) (RogueDLCAeonDice, error) {
+	if a._dataSoundSuspensionStart == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDice{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSoundSuspensionStart[identifier], nil
+}
+
+// BySoundSuspensionStop returns the RogueDLCAeonDice uniquely identified by SoundSuspensionStop
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonDiceAccessor) BySoundSuspensionStop(identifier string) (RogueDLCAeonDice, error) {
+	if a._dataSoundSuspensionStop == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDice{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSoundSuspensionStop[identifier], nil
 }

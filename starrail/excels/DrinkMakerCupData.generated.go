@@ -22,10 +22,10 @@ type DrinkMakerCupData struct {
 }
 type DrinkMakerCupDataAccessor struct {
 	_data           []DrinkMakerCupData
-	_dataIconPath   map[string]DrinkMakerCupData
-	_dataCupID      map[float64]DrinkMakerCupData
-	_dataPrefabPath map[string]DrinkMakerCupData
 	_dataAudioEvent map[string]DrinkMakerCupData
+	_dataCupID      map[float64]DrinkMakerCupData
+	_dataIconPath   map[string]DrinkMakerCupData
+	_dataPrefabPath map[string]DrinkMakerCupData
 }
 
 // LoadData retrieves the data. Must be called before DrinkMakerCupData.GroupData
@@ -49,7 +49,6 @@ func (a *DrinkMakerCupDataAccessor) Raw() ([]DrinkMakerCupData, error) {
 		if err != nil {
 			return []DrinkMakerCupData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,53 +57,11 @@ func (a *DrinkMakerCupDataAccessor) Raw() ([]DrinkMakerCupData, error) {
 // Can be called manually in conjunction with DrinkMakerCupDataAccessor.LoadData to preload everything
 func (a *DrinkMakerCupDataAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIconPath[d.IconPath] = d
-		a._dataCupID[d.CupID] = d
-		a._dataPrefabPath[d.PrefabPath] = d
 		a._dataAudioEvent[d.AudioEvent] = d
+		a._dataCupID[d.CupID] = d
+		a._dataIconPath[d.IconPath] = d
+		a._dataPrefabPath[d.PrefabPath] = d
 	}
-}
-
-// ByIconPath returns the DrinkMakerCupData uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerCupDataAccessor) ByIconPath(identifier string) (DrinkMakerCupData, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerCupData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
-}
-
-// ByCupID returns the DrinkMakerCupData uniquely identified by CupID
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerCupDataAccessor) ByCupID(identifier float64) (DrinkMakerCupData, error) {
-	if a._dataCupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerCupData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataCupID[identifier], nil
-}
-
-// ByPrefabPath returns the DrinkMakerCupData uniquely identified by PrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerCupDataAccessor) ByPrefabPath(identifier string) (DrinkMakerCupData, error) {
-	if a._dataPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerCupData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPrefabPath[identifier], nil
 }
 
 // ByAudioEvent returns the DrinkMakerCupData uniquely identified by AudioEvent
@@ -112,11 +69,61 @@ func (a *DrinkMakerCupDataAccessor) ByPrefabPath(identifier string) (DrinkMakerC
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerCupDataAccessor) ByAudioEvent(identifier string) (DrinkMakerCupData, error) {
 	if a._dataAudioEvent == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerCupData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerCupData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAudioEvent[identifier], nil
+}
+
+// ByCupID returns the DrinkMakerCupData uniquely identified by CupID
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerCupDataAccessor) ByCupID(identifier float64) (DrinkMakerCupData, error) {
+	if a._dataCupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerCupData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataCupID[identifier], nil
+}
+
+// ByIconPath returns the DrinkMakerCupData uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerCupDataAccessor) ByIconPath(identifier string) (DrinkMakerCupData, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerCupData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
+}
+
+// ByPrefabPath returns the DrinkMakerCupData uniquely identified by PrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerCupDataAccessor) ByPrefabPath(identifier string) (DrinkMakerCupData, error) {
+	if a._dataPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerCupData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPrefabPath[identifier], nil
 }

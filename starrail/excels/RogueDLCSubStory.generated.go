@@ -18,9 +18,9 @@ type RogueDLCSubStory struct {
 }
 type RogueDLCSubStoryAccessor struct {
 	_data                   []RogueDLCSubStory
+	_dataLevelGraphPath     map[string]RogueDLCSubStory
 	_dataOptionPath         map[string]RogueDLCSubStory
 	_dataRogueDLCSubStoryID map[float64]RogueDLCSubStory
-	_dataLevelGraphPath     map[string]RogueDLCSubStory
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCSubStory.GroupData
@@ -44,7 +44,6 @@ func (a *RogueDLCSubStoryAccessor) Raw() ([]RogueDLCSubStory, error) {
 		if err != nil {
 			return []RogueDLCSubStory{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,10 +52,26 @@ func (a *RogueDLCSubStoryAccessor) Raw() ([]RogueDLCSubStory, error) {
 // Can be called manually in conjunction with RogueDLCSubStoryAccessor.LoadData to preload everything
 func (a *RogueDLCSubStoryAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataLevelGraphPath[d.LevelGraphPath] = d
 		a._dataOptionPath[d.OptionPath] = d
 		a._dataRogueDLCSubStoryID[d.RogueDLCSubStoryID] = d
-		a._dataLevelGraphPath[d.LevelGraphPath] = d
 	}
+}
+
+// ByLevelGraphPath returns the RogueDLCSubStory uniquely identified by LevelGraphPath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCSubStoryAccessor) ByLevelGraphPath(identifier string) (RogueDLCSubStory, error) {
+	if a._dataLevelGraphPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCSubStory{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataLevelGraphPath[identifier], nil
 }
 
 // ByOptionPath returns the RogueDLCSubStory uniquely identified by OptionPath
@@ -64,9 +79,11 @@ func (a *RogueDLCSubStoryAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCSubStoryAccessor) ByOptionPath(identifier string) (RogueDLCSubStory, error) {
 	if a._dataOptionPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCSubStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCSubStory{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,25 +95,13 @@ func (a *RogueDLCSubStoryAccessor) ByOptionPath(identifier string) (RogueDLCSubS
 // Error is only non-nil if the source errors out
 func (a *RogueDLCSubStoryAccessor) ByRogueDLCSubStoryID(identifier float64) (RogueDLCSubStory, error) {
 	if a._dataRogueDLCSubStoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCSubStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCSubStory{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRogueDLCSubStoryID[identifier], nil
-}
-
-// ByLevelGraphPath returns the RogueDLCSubStory uniquely identified by LevelGraphPath
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCSubStoryAccessor) ByLevelGraphPath(identifier string) (RogueDLCSubStory, error) {
-	if a._dataLevelGraphPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCSubStory{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataLevelGraphPath[identifier], nil
 }

@@ -39,7 +39,6 @@ func (a *StoryLineFloorDataAccessor) Raw() ([]StoryLineFloorData, error) {
 		if err != nil {
 			return []StoryLineFloorData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *StoryLineFloorDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StoryLineFloorDataAccessor) ByConditionExpression(identifier string) (StoryLineFloorData, error) {
 	if a._dataConditionExpression == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StoryLineFloorData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StoryLineFloorData{}, err
+			}
 		}
 		a.GroupData()
 	}

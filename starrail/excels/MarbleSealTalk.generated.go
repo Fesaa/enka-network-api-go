@@ -40,7 +40,6 @@ func (a *MarbleSealTalkAccessor) Raw() ([]MarbleSealTalk, error) {
 		if err != nil {
 			return []MarbleSealTalk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *MarbleSealTalkAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleSealTalkAccessor) ByID(identifier float64) (MarbleSealTalk, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleSealTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleSealTalk{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *MarbleSealTalkAccessor) ByID(identifier float64) (MarbleSealTalk, error
 // Error is only non-nil if the source errors out
 func (a *MarbleSealTalkAccessor) ByVoiceEvt(identifier string) (MarbleSealTalk, error) {
 	if a._dataVoiceEvt == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleSealTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleSealTalk{}, err
+			}
 		}
 		a.GroupData()
 	}

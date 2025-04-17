@@ -24,8 +24,8 @@ type SwordTrainingStoryLine struct {
 }
 type SwordTrainingStoryLineAccessor struct {
 	_data                []SwordTrainingStoryLine
-	_dataRewardID        map[float64]SwordTrainingStoryLine
 	_dataEndingOptionKey map[string]SwordTrainingStoryLine
+	_dataRewardID        map[float64]SwordTrainingStoryLine
 	_dataStoryLine       map[float64]SwordTrainingStoryLine
 }
 
@@ -50,7 +50,6 @@ func (a *SwordTrainingStoryLineAccessor) Raw() ([]SwordTrainingStoryLine, error)
 		if err != nil {
 			return []SwordTrainingStoryLine{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,24 +58,10 @@ func (a *SwordTrainingStoryLineAccessor) Raw() ([]SwordTrainingStoryLine, error)
 // Can be called manually in conjunction with SwordTrainingStoryLineAccessor.LoadData to preload everything
 func (a *SwordTrainingStoryLineAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRewardID[d.RewardID] = d
 		a._dataEndingOptionKey[d.EndingOptionKey] = d
+		a._dataRewardID[d.RewardID] = d
 		a._dataStoryLine[d.StoryLine] = d
 	}
-}
-
-// ByRewardID returns the SwordTrainingStoryLine uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *SwordTrainingStoryLineAccessor) ByRewardID(identifier float64) (SwordTrainingStoryLine, error) {
-	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingStoryLine{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
 }
 
 // ByEndingOptionKey returns the SwordTrainingStoryLine uniquely identified by EndingOptionKey
@@ -84,13 +69,31 @@ func (a *SwordTrainingStoryLineAccessor) ByRewardID(identifier float64) (SwordTr
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingStoryLineAccessor) ByEndingOptionKey(identifier string) (SwordTrainingStoryLine, error) {
 	if a._dataEndingOptionKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingStoryLine{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingStoryLine{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEndingOptionKey[identifier], nil
+}
+
+// ByRewardID returns the SwordTrainingStoryLine uniquely identified by RewardID
+//
+// Error is only non-nil if the source errors out
+func (a *SwordTrainingStoryLineAccessor) ByRewardID(identifier float64) (SwordTrainingStoryLine, error) {
+	if a._dataRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingStoryLine{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardID[identifier], nil
 }
 
 // ByStoryLine returns the SwordTrainingStoryLine uniquely identified by StoryLine
@@ -98,9 +101,11 @@ func (a *SwordTrainingStoryLineAccessor) ByEndingOptionKey(identifier string) (S
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingStoryLineAccessor) ByStoryLine(identifier float64) (SwordTrainingStoryLine, error) {
 	if a._dataStoryLine == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingStoryLine{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingStoryLine{}, err
+			}
 		}
 		a.GroupData()
 	}

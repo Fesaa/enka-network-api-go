@@ -38,7 +38,6 @@ func (a *TravelBrochureConstValueAccessor) Raw() ([]TravelBrochureConstValue, er
 		if err != nil {
 			return []TravelBrochureConstValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *TravelBrochureConstValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TravelBrochureConstValueAccessor) ByConstValueName(identifier string) (TravelBrochureConstValue, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TravelBrochureConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TravelBrochureConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}

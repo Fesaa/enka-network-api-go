@@ -39,7 +39,6 @@ func (a *MonopolyPlayerTalkConfigAccessor) Raw() ([]MonopolyPlayerTalkConfig, er
 		if err != nil {
 			return []MonopolyPlayerTalkConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *MonopolyPlayerTalkConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyPlayerTalkConfigAccessor) ByID(identifier float64) (MonopolyPlayerTalkConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyPlayerTalkConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyPlayerTalkConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

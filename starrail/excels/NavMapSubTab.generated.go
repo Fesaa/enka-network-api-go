@@ -39,7 +39,6 @@ func (a *NavMapSubTabAccessor) Raw() ([]NavMapSubTab, error) {
 		if err != nil {
 			return []NavMapSubTab{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *NavMapSubTabAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *NavMapSubTabAccessor) ByFloorID(identifier float64) (NavMapSubTab, error) {
 	if a._dataFloorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NavMapSubTab{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NavMapSubTab{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -30,8 +30,8 @@ type TrackPhotoStage struct {
 type TrackPhotoStageAccessor struct {
 	_data                 []TrackPhotoStage
 	_dataActivityModuleID map[float64]TrackPhotoStage
-	_dataRaidID           map[float64]TrackPhotoStage
 	_dataMainMissionID    map[float64]TrackPhotoStage
+	_dataRaidID           map[float64]TrackPhotoStage
 	_dataStageID          map[float64]TrackPhotoStage
 }
 
@@ -56,7 +56,6 @@ func (a *TrackPhotoStageAccessor) Raw() ([]TrackPhotoStage, error) {
 		if err != nil {
 			return []TrackPhotoStage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,8 +65,8 @@ func (a *TrackPhotoStageAccessor) Raw() ([]TrackPhotoStage, error) {
 func (a *TrackPhotoStageAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
-		a._dataRaidID[d.RaidID] = d
 		a._dataMainMissionID[d.MainMissionID] = d
+		a._dataRaidID[d.RaidID] = d
 		a._dataStageID[d.StageID] = d
 	}
 }
@@ -77,27 +76,15 @@ func (a *TrackPhotoStageAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrackPhotoStageAccessor) ByActivityModuleID(identifier float64) (TrackPhotoStage, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrackPhotoStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrackPhotoStage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityModuleID[identifier], nil
-}
-
-// ByRaidID returns the TrackPhotoStage uniquely identified by RaidID
-//
-// Error is only non-nil if the source errors out
-func (a *TrackPhotoStageAccessor) ByRaidID(identifier float64) (TrackPhotoStage, error) {
-	if a._dataRaidID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrackPhotoStage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRaidID[identifier], nil
 }
 
 // ByMainMissionID returns the TrackPhotoStage uniquely identified by MainMissionID
@@ -105,13 +92,31 @@ func (a *TrackPhotoStageAccessor) ByRaidID(identifier float64) (TrackPhotoStage,
 // Error is only non-nil if the source errors out
 func (a *TrackPhotoStageAccessor) ByMainMissionID(identifier float64) (TrackPhotoStage, error) {
 	if a._dataMainMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrackPhotoStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrackPhotoStage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMainMissionID[identifier], nil
+}
+
+// ByRaidID returns the TrackPhotoStage uniquely identified by RaidID
+//
+// Error is only non-nil if the source errors out
+func (a *TrackPhotoStageAccessor) ByRaidID(identifier float64) (TrackPhotoStage, error) {
+	if a._dataRaidID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrackPhotoStage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRaidID[identifier], nil
 }
 
 // ByStageID returns the TrackPhotoStage uniquely identified by StageID
@@ -119,9 +124,11 @@ func (a *TrackPhotoStageAccessor) ByMainMissionID(identifier float64) (TrackPhot
 // Error is only non-nil if the source errors out
 func (a *TrackPhotoStageAccessor) ByStageID(identifier float64) (TrackPhotoStage, error) {
 	if a._dataStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrackPhotoStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrackPhotoStage{}, err
+			}
 		}
 		a.GroupData()
 	}

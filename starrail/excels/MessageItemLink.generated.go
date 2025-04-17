@@ -17,8 +17,8 @@ type MessageItemLink struct {
 }
 type MessageItemLinkAccessor struct {
 	_data          []MessageItemLink
-	_dataImagePath map[string]MessageItemLink
 	_dataID        map[float64]MessageItemLink
+	_dataImagePath map[string]MessageItemLink
 }
 
 // LoadData retrieves the data. Must be called before MessageItemLink.GroupData
@@ -42,7 +42,6 @@ func (a *MessageItemLinkAccessor) Raw() ([]MessageItemLink, error) {
 		if err != nil {
 			return []MessageItemLink{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,23 +50,9 @@ func (a *MessageItemLinkAccessor) Raw() ([]MessageItemLink, error) {
 // Can be called manually in conjunction with MessageItemLinkAccessor.LoadData to preload everything
 func (a *MessageItemLinkAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataImagePath[d.ImagePath] = d
 		a._dataID[d.ID] = d
+		a._dataImagePath[d.ImagePath] = d
 	}
-}
-
-// ByImagePath returns the MessageItemLink uniquely identified by ImagePath
-//
-// Error is only non-nil if the source errors out
-func (a *MessageItemLinkAccessor) ByImagePath(identifier string) (MessageItemLink, error) {
-	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageItemLink{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataImagePath[identifier], nil
 }
 
 // ByID returns the MessageItemLink uniquely identified by ID
@@ -75,11 +60,29 @@ func (a *MessageItemLinkAccessor) ByImagePath(identifier string) (MessageItemLin
 // Error is only non-nil if the source errors out
 func (a *MessageItemLinkAccessor) ByID(identifier float64) (MessageItemLink, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageItemLink{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageItemLink{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByImagePath returns the MessageItemLink uniquely identified by ImagePath
+//
+// Error is only non-nil if the source errors out
+func (a *MessageItemLinkAccessor) ByImagePath(identifier string) (MessageItemLink, error) {
+	if a._dataImagePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageItemLink{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataImagePath[identifier], nil
 }

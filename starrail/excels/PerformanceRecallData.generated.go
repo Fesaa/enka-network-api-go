@@ -51,7 +51,6 @@ func (a *PerformanceRecallDataAccessor) Raw() ([]PerformanceRecallData, error) {
 		if err != nil {
 			return []PerformanceRecallData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,9 +68,11 @@ func (a *PerformanceRecallDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PerformanceRecallDataAccessor) ByID(identifier float64) (PerformanceRecallData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceRecallData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceRecallData{}, err
+			}
 		}
 		a.GroupData()
 	}

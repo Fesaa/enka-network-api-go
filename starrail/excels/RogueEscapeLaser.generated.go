@@ -42,7 +42,6 @@ func (a *RogueEscapeLaserAccessor) Raw() ([]RogueEscapeLaser, error) {
 		if err != nil {
 			return []RogueEscapeLaser{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *RogueEscapeLaserAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueEscapeLaserAccessor) ByParamGroupID(identifier float64) (RogueEscapeLaser, error) {
 	if a._dataParamGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueEscapeLaser{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueEscapeLaser{}, err
+			}
 		}
 		a.GroupData()
 	}

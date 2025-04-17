@@ -37,7 +37,6 @@ func (a *ActivityRaidConfigAccessor) Raw() ([]ActivityRaidConfig, error) {
 		if err != nil {
 			return []ActivityRaidConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

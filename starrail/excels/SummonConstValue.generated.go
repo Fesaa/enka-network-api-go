@@ -38,7 +38,6 @@ func (a *SummonConstValueAccessor) Raw() ([]SummonConstValue, error) {
 		if err != nil {
 			return []SummonConstValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *SummonConstValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SummonConstValueAccessor) ByConstValueName(identifier string) (SummonConstValue, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SummonConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SummonConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}

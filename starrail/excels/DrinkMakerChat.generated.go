@@ -41,7 +41,6 @@ func (a *DrinkMakerChatAccessor) Raw() ([]DrinkMakerChat, error) {
 		if err != nil {
 			return []DrinkMakerChat{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *DrinkMakerChatAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerChatAccessor) ByChatID(identifier float64) (DrinkMakerChat, error) {
 	if a._dataChatID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerChat{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerChat{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *DrinkMakerChatAccessor) ByChatID(identifier float64) (DrinkMakerChat, e
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerChatAccessor) ByPerformanceID(identifier float64) (DrinkMakerChat, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerChat{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerChat{}, err
+			}
 		}
 		a.GroupData()
 	}

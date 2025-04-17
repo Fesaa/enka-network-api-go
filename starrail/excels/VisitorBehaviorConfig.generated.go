@@ -45,7 +45,6 @@ func (a *VisitorBehaviorConfigAccessor) Raw() ([]VisitorBehaviorConfig, error) {
 		if err != nil {
 			return []VisitorBehaviorConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

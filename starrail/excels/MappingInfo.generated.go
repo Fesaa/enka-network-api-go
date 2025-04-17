@@ -48,7 +48,6 @@ func (a *MappingInfoAccessor) Raw() ([]MappingInfo, error) {
 		if err != nil {
 			return []MappingInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

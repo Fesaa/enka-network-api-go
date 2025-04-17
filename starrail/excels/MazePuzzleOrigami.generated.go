@@ -43,7 +43,6 @@ func (a *MazePuzzleOrigamiAccessor) Raw() ([]MazePuzzleOrigami, error) {
 		if err != nil {
 			return []MazePuzzleOrigami{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

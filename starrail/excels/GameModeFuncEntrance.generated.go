@@ -38,7 +38,6 @@ func (a *GameModeFuncEntranceAccessor) Raw() ([]GameModeFuncEntrance, error) {
 		if err != nil {
 			return []GameModeFuncEntrance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *GameModeFuncEntranceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GameModeFuncEntranceAccessor) ByGameModeType(identifier float64) (GameModeFuncEntrance, error) {
 	if a._dataGameModeType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameModeFuncEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameModeFuncEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}

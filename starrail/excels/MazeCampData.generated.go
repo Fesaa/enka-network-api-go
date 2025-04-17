@@ -37,7 +37,6 @@ func (a *MazeCampDataAccessor) Raw() ([]MazeCampData, error) {
 		if err != nil {
 			return []MazeCampData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MazeCampDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MazeCampDataAccessor) ByCampID(identifier string) (MazeCampData, error) {
 	if a._dataCampID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazeCampData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazeCampData{}, err
+			}
 		}
 		a.GroupData()
 	}

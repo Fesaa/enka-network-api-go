@@ -13,8 +13,8 @@ type MuseumTutorialTalk struct {
 }
 type MuseumTutorialTalkAccessor struct {
 	_data                    []MuseumTutorialTalk
-	_dataTriggerMissionID    map[float64]MuseumTutorialTalk
 	_dataTriggerCustomString map[string]MuseumTutorialTalk
+	_dataTriggerMissionID    map[float64]MuseumTutorialTalk
 }
 
 // LoadData retrieves the data. Must be called before MuseumTutorialTalk.GroupData
@@ -38,7 +38,6 @@ func (a *MuseumTutorialTalkAccessor) Raw() ([]MuseumTutorialTalk, error) {
 		if err != nil {
 			return []MuseumTutorialTalk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *MuseumTutorialTalkAccessor) Raw() ([]MuseumTutorialTalk, error) {
 // Can be called manually in conjunction with MuseumTutorialTalkAccessor.LoadData to preload everything
 func (a *MuseumTutorialTalkAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTriggerMissionID[d.TriggerMissionID] = d
 		a._dataTriggerCustomString[d.TriggerCustomString] = d
+		a._dataTriggerMissionID[d.TriggerMissionID] = d
 	}
-}
-
-// ByTriggerMissionID returns the MuseumTutorialTalk uniquely identified by TriggerMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *MuseumTutorialTalkAccessor) ByTriggerMissionID(identifier float64) (MuseumTutorialTalk, error) {
-	if a._dataTriggerMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumTutorialTalk{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTriggerMissionID[identifier], nil
 }
 
 // ByTriggerCustomString returns the MuseumTutorialTalk uniquely identified by TriggerCustomString
@@ -71,11 +56,29 @@ func (a *MuseumTutorialTalkAccessor) ByTriggerMissionID(identifier float64) (Mus
 // Error is only non-nil if the source errors out
 func (a *MuseumTutorialTalkAccessor) ByTriggerCustomString(identifier string) (MuseumTutorialTalk, error) {
 	if a._dataTriggerCustomString == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumTutorialTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumTutorialTalk{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTriggerCustomString[identifier], nil
+}
+
+// ByTriggerMissionID returns the MuseumTutorialTalk uniquely identified by TriggerMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *MuseumTutorialTalkAccessor) ByTriggerMissionID(identifier float64) (MuseumTutorialTalk, error) {
+	if a._dataTriggerMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumTutorialTalk{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTriggerMissionID[identifier], nil
 }

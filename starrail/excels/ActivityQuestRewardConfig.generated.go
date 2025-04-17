@@ -40,7 +40,6 @@ func (a *ActivityQuestRewardConfigAccessor) Raw() ([]ActivityQuestRewardConfig, 
 		if err != nil {
 			return []ActivityQuestRewardConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ActivityQuestRewardConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityQuestRewardConfigAccessor) ByActivityModule(identifier float64) (ActivityQuestRewardConfig, error) {
 	if a._dataActivityModule == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityQuestRewardConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityQuestRewardConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *ActivityQuestRewardConfigAccessor) ByActivityModule(identifier float64)
 // Error is only non-nil if the source errors out
 func (a *ActivityQuestRewardConfigAccessor) ByActivityRewardID(identifier float64) (ActivityQuestRewardConfig, error) {
 	if a._dataActivityRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityQuestRewardConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityQuestRewardConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -39,7 +39,6 @@ func (a *ActivityRogueAreaOverrideAccessor) Raw() ([]ActivityRogueAreaOverride, 
 		if err != nil {
 			return []ActivityRogueAreaOverride{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

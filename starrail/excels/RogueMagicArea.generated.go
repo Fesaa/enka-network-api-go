@@ -34,8 +34,8 @@ type RogueMagicAreaWorldLevel2DisplayMonster struct {
 }
 type RogueMagicAreaAccessor struct {
 	_data            []RogueMagicArea
-	_dataFirstReward map[float64]RogueMagicArea
 	_dataAreaID      map[float64]RogueMagicArea
+	_dataFirstReward map[float64]RogueMagicArea
 }
 
 // LoadData retrieves the data. Must be called before RogueMagicArea.GroupData
@@ -59,7 +59,6 @@ func (a *RogueMagicAreaAccessor) Raw() ([]RogueMagicArea, error) {
 		if err != nil {
 			return []RogueMagicArea{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -68,23 +67,9 @@ func (a *RogueMagicAreaAccessor) Raw() ([]RogueMagicArea, error) {
 // Can be called manually in conjunction with RogueMagicAreaAccessor.LoadData to preload everything
 func (a *RogueMagicAreaAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataFirstReward[d.FirstReward] = d
 		a._dataAreaID[d.AreaID] = d
+		a._dataFirstReward[d.FirstReward] = d
 	}
-}
-
-// ByFirstReward returns the RogueMagicArea uniquely identified by FirstReward
-//
-// Error is only non-nil if the source errors out
-func (a *RogueMagicAreaAccessor) ByFirstReward(identifier float64) (RogueMagicArea, error) {
-	if a._dataFirstReward == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicArea{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFirstReward[identifier], nil
 }
 
 // ByAreaID returns the RogueMagicArea uniquely identified by AreaID
@@ -92,11 +77,29 @@ func (a *RogueMagicAreaAccessor) ByFirstReward(identifier float64) (RogueMagicAr
 // Error is only non-nil if the source errors out
 func (a *RogueMagicAreaAccessor) ByAreaID(identifier float64) (RogueMagicArea, error) {
 	if a._dataAreaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicArea{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicArea{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAreaID[identifier], nil
+}
+
+// ByFirstReward returns the RogueMagicArea uniquely identified by FirstReward
+//
+// Error is only non-nil if the source errors out
+func (a *RogueMagicAreaAccessor) ByFirstReward(identifier float64) (RogueMagicArea, error) {
+	if a._dataFirstReward == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicArea{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFirstReward[identifier], nil
 }

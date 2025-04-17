@@ -36,7 +36,6 @@ func (a *RogueTournUseBuffTypeAccessor) Raw() ([]RogueTournUseBuffType, error) {
 		if err != nil {
 			return []RogueTournUseBuffType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

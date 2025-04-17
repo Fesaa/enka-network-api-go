@@ -37,7 +37,6 @@ func (a *ActivityVersionBannerAccessor) Raw() ([]ActivityVersionBanner, error) {
 		if err != nil {
 			return []ActivityVersionBanner{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ActivityVersionBannerAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityVersionBannerAccessor) ByActivityID(identifier float64) (ActivityVersionBanner, error) {
 	if a._dataActivityID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityVersionBanner{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityVersionBanner{}, err
+			}
 		}
 		a.GroupData()
 	}

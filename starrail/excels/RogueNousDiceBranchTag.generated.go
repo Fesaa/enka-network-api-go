@@ -40,7 +40,6 @@ func (a *RogueNousDiceBranchTagAccessor) Raw() ([]RogueNousDiceBranchTag, error)
 		if err != nil {
 			return []RogueNousDiceBranchTag{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RogueNousDiceBranchTagAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousDiceBranchTagAccessor) ByTagID(identifier float64) (RogueNousDiceBranchTag, error) {
 	if a._dataTagID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceBranchTag{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceBranchTag{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *RogueNousDiceBranchTagAccessor) ByTagID(identifier float64) (RogueNousD
 // Error is only non-nil if the source errors out
 func (a *RogueNousDiceBranchTagAccessor) ByTagIcon(identifier string) (RogueNousDiceBranchTag, error) {
 	if a._dataTagIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceBranchTag{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceBranchTag{}, err
+			}
 		}
 		a.GroupData()
 	}

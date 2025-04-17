@@ -15,8 +15,8 @@ type RogueCommonModeTitle struct {
 }
 type RogueCommonModeTitleAccessor struct {
 	_data              []RogueCommonModeTitle
-	_dataTitleIconPath map[string]RogueCommonModeTitle
 	_dataSubMode       map[string]RogueCommonModeTitle
+	_dataTitleIconPath map[string]RogueCommonModeTitle
 }
 
 // LoadData retrieves the data. Must be called before RogueCommonModeTitle.GroupData
@@ -40,7 +40,6 @@ func (a *RogueCommonModeTitleAccessor) Raw() ([]RogueCommonModeTitle, error) {
 		if err != nil {
 			return []RogueCommonModeTitle{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *RogueCommonModeTitleAccessor) Raw() ([]RogueCommonModeTitle, error) {
 // Can be called manually in conjunction with RogueCommonModeTitleAccessor.LoadData to preload everything
 func (a *RogueCommonModeTitleAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTitleIconPath[d.TitleIconPath] = d
 		a._dataSubMode[d.SubMode] = d
+		a._dataTitleIconPath[d.TitleIconPath] = d
 	}
-}
-
-// ByTitleIconPath returns the RogueCommonModeTitle uniquely identified by TitleIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *RogueCommonModeTitleAccessor) ByTitleIconPath(identifier string) (RogueCommonModeTitle, error) {
-	if a._dataTitleIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueCommonModeTitle{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTitleIconPath[identifier], nil
 }
 
 // BySubMode returns the RogueCommonModeTitle uniquely identified by SubMode
@@ -73,11 +58,29 @@ func (a *RogueCommonModeTitleAccessor) ByTitleIconPath(identifier string) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueCommonModeTitleAccessor) BySubMode(identifier string) (RogueCommonModeTitle, error) {
 	if a._dataSubMode == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueCommonModeTitle{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueCommonModeTitle{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSubMode[identifier], nil
+}
+
+// ByTitleIconPath returns the RogueCommonModeTitle uniquely identified by TitleIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueCommonModeTitleAccessor) ByTitleIconPath(identifier string) (RogueCommonModeTitle, error) {
+	if a._dataTitleIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueCommonModeTitle{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTitleIconPath[identifier], nil
 }

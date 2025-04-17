@@ -44,7 +44,6 @@ func (a *RechargeConfigAccessor) Raw() ([]RechargeConfig, error) {
 		if err != nil {
 			return []RechargeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *RechargeConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RechargeConfigAccessor) ByProductID(identifier string) (RechargeConfig, error) {
 	if a._dataProductID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RechargeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RechargeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

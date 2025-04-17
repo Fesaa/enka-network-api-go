@@ -25,10 +25,10 @@ type TrainPartyAreaConfigProgressBonusList struct {
 }
 type TrainPartyAreaConfigAccessor struct {
 	_data          []TrainPartyAreaConfig
+	_dataFirstStep map[float64]TrainPartyAreaConfig
 	_dataID        map[float64]TrainPartyAreaConfig
 	_dataIconPath  map[string]TrainPartyAreaConfig
 	_dataSort      map[float64]TrainPartyAreaConfig
-	_dataFirstStep map[float64]TrainPartyAreaConfig
 }
 
 // LoadData retrieves the data. Must be called before TrainPartyAreaConfig.GroupData
@@ -52,7 +52,6 @@ func (a *TrainPartyAreaConfigAccessor) Raw() ([]TrainPartyAreaConfig, error) {
 		if err != nil {
 			return []TrainPartyAreaConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,11 +60,27 @@ func (a *TrainPartyAreaConfigAccessor) Raw() ([]TrainPartyAreaConfig, error) {
 // Can be called manually in conjunction with TrainPartyAreaConfigAccessor.LoadData to preload everything
 func (a *TrainPartyAreaConfigAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataFirstStep[d.FirstStep] = d
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d
 		a._dataSort[d.Sort] = d
-		a._dataFirstStep[d.FirstStep] = d
 	}
+}
+
+// ByFirstStep returns the TrainPartyAreaConfig uniquely identified by FirstStep
+//
+// Error is only non-nil if the source errors out
+func (a *TrainPartyAreaConfigAccessor) ByFirstStep(identifier float64) (TrainPartyAreaConfig, error) {
+	if a._dataFirstStep == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyAreaConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFirstStep[identifier], nil
 }
 
 // ByID returns the TrainPartyAreaConfig uniquely identified by ID
@@ -73,9 +88,11 @@ func (a *TrainPartyAreaConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyAreaConfigAccessor) ByID(identifier float64) (TrainPartyAreaConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyAreaConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyAreaConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -87,9 +104,11 @@ func (a *TrainPartyAreaConfigAccessor) ByID(identifier float64) (TrainPartyAreaC
 // Error is only non-nil if the source errors out
 func (a *TrainPartyAreaConfigAccessor) ByIconPath(identifier string) (TrainPartyAreaConfig, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyAreaConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyAreaConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -101,25 +120,13 @@ func (a *TrainPartyAreaConfigAccessor) ByIconPath(identifier string) (TrainParty
 // Error is only non-nil if the source errors out
 func (a *TrainPartyAreaConfigAccessor) BySort(identifier float64) (TrainPartyAreaConfig, error) {
 	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyAreaConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyAreaConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSort[identifier], nil
-}
-
-// ByFirstStep returns the TrainPartyAreaConfig uniquely identified by FirstStep
-//
-// Error is only non-nil if the source errors out
-func (a *TrainPartyAreaConfigAccessor) ByFirstStep(identifier float64) (TrainPartyAreaConfig, error) {
-	if a._dataFirstStep == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyAreaConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFirstStep[identifier], nil
 }

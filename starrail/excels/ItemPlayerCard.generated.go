@@ -29,8 +29,8 @@ type ItemPlayerCard struct {
 }
 type ItemPlayerCardAccessor struct {
 	_data                   []ItemPlayerCard
-	_dataItemFigureIconPath map[string]ItemPlayerCard
 	_dataID                 map[float64]ItemPlayerCard
+	_dataItemFigureIconPath map[string]ItemPlayerCard
 	_dataItemIconPath       map[string]ItemPlayerCard
 }
 
@@ -55,7 +55,6 @@ func (a *ItemPlayerCardAccessor) Raw() ([]ItemPlayerCard, error) {
 		if err != nil {
 			return []ItemPlayerCard{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,24 +63,10 @@ func (a *ItemPlayerCardAccessor) Raw() ([]ItemPlayerCard, error) {
 // Can be called manually in conjunction with ItemPlayerCardAccessor.LoadData to preload everything
 func (a *ItemPlayerCardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataItemFigureIconPath[d.ItemFigureIconPath] = d
 		a._dataID[d.ID] = d
+		a._dataItemFigureIconPath[d.ItemFigureIconPath] = d
 		a._dataItemIconPath[d.ItemIconPath] = d
 	}
-}
-
-// ByItemFigureIconPath returns the ItemPlayerCard uniquely identified by ItemFigureIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *ItemPlayerCardAccessor) ByItemFigureIconPath(identifier string) (ItemPlayerCard, error) {
-	if a._dataItemFigureIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemPlayerCard{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemFigureIconPath[identifier], nil
 }
 
 // ByID returns the ItemPlayerCard uniquely identified by ID
@@ -89,13 +74,31 @@ func (a *ItemPlayerCardAccessor) ByItemFigureIconPath(identifier string) (ItemPl
 // Error is only non-nil if the source errors out
 func (a *ItemPlayerCardAccessor) ByID(identifier float64) (ItemPlayerCard, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemPlayerCard{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemPlayerCard{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByItemFigureIconPath returns the ItemPlayerCard uniquely identified by ItemFigureIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *ItemPlayerCardAccessor) ByItemFigureIconPath(identifier string) (ItemPlayerCard, error) {
+	if a._dataItemFigureIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemPlayerCard{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemFigureIconPath[identifier], nil
 }
 
 // ByItemIconPath returns the ItemPlayerCard uniquely identified by ItemIconPath
@@ -103,9 +106,11 @@ func (a *ItemPlayerCardAccessor) ByID(identifier float64) (ItemPlayerCard, error
 // Error is only non-nil if the source errors out
 func (a *ItemPlayerCardAccessor) ByItemIconPath(identifier string) (ItemPlayerCard, error) {
 	if a._dataItemIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemPlayerCard{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemPlayerCard{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -26,11 +26,11 @@ type AlleySpecialOrderSpecialOrderGoods struct {
 }
 type AlleySpecialOrderAccessor struct {
 	_data                   []AlleySpecialOrder
-	_dataSpecialOrderShopID map[float64]AlleySpecialOrder
-	_dataSpecialOrderID     map[float64]AlleySpecialOrder
 	_dataOrderPic           map[string]AlleySpecialOrder
-	_dataSubTitleID         map[string]AlleySpecialOrder
 	_dataOrderTips          map[string]AlleySpecialOrder
+	_dataSpecialOrderID     map[float64]AlleySpecialOrder
+	_dataSpecialOrderShopID map[float64]AlleySpecialOrder
+	_dataSubTitleID         map[string]AlleySpecialOrder
 }
 
 // LoadData retrieves the data. Must be called before AlleySpecialOrder.GroupData
@@ -54,7 +54,6 @@ func (a *AlleySpecialOrderAccessor) Raw() ([]AlleySpecialOrder, error) {
 		if err != nil {
 			return []AlleySpecialOrder{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,40 +62,12 @@ func (a *AlleySpecialOrderAccessor) Raw() ([]AlleySpecialOrder, error) {
 // Can be called manually in conjunction with AlleySpecialOrderAccessor.LoadData to preload everything
 func (a *AlleySpecialOrderAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSpecialOrderShopID[d.SpecialOrderShopID] = d
-		a._dataSpecialOrderID[d.SpecialOrderID] = d
 		a._dataOrderPic[d.OrderPic] = d
-		a._dataSubTitleID[d.SubTitleID] = d
 		a._dataOrderTips[d.OrderTips] = d
+		a._dataSpecialOrderID[d.SpecialOrderID] = d
+		a._dataSpecialOrderShopID[d.SpecialOrderShopID] = d
+		a._dataSubTitleID[d.SubTitleID] = d
 	}
-}
-
-// BySpecialOrderShopID returns the AlleySpecialOrder uniquely identified by SpecialOrderShopID
-//
-// Error is only non-nil if the source errors out
-func (a *AlleySpecialOrderAccessor) BySpecialOrderShopID(identifier float64) (AlleySpecialOrder, error) {
-	if a._dataSpecialOrderShopID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleySpecialOrder{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSpecialOrderShopID[identifier], nil
-}
-
-// BySpecialOrderID returns the AlleySpecialOrder uniquely identified by SpecialOrderID
-//
-// Error is only non-nil if the source errors out
-func (a *AlleySpecialOrderAccessor) BySpecialOrderID(identifier float64) (AlleySpecialOrder, error) {
-	if a._dataSpecialOrderID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleySpecialOrder{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSpecialOrderID[identifier], nil
 }
 
 // ByOrderPic returns the AlleySpecialOrder uniquely identified by OrderPic
@@ -104,27 +75,15 @@ func (a *AlleySpecialOrderAccessor) BySpecialOrderID(identifier float64) (AlleyS
 // Error is only non-nil if the source errors out
 func (a *AlleySpecialOrderAccessor) ByOrderPic(identifier string) (AlleySpecialOrder, error) {
 	if a._dataOrderPic == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleySpecialOrder{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleySpecialOrder{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataOrderPic[identifier], nil
-}
-
-// BySubTitleID returns the AlleySpecialOrder uniquely identified by SubTitleID
-//
-// Error is only non-nil if the source errors out
-func (a *AlleySpecialOrderAccessor) BySubTitleID(identifier string) (AlleySpecialOrder, error) {
-	if a._dataSubTitleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleySpecialOrder{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSubTitleID[identifier], nil
 }
 
 // ByOrderTips returns the AlleySpecialOrder uniquely identified by OrderTips
@@ -132,11 +91,61 @@ func (a *AlleySpecialOrderAccessor) BySubTitleID(identifier string) (AlleySpecia
 // Error is only non-nil if the source errors out
 func (a *AlleySpecialOrderAccessor) ByOrderTips(identifier string) (AlleySpecialOrder, error) {
 	if a._dataOrderTips == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleySpecialOrder{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleySpecialOrder{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataOrderTips[identifier], nil
+}
+
+// BySpecialOrderID returns the AlleySpecialOrder uniquely identified by SpecialOrderID
+//
+// Error is only non-nil if the source errors out
+func (a *AlleySpecialOrderAccessor) BySpecialOrderID(identifier float64) (AlleySpecialOrder, error) {
+	if a._dataSpecialOrderID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleySpecialOrder{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSpecialOrderID[identifier], nil
+}
+
+// BySpecialOrderShopID returns the AlleySpecialOrder uniquely identified by SpecialOrderShopID
+//
+// Error is only non-nil if the source errors out
+func (a *AlleySpecialOrderAccessor) BySpecialOrderShopID(identifier float64) (AlleySpecialOrder, error) {
+	if a._dataSpecialOrderShopID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleySpecialOrder{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSpecialOrderShopID[identifier], nil
+}
+
+// BySubTitleID returns the AlleySpecialOrder uniquely identified by SubTitleID
+//
+// Error is only non-nil if the source errors out
+func (a *AlleySpecialOrderAccessor) BySubTitleID(identifier string) (AlleySpecialOrder, error) {
+	if a._dataSubTitleID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleySpecialOrder{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSubTitleID[identifier], nil
 }

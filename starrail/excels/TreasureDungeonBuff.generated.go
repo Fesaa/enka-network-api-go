@@ -50,7 +50,6 @@ func (a *TreasureDungeonBuffAccessor) Raw() ([]TreasureDungeonBuff, error) {
 		if err != nil {
 			return []TreasureDungeonBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -68,9 +67,11 @@ func (a *TreasureDungeonBuffAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TreasureDungeonBuffAccessor) ByBuffID(identifier float64) (TreasureDungeonBuff, error) {
 	if a._dataBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TreasureDungeonBuff{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TreasureDungeonBuff{}, err
+			}
 		}
 		a.GroupData()
 	}

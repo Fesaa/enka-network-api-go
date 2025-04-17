@@ -38,7 +38,6 @@ func (a *CurrencyDisplayConfigAccessor) Raw() ([]CurrencyDisplayConfig, error) {
 		if err != nil {
 			return []CurrencyDisplayConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *CurrencyDisplayConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *CurrencyDisplayConfigAccessor) ByCurrencyID(identifier float64) (CurrencyDisplayConfig, error) {
 	if a._dataCurrencyID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CurrencyDisplayConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CurrencyDisplayConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

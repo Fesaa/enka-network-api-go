@@ -20,10 +20,10 @@ type RogueAeonDisplay struct {
 }
 type RogueAeonDisplayAccessor struct {
 	_data             []RogueAeonDisplay
-	_dataAeonImage    map[string]RogueAeonDisplay
-	_dataAeonIcon     map[string]RogueAeonDisplay
-	_dataAeonFigure   map[string]RogueAeonDisplay
 	_dataAeonBuffIcon map[string]RogueAeonDisplay
+	_dataAeonFigure   map[string]RogueAeonDisplay
+	_dataAeonIcon     map[string]RogueAeonDisplay
+	_dataAeonImage    map[string]RogueAeonDisplay
 	_dataDisplayID    map[float64]RogueAeonDisplay
 }
 
@@ -48,7 +48,6 @@ func (a *RogueAeonDisplayAccessor) Raw() ([]RogueAeonDisplay, error) {
 		if err != nil {
 			return []RogueAeonDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,54 +56,12 @@ func (a *RogueAeonDisplayAccessor) Raw() ([]RogueAeonDisplay, error) {
 // Can be called manually in conjunction with RogueAeonDisplayAccessor.LoadData to preload everything
 func (a *RogueAeonDisplayAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataAeonImage[d.AeonImage] = d
-		a._dataAeonIcon[d.AeonIcon] = d
-		a._dataAeonFigure[d.AeonFigure] = d
 		a._dataAeonBuffIcon[d.AeonBuffIcon] = d
+		a._dataAeonFigure[d.AeonFigure] = d
+		a._dataAeonIcon[d.AeonIcon] = d
+		a._dataAeonImage[d.AeonImage] = d
 		a._dataDisplayID[d.DisplayID] = d
 	}
-}
-
-// ByAeonImage returns the RogueAeonDisplay uniquely identified by AeonImage
-//
-// Error is only non-nil if the source errors out
-func (a *RogueAeonDisplayAccessor) ByAeonImage(identifier string) (RogueAeonDisplay, error) {
-	if a._dataAeonImage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAeonDisplay{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAeonImage[identifier], nil
-}
-
-// ByAeonIcon returns the RogueAeonDisplay uniquely identified by AeonIcon
-//
-// Error is only non-nil if the source errors out
-func (a *RogueAeonDisplayAccessor) ByAeonIcon(identifier string) (RogueAeonDisplay, error) {
-	if a._dataAeonIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAeonDisplay{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAeonIcon[identifier], nil
-}
-
-// ByAeonFigure returns the RogueAeonDisplay uniquely identified by AeonFigure
-//
-// Error is only non-nil if the source errors out
-func (a *RogueAeonDisplayAccessor) ByAeonFigure(identifier string) (RogueAeonDisplay, error) {
-	if a._dataAeonFigure == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAeonDisplay{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAeonFigure[identifier], nil
 }
 
 // ByAeonBuffIcon returns the RogueAeonDisplay uniquely identified by AeonBuffIcon
@@ -112,13 +69,63 @@ func (a *RogueAeonDisplayAccessor) ByAeonFigure(identifier string) (RogueAeonDis
 // Error is only non-nil if the source errors out
 func (a *RogueAeonDisplayAccessor) ByAeonBuffIcon(identifier string) (RogueAeonDisplay, error) {
 	if a._dataAeonBuffIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAeonDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAeonDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAeonBuffIcon[identifier], nil
+}
+
+// ByAeonFigure returns the RogueAeonDisplay uniquely identified by AeonFigure
+//
+// Error is only non-nil if the source errors out
+func (a *RogueAeonDisplayAccessor) ByAeonFigure(identifier string) (RogueAeonDisplay, error) {
+	if a._dataAeonFigure == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAeonDisplay{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAeonFigure[identifier], nil
+}
+
+// ByAeonIcon returns the RogueAeonDisplay uniquely identified by AeonIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueAeonDisplayAccessor) ByAeonIcon(identifier string) (RogueAeonDisplay, error) {
+	if a._dataAeonIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAeonDisplay{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAeonIcon[identifier], nil
+}
+
+// ByAeonImage returns the RogueAeonDisplay uniquely identified by AeonImage
+//
+// Error is only non-nil if the source errors out
+func (a *RogueAeonDisplayAccessor) ByAeonImage(identifier string) (RogueAeonDisplay, error) {
+	if a._dataAeonImage == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAeonDisplay{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAeonImage[identifier], nil
 }
 
 // ByDisplayID returns the RogueAeonDisplay uniquely identified by DisplayID
@@ -126,9 +133,11 @@ func (a *RogueAeonDisplayAccessor) ByAeonBuffIcon(identifier string) (RogueAeonD
 // Error is only non-nil if the source errors out
 func (a *RogueAeonDisplayAccessor) ByDisplayID(identifier float64) (RogueAeonDisplay, error) {
 	if a._dataDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAeonDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAeonDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}

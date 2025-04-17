@@ -44,7 +44,6 @@ func (a *SummonUnitDataAccessor) Raw() ([]SummonUnitData, error) {
 		if err != nil {
 			return []SummonUnitData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *SummonUnitDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SummonUnitDataAccessor) ByID(identifier float64) (SummonUnitData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SummonUnitData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SummonUnitData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *SummonUnitDataAccessor) ByID(identifier float64) (SummonUnitData, error
 // Error is only non-nil if the source errors out
 func (a *SummonUnitDataAccessor) ByJsonPath(identifier string) (SummonUnitData, error) {
 	if a._dataJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SummonUnitData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SummonUnitData{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -15,8 +15,8 @@ type MenuItemExtraInfo struct {
 }
 type MenuItemExtraInfoAccessor struct {
 	_data          []MenuItemExtraInfo
-	_dataID        map[float64]MenuItemExtraInfo
 	_dataCondition map[string]MenuItemExtraInfo
+	_dataID        map[float64]MenuItemExtraInfo
 }
 
 // LoadData retrieves the data. Must be called before MenuItemExtraInfo.GroupData
@@ -40,7 +40,6 @@ func (a *MenuItemExtraInfoAccessor) Raw() ([]MenuItemExtraInfo, error) {
 		if err != nil {
 			return []MenuItemExtraInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *MenuItemExtraInfoAccessor) Raw() ([]MenuItemExtraInfo, error) {
 // Can be called manually in conjunction with MenuItemExtraInfoAccessor.LoadData to preload everything
 func (a *MenuItemExtraInfoAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataCondition[d.Condition] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the MenuItemExtraInfo uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *MenuItemExtraInfoAccessor) ByID(identifier float64) (MenuItemExtraInfo, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MenuItemExtraInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByCondition returns the MenuItemExtraInfo uniquely identified by Condition
@@ -73,11 +58,29 @@ func (a *MenuItemExtraInfoAccessor) ByID(identifier float64) (MenuItemExtraInfo,
 // Error is only non-nil if the source errors out
 func (a *MenuItemExtraInfoAccessor) ByCondition(identifier string) (MenuItemExtraInfo, error) {
 	if a._dataCondition == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MenuItemExtraInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MenuItemExtraInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCondition[identifier], nil
+}
+
+// ByID returns the MenuItemExtraInfo uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *MenuItemExtraInfoAccessor) ByID(identifier float64) (MenuItemExtraInfo, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MenuItemExtraInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

@@ -18,9 +18,9 @@ type SwordTrainingStatus struct {
 }
 type SwordTrainingStatusAccessor struct {
 	_data                  []SwordTrainingStatus
-	_dataStatusOutLineIcon map[string]SwordTrainingStatus
 	_dataStatusID          map[float64]SwordTrainingStatus
 	_dataStatusIcon        map[string]SwordTrainingStatus
+	_dataStatusOutLineIcon map[string]SwordTrainingStatus
 }
 
 // LoadData retrieves the data. Must be called before SwordTrainingStatus.GroupData
@@ -44,7 +44,6 @@ func (a *SwordTrainingStatusAccessor) Raw() ([]SwordTrainingStatus, error) {
 		if err != nil {
 			return []SwordTrainingStatus{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,24 +52,10 @@ func (a *SwordTrainingStatusAccessor) Raw() ([]SwordTrainingStatus, error) {
 // Can be called manually in conjunction with SwordTrainingStatusAccessor.LoadData to preload everything
 func (a *SwordTrainingStatusAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataStatusOutLineIcon[d.StatusOutLineIcon] = d
 		a._dataStatusID[d.StatusID] = d
 		a._dataStatusIcon[d.StatusIcon] = d
+		a._dataStatusOutLineIcon[d.StatusOutLineIcon] = d
 	}
-}
-
-// ByStatusOutLineIcon returns the SwordTrainingStatus uniquely identified by StatusOutLineIcon
-//
-// Error is only non-nil if the source errors out
-func (a *SwordTrainingStatusAccessor) ByStatusOutLineIcon(identifier string) (SwordTrainingStatus, error) {
-	if a._dataStatusOutLineIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingStatus{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStatusOutLineIcon[identifier], nil
 }
 
 // ByStatusID returns the SwordTrainingStatus uniquely identified by StatusID
@@ -78,9 +63,11 @@ func (a *SwordTrainingStatusAccessor) ByStatusOutLineIcon(identifier string) (Sw
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingStatusAccessor) ByStatusID(identifier float64) (SwordTrainingStatus, error) {
 	if a._dataStatusID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingStatus{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingStatus{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -92,11 +79,29 @@ func (a *SwordTrainingStatusAccessor) ByStatusID(identifier float64) (SwordTrain
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingStatusAccessor) ByStatusIcon(identifier string) (SwordTrainingStatus, error) {
 	if a._dataStatusIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingStatus{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingStatus{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataStatusIcon[identifier], nil
+}
+
+// ByStatusOutLineIcon returns the SwordTrainingStatus uniquely identified by StatusOutLineIcon
+//
+// Error is only non-nil if the source errors out
+func (a *SwordTrainingStatusAccessor) ByStatusOutLineIcon(identifier string) (SwordTrainingStatus, error) {
+	if a._dataStatusOutLineIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingStatus{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStatusOutLineIcon[identifier], nil
 }

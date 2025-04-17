@@ -40,7 +40,6 @@ func (a *ScoringConfigAccessor) Raw() ([]ScoringConfig, error) {
 		if err != nil {
 			return []ScoringConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ScoringConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ScoringConfigAccessor) ByScoringID(identifier float64) (ScoringConfig, error) {
 	if a._dataScoringID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScoringConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScoringConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *RogueDLCChessBoardAnimationAccessor) Raw() ([]RogueDLCChessBoardAnimati
 		if err != nil {
 			return []RogueDLCChessBoardAnimation{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -38,7 +38,6 @@ func (a *StoryAtlasTextmapAccessor) Raw() ([]StoryAtlasTextmap, error) {
 		if err != nil {
 			return []StoryAtlasTextmap{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *StoryAtlasTextmapAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StoryAtlasTextmapAccessor) ByStoryID(identifier float64) (StoryAtlasTextmap, error) {
 	if a._dataStoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StoryAtlasTextmap{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StoryAtlasTextmap{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *GroupSystemUnlockDataAccessor) Raw() ([]GroupSystemUnlockData, error) {
 		if err != nil {
 			return []GroupSystemUnlockData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *GroupSystemUnlockDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GroupSystemUnlockDataAccessor) ByGroupSystemUnlockID(identifier float64) (GroupSystemUnlockData, error) {
 	if a._dataGroupSystemUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GroupSystemUnlockData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GroupSystemUnlockData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *GroupSystemUnlockDataAccessor) ByGroupSystemUnlockID(identifier float64
 // Error is only non-nil if the source errors out
 func (a *GroupSystemUnlockDataAccessor) ByUnlockID(identifier float64) (GroupSystemUnlockData, error) {
 	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GroupSystemUnlockData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GroupSystemUnlockData{}, err
+			}
 		}
 		a.GroupData()
 	}

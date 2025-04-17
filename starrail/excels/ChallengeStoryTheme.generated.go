@@ -43,7 +43,6 @@ func (a *ChallengeStoryThemeAccessor) Raw() ([]ChallengeStoryTheme, error) {
 		if err != nil {
 			return []ChallengeStoryTheme{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *ChallengeStoryThemeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChallengeStoryThemeAccessor) ByThemeID(identifier float64) (ChallengeStoryTheme, error) {
 	if a._dataThemeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeStoryTheme{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeStoryTheme{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *ChallengeStoryThemeAccessor) ByThemeID(identifier float64) (ChallengeSt
 // Error is only non-nil if the source errors out
 func (a *ChallengeStoryThemeAccessor) ByThemePanelPrefabPath(identifier string) (ChallengeStoryTheme, error) {
 	if a._dataThemePanelPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeStoryTheme{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeStoryTheme{}, err
+			}
 		}
 		a.GroupData()
 	}

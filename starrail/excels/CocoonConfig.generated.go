@@ -51,7 +51,6 @@ func (a *CocoonConfigAccessor) Raw() ([]CocoonConfig, error) {
 		if err != nil {
 			return []CocoonConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

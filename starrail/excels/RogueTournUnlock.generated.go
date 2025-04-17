@@ -40,7 +40,6 @@ func (a *RogueTournUnlockAccessor) Raw() ([]RogueTournUnlock, error) {
 		if err != nil {
 			return []RogueTournUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RogueTournUnlockAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournUnlockAccessor) ByRogueUnlockID(identifier float64) (RogueTournUnlock, error) {
 	if a._dataRogueUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *RogueTournUnlockAccessor) ByRogueUnlockID(identifier float64) (RogueTou
 // Error is only non-nil if the source errors out
 func (a *RogueTournUnlockAccessor) ByUnlockFinishWay(identifier float64) (RogueTournUnlock, error) {
 	if a._dataUnlockFinishWay == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}

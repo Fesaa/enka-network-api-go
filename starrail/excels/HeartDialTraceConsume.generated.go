@@ -45,7 +45,6 @@ func (a *HeartDialTraceConsumeAccessor) Raw() ([]HeartDialTraceConsume, error) {
 		if err != nil {
 			return []HeartDialTraceConsume{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *HeartDialTraceConsumeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeartDialTraceConsumeAccessor) ByHeartDialTraceID(identifier float64) (HeartDialTraceConsume, error) {
 	if a._dataHeartDialTraceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeartDialTraceConsume{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeartDialTraceConsume{}, err
+			}
 		}
 		a.GroupData()
 	}

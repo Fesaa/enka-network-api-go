@@ -40,7 +40,6 @@ func (a *MessageItemVideoAccessor) Raw() ([]MessageItemVideo, error) {
 		if err != nil {
 			return []MessageItemVideo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *MessageItemVideoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MessageItemVideoAccessor) ByID(identifier float64) (MessageItemVideo, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageItemVideo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageItemVideo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *MessageItemVideoAccessor) ByID(identifier float64) (MessageItemVideo, e
 // Error is only non-nil if the source errors out
 func (a *MessageItemVideoAccessor) ByImagePath(identifier string) (MessageItemVideo, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageItemVideo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageItemVideo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,9 +91,11 @@ func (a *MessageItemVideoAccessor) ByImagePath(identifier string) (MessageItemVi
 // Error is only non-nil if the source errors out
 func (a *MessageItemVideoAccessor) ByVideoID(identifier float64) (MessageItemVideo, error) {
 	if a._dataVideoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageItemVideo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageItemVideo{}, err
+			}
 		}
 		a.GroupData()
 	}

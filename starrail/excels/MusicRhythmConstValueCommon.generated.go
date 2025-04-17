@@ -38,7 +38,6 @@ func (a *MusicRhythmConstValueCommonAccessor) Raw() ([]MusicRhythmConstValueComm
 		if err != nil {
 			return []MusicRhythmConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MusicRhythmConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmConstValueCommonAccessor) ByConstValueName(identifier string) (MusicRhythmConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

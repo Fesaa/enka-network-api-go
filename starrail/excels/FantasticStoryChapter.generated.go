@@ -44,7 +44,6 @@ func (a *FantasticStoryChapterAccessor) Raw() ([]FantasticStoryChapter, error) {
 		if err != nil {
 			return []FantasticStoryChapter{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *FantasticStoryChapterAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryChapterAccessor) ByChapterID(identifier float64) (FantasticStoryChapter, error) {
 	if a._dataChapterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryChapter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryChapter{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *FantasticStoryChapterAccessor) ByChapterID(identifier float64) (Fantast
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryChapterAccessor) ByFigurePath(identifier string) (FantasticStoryChapter, error) {
 	if a._dataFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryChapter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryChapter{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -92,9 +95,11 @@ func (a *FantasticStoryChapterAccessor) ByFigurePath(identifier string) (Fantast
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryChapterAccessor) ByMissionID(identifier float64) (FantasticStoryChapter, error) {
 	if a._dataMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryChapter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryChapter{}, err
+			}
 		}
 		a.GroupData()
 	}

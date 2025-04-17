@@ -38,7 +38,6 @@ func (a *MatchThreeAvatarSkillDialogAccessor) Raw() ([]MatchThreeAvatarSkillDial
 		if err != nil {
 			return []MatchThreeAvatarSkillDialog{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MatchThreeAvatarSkillDialogAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeAvatarSkillDialogAccessor) ByID(identifier float64) (MatchThreeAvatarSkillDialog, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeAvatarSkillDialog{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeAvatarSkillDialog{}, err
+			}
 		}
 		a.GroupData()
 	}

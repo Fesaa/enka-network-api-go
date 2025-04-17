@@ -38,7 +38,6 @@ func (a *MenuItemNameAccessor) Raw() ([]MenuItemName, error) {
 		if err != nil {
 			return []MenuItemName{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MenuItemNameAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MenuItemNameAccessor) ByID(identifier float64) (MenuItemName, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MenuItemName{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MenuItemName{}, err
+			}
 		}
 		a.GroupData()
 	}

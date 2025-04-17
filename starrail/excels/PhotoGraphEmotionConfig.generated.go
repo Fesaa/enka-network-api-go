@@ -42,7 +42,6 @@ func (a *PhotoGraphEmotionConfigAccessor) Raw() ([]PhotoGraphEmotionConfig, erro
 		if err != nil {
 			return []PhotoGraphEmotionConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

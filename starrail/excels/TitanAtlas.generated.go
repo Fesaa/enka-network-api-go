@@ -42,7 +42,6 @@ func (a *TitanAtlasAccessor) Raw() ([]TitanAtlas, error) {
 		if err != nil {
 			return []TitanAtlas{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *TitanAtlasAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TitanAtlasAccessor) ByTitanID(identifier float64) (TitanAtlas, error) {
 	if a._dataTitanID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TitanAtlas{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TitanAtlas{}, err
+			}
 		}
 		a.GroupData()
 	}

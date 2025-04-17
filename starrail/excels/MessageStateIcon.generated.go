@@ -38,7 +38,6 @@ func (a *MessageStateIconAccessor) Raw() ([]MessageStateIcon, error) {
 		if err != nil {
 			return []MessageStateIcon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *MessageStateIconAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MessageStateIconAccessor) ByID(identifier string) (MessageStateIcon, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageStateIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageStateIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *MessageStateIconAccessor) ByID(identifier string) (MessageStateIcon, er
 // Error is only non-nil if the source errors out
 func (a *MessageStateIconAccessor) ByIconPath(identifier string) (MessageStateIcon, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageStateIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageStateIcon{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -15,8 +15,8 @@ type RogueEventSpecialOption struct {
 type RogueEventSpecialOptionAccessor struct {
 	_data                []RogueEventSpecialOption
 	_dataAeonFigure      map[string]RogueEventSpecialOption
-	_dataSpecialOptionID map[float64]RogueEventSpecialOption
 	_dataAeonIcon        map[string]RogueEventSpecialOption
+	_dataSpecialOptionID map[float64]RogueEventSpecialOption
 }
 
 // LoadData retrieves the data. Must be called before RogueEventSpecialOption.GroupData
@@ -40,7 +40,6 @@ func (a *RogueEventSpecialOptionAccessor) Raw() ([]RogueEventSpecialOption, erro
 		if err != nil {
 			return []RogueEventSpecialOption{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,8 +49,8 @@ func (a *RogueEventSpecialOptionAccessor) Raw() ([]RogueEventSpecialOption, erro
 func (a *RogueEventSpecialOptionAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataAeonFigure[d.AeonFigure] = d
-		a._dataSpecialOptionID[d.SpecialOptionID] = d
 		a._dataAeonIcon[d.AeonIcon] = d
+		a._dataSpecialOptionID[d.SpecialOptionID] = d
 	}
 }
 
@@ -60,27 +59,15 @@ func (a *RogueEventSpecialOptionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueEventSpecialOptionAccessor) ByAeonFigure(identifier string) (RogueEventSpecialOption, error) {
 	if a._dataAeonFigure == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueEventSpecialOption{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueEventSpecialOption{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAeonFigure[identifier], nil
-}
-
-// BySpecialOptionID returns the RogueEventSpecialOption uniquely identified by SpecialOptionID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueEventSpecialOptionAccessor) BySpecialOptionID(identifier float64) (RogueEventSpecialOption, error) {
-	if a._dataSpecialOptionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueEventSpecialOption{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSpecialOptionID[identifier], nil
 }
 
 // ByAeonIcon returns the RogueEventSpecialOption uniquely identified by AeonIcon
@@ -88,11 +75,29 @@ func (a *RogueEventSpecialOptionAccessor) BySpecialOptionID(identifier float64) 
 // Error is only non-nil if the source errors out
 func (a *RogueEventSpecialOptionAccessor) ByAeonIcon(identifier string) (RogueEventSpecialOption, error) {
 	if a._dataAeonIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueEventSpecialOption{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueEventSpecialOption{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAeonIcon[identifier], nil
+}
+
+// BySpecialOptionID returns the RogueEventSpecialOption uniquely identified by SpecialOptionID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueEventSpecialOptionAccessor) BySpecialOptionID(identifier float64) (RogueEventSpecialOption, error) {
+	if a._dataSpecialOptionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueEventSpecialOption{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSpecialOptionID[identifier], nil
 }

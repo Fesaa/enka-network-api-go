@@ -38,7 +38,6 @@ func (a *RaidTypeConfigAccessor) Raw() ([]RaidTypeConfig, error) {
 		if err != nil {
 			return []RaidTypeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RaidTypeConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RaidTypeConfigAccessor) ByRaidType(identifier string) (RaidTypeConfig, error) {
 	if a._dataRaidType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RaidTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RaidTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

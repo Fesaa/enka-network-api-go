@@ -38,7 +38,6 @@ func (a *AetherDivideConstCommonAccessor) Raw() ([]AetherDivideConstCommon, erro
 		if err != nil {
 			return []AetherDivideConstCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *AetherDivideConstCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AetherDivideConstCommonAccessor) ByConstValueName(identifier string) (AetherDivideConstCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideConstCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideConstCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

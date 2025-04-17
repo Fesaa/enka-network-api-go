@@ -37,7 +37,6 @@ func (a *AvatarPromotionRewardAccessor) Raw() ([]AvatarPromotionReward, error) {
 		if err != nil {
 			return []AvatarPromotionReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *AvatarPromotionRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarPromotionRewardAccessor) ByPromotion(identifier float64) (AvatarPromotionReward, error) {
 	if a._dataPromotion == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarPromotionReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarPromotionReward{}, err
+			}
 		}
 		a.GroupData()
 	}

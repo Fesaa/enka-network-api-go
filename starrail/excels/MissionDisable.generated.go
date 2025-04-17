@@ -40,7 +40,6 @@ func (a *MissionDisableAccessor) Raw() ([]MissionDisable, error) {
 		if err != nil {
 			return []MissionDisable{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MissionDisableAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MissionDisableAccessor) BySubMissionID(identifier float64) (MissionDisable, error) {
 	if a._dataSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MissionDisable{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MissionDisable{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -28,8 +28,8 @@ type StoryLineEndCondition struct {
 }
 type StoryLineAccessor struct {
 	_data              []StoryLine
-	_dataStoryLineID   map[float64]StoryLine
 	_dataShowCondition map[string]StoryLine
+	_dataStoryLineID   map[float64]StoryLine
 }
 
 // LoadData retrieves the data. Must be called before StoryLine.GroupData
@@ -53,7 +53,6 @@ func (a *StoryLineAccessor) Raw() ([]StoryLine, error) {
 		if err != nil {
 			return []StoryLine{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,23 +61,9 @@ func (a *StoryLineAccessor) Raw() ([]StoryLine, error) {
 // Can be called manually in conjunction with StoryLineAccessor.LoadData to preload everything
 func (a *StoryLineAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataStoryLineID[d.StoryLineID] = d
 		a._dataShowCondition[d.ShowCondition] = d
+		a._dataStoryLineID[d.StoryLineID] = d
 	}
-}
-
-// ByStoryLineID returns the StoryLine uniquely identified by StoryLineID
-//
-// Error is only non-nil if the source errors out
-func (a *StoryLineAccessor) ByStoryLineID(identifier float64) (StoryLine, error) {
-	if a._dataStoryLineID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StoryLine{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStoryLineID[identifier], nil
 }
 
 // ByShowCondition returns the StoryLine uniquely identified by ShowCondition
@@ -86,11 +71,29 @@ func (a *StoryLineAccessor) ByStoryLineID(identifier float64) (StoryLine, error)
 // Error is only non-nil if the source errors out
 func (a *StoryLineAccessor) ByShowCondition(identifier string) (StoryLine, error) {
 	if a._dataShowCondition == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StoryLine{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StoryLine{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataShowCondition[identifier], nil
+}
+
+// ByStoryLineID returns the StoryLine uniquely identified by StoryLineID
+//
+// Error is only non-nil if the source errors out
+func (a *StoryLineAccessor) ByStoryLineID(identifier float64) (StoryLine, error) {
+	if a._dataStoryLineID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StoryLine{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStoryLineID[identifier], nil
 }

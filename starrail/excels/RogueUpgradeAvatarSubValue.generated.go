@@ -43,7 +43,6 @@ func (a *RogueUpgradeAvatarSubValueAccessor) Raw() ([]RogueUpgradeAvatarSubValue
 		if err != nil {
 			return []RogueUpgradeAvatarSubValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

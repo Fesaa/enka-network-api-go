@@ -39,7 +39,6 @@ func (a *ActivityBonusRewardPunkLordAccessor) Raw() ([]ActivityBonusRewardPunkLo
 		if err != nil {
 			return []ActivityBonusRewardPunkLord{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ActivityBonusRewardPunkLordAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityBonusRewardPunkLordAccessor) ByBonusID(identifier float64) (ActivityBonusRewardPunkLord, error) {
 	if a._dataBonusID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityBonusRewardPunkLord{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityBonusRewardPunkLord{}, err
+			}
 		}
 		a.GroupData()
 	}

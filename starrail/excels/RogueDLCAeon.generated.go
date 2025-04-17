@@ -31,14 +31,14 @@ type RogueDLCAeon struct {
 }
 type RogueDLCAeonAccessor struct {
 	_data                            []RogueDLCAeon
-	_dataRogueBuffType               map[float64]RogueDLCAeon
 	_dataAeonDiceID                  map[float64]RogueDLCAeon
-	_dataBattleEventBuffGroup        map[float64]RogueDLCAeon
-	_dataEntrancePrefabPath          map[string]RogueDLCAeon
 	_dataAeonID                      map[float64]RogueDLCAeon
-	_dataRogueAeonDisplayID          map[float64]RogueDLCAeon
+	_dataBattleEventBuffGroup        map[float64]RogueDLCAeon
 	_dataBattleEventEnhanceBuffGroup map[float64]RogueDLCAeon
 	_dataEffectType3                 map[string]RogueDLCAeon
+	_dataEntrancePrefabPath          map[string]RogueDLCAeon
+	_dataRogueAeonDisplayID          map[float64]RogueDLCAeon
+	_dataRogueBuffType               map[float64]RogueDLCAeon
 	_dataSort                        map[float64]RogueDLCAeon
 }
 
@@ -63,7 +63,6 @@ func (a *RogueDLCAeonAccessor) Raw() ([]RogueDLCAeon, error) {
 		if err != nil {
 			return []RogueDLCAeon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -72,30 +71,16 @@ func (a *RogueDLCAeonAccessor) Raw() ([]RogueDLCAeon, error) {
 // Can be called manually in conjunction with RogueDLCAeonAccessor.LoadData to preload everything
 func (a *RogueDLCAeonAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRogueBuffType[d.RogueBuffType] = d
 		a._dataAeonDiceID[d.AeonDiceID] = d
-		a._dataBattleEventBuffGroup[d.BattleEventBuffGroup] = d
-		a._dataEntrancePrefabPath[d.EntrancePrefabPath] = d
 		a._dataAeonID[d.AeonID] = d
-		a._dataRogueAeonDisplayID[d.RogueAeonDisplayID] = d
+		a._dataBattleEventBuffGroup[d.BattleEventBuffGroup] = d
 		a._dataBattleEventEnhanceBuffGroup[d.BattleEventEnhanceBuffGroup] = d
 		a._dataEffectType3[d.EffectType3] = d
+		a._dataEntrancePrefabPath[d.EntrancePrefabPath] = d
+		a._dataRogueAeonDisplayID[d.RogueAeonDisplayID] = d
+		a._dataRogueBuffType[d.RogueBuffType] = d
 		a._dataSort[d.Sort] = d
 	}
-}
-
-// ByRogueBuffType returns the RogueDLCAeon uniquely identified by RogueBuffType
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonAccessor) ByRogueBuffType(identifier float64) (RogueDLCAeon, error) {
-	if a._dataRogueBuffType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeon{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRogueBuffType[identifier], nil
 }
 
 // ByAeonDiceID returns the RogueDLCAeon uniquely identified by AeonDiceID
@@ -103,41 +88,15 @@ func (a *RogueDLCAeonAccessor) ByRogueBuffType(identifier float64) (RogueDLCAeon
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonAccessor) ByAeonDiceID(identifier float64) (RogueDLCAeon, error) {
 	if a._dataAeonDiceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeon{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAeonDiceID[identifier], nil
-}
-
-// ByBattleEventBuffGroup returns the RogueDLCAeon uniquely identified by BattleEventBuffGroup
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonAccessor) ByBattleEventBuffGroup(identifier float64) (RogueDLCAeon, error) {
-	if a._dataBattleEventBuffGroup == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeon{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBattleEventBuffGroup[identifier], nil
-}
-
-// ByEntrancePrefabPath returns the RogueDLCAeon uniquely identified by EntrancePrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonAccessor) ByEntrancePrefabPath(identifier string) (RogueDLCAeon, error) {
-	if a._dataEntrancePrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeon{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEntrancePrefabPath[identifier], nil
 }
 
 // ByAeonID returns the RogueDLCAeon uniquely identified by AeonID
@@ -145,27 +104,31 @@ func (a *RogueDLCAeonAccessor) ByEntrancePrefabPath(identifier string) (RogueDLC
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonAccessor) ByAeonID(identifier float64) (RogueDLCAeon, error) {
 	if a._dataAeonID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeon{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAeonID[identifier], nil
 }
 
-// ByRogueAeonDisplayID returns the RogueDLCAeon uniquely identified by RogueAeonDisplayID
+// ByBattleEventBuffGroup returns the RogueDLCAeon uniquely identified by BattleEventBuffGroup
 //
 // Error is only non-nil if the source errors out
-func (a *RogueDLCAeonAccessor) ByRogueAeonDisplayID(identifier float64) (RogueDLCAeon, error) {
-	if a._dataRogueAeonDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeon{}, err
+func (a *RogueDLCAeonAccessor) ByBattleEventBuffGroup(identifier float64) (RogueDLCAeon, error) {
+	if a._dataBattleEventBuffGroup == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeon{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataRogueAeonDisplayID[identifier], nil
+	return a._dataBattleEventBuffGroup[identifier], nil
 }
 
 // ByBattleEventEnhanceBuffGroup returns the RogueDLCAeon uniquely identified by BattleEventEnhanceBuffGroup
@@ -173,9 +136,11 @@ func (a *RogueDLCAeonAccessor) ByRogueAeonDisplayID(identifier float64) (RogueDL
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonAccessor) ByBattleEventEnhanceBuffGroup(identifier float64) (RogueDLCAeon, error) {
 	if a._dataBattleEventEnhanceBuffGroup == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeon{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -187,13 +152,63 @@ func (a *RogueDLCAeonAccessor) ByBattleEventEnhanceBuffGroup(identifier float64)
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonAccessor) ByEffectType3(identifier string) (RogueDLCAeon, error) {
 	if a._dataEffectType3 == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeon{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEffectType3[identifier], nil
+}
+
+// ByEntrancePrefabPath returns the RogueDLCAeon uniquely identified by EntrancePrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonAccessor) ByEntrancePrefabPath(identifier string) (RogueDLCAeon, error) {
+	if a._dataEntrancePrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeon{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEntrancePrefabPath[identifier], nil
+}
+
+// ByRogueAeonDisplayID returns the RogueDLCAeon uniquely identified by RogueAeonDisplayID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonAccessor) ByRogueAeonDisplayID(identifier float64) (RogueDLCAeon, error) {
+	if a._dataRogueAeonDisplayID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeon{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueAeonDisplayID[identifier], nil
+}
+
+// ByRogueBuffType returns the RogueDLCAeon uniquely identified by RogueBuffType
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonAccessor) ByRogueBuffType(identifier float64) (RogueDLCAeon, error) {
+	if a._dataRogueBuffType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeon{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueBuffType[identifier], nil
 }
 
 // BySort returns the RogueDLCAeon uniquely identified by Sort
@@ -201,9 +216,11 @@ func (a *RogueDLCAeonAccessor) ByEffectType3(identifier string) (RogueDLCAeon, e
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonAccessor) BySort(identifier float64) (RogueDLCAeon, error) {
 	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeon{}, err
+			}
 		}
 		a.GroupData()
 	}

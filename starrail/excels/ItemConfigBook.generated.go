@@ -54,7 +54,6 @@ func (a *ItemConfigBookAccessor) Raw() ([]ItemConfigBook, error) {
 		if err != nil {
 			return []ItemConfigBook{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -72,9 +71,11 @@ func (a *ItemConfigBookAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemConfigBookAccessor) ByID(identifier float64) (ItemConfigBook, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigBook{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigBook{}, err
+			}
 		}
 		a.GroupData()
 	}

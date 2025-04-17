@@ -45,7 +45,6 @@ func (a *TrainVisitorConfigAccessor) Raw() ([]TrainVisitorConfig, error) {
 		if err != nil {
 			return []TrainVisitorConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *TrainVisitorConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainVisitorConfigAccessor) ByAvatarID(identifier float64) (TrainVisitorConfig, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainVisitorConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainVisitorConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *TrainVisitorConfigAccessor) ByAvatarID(identifier float64) (TrainVisito
 // Error is only non-nil if the source errors out
 func (a *TrainVisitorConfigAccessor) ByVisitorID(identifier float64) (TrainVisitorConfig, error) {
 	if a._dataVisitorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainVisitorConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainVisitorConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

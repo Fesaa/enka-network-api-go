@@ -38,7 +38,6 @@ func (a *AvatarBreakDamageAccessor) Raw() ([]AvatarBreakDamage, error) {
 		if err != nil {
 			return []AvatarBreakDamage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *AvatarBreakDamageAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarBreakDamageAccessor) ByLevel(identifier float64) (AvatarBreakDamage, error) {
 	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarBreakDamage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarBreakDamage{}, err
+			}
 		}
 		a.GroupData()
 	}

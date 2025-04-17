@@ -43,7 +43,6 @@ func (a *SpaceZooFeatureConfigAccessor) Raw() ([]SpaceZooFeatureConfig, error) {
 		if err != nil {
 			return []SpaceZooFeatureConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *SpaceZooFeatureConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooFeatureConfigAccessor) ByFeatureID(identifier float64) (SpaceZooFeatureConfig, error) {
 	if a._dataFeatureID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooFeatureConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooFeatureConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

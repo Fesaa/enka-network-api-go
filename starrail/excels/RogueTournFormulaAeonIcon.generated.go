@@ -19,8 +19,8 @@ type RogueTournFormulaAeonIconAccessor struct {
 	_dataBuffTypeID           map[float64]RogueTournFormulaAeonIcon
 	_dataFormulaIcon          map[string]RogueTournFormulaAeonIcon
 	_dataFormulaSubIcon       map[string]RogueTournFormulaAeonIcon
-	_dataUltraFormulaIcon     map[string]RogueTournFormulaAeonIcon
 	_dataUltraFormulaCardIcon map[string]RogueTournFormulaAeonIcon
+	_dataUltraFormulaIcon     map[string]RogueTournFormulaAeonIcon
 }
 
 // LoadData retrieves the data. Must be called before RogueTournFormulaAeonIcon.GroupData
@@ -44,7 +44,6 @@ func (a *RogueTournFormulaAeonIconAccessor) Raw() ([]RogueTournFormulaAeonIcon, 
 		if err != nil {
 			return []RogueTournFormulaAeonIcon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,8 +55,8 @@ func (a *RogueTournFormulaAeonIconAccessor) GroupData() {
 		a._dataBuffTypeID[d.BuffTypeID] = d
 		a._dataFormulaIcon[d.FormulaIcon] = d
 		a._dataFormulaSubIcon[d.FormulaSubIcon] = d
-		a._dataUltraFormulaIcon[d.UltraFormulaIcon] = d
 		a._dataUltraFormulaCardIcon[d.UltraFormulaCardIcon] = d
+		a._dataUltraFormulaIcon[d.UltraFormulaIcon] = d
 	}
 }
 
@@ -66,9 +65,11 @@ func (a *RogueTournFormulaAeonIconAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournFormulaAeonIconAccessor) ByBuffTypeID(identifier float64) (RogueTournFormulaAeonIcon, error) {
 	if a._dataBuffTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournFormulaAeonIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournFormulaAeonIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -80,9 +81,11 @@ func (a *RogueTournFormulaAeonIconAccessor) ByBuffTypeID(identifier float64) (Ro
 // Error is only non-nil if the source errors out
 func (a *RogueTournFormulaAeonIconAccessor) ByFormulaIcon(identifier string) (RogueTournFormulaAeonIcon, error) {
 	if a._dataFormulaIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournFormulaAeonIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournFormulaAeonIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -94,27 +97,15 @@ func (a *RogueTournFormulaAeonIconAccessor) ByFormulaIcon(identifier string) (Ro
 // Error is only non-nil if the source errors out
 func (a *RogueTournFormulaAeonIconAccessor) ByFormulaSubIcon(identifier string) (RogueTournFormulaAeonIcon, error) {
 	if a._dataFormulaSubIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournFormulaAeonIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournFormulaAeonIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFormulaSubIcon[identifier], nil
-}
-
-// ByUltraFormulaIcon returns the RogueTournFormulaAeonIcon uniquely identified by UltraFormulaIcon
-//
-// Error is only non-nil if the source errors out
-func (a *RogueTournFormulaAeonIconAccessor) ByUltraFormulaIcon(identifier string) (RogueTournFormulaAeonIcon, error) {
-	if a._dataUltraFormulaIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournFormulaAeonIcon{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUltraFormulaIcon[identifier], nil
 }
 
 // ByUltraFormulaCardIcon returns the RogueTournFormulaAeonIcon uniquely identified by UltraFormulaCardIcon
@@ -122,11 +113,29 @@ func (a *RogueTournFormulaAeonIconAccessor) ByUltraFormulaIcon(identifier string
 // Error is only non-nil if the source errors out
 func (a *RogueTournFormulaAeonIconAccessor) ByUltraFormulaCardIcon(identifier string) (RogueTournFormulaAeonIcon, error) {
 	if a._dataUltraFormulaCardIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournFormulaAeonIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournFormulaAeonIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataUltraFormulaCardIcon[identifier], nil
+}
+
+// ByUltraFormulaIcon returns the RogueTournFormulaAeonIcon uniquely identified by UltraFormulaIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournFormulaAeonIconAccessor) ByUltraFormulaIcon(identifier string) (RogueTournFormulaAeonIcon, error) {
+	if a._dataUltraFormulaIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournFormulaAeonIcon{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUltraFormulaIcon[identifier], nil
 }

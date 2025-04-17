@@ -19,9 +19,9 @@ type EvolveBuildTagConfig struct {
 type EvolveBuildTagConfigAccessor struct {
 	_data              []EvolveBuildTagConfig
 	_dataExtraEffectID map[float64]EvolveBuildTagConfig
-	_dataShopSkillID   map[float64]EvolveBuildTagConfig
-	_dataIconPath      map[string]EvolveBuildTagConfig
 	_dataID            map[float64]EvolveBuildTagConfig
+	_dataIconPath      map[string]EvolveBuildTagConfig
+	_dataShopSkillID   map[float64]EvolveBuildTagConfig
 }
 
 // LoadData retrieves the data. Must be called before EvolveBuildTagConfig.GroupData
@@ -45,7 +45,6 @@ func (a *EvolveBuildTagConfigAccessor) Raw() ([]EvolveBuildTagConfig, error) {
 		if err != nil {
 			return []EvolveBuildTagConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,9 @@ func (a *EvolveBuildTagConfigAccessor) Raw() ([]EvolveBuildTagConfig, error) {
 func (a *EvolveBuildTagConfigAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataExtraEffectID[d.ExtraEffectID] = d
-		a._dataShopSkillID[d.ShopSkillID] = d
-		a._dataIconPath[d.IconPath] = d
 		a._dataID[d.ID] = d
+		a._dataIconPath[d.IconPath] = d
+		a._dataShopSkillID[d.ShopSkillID] = d
 	}
 }
 
@@ -66,41 +65,15 @@ func (a *EvolveBuildTagConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildTagConfigAccessor) ByExtraEffectID(identifier float64) (EvolveBuildTagConfig, error) {
 	if a._dataExtraEffectID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildTagConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildTagConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataExtraEffectID[identifier], nil
-}
-
-// ByShopSkillID returns the EvolveBuildTagConfig uniquely identified by ShopSkillID
-//
-// Error is only non-nil if the source errors out
-func (a *EvolveBuildTagConfigAccessor) ByShopSkillID(identifier float64) (EvolveBuildTagConfig, error) {
-	if a._dataShopSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildTagConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataShopSkillID[identifier], nil
-}
-
-// ByIconPath returns the EvolveBuildTagConfig uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *EvolveBuildTagConfigAccessor) ByIconPath(identifier string) (EvolveBuildTagConfig, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildTagConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByID returns the EvolveBuildTagConfig uniquely identified by ID
@@ -108,11 +81,45 @@ func (a *EvolveBuildTagConfigAccessor) ByIconPath(identifier string) (EvolveBuil
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildTagConfigAccessor) ByID(identifier float64) (EvolveBuildTagConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildTagConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildTagConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByIconPath returns the EvolveBuildTagConfig uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *EvolveBuildTagConfigAccessor) ByIconPath(identifier string) (EvolveBuildTagConfig, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildTagConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
+}
+
+// ByShopSkillID returns the EvolveBuildTagConfig uniquely identified by ShopSkillID
+//
+// Error is only non-nil if the source errors out
+func (a *EvolveBuildTagConfigAccessor) ByShopSkillID(identifier float64) (EvolveBuildTagConfig, error) {
+	if a._dataShopSkillID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildTagConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataShopSkillID[identifier], nil
 }

@@ -42,7 +42,6 @@ func (a *PossessionConfigAccessor) Raw() ([]PossessionConfig, error) {
 		if err != nil {
 			return []PossessionConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *PossessionConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PossessionConfigAccessor) ByPossessionName(identifier string) (PossessionConfig, error) {
 	if a._dataPossessionName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PossessionConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PossessionConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

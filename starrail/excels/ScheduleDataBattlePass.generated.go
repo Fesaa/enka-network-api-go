@@ -40,7 +40,6 @@ func (a *ScheduleDataBattlePassAccessor) Raw() ([]ScheduleDataBattlePass, error)
 		if err != nil {
 			return []ScheduleDataBattlePass{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *ScheduleDataBattlePassAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataBattlePassAccessor) ByBeginTime(identifier string) (ScheduleDataBattlePass, error) {
 	if a._dataBeginTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataBattlePass{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataBattlePass{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *ScheduleDataBattlePassAccessor) ByBeginTime(identifier string) (Schedul
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataBattlePassAccessor) ByEndTime(identifier string) (ScheduleDataBattlePass, error) {
 	if a._dataEndTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataBattlePass{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataBattlePass{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,9 +91,11 @@ func (a *ScheduleDataBattlePassAccessor) ByEndTime(identifier string) (ScheduleD
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataBattlePassAccessor) ByID(identifier float64) (ScheduleDataBattlePass, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataBattlePass{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataBattlePass{}, err
+			}
 		}
 		a.GroupData()
 	}

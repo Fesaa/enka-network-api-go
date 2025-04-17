@@ -57,24 +57,24 @@ type AvatarConfigRewardList struct {
 }
 type AvatarConfigAccessor struct {
 	_data                          []AvatarConfig
-	_dataWaitingAvatarHeadIconPath map[string]AvatarConfig
-	_dataDefaultAvatarModelPath    map[string]AvatarConfig
+	_dataActionAvatarHeadIconPath  map[string]AvatarConfig
+	_dataAdventurePlayerID         map[float64]AvatarConfig
+	_dataAvatarCutinBgImgPath      map[string]AvatarConfig
+	_dataAvatarCutinFrontImgPath   map[string]AvatarConfig
+	_dataAvatarCutinImgPath        map[string]AvatarConfig
+	_dataAvatarGachaResultImgPath  map[string]AvatarConfig
+	_dataAvatarID                  map[float64]AvatarConfig
+	_dataAvatarMiniIconPath        map[string]AvatarConfig
+	_dataAvatarSideIconPath        map[string]AvatarConfig
 	_dataAvatarVOTag               map[string]AvatarConfig
 	_dataDefaultAvatarHeadIconPath map[string]AvatarConfig
-	_dataSideAvatarHeadIconPath    map[string]AvatarConfig
-	_dataUltraSkillCutInPrefabPath map[string]AvatarConfig
-	_dataManikinJsonPath           map[string]AvatarConfig
-	_dataAvatarID                  map[float64]AvatarConfig
-	_dataActionAvatarHeadIconPath  map[string]AvatarConfig
-	_dataAvatarCutinFrontImgPath   map[string]AvatarConfig
-	_dataAdventurePlayerID         map[float64]AvatarConfig
-	_dataAvatarCutinImgPath        map[string]AvatarConfig
-	_dataAvatarCutinBgImgPath      map[string]AvatarConfig
-	_dataAvatarSideIconPath        map[string]AvatarConfig
-	_dataUIAvatarModelPath         map[string]AvatarConfig
-	_dataAvatarGachaResultImgPath  map[string]AvatarConfig
+	_dataDefaultAvatarModelPath    map[string]AvatarConfig
 	_dataJsonPath                  map[string]AvatarConfig
-	_dataAvatarMiniIconPath        map[string]AvatarConfig
+	_dataManikinJsonPath           map[string]AvatarConfig
+	_dataSideAvatarHeadIconPath    map[string]AvatarConfig
+	_dataUIAvatarModelPath         map[string]AvatarConfig
+	_dataUltraSkillCutInPrefabPath map[string]AvatarConfig
+	_dataWaitingAvatarHeadIconPath map[string]AvatarConfig
 }
 
 // LoadData retrieves the data. Must be called before AvatarConfig.GroupData
@@ -98,7 +98,6 @@ func (a *AvatarConfigAccessor) Raw() ([]AvatarConfig, error) {
 		if err != nil {
 			return []AvatarConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -107,53 +106,169 @@ func (a *AvatarConfigAccessor) Raw() ([]AvatarConfig, error) {
 // Can be called manually in conjunction with AvatarConfigAccessor.LoadData to preload everything
 func (a *AvatarConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataWaitingAvatarHeadIconPath[d.WaitingAvatarHeadIconPath] = d
-		a._dataDefaultAvatarModelPath[d.DefaultAvatarModelPath] = d
+		a._dataActionAvatarHeadIconPath[d.ActionAvatarHeadIconPath] = d
+		a._dataAdventurePlayerID[d.AdventurePlayerID] = d
+		a._dataAvatarCutinBgImgPath[d.AvatarCutinBgImgPath] = d
+		a._dataAvatarCutinFrontImgPath[d.AvatarCutinFrontImgPath] = d
+		a._dataAvatarCutinImgPath[d.AvatarCutinImgPath] = d
+		a._dataAvatarGachaResultImgPath[d.AvatarGachaResultImgPath] = d
+		a._dataAvatarID[d.AvatarID] = d
+		a._dataAvatarMiniIconPath[d.AvatarMiniIconPath] = d
+		a._dataAvatarSideIconPath[d.AvatarSideIconPath] = d
 		a._dataAvatarVOTag[d.AvatarVOTag] = d
 		a._dataDefaultAvatarHeadIconPath[d.DefaultAvatarHeadIconPath] = d
-		a._dataSideAvatarHeadIconPath[d.SideAvatarHeadIconPath] = d
-		a._dataUltraSkillCutInPrefabPath[d.UltraSkillCutInPrefabPath] = d
-		a._dataManikinJsonPath[d.ManikinJsonPath] = d
-		a._dataAvatarID[d.AvatarID] = d
-		a._dataActionAvatarHeadIconPath[d.ActionAvatarHeadIconPath] = d
-		a._dataAvatarCutinFrontImgPath[d.AvatarCutinFrontImgPath] = d
-		a._dataAdventurePlayerID[d.AdventurePlayerID] = d
-		a._dataAvatarCutinImgPath[d.AvatarCutinImgPath] = d
-		a._dataAvatarCutinBgImgPath[d.AvatarCutinBgImgPath] = d
-		a._dataAvatarSideIconPath[d.AvatarSideIconPath] = d
-		a._dataUIAvatarModelPath[d.UIAvatarModelPath] = d
-		a._dataAvatarGachaResultImgPath[d.AvatarGachaResultImgPath] = d
+		a._dataDefaultAvatarModelPath[d.DefaultAvatarModelPath] = d
 		a._dataJsonPath[d.JsonPath] = d
-		a._dataAvatarMiniIconPath[d.AvatarMiniIconPath] = d
+		a._dataManikinJsonPath[d.ManikinJsonPath] = d
+		a._dataSideAvatarHeadIconPath[d.SideAvatarHeadIconPath] = d
+		a._dataUIAvatarModelPath[d.UIAvatarModelPath] = d
+		a._dataUltraSkillCutInPrefabPath[d.UltraSkillCutInPrefabPath] = d
+		a._dataWaitingAvatarHeadIconPath[d.WaitingAvatarHeadIconPath] = d
 	}
 }
 
-// ByWaitingAvatarHeadIconPath returns the AvatarConfig uniquely identified by WaitingAvatarHeadIconPath
+// ByActionAvatarHeadIconPath returns the AvatarConfig uniquely identified by ActionAvatarHeadIconPath
 //
 // Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByWaitingAvatarHeadIconPath(identifier string) (AvatarConfig, error) {
-	if a._dataWaitingAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
+func (a *AvatarConfigAccessor) ByActionAvatarHeadIconPath(identifier string) (AvatarConfig, error) {
+	if a._dataActionAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataWaitingAvatarHeadIconPath[identifier], nil
+	return a._dataActionAvatarHeadIconPath[identifier], nil
 }
 
-// ByDefaultAvatarModelPath returns the AvatarConfig uniquely identified by DefaultAvatarModelPath
+// ByAdventurePlayerID returns the AvatarConfig uniquely identified by AdventurePlayerID
 //
 // Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByDefaultAvatarModelPath(identifier string) (AvatarConfig, error) {
-	if a._dataDefaultAvatarModelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
+func (a *AvatarConfigAccessor) ByAdventurePlayerID(identifier float64) (AvatarConfig, error) {
+	if a._dataAdventurePlayerID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataDefaultAvatarModelPath[identifier], nil
+	return a._dataAdventurePlayerID[identifier], nil
+}
+
+// ByAvatarCutinBgImgPath returns the AvatarConfig uniquely identified by AvatarCutinBgImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByAvatarCutinBgImgPath(identifier string) (AvatarConfig, error) {
+	if a._dataAvatarCutinBgImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarCutinBgImgPath[identifier], nil
+}
+
+// ByAvatarCutinFrontImgPath returns the AvatarConfig uniquely identified by AvatarCutinFrontImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByAvatarCutinFrontImgPath(identifier string) (AvatarConfig, error) {
+	if a._dataAvatarCutinFrontImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarCutinFrontImgPath[identifier], nil
+}
+
+// ByAvatarCutinImgPath returns the AvatarConfig uniquely identified by AvatarCutinImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByAvatarCutinImgPath(identifier string) (AvatarConfig, error) {
+	if a._dataAvatarCutinImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarCutinImgPath[identifier], nil
+}
+
+// ByAvatarGachaResultImgPath returns the AvatarConfig uniquely identified by AvatarGachaResultImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByAvatarGachaResultImgPath(identifier string) (AvatarConfig, error) {
+	if a._dataAvatarGachaResultImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarGachaResultImgPath[identifier], nil
+}
+
+// ByAvatarID returns the AvatarConfig uniquely identified by AvatarID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByAvatarID(identifier float64) (AvatarConfig, error) {
+	if a._dataAvatarID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarID[identifier], nil
+}
+
+// ByAvatarMiniIconPath returns the AvatarConfig uniquely identified by AvatarMiniIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByAvatarMiniIconPath(identifier string) (AvatarConfig, error) {
+	if a._dataAvatarMiniIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarMiniIconPath[identifier], nil
+}
+
+// ByAvatarSideIconPath returns the AvatarConfig uniquely identified by AvatarSideIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByAvatarSideIconPath(identifier string) (AvatarConfig, error) {
+	if a._dataAvatarSideIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarSideIconPath[identifier], nil
 }
 
 // ByAvatarVOTag returns the AvatarConfig uniquely identified by AvatarVOTag
@@ -161,9 +276,11 @@ func (a *AvatarConfigAccessor) ByDefaultAvatarModelPath(identifier string) (Avat
 // Error is only non-nil if the source errors out
 func (a *AvatarConfigAccessor) ByAvatarVOTag(identifier string) (AvatarConfig, error) {
 	if a._dataAvatarVOTag == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -175,181 +292,31 @@ func (a *AvatarConfigAccessor) ByAvatarVOTag(identifier string) (AvatarConfig, e
 // Error is only non-nil if the source errors out
 func (a *AvatarConfigAccessor) ByDefaultAvatarHeadIconPath(identifier string) (AvatarConfig, error) {
 	if a._dataDefaultAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDefaultAvatarHeadIconPath[identifier], nil
 }
 
-// BySideAvatarHeadIconPath returns the AvatarConfig uniquely identified by SideAvatarHeadIconPath
+// ByDefaultAvatarModelPath returns the AvatarConfig uniquely identified by DefaultAvatarModelPath
 //
 // Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) BySideAvatarHeadIconPath(identifier string) (AvatarConfig, error) {
-	if a._dataSideAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
+func (a *AvatarConfigAccessor) ByDefaultAvatarModelPath(identifier string) (AvatarConfig, error) {
+	if a._dataDefaultAvatarModelPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataSideAvatarHeadIconPath[identifier], nil
-}
-
-// ByUltraSkillCutInPrefabPath returns the AvatarConfig uniquely identified by UltraSkillCutInPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByUltraSkillCutInPrefabPath(identifier string) (AvatarConfig, error) {
-	if a._dataUltraSkillCutInPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUltraSkillCutInPrefabPath[identifier], nil
-}
-
-// ByManikinJsonPath returns the AvatarConfig uniquely identified by ManikinJsonPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByManikinJsonPath(identifier string) (AvatarConfig, error) {
-	if a._dataManikinJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataManikinJsonPath[identifier], nil
-}
-
-// ByAvatarID returns the AvatarConfig uniquely identified by AvatarID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByAvatarID(identifier float64) (AvatarConfig, error) {
-	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarID[identifier], nil
-}
-
-// ByActionAvatarHeadIconPath returns the AvatarConfig uniquely identified by ActionAvatarHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByActionAvatarHeadIconPath(identifier string) (AvatarConfig, error) {
-	if a._dataActionAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataActionAvatarHeadIconPath[identifier], nil
-}
-
-// ByAvatarCutinFrontImgPath returns the AvatarConfig uniquely identified by AvatarCutinFrontImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByAvatarCutinFrontImgPath(identifier string) (AvatarConfig, error) {
-	if a._dataAvatarCutinFrontImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarCutinFrontImgPath[identifier], nil
-}
-
-// ByAdventurePlayerID returns the AvatarConfig uniquely identified by AdventurePlayerID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByAdventurePlayerID(identifier float64) (AvatarConfig, error) {
-	if a._dataAdventurePlayerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAdventurePlayerID[identifier], nil
-}
-
-// ByAvatarCutinImgPath returns the AvatarConfig uniquely identified by AvatarCutinImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByAvatarCutinImgPath(identifier string) (AvatarConfig, error) {
-	if a._dataAvatarCutinImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarCutinImgPath[identifier], nil
-}
-
-// ByAvatarCutinBgImgPath returns the AvatarConfig uniquely identified by AvatarCutinBgImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByAvatarCutinBgImgPath(identifier string) (AvatarConfig, error) {
-	if a._dataAvatarCutinBgImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarCutinBgImgPath[identifier], nil
-}
-
-// ByAvatarSideIconPath returns the AvatarConfig uniquely identified by AvatarSideIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByAvatarSideIconPath(identifier string) (AvatarConfig, error) {
-	if a._dataAvatarSideIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarSideIconPath[identifier], nil
-}
-
-// ByUIAvatarModelPath returns the AvatarConfig uniquely identified by UIAvatarModelPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByUIAvatarModelPath(identifier string) (AvatarConfig, error) {
-	if a._dataUIAvatarModelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUIAvatarModelPath[identifier], nil
-}
-
-// ByAvatarGachaResultImgPath returns the AvatarConfig uniquely identified by AvatarGachaResultImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByAvatarGachaResultImgPath(identifier string) (AvatarConfig, error) {
-	if a._dataAvatarGachaResultImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarGachaResultImgPath[identifier], nil
+	return a._dataDefaultAvatarModelPath[identifier], nil
 }
 
 // ByJsonPath returns the AvatarConfig uniquely identified by JsonPath
@@ -357,25 +324,93 @@ func (a *AvatarConfigAccessor) ByAvatarGachaResultImgPath(identifier string) (Av
 // Error is only non-nil if the source errors out
 func (a *AvatarConfigAccessor) ByJsonPath(identifier string) (AvatarConfig, error) {
 	if a._dataJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataJsonPath[identifier], nil
 }
 
-// ByAvatarMiniIconPath returns the AvatarConfig uniquely identified by AvatarMiniIconPath
+// ByManikinJsonPath returns the AvatarConfig uniquely identified by ManikinJsonPath
 //
 // Error is only non-nil if the source errors out
-func (a *AvatarConfigAccessor) ByAvatarMiniIconPath(identifier string) (AvatarConfig, error) {
-	if a._dataAvatarMiniIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarConfig{}, err
+func (a *AvatarConfigAccessor) ByManikinJsonPath(identifier string) (AvatarConfig, error) {
+	if a._dataManikinJsonPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataAvatarMiniIconPath[identifier], nil
+	return a._dataManikinJsonPath[identifier], nil
+}
+
+// BySideAvatarHeadIconPath returns the AvatarConfig uniquely identified by SideAvatarHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) BySideAvatarHeadIconPath(identifier string) (AvatarConfig, error) {
+	if a._dataSideAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSideAvatarHeadIconPath[identifier], nil
+}
+
+// ByUIAvatarModelPath returns the AvatarConfig uniquely identified by UIAvatarModelPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByUIAvatarModelPath(identifier string) (AvatarConfig, error) {
+	if a._dataUIAvatarModelPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUIAvatarModelPath[identifier], nil
+}
+
+// ByUltraSkillCutInPrefabPath returns the AvatarConfig uniquely identified by UltraSkillCutInPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByUltraSkillCutInPrefabPath(identifier string) (AvatarConfig, error) {
+	if a._dataUltraSkillCutInPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUltraSkillCutInPrefabPath[identifier], nil
+}
+
+// ByWaitingAvatarHeadIconPath returns the AvatarConfig uniquely identified by WaitingAvatarHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarConfigAccessor) ByWaitingAvatarHeadIconPath(identifier string) (AvatarConfig, error) {
+	if a._dataWaitingAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataWaitingAvatarHeadIconPath[identifier], nil
 }

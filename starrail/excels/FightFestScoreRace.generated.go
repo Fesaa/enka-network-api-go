@@ -30,16 +30,16 @@ type FightFestScoreRace struct {
 }
 type FightFestScoreRaceAccessor struct {
 	_data                  []FightFestScoreRace
-	_dataTutorialID        map[float64]FightFestScoreRace
 	_dataDetailImgPath     map[string]FightFestScoreRace
-	_dataResultImgPath     map[string]FightFestScoreRace
-	_dataTutorialImgPath   map[string]FightFestScoreRace
-	_dataTakeMainMissionID map[float64]FightFestScoreRace
-	_dataRewardID          map[float64]FightFestScoreRace
 	_dataEventID           map[float64]FightFestScoreRace
+	_dataRedAvatarID       map[float64]FightFestScoreRace
+	_dataResultImgPath     map[string]FightFestScoreRace
+	_dataRewardID          map[float64]FightFestScoreRace
 	_dataScoreRaceID       map[float64]FightFestScoreRace
 	_dataSortWeight        map[float64]FightFestScoreRace
-	_dataRedAvatarID       map[float64]FightFestScoreRace
+	_dataTakeMainMissionID map[float64]FightFestScoreRace
+	_dataTutorialID        map[float64]FightFestScoreRace
+	_dataTutorialImgPath   map[string]FightFestScoreRace
 }
 
 // LoadData retrieves the data. Must be called before FightFestScoreRace.GroupData
@@ -63,7 +63,6 @@ func (a *FightFestScoreRaceAccessor) Raw() ([]FightFestScoreRace, error) {
 		if err != nil {
 			return []FightFestScoreRace{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -72,31 +71,17 @@ func (a *FightFestScoreRaceAccessor) Raw() ([]FightFestScoreRace, error) {
 // Can be called manually in conjunction with FightFestScoreRaceAccessor.LoadData to preload everything
 func (a *FightFestScoreRaceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTutorialID[d.TutorialID] = d
 		a._dataDetailImgPath[d.DetailImgPath] = d
-		a._dataResultImgPath[d.ResultImgPath] = d
-		a._dataTutorialImgPath[d.TutorialImgPath] = d
-		a._dataTakeMainMissionID[d.TakeMainMissionID] = d
-		a._dataRewardID[d.RewardID] = d
 		a._dataEventID[d.EventID] = d
+		a._dataRedAvatarID[d.RedAvatarID] = d
+		a._dataResultImgPath[d.ResultImgPath] = d
+		a._dataRewardID[d.RewardID] = d
 		a._dataScoreRaceID[d.ScoreRaceID] = d
 		a._dataSortWeight[d.SortWeight] = d
-		a._dataRedAvatarID[d.RedAvatarID] = d
+		a._dataTakeMainMissionID[d.TakeMainMissionID] = d
+		a._dataTutorialID[d.TutorialID] = d
+		a._dataTutorialImgPath[d.TutorialImgPath] = d
 	}
-}
-
-// ByTutorialID returns the FightFestScoreRace uniquely identified by TutorialID
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestScoreRaceAccessor) ByTutorialID(identifier float64) (FightFestScoreRace, error) {
-	if a._dataTutorialID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTutorialID[identifier], nil
 }
 
 // ByDetailImgPath returns the FightFestScoreRace uniquely identified by DetailImgPath
@@ -104,69 +89,15 @@ func (a *FightFestScoreRaceAccessor) ByTutorialID(identifier float64) (FightFest
 // Error is only non-nil if the source errors out
 func (a *FightFestScoreRaceAccessor) ByDetailImgPath(identifier string) (FightFestScoreRace, error) {
 	if a._dataDetailImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDetailImgPath[identifier], nil
-}
-
-// ByResultImgPath returns the FightFestScoreRace uniquely identified by ResultImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestScoreRaceAccessor) ByResultImgPath(identifier string) (FightFestScoreRace, error) {
-	if a._dataResultImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataResultImgPath[identifier], nil
-}
-
-// ByTutorialImgPath returns the FightFestScoreRace uniquely identified by TutorialImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestScoreRaceAccessor) ByTutorialImgPath(identifier string) (FightFestScoreRace, error) {
-	if a._dataTutorialImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTutorialImgPath[identifier], nil
-}
-
-// ByTakeMainMissionID returns the FightFestScoreRace uniquely identified by TakeMainMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestScoreRaceAccessor) ByTakeMainMissionID(identifier float64) (FightFestScoreRace, error) {
-	if a._dataTakeMainMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTakeMainMissionID[identifier], nil
-}
-
-// ByRewardID returns the FightFestScoreRace uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestScoreRaceAccessor) ByRewardID(identifier float64) (FightFestScoreRace, error) {
-	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
 }
 
 // ByEventID returns the FightFestScoreRace uniquely identified by EventID
@@ -174,13 +105,63 @@ func (a *FightFestScoreRaceAccessor) ByRewardID(identifier float64) (FightFestSc
 // Error is only non-nil if the source errors out
 func (a *FightFestScoreRaceAccessor) ByEventID(identifier float64) (FightFestScoreRace, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventID[identifier], nil
+}
+
+// ByRedAvatarID returns the FightFestScoreRace uniquely identified by RedAvatarID
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestScoreRaceAccessor) ByRedAvatarID(identifier float64) (FightFestScoreRace, error) {
+	if a._dataRedAvatarID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRedAvatarID[identifier], nil
+}
+
+// ByResultImgPath returns the FightFestScoreRace uniquely identified by ResultImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestScoreRaceAccessor) ByResultImgPath(identifier string) (FightFestScoreRace, error) {
+	if a._dataResultImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataResultImgPath[identifier], nil
+}
+
+// ByRewardID returns the FightFestScoreRace uniquely identified by RewardID
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestScoreRaceAccessor) ByRewardID(identifier float64) (FightFestScoreRace, error) {
+	if a._dataRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardID[identifier], nil
 }
 
 // ByScoreRaceID returns the FightFestScoreRace uniquely identified by ScoreRaceID
@@ -188,9 +169,11 @@ func (a *FightFestScoreRaceAccessor) ByEventID(identifier float64) (FightFestSco
 // Error is only non-nil if the source errors out
 func (a *FightFestScoreRaceAccessor) ByScoreRaceID(identifier float64) (FightFestScoreRace, error) {
 	if a._dataScoreRaceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -202,25 +185,61 @@ func (a *FightFestScoreRaceAccessor) ByScoreRaceID(identifier float64) (FightFes
 // Error is only non-nil if the source errors out
 func (a *FightFestScoreRaceAccessor) BySortWeight(identifier float64) (FightFestScoreRace, error) {
 	if a._dataSortWeight == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSortWeight[identifier], nil
 }
 
-// ByRedAvatarID returns the FightFestScoreRace uniquely identified by RedAvatarID
+// ByTakeMainMissionID returns the FightFestScoreRace uniquely identified by TakeMainMissionID
 //
 // Error is only non-nil if the source errors out
-func (a *FightFestScoreRaceAccessor) ByRedAvatarID(identifier float64) (FightFestScoreRace, error) {
-	if a._dataRedAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestScoreRace{}, err
+func (a *FightFestScoreRaceAccessor) ByTakeMainMissionID(identifier float64) (FightFestScoreRace, error) {
+	if a._dataTakeMainMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataRedAvatarID[identifier], nil
+	return a._dataTakeMainMissionID[identifier], nil
+}
+
+// ByTutorialID returns the FightFestScoreRace uniquely identified by TutorialID
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestScoreRaceAccessor) ByTutorialID(identifier float64) (FightFestScoreRace, error) {
+	if a._dataTutorialID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTutorialID[identifier], nil
+}
+
+// ByTutorialImgPath returns the FightFestScoreRace uniquely identified by TutorialImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestScoreRaceAccessor) ByTutorialImgPath(identifier string) (FightFestScoreRace, error) {
+	if a._dataTutorialImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestScoreRace{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTutorialImgPath[identifier], nil
 }

@@ -40,7 +40,6 @@ func (a *RogueMagicGambleUnitAccessor) Raw() ([]RogueMagicGambleUnit, error) {
 		if err != nil {
 			return []RogueMagicGambleUnit{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RogueMagicGambleUnitAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicGambleUnitAccessor) ByGambleUnitID(identifier float64) (RogueMagicGambleUnit, error) {
 	if a._dataGambleUnitID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicGambleUnit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicGambleUnit{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *RogueMagicGambleUnitAccessor) ByGambleUnitID(identifier float64) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueMagicGambleUnitAccessor) ByGambleUnitParam(identifier float64) (RogueMagicGambleUnit, error) {
 	if a._dataGambleUnitParam == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicGambleUnit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicGambleUnit{}, err
+			}
 		}
 		a.GroupData()
 	}

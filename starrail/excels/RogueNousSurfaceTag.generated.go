@@ -15,8 +15,8 @@ type RogueNousSurfaceTag struct {
 }
 type RogueNousSurfaceTagAccessor struct {
 	_data      []RogueNousSurfaceTag
-	_dataTagID map[float64]RogueNousSurfaceTag
 	_dataSort  map[float64]RogueNousSurfaceTag
+	_dataTagID map[float64]RogueNousSurfaceTag
 }
 
 // LoadData retrieves the data. Must be called before RogueNousSurfaceTag.GroupData
@@ -40,7 +40,6 @@ func (a *RogueNousSurfaceTagAccessor) Raw() ([]RogueNousSurfaceTag, error) {
 		if err != nil {
 			return []RogueNousSurfaceTag{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *RogueNousSurfaceTagAccessor) Raw() ([]RogueNousSurfaceTag, error) {
 // Can be called manually in conjunction with RogueNousSurfaceTagAccessor.LoadData to preload everything
 func (a *RogueNousSurfaceTagAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTagID[d.TagID] = d
 		a._dataSort[d.Sort] = d
+		a._dataTagID[d.TagID] = d
 	}
-}
-
-// ByTagID returns the RogueNousSurfaceTag uniquely identified by TagID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueNousSurfaceTagAccessor) ByTagID(identifier float64) (RogueNousSurfaceTag, error) {
-	if a._dataTagID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousSurfaceTag{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTagID[identifier], nil
 }
 
 // BySort returns the RogueNousSurfaceTag uniquely identified by Sort
@@ -73,11 +58,29 @@ func (a *RogueNousSurfaceTagAccessor) ByTagID(identifier float64) (RogueNousSurf
 // Error is only non-nil if the source errors out
 func (a *RogueNousSurfaceTagAccessor) BySort(identifier float64) (RogueNousSurfaceTag, error) {
 	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousSurfaceTag{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousSurfaceTag{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSort[identifier], nil
+}
+
+// ByTagID returns the RogueNousSurfaceTag uniquely identified by TagID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueNousSurfaceTagAccessor) ByTagID(identifier float64) (RogueNousSurfaceTag, error) {
+	if a._dataTagID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousSurfaceTag{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTagID[identifier], nil
 }

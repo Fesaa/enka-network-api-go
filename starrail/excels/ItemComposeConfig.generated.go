@@ -57,7 +57,6 @@ func (a *ItemComposeConfigAccessor) Raw() ([]ItemComposeConfig, error) {
 		if err != nil {
 			return []ItemComposeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -75,9 +74,11 @@ func (a *ItemComposeConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemComposeConfigAccessor) ByID(identifier float64) (ItemComposeConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemComposeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemComposeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

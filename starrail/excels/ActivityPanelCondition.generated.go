@@ -52,7 +52,6 @@ func (a *ActivityPanelConditionAccessor) Raw() ([]ActivityPanelCondition, error)
 		if err != nil {
 			return []ActivityPanelCondition{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -70,9 +69,11 @@ func (a *ActivityPanelConditionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityPanelConditionAccessor) ByPanelID(identifier float64) (ActivityPanelCondition, error) {
 	if a._dataPanelID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelCondition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelCondition{}, err
+			}
 		}
 		a.GroupData()
 	}

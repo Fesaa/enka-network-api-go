@@ -44,7 +44,6 @@ func (a *RogueUpgradeAvatarSubRelicAccessor) Raw() ([]RogueUpgradeAvatarSubRelic
 		if err != nil {
 			return []RogueUpgradeAvatarSubRelic{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

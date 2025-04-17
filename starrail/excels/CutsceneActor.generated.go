@@ -40,7 +40,6 @@ func (a *CutsceneActorAccessor) Raw() ([]CutsceneActor, error) {
 		if err != nil {
 			return []CutsceneActor{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *CutsceneActorAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *CutsceneActorAccessor) ByActorID(identifier string) (CutsceneActor, error) {
 	if a._dataActorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CutsceneActor{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CutsceneActor{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *CutsceneActorAccessor) ByActorID(identifier string) (CutsceneActor, err
 // Error is only non-nil if the source errors out
 func (a *CutsceneActorAccessor) ByActorModelPath(identifier string) (CutsceneActor, error) {
 	if a._dataActorModelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CutsceneActor{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CutsceneActor{}, err
+			}
 		}
 		a.GroupData()
 	}

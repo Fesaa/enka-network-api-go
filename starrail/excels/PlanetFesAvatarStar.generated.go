@@ -38,7 +38,6 @@ func (a *PlanetFesAvatarStarAccessor) Raw() ([]PlanetFesAvatarStar, error) {
 		if err != nil {
 			return []PlanetFesAvatarStar{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

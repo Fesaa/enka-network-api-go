@@ -36,7 +36,6 @@ func (a *ChallengeActMarkAccessor) Raw() ([]ChallengeActMark, error) {
 		if err != nil {
 			return []ChallengeActMark{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

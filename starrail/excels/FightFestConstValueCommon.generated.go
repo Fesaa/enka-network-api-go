@@ -38,7 +38,6 @@ func (a *FightFestConstValueCommonAccessor) Raw() ([]FightFestConstValueCommon, 
 		if err != nil {
 			return []FightFestConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *FightFestConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FightFestConstValueCommonAccessor) ByConstValueName(identifier string) (FightFestConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

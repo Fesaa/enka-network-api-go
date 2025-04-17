@@ -43,7 +43,6 @@ func (a *NounAtlasAccessor) Raw() ([]NounAtlas, error) {
 		if err != nil {
 			return []NounAtlas{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

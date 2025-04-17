@@ -39,7 +39,6 @@ func (a *AlleyMapRewardAccessor) Raw() ([]AlleyMapReward, error) {
 		if err != nil {
 			return []AlleyMapReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *AlleyMapRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AlleyMapRewardAccessor) ByScoreID(identifier float64) (AlleyMapReward, error) {
 	if a._dataScoreID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyMapReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyMapReward{}, err
+			}
 		}
 		a.GroupData()
 	}

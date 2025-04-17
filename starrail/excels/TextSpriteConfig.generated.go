@@ -38,7 +38,6 @@ func (a *TextSpriteConfigAccessor) Raw() ([]TextSpriteConfig, error) {
 		if err != nil {
 			return []TextSpriteConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *TextSpriteConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TextSpriteConfigAccessor) BySpriteName(identifier string) (TextSpriteConfig, error) {
 	if a._dataSpriteName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TextSpriteConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TextSpriteConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *TextSpriteConfigAccessor) BySpriteName(identifier string) (TextSpriteCo
 // Error is only non-nil if the source errors out
 func (a *TextSpriteConfigAccessor) BySpritePath(identifier string) (TextSpriteConfig, error) {
 	if a._dataSpritePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TextSpriteConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TextSpriteConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

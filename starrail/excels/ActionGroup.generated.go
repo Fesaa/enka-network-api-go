@@ -46,7 +46,6 @@ func (a *ActionGroupAccessor) Raw() ([]ActionGroup, error) {
 		if err != nil {
 			return []ActionGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *ActionGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActionGroupAccessor) ByActionGroupName(identifier string) (ActionGroup, error) {
 	if a._dataActionGroupName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActionGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActionGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -42,7 +42,6 @@ func (a *MuseumAreaAccessor) Raw() ([]MuseumArea, error) {
 		if err != nil {
 			return []MuseumArea{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

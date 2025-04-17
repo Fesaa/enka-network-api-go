@@ -37,7 +37,6 @@ func (a *NounAtlasChangeInfoAccessor) Raw() ([]NounAtlasChangeInfo, error) {
 		if err != nil {
 			return []NounAtlasChangeInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *NounAtlasChangeInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *NounAtlasChangeInfoAccessor) ByNounID(identifier float64) (NounAtlasChangeInfo, error) {
 	if a._dataNounID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NounAtlasChangeInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NounAtlasChangeInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

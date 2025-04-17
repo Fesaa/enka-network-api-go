@@ -37,7 +37,6 @@ func (a *ConstValueFantasticStoryAccessor) Raw() ([]ConstValueFantasticStory, er
 		if err != nil {
 			return []ConstValueFantasticStory{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ConstValueFantasticStoryAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ConstValueFantasticStoryAccessor) ByConstValueName(identifier string) (ConstValueFantasticStory, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ConstValueFantasticStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ConstValueFantasticStory{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -70,7 +70,6 @@ func (a *ActivityAvatarSkillConfigAccessor) Raw() ([]ActivityAvatarSkillConfig, 
 		if err != nil {
 			return []ActivityAvatarSkillConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -88,9 +87,11 @@ func (a *ActivityAvatarSkillConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityAvatarSkillConfigAccessor) BySkillID(identifier float64) (ActivityAvatarSkillConfig, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityAvatarSkillConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityAvatarSkillConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

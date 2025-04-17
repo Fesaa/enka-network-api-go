@@ -51,7 +51,6 @@ func (a *LoadingFuncConfigAccessor) Raw() ([]LoadingFuncConfig, error) {
 		if err != nil {
 			return []LoadingFuncConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,9 +68,11 @@ func (a *LoadingFuncConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *LoadingFuncConfigAccessor) ByLoadingFuncID(identifier float64) (LoadingFuncConfig, error) {
 	if a._dataLoadingFuncID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LoadingFuncConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LoadingFuncConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

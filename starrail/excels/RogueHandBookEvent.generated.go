@@ -25,8 +25,8 @@ type RogueHandBookEventUnlockNPCProgressIDList struct {
 }
 type RogueHandBookEventAccessor struct {
 	_data                []RogueHandBookEvent
-	_dataOrder           map[float64]RogueHandBookEvent
 	_dataEventHandbookID map[float64]RogueHandBookEvent
+	_dataOrder           map[float64]RogueHandBookEvent
 }
 
 // LoadData retrieves the data. Must be called before RogueHandBookEvent.GroupData
@@ -50,7 +50,6 @@ func (a *RogueHandBookEventAccessor) Raw() ([]RogueHandBookEvent, error) {
 		if err != nil {
 			return []RogueHandBookEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,23 +58,9 @@ func (a *RogueHandBookEventAccessor) Raw() ([]RogueHandBookEvent, error) {
 // Can be called manually in conjunction with RogueHandBookEventAccessor.LoadData to preload everything
 func (a *RogueHandBookEventAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataOrder[d.Order] = d
 		a._dataEventHandbookID[d.EventHandbookID] = d
+		a._dataOrder[d.Order] = d
 	}
-}
-
-// ByOrder returns the RogueHandBookEvent uniquely identified by Order
-//
-// Error is only non-nil if the source errors out
-func (a *RogueHandBookEventAccessor) ByOrder(identifier float64) (RogueHandBookEvent, error) {
-	if a._dataOrder == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandBookEvent{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOrder[identifier], nil
 }
 
 // ByEventHandbookID returns the RogueHandBookEvent uniquely identified by EventHandbookID
@@ -83,11 +68,29 @@ func (a *RogueHandBookEventAccessor) ByOrder(identifier float64) (RogueHandBookE
 // Error is only non-nil if the source errors out
 func (a *RogueHandBookEventAccessor) ByEventHandbookID(identifier float64) (RogueHandBookEvent, error) {
 	if a._dataEventHandbookID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandBookEvent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandBookEvent{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventHandbookID[identifier], nil
+}
+
+// ByOrder returns the RogueHandBookEvent uniquely identified by Order
+//
+// Error is only non-nil if the source errors out
+func (a *RogueHandBookEventAccessor) ByOrder(identifier float64) (RogueHandBookEvent, error) {
+	if a._dataOrder == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandBookEvent{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOrder[identifier], nil
 }

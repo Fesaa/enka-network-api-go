@@ -37,7 +37,6 @@ func (a *MarbleMatchDetailAccessor) Raw() ([]MarbleMatchDetail, error) {
 		if err != nil {
 			return []MarbleMatchDetail{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MarbleMatchDetailAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleMatchDetailAccessor) ByID(identifier float64) (MarbleMatchDetail, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleMatchDetail{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleMatchDetail{}, err
+			}
 		}
 		a.GroupData()
 	}

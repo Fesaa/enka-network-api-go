@@ -14,8 +14,8 @@ type TrainPartyGridTutorial struct {
 }
 type TrainPartyGridTutorialAccessor struct {
 	_data            []TrainPartyGridTutorial
-	_dataPDPALBOHGAA map[float64]TrainPartyGridTutorial
 	_dataIKFENEEPFKL map[string]TrainPartyGridTutorial
+	_dataPDPALBOHGAA map[float64]TrainPartyGridTutorial
 }
 
 // LoadData retrieves the data. Must be called before TrainPartyGridTutorial.GroupData
@@ -39,7 +39,6 @@ func (a *TrainPartyGridTutorialAccessor) Raw() ([]TrainPartyGridTutorial, error)
 		if err != nil {
 			return []TrainPartyGridTutorial{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *TrainPartyGridTutorialAccessor) Raw() ([]TrainPartyGridTutorial, error)
 // Can be called manually in conjunction with TrainPartyGridTutorialAccessor.LoadData to preload everything
 func (a *TrainPartyGridTutorialAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataPDPALBOHGAA[d.PDPALBOHGAA] = d
 		a._dataIKFENEEPFKL[d.IKFENEEPFKL] = d
+		a._dataPDPALBOHGAA[d.PDPALBOHGAA] = d
 	}
-}
-
-// ByPDPALBOHGAA returns the TrainPartyGridTutorial uniquely identified by PDPALBOHGAA
-//
-// Error is only non-nil if the source errors out
-func (a *TrainPartyGridTutorialAccessor) ByPDPALBOHGAA(identifier float64) (TrainPartyGridTutorial, error) {
-	if a._dataPDPALBOHGAA == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyGridTutorial{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPDPALBOHGAA[identifier], nil
 }
 
 // ByIKFENEEPFKL returns the TrainPartyGridTutorial uniquely identified by IKFENEEPFKL
@@ -72,11 +57,29 @@ func (a *TrainPartyGridTutorialAccessor) ByPDPALBOHGAA(identifier float64) (Trai
 // Error is only non-nil if the source errors out
 func (a *TrainPartyGridTutorialAccessor) ByIKFENEEPFKL(identifier string) (TrainPartyGridTutorial, error) {
 	if a._dataIKFENEEPFKL == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyGridTutorial{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyGridTutorial{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIKFENEEPFKL[identifier], nil
+}
+
+// ByPDPALBOHGAA returns the TrainPartyGridTutorial uniquely identified by PDPALBOHGAA
+//
+// Error is only non-nil if the source errors out
+func (a *TrainPartyGridTutorialAccessor) ByPDPALBOHGAA(identifier float64) (TrainPartyGridTutorial, error) {
+	if a._dataPDPALBOHGAA == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyGridTutorial{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPDPALBOHGAA[identifier], nil
 }

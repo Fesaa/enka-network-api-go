@@ -19,10 +19,10 @@ type GuideChallengeTab struct {
 }
 type GuideChallengeTabAccessor struct {
 	_data            []GuideChallengeTab
-	_dataIntroDataID map[float64]GuideChallengeTab
-	_dataID          map[float64]GuideChallengeTab
-	_dataPriority    map[float64]GuideChallengeTab
 	_dataGuideType   map[string]GuideChallengeTab
+	_dataID          map[float64]GuideChallengeTab
+	_dataIntroDataID map[float64]GuideChallengeTab
+	_dataPriority    map[float64]GuideChallengeTab
 }
 
 // LoadData retrieves the data. Must be called before GuideChallengeTab.GroupData
@@ -46,7 +46,6 @@ func (a *GuideChallengeTabAccessor) Raw() ([]GuideChallengeTab, error) {
 		if err != nil {
 			return []GuideChallengeTab{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,53 +54,11 @@ func (a *GuideChallengeTabAccessor) Raw() ([]GuideChallengeTab, error) {
 // Can be called manually in conjunction with GuideChallengeTabAccessor.LoadData to preload everything
 func (a *GuideChallengeTabAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIntroDataID[d.IntroDataID] = d
-		a._dataID[d.ID] = d
-		a._dataPriority[d.Priority] = d
 		a._dataGuideType[d.GuideType] = d
+		a._dataID[d.ID] = d
+		a._dataIntroDataID[d.IntroDataID] = d
+		a._dataPriority[d.Priority] = d
 	}
-}
-
-// ByIntroDataID returns the GuideChallengeTab uniquely identified by IntroDataID
-//
-// Error is only non-nil if the source errors out
-func (a *GuideChallengeTabAccessor) ByIntroDataID(identifier float64) (GuideChallengeTab, error) {
-	if a._dataIntroDataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideChallengeTab{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIntroDataID[identifier], nil
-}
-
-// ByID returns the GuideChallengeTab uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *GuideChallengeTabAccessor) ByID(identifier float64) (GuideChallengeTab, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideChallengeTab{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
-}
-
-// ByPriority returns the GuideChallengeTab uniquely identified by Priority
-//
-// Error is only non-nil if the source errors out
-func (a *GuideChallengeTabAccessor) ByPriority(identifier float64) (GuideChallengeTab, error) {
-	if a._dataPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideChallengeTab{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPriority[identifier], nil
 }
 
 // ByGuideType returns the GuideChallengeTab uniquely identified by GuideType
@@ -109,11 +66,61 @@ func (a *GuideChallengeTabAccessor) ByPriority(identifier float64) (GuideChallen
 // Error is only non-nil if the source errors out
 func (a *GuideChallengeTabAccessor) ByGuideType(identifier string) (GuideChallengeTab, error) {
 	if a._dataGuideType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideChallengeTab{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideChallengeTab{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGuideType[identifier], nil
+}
+
+// ByID returns the GuideChallengeTab uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *GuideChallengeTabAccessor) ByID(identifier float64) (GuideChallengeTab, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideChallengeTab{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByIntroDataID returns the GuideChallengeTab uniquely identified by IntroDataID
+//
+// Error is only non-nil if the source errors out
+func (a *GuideChallengeTabAccessor) ByIntroDataID(identifier float64) (GuideChallengeTab, error) {
+	if a._dataIntroDataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideChallengeTab{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIntroDataID[identifier], nil
+}
+
+// ByPriority returns the GuideChallengeTab uniquely identified by Priority
+//
+// Error is only non-nil if the source errors out
+func (a *GuideChallengeTabAccessor) ByPriority(identifier float64) (GuideChallengeTab, error) {
+	if a._dataPriority == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideChallengeTab{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPriority[identifier], nil
 }

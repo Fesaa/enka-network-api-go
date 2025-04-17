@@ -39,7 +39,6 @@ func (a *ToastManagerAccessor) Raw() ([]ToastManager, error) {
 		if err != nil {
 			return []ToastManager{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ToastManagerAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ToastManagerAccessor) ByFuncName(identifier string) (ToastManager, error) {
 	if a._dataFuncName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ToastManager{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ToastManager{}, err
+			}
 		}
 		a.GroupData()
 	}

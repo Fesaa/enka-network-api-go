@@ -40,7 +40,6 @@ func (a *MuseumActivityQuestAccessor) Raw() ([]MuseumActivityQuest, error) {
 		if err != nil {
 			return []MuseumActivityQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *MuseumActivityQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MuseumActivityQuestAccessor) ByID(identifier float64) (MuseumActivityQuest, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumActivityQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumActivityQuest{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *MuseumActivityQuestAccessor) ByID(identifier float64) (MuseumActivityQu
 // Error is only non-nil if the source errors out
 func (a *MuseumActivityQuestAccessor) ByName(identifier string) (MuseumActivityQuest, error) {
 	if a._dataName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumActivityQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumActivityQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -40,7 +40,6 @@ func (a *RaidNPCMonsterOverrideAccessor) Raw() ([]RaidNPCMonsterOverride, error)
 		if err != nil {
 			return []RaidNPCMonsterOverride{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

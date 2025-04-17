@@ -52,7 +52,6 @@ func (a *EvolveBuildMazeBuffAccessor) Raw() ([]EvolveBuildMazeBuff, error) {
 		if err != nil {
 			return []EvolveBuildMazeBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

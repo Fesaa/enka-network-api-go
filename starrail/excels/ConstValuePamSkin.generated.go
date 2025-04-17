@@ -38,7 +38,6 @@ func (a *ConstValuePamSkinAccessor) Raw() ([]ConstValuePamSkin, error) {
 		if err != nil {
 			return []ConstValuePamSkin{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ConstValuePamSkinAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ConstValuePamSkinAccessor) ByConstValueName(identifier string) (ConstValuePamSkin, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ConstValuePamSkin{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ConstValuePamSkin{}, err
+			}
 		}
 		a.GroupData()
 	}

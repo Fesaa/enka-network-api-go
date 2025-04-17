@@ -43,11 +43,11 @@ type RogueNousDiceBranch struct {
 }
 type RogueNousDiceBranchAccessor struct {
 	_data                     []RogueNousDiceBranch
-	_dataDiceLightColor       map[string]RogueNousDiceBranch
 	_dataBranchCorePrefab     map[string]RogueNousDiceBranch
+	_dataBranchEditCorePrefab map[string]RogueNousDiceBranch
 	_dataBranchID             map[float64]RogueNousDiceBranch
 	_dataDiceIcon             map[string]RogueNousDiceBranch
-	_dataBranchEditCorePrefab map[string]RogueNousDiceBranch
+	_dataDiceLightColor       map[string]RogueNousDiceBranch
 }
 
 // LoadData retrieves the data. Must be called before RogueNousDiceBranch.GroupData
@@ -71,7 +71,6 @@ func (a *RogueNousDiceBranchAccessor) Raw() ([]RogueNousDiceBranch, error) {
 		if err != nil {
 			return []RogueNousDiceBranch{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -80,26 +79,12 @@ func (a *RogueNousDiceBranchAccessor) Raw() ([]RogueNousDiceBranch, error) {
 // Can be called manually in conjunction with RogueNousDiceBranchAccessor.LoadData to preload everything
 func (a *RogueNousDiceBranchAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataDiceLightColor[d.DiceLightColor] = d
 		a._dataBranchCorePrefab[d.BranchCorePrefab] = d
+		a._dataBranchEditCorePrefab[d.BranchEditCorePrefab] = d
 		a._dataBranchID[d.BranchID] = d
 		a._dataDiceIcon[d.DiceIcon] = d
-		a._dataBranchEditCorePrefab[d.BranchEditCorePrefab] = d
+		a._dataDiceLightColor[d.DiceLightColor] = d
 	}
-}
-
-// ByDiceLightColor returns the RogueNousDiceBranch uniquely identified by DiceLightColor
-//
-// Error is only non-nil if the source errors out
-func (a *RogueNousDiceBranchAccessor) ByDiceLightColor(identifier string) (RogueNousDiceBranch, error) {
-	if a._dataDiceLightColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceBranch{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDiceLightColor[identifier], nil
 }
 
 // ByBranchCorePrefab returns the RogueNousDiceBranch uniquely identified by BranchCorePrefab
@@ -107,13 +92,31 @@ func (a *RogueNousDiceBranchAccessor) ByDiceLightColor(identifier string) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueNousDiceBranchAccessor) ByBranchCorePrefab(identifier string) (RogueNousDiceBranch, error) {
 	if a._dataBranchCorePrefab == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceBranch{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceBranch{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBranchCorePrefab[identifier], nil
+}
+
+// ByBranchEditCorePrefab returns the RogueNousDiceBranch uniquely identified by BranchEditCorePrefab
+//
+// Error is only non-nil if the source errors out
+func (a *RogueNousDiceBranchAccessor) ByBranchEditCorePrefab(identifier string) (RogueNousDiceBranch, error) {
+	if a._dataBranchEditCorePrefab == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceBranch{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBranchEditCorePrefab[identifier], nil
 }
 
 // ByBranchID returns the RogueNousDiceBranch uniquely identified by BranchID
@@ -121,9 +124,11 @@ func (a *RogueNousDiceBranchAccessor) ByBranchCorePrefab(identifier string) (Rog
 // Error is only non-nil if the source errors out
 func (a *RogueNousDiceBranchAccessor) ByBranchID(identifier float64) (RogueNousDiceBranch, error) {
 	if a._dataBranchID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceBranch{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceBranch{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -135,25 +140,29 @@ func (a *RogueNousDiceBranchAccessor) ByBranchID(identifier float64) (RogueNousD
 // Error is only non-nil if the source errors out
 func (a *RogueNousDiceBranchAccessor) ByDiceIcon(identifier string) (RogueNousDiceBranch, error) {
 	if a._dataDiceIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceBranch{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceBranch{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDiceIcon[identifier], nil
 }
 
-// ByBranchEditCorePrefab returns the RogueNousDiceBranch uniquely identified by BranchEditCorePrefab
+// ByDiceLightColor returns the RogueNousDiceBranch uniquely identified by DiceLightColor
 //
 // Error is only non-nil if the source errors out
-func (a *RogueNousDiceBranchAccessor) ByBranchEditCorePrefab(identifier string) (RogueNousDiceBranch, error) {
-	if a._dataBranchEditCorePrefab == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceBranch{}, err
+func (a *RogueNousDiceBranchAccessor) ByDiceLightColor(identifier string) (RogueNousDiceBranch, error) {
+	if a._dataDiceLightColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceBranch{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataBranchEditCorePrefab[identifier], nil
+	return a._dataDiceLightColor[identifier], nil
 }

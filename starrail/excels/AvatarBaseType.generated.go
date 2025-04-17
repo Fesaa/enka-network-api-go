@@ -23,8 +23,8 @@ type AvatarBaseType struct {
 }
 type AvatarBaseTypeAccessor struct {
 	_data                   []AvatarBaseType
-	_dataFirstWordText      map[string]AvatarBaseType
 	_dataBaseTypeIconMiddle map[string]AvatarBaseType
+	_dataFirstWordText      map[string]AvatarBaseType
 }
 
 // LoadData retrieves the data. Must be called before AvatarBaseType.GroupData
@@ -48,7 +48,6 @@ func (a *AvatarBaseTypeAccessor) Raw() ([]AvatarBaseType, error) {
 		if err != nil {
 			return []AvatarBaseType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,23 +56,9 @@ func (a *AvatarBaseTypeAccessor) Raw() ([]AvatarBaseType, error) {
 // Can be called manually in conjunction with AvatarBaseTypeAccessor.LoadData to preload everything
 func (a *AvatarBaseTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataFirstWordText[d.FirstWordText] = d
 		a._dataBaseTypeIconMiddle[d.BaseTypeIconMiddle] = d
+		a._dataFirstWordText[d.FirstWordText] = d
 	}
-}
-
-// ByFirstWordText returns the AvatarBaseType uniquely identified by FirstWordText
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarBaseTypeAccessor) ByFirstWordText(identifier string) (AvatarBaseType, error) {
-	if a._dataFirstWordText == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarBaseType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFirstWordText[identifier], nil
 }
 
 // ByBaseTypeIconMiddle returns the AvatarBaseType uniquely identified by BaseTypeIconMiddle
@@ -81,11 +66,29 @@ func (a *AvatarBaseTypeAccessor) ByFirstWordText(identifier string) (AvatarBaseT
 // Error is only non-nil if the source errors out
 func (a *AvatarBaseTypeAccessor) ByBaseTypeIconMiddle(identifier string) (AvatarBaseType, error) {
 	if a._dataBaseTypeIconMiddle == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarBaseType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarBaseType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBaseTypeIconMiddle[identifier], nil
+}
+
+// ByFirstWordText returns the AvatarBaseType uniquely identified by FirstWordText
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarBaseTypeAccessor) ByFirstWordText(identifier string) (AvatarBaseType, error) {
+	if a._dataFirstWordText == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarBaseType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFirstWordText[identifier], nil
 }

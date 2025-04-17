@@ -38,7 +38,6 @@ func (a *OverrideFloorConfigAccessor) Raw() ([]OverrideFloorConfig, error) {
 		if err != nil {
 			return []OverrideFloorConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -40,7 +40,6 @@ func (a *ActivityScoreTypePunkLordAccessor) Raw() ([]ActivityScoreTypePunkLord, 
 		if err != nil {
 			return []ActivityScoreTypePunkLord{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ActivityScoreTypePunkLordAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityScoreTypePunkLordAccessor) ByFinishPoint(identifier float64) (ActivityScoreTypePunkLord, error) {
 	if a._dataFinishPoint == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityScoreTypePunkLord{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityScoreTypePunkLord{}, err
+			}
 		}
 		a.GroupData()
 	}

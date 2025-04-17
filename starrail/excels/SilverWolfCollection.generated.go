@@ -15,8 +15,8 @@ type SilverWolfCollection struct {
 }
 type SilverWolfCollectionAccessor struct {
 	_data          []SilverWolfCollection
-	_dataTypeParam map[float64]SilverWolfCollection
 	_dataQuestID   map[float64]SilverWolfCollection
+	_dataTypeParam map[float64]SilverWolfCollection
 }
 
 // LoadData retrieves the data. Must be called before SilverWolfCollection.GroupData
@@ -40,7 +40,6 @@ func (a *SilverWolfCollectionAccessor) Raw() ([]SilverWolfCollection, error) {
 		if err != nil {
 			return []SilverWolfCollection{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *SilverWolfCollectionAccessor) Raw() ([]SilverWolfCollection, error) {
 // Can be called manually in conjunction with SilverWolfCollectionAccessor.LoadData to preload everything
 func (a *SilverWolfCollectionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTypeParam[d.TypeParam] = d
 		a._dataQuestID[d.QuestID] = d
+		a._dataTypeParam[d.TypeParam] = d
 	}
-}
-
-// ByTypeParam returns the SilverWolfCollection uniquely identified by TypeParam
-//
-// Error is only non-nil if the source errors out
-func (a *SilverWolfCollectionAccessor) ByTypeParam(identifier float64) (SilverWolfCollection, error) {
-	if a._dataTypeParam == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SilverWolfCollection{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTypeParam[identifier], nil
 }
 
 // ByQuestID returns the SilverWolfCollection uniquely identified by QuestID
@@ -73,11 +58,29 @@ func (a *SilverWolfCollectionAccessor) ByTypeParam(identifier float64) (SilverWo
 // Error is only non-nil if the source errors out
 func (a *SilverWolfCollectionAccessor) ByQuestID(identifier float64) (SilverWolfCollection, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SilverWolfCollection{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SilverWolfCollection{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataQuestID[identifier], nil
+}
+
+// ByTypeParam returns the SilverWolfCollection uniquely identified by TypeParam
+//
+// Error is only non-nil if the source errors out
+func (a *SilverWolfCollectionAccessor) ByTypeParam(identifier float64) (SilverWolfCollection, error) {
+	if a._dataTypeParam == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SilverWolfCollection{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTypeParam[identifier], nil
 }

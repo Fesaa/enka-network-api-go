@@ -33,8 +33,8 @@ type AlleyEventUnlockConditions struct {
 }
 type AlleyEventAccessor struct {
 	_data              []AlleyEvent
-	_dataEventPriority map[float64]AlleyEvent
 	_dataEventID       map[float64]AlleyEvent
+	_dataEventPriority map[float64]AlleyEvent
 }
 
 // LoadData retrieves the data. Must be called before AlleyEvent.GroupData
@@ -58,7 +58,6 @@ func (a *AlleyEventAccessor) Raw() ([]AlleyEvent, error) {
 		if err != nil {
 			return []AlleyEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,23 +66,9 @@ func (a *AlleyEventAccessor) Raw() ([]AlleyEvent, error) {
 // Can be called manually in conjunction with AlleyEventAccessor.LoadData to preload everything
 func (a *AlleyEventAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataEventPriority[d.EventPriority] = d
 		a._dataEventID[d.EventID] = d
+		a._dataEventPriority[d.EventPriority] = d
 	}
-}
-
-// ByEventPriority returns the AlleyEvent uniquely identified by EventPriority
-//
-// Error is only non-nil if the source errors out
-func (a *AlleyEventAccessor) ByEventPriority(identifier float64) (AlleyEvent, error) {
-	if a._dataEventPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyEvent{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEventPriority[identifier], nil
 }
 
 // ByEventID returns the AlleyEvent uniquely identified by EventID
@@ -91,11 +76,29 @@ func (a *AlleyEventAccessor) ByEventPriority(identifier float64) (AlleyEvent, er
 // Error is only non-nil if the source errors out
 func (a *AlleyEventAccessor) ByEventID(identifier float64) (AlleyEvent, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyEvent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyEvent{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventID[identifier], nil
+}
+
+// ByEventPriority returns the AlleyEvent uniquely identified by EventPriority
+//
+// Error is only non-nil if the source errors out
+func (a *AlleyEventAccessor) ByEventPriority(identifier float64) (AlleyEvent, error) {
+	if a._dataEventPriority == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyEvent{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEventPriority[identifier], nil
 }

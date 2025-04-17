@@ -46,7 +46,6 @@ func (a *HeliobusPhaseAccessor) Raw() ([]HeliobusPhase, error) {
 		if err != nil {
 			return []HeliobusPhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *HeliobusPhaseAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusPhaseAccessor) ByHeliobusPhaseID(identifier float64) (HeliobusPhase, error) {
 	if a._dataHeliobusPhaseID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusPhase{}, err
+			}
 		}
 		a.GroupData()
 	}

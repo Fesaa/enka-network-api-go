@@ -41,7 +41,6 @@ func (a *StaminaItemListAccessor) Raw() ([]StaminaItemList, error) {
 		if err != nil {
 			return []StaminaItemList{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *StaminaItemListAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StaminaItemListAccessor) ByItemID(identifier float64) (StaminaItemList, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StaminaItemList{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StaminaItemList{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *StaminaItemListAccessor) ByItemID(identifier float64) (StaminaItemList,
 // Error is only non-nil if the source errors out
 func (a *StaminaItemListAccessor) BySortWeight(identifier float64) (StaminaItemList, error) {
 	if a._dataSortWeight == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StaminaItemList{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StaminaItemList{}, err
+			}
 		}
 		a.GroupData()
 	}

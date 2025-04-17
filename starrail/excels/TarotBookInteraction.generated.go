@@ -24,8 +24,8 @@ type TarotBookInteractionStartConditionList struct {
 }
 type TarotBookInteractionAccessor struct {
 	_data         []TarotBookInteraction
-	_dataJsonPath map[string]TarotBookInteraction
 	_dataID       map[float64]TarotBookInteraction
+	_dataJsonPath map[string]TarotBookInteraction
 	_dataPriority map[float64]TarotBookInteraction
 }
 
@@ -50,7 +50,6 @@ func (a *TarotBookInteractionAccessor) Raw() ([]TarotBookInteraction, error) {
 		if err != nil {
 			return []TarotBookInteraction{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,24 +58,10 @@ func (a *TarotBookInteractionAccessor) Raw() ([]TarotBookInteraction, error) {
 // Can be called manually in conjunction with TarotBookInteractionAccessor.LoadData to preload everything
 func (a *TarotBookInteractionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataJsonPath[d.JsonPath] = d
 		a._dataID[d.ID] = d
+		a._dataJsonPath[d.JsonPath] = d
 		a._dataPriority[d.Priority] = d
 	}
-}
-
-// ByJsonPath returns the TarotBookInteraction uniquely identified by JsonPath
-//
-// Error is only non-nil if the source errors out
-func (a *TarotBookInteractionAccessor) ByJsonPath(identifier string) (TarotBookInteraction, error) {
-	if a._dataJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookInteraction{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataJsonPath[identifier], nil
 }
 
 // ByID returns the TarotBookInteraction uniquely identified by ID
@@ -84,13 +69,31 @@ func (a *TarotBookInteractionAccessor) ByJsonPath(identifier string) (TarotBookI
 // Error is only non-nil if the source errors out
 func (a *TarotBookInteractionAccessor) ByID(identifier float64) (TarotBookInteraction, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookInteraction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookInteraction{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByJsonPath returns the TarotBookInteraction uniquely identified by JsonPath
+//
+// Error is only non-nil if the source errors out
+func (a *TarotBookInteractionAccessor) ByJsonPath(identifier string) (TarotBookInteraction, error) {
+	if a._dataJsonPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookInteraction{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataJsonPath[identifier], nil
 }
 
 // ByPriority returns the TarotBookInteraction uniquely identified by Priority
@@ -98,9 +101,11 @@ func (a *TarotBookInteractionAccessor) ByID(identifier float64) (TarotBookIntera
 // Error is only non-nil if the source errors out
 func (a *TarotBookInteractionAccessor) ByPriority(identifier float64) (TarotBookInteraction, error) {
 	if a._dataPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookInteraction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookInteraction{}, err
+			}
 		}
 		a.GroupData()
 	}

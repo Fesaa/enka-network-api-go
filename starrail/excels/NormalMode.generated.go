@@ -16,9 +16,9 @@ type NormalMode struct {
 }
 type NormalModeAccessor struct {
 	_data             []NormalMode
+	_dataDesc01       map[string]NormalMode
 	_dataNormalModeID map[float64]NormalMode
 	_dataTitle        map[string]NormalMode
-	_dataDesc01       map[string]NormalMode
 }
 
 // LoadData retrieves the data. Must be called before NormalMode.GroupData
@@ -42,7 +42,6 @@ func (a *NormalModeAccessor) Raw() ([]NormalMode, error) {
 		if err != nil {
 			return []NormalMode{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,10 +50,26 @@ func (a *NormalModeAccessor) Raw() ([]NormalMode, error) {
 // Can be called manually in conjunction with NormalModeAccessor.LoadData to preload everything
 func (a *NormalModeAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataDesc01[d.Desc01] = d
 		a._dataNormalModeID[d.NormalModeID] = d
 		a._dataTitle[d.Title] = d
-		a._dataDesc01[d.Desc01] = d
 	}
+}
+
+// ByDesc01 returns the NormalMode uniquely identified by Desc01
+//
+// Error is only non-nil if the source errors out
+func (a *NormalModeAccessor) ByDesc01(identifier string) (NormalMode, error) {
+	if a._dataDesc01 == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NormalMode{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDesc01[identifier], nil
 }
 
 // ByNormalModeID returns the NormalMode uniquely identified by NormalModeID
@@ -62,9 +77,11 @@ func (a *NormalModeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *NormalModeAccessor) ByNormalModeID(identifier float64) (NormalMode, error) {
 	if a._dataNormalModeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NormalMode{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NormalMode{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,25 +93,13 @@ func (a *NormalModeAccessor) ByNormalModeID(identifier float64) (NormalMode, err
 // Error is only non-nil if the source errors out
 func (a *NormalModeAccessor) ByTitle(identifier string) (NormalMode, error) {
 	if a._dataTitle == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NormalMode{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NormalMode{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTitle[identifier], nil
-}
-
-// ByDesc01 returns the NormalMode uniquely identified by Desc01
-//
-// Error is only non-nil if the source errors out
-func (a *NormalModeAccessor) ByDesc01(identifier string) (NormalMode, error) {
-	if a._dataDesc01 == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NormalMode{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDesc01[identifier], nil
 }

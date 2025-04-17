@@ -14,9 +14,9 @@ type RogueDLCDiceSurfaceRarity struct {
 }
 type RogueDLCDiceSurfaceRarityAccessor struct {
 	_data                       []RogueDLCDiceSurfaceRarity
-	_dataRarity                 map[float64]RogueDLCDiceSurfaceRarity
-	_dataNameColor              map[string]RogueDLCDiceSurfaceRarity
 	_dataDiceSurfaceRarityImage map[string]RogueDLCDiceSurfaceRarity
+	_dataNameColor              map[string]RogueDLCDiceSurfaceRarity
+	_dataRarity                 map[float64]RogueDLCDiceSurfaceRarity
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCDiceSurfaceRarity.GroupData
@@ -40,7 +40,6 @@ func (a *RogueDLCDiceSurfaceRarityAccessor) Raw() ([]RogueDLCDiceSurfaceRarity, 
 		if err != nil {
 			return []RogueDLCDiceSurfaceRarity{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,38 +48,10 @@ func (a *RogueDLCDiceSurfaceRarityAccessor) Raw() ([]RogueDLCDiceSurfaceRarity, 
 // Can be called manually in conjunction with RogueDLCDiceSurfaceRarityAccessor.LoadData to preload everything
 func (a *RogueDLCDiceSurfaceRarityAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRarity[d.Rarity] = d
-		a._dataNameColor[d.NameColor] = d
 		a._dataDiceSurfaceRarityImage[d.DiceSurfaceRarityImage] = d
+		a._dataNameColor[d.NameColor] = d
+		a._dataRarity[d.Rarity] = d
 	}
-}
-
-// ByRarity returns the RogueDLCDiceSurfaceRarity uniquely identified by Rarity
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCDiceSurfaceRarityAccessor) ByRarity(identifier float64) (RogueDLCDiceSurfaceRarity, error) {
-	if a._dataRarity == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCDiceSurfaceRarity{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRarity[identifier], nil
-}
-
-// ByNameColor returns the RogueDLCDiceSurfaceRarity uniquely identified by NameColor
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCDiceSurfaceRarityAccessor) ByNameColor(identifier string) (RogueDLCDiceSurfaceRarity, error) {
-	if a._dataNameColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCDiceSurfaceRarity{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataNameColor[identifier], nil
 }
 
 // ByDiceSurfaceRarityImage returns the RogueDLCDiceSurfaceRarity uniquely identified by DiceSurfaceRarityImage
@@ -88,11 +59,45 @@ func (a *RogueDLCDiceSurfaceRarityAccessor) ByNameColor(identifier string) (Rogu
 // Error is only non-nil if the source errors out
 func (a *RogueDLCDiceSurfaceRarityAccessor) ByDiceSurfaceRarityImage(identifier string) (RogueDLCDiceSurfaceRarity, error) {
 	if a._dataDiceSurfaceRarityImage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCDiceSurfaceRarity{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCDiceSurfaceRarity{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDiceSurfaceRarityImage[identifier], nil
+}
+
+// ByNameColor returns the RogueDLCDiceSurfaceRarity uniquely identified by NameColor
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCDiceSurfaceRarityAccessor) ByNameColor(identifier string) (RogueDLCDiceSurfaceRarity, error) {
+	if a._dataNameColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCDiceSurfaceRarity{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataNameColor[identifier], nil
+}
+
+// ByRarity returns the RogueDLCDiceSurfaceRarity uniquely identified by Rarity
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCDiceSurfaceRarityAccessor) ByRarity(identifier float64) (RogueDLCDiceSurfaceRarity, error) {
+	if a._dataRarity == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCDiceSurfaceRarity{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRarity[identifier], nil
 }

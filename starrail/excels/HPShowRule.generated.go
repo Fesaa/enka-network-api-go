@@ -40,7 +40,6 @@ func (a *HPShowRuleAccessor) Raw() ([]HPShowRule, error) {
 		if err != nil {
 			return []HPShowRule{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *HPShowRuleAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HPShowRuleAccessor) ByID(identifier float64) (HPShowRule, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HPShowRule{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HPShowRule{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *HPShowRuleAccessor) ByID(identifier float64) (HPShowRule, error) {
 // Error is only non-nil if the source errors out
 func (a *HPShowRuleAccessor) ByMax(identifier float64) (HPShowRule, error) {
 	if a._dataMax == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HPShowRule{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HPShowRule{}, err
+			}
 		}
 		a.GroupData()
 	}

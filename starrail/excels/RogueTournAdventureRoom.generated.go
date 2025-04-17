@@ -38,7 +38,6 @@ func (a *RogueTournAdventureRoomAccessor) Raw() ([]RogueTournAdventureRoom, erro
 		if err != nil {
 			return []RogueTournAdventureRoom{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueTournAdventureRoomAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournAdventureRoomAccessor) ByRoomID(identifier float64) (RogueTournAdventureRoom, error) {
 	if a._dataRoomID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournAdventureRoom{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournAdventureRoom{}, err
+			}
 		}
 		a.GroupData()
 	}

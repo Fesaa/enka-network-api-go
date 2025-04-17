@@ -31,11 +31,11 @@ type ActivityFeverTimeConfig struct {
 }
 type ActivityFeverTimeConfigAccessor struct {
 	_data                 []ActivityFeverTimeConfig
-	_dataFeverTimeID      map[float64]ActivityFeverTimeConfig
 	_dataActivityModuleID map[float64]ActivityFeverTimeConfig
-	_dataQuestGroupID     map[float64]ActivityFeverTimeConfig
 	_dataEventID          map[float64]ActivityFeverTimeConfig
+	_dataFeverTimeID      map[float64]ActivityFeverTimeConfig
 	_dataImagePath        map[string]ActivityFeverTimeConfig
+	_dataQuestGroupID     map[float64]ActivityFeverTimeConfig
 }
 
 // LoadData retrieves the data. Must be called before ActivityFeverTimeConfig.GroupData
@@ -59,7 +59,6 @@ func (a *ActivityFeverTimeConfigAccessor) Raw() ([]ActivityFeverTimeConfig, erro
 		if err != nil {
 			return []ActivityFeverTimeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -68,26 +67,12 @@ func (a *ActivityFeverTimeConfigAccessor) Raw() ([]ActivityFeverTimeConfig, erro
 // Can be called manually in conjunction with ActivityFeverTimeConfigAccessor.LoadData to preload everything
 func (a *ActivityFeverTimeConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataFeverTimeID[d.FeverTimeID] = d
 		a._dataActivityModuleID[d.ActivityModuleID] = d
-		a._dataQuestGroupID[d.QuestGroupID] = d
 		a._dataEventID[d.EventID] = d
+		a._dataFeverTimeID[d.FeverTimeID] = d
 		a._dataImagePath[d.ImagePath] = d
+		a._dataQuestGroupID[d.QuestGroupID] = d
 	}
-}
-
-// ByFeverTimeID returns the ActivityFeverTimeConfig uniquely identified by FeverTimeID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityFeverTimeConfigAccessor) ByFeverTimeID(identifier float64) (ActivityFeverTimeConfig, error) {
-	if a._dataFeverTimeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityFeverTimeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFeverTimeID[identifier], nil
 }
 
 // ByActivityModuleID returns the ActivityFeverTimeConfig uniquely identified by ActivityModuleID
@@ -95,27 +80,15 @@ func (a *ActivityFeverTimeConfigAccessor) ByFeverTimeID(identifier float64) (Act
 // Error is only non-nil if the source errors out
 func (a *ActivityFeverTimeConfigAccessor) ByActivityModuleID(identifier float64) (ActivityFeverTimeConfig, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityFeverTimeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityFeverTimeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityModuleID[identifier], nil
-}
-
-// ByQuestGroupID returns the ActivityFeverTimeConfig uniquely identified by QuestGroupID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityFeverTimeConfigAccessor) ByQuestGroupID(identifier float64) (ActivityFeverTimeConfig, error) {
-	if a._dataQuestGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityFeverTimeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataQuestGroupID[identifier], nil
 }
 
 // ByEventID returns the ActivityFeverTimeConfig uniquely identified by EventID
@@ -123,13 +96,31 @@ func (a *ActivityFeverTimeConfigAccessor) ByQuestGroupID(identifier float64) (Ac
 // Error is only non-nil if the source errors out
 func (a *ActivityFeverTimeConfigAccessor) ByEventID(identifier float64) (ActivityFeverTimeConfig, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityFeverTimeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityFeverTimeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventID[identifier], nil
+}
+
+// ByFeverTimeID returns the ActivityFeverTimeConfig uniquely identified by FeverTimeID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityFeverTimeConfigAccessor) ByFeverTimeID(identifier float64) (ActivityFeverTimeConfig, error) {
+	if a._dataFeverTimeID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityFeverTimeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFeverTimeID[identifier], nil
 }
 
 // ByImagePath returns the ActivityFeverTimeConfig uniquely identified by ImagePath
@@ -137,11 +128,29 @@ func (a *ActivityFeverTimeConfigAccessor) ByEventID(identifier float64) (Activit
 // Error is only non-nil if the source errors out
 func (a *ActivityFeverTimeConfigAccessor) ByImagePath(identifier string) (ActivityFeverTimeConfig, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityFeverTimeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityFeverTimeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataImagePath[identifier], nil
+}
+
+// ByQuestGroupID returns the ActivityFeverTimeConfig uniquely identified by QuestGroupID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityFeverTimeConfigAccessor) ByQuestGroupID(identifier float64) (ActivityFeverTimeConfig, error) {
+	if a._dataQuestGroupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityFeverTimeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataQuestGroupID[identifier], nil
 }

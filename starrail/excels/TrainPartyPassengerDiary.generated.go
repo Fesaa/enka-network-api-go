@@ -38,7 +38,6 @@ func (a *TrainPartyPassengerDiaryAccessor) Raw() ([]TrainPartyPassengerDiary, er
 		if err != nil {
 			return []TrainPartyPassengerDiary{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *TrainPartyPassengerDiaryAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyPassengerDiaryAccessor) ByDiaryID(identifier float64) (TrainPartyPassengerDiary, error) {
 	if a._dataDiaryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyPassengerDiary{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyPassengerDiary{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -39,7 +39,6 @@ func (a *RogueNousDiceBranchValueAccessor) Raw() ([]RogueNousDiceBranchValue, er
 		if err != nil {
 			return []RogueNousDiceBranchValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

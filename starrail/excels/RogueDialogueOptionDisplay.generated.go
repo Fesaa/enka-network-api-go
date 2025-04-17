@@ -39,7 +39,6 @@ func (a *RogueDialogueOptionDisplayAccessor) Raw() ([]RogueDialogueOptionDisplay
 		if err != nil {
 			return []RogueDialogueOptionDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueDialogueOptionDisplayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDialogueOptionDisplayAccessor) ByOptionDisplayID(identifier float64) (RogueDialogueOptionDisplay, error) {
 	if a._dataOptionDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDialogueOptionDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDialogueOptionDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -25,8 +25,8 @@ type RogueDLCAeonDiceSurface struct {
 }
 type RogueDLCAeonDiceSurfaceAccessor struct {
 	_data                  []RogueDLCAeonDiceSurface
-	_dataDiceSurfaceIcon   map[string]RogueDLCAeonDiceSurface
 	_dataAeonSurfaceDiceID map[float64]RogueDLCAeonDiceSurface
+	_dataDiceSurfaceIcon   map[string]RogueDLCAeonDiceSurface
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCAeonDiceSurface.GroupData
@@ -50,7 +50,6 @@ func (a *RogueDLCAeonDiceSurfaceAccessor) Raw() ([]RogueDLCAeonDiceSurface, erro
 		if err != nil {
 			return []RogueDLCAeonDiceSurface{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,23 +58,9 @@ func (a *RogueDLCAeonDiceSurfaceAccessor) Raw() ([]RogueDLCAeonDiceSurface, erro
 // Can be called manually in conjunction with RogueDLCAeonDiceSurfaceAccessor.LoadData to preload everything
 func (a *RogueDLCAeonDiceSurfaceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataDiceSurfaceIcon[d.DiceSurfaceIcon] = d
 		a._dataAeonSurfaceDiceID[d.AeonSurfaceDiceID] = d
+		a._dataDiceSurfaceIcon[d.DiceSurfaceIcon] = d
 	}
-}
-
-// ByDiceSurfaceIcon returns the RogueDLCAeonDiceSurface uniquely identified by DiceSurfaceIcon
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonDiceSurfaceAccessor) ByDiceSurfaceIcon(identifier string) (RogueDLCAeonDiceSurface, error) {
-	if a._dataDiceSurfaceIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDiceSurface{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDiceSurfaceIcon[identifier], nil
 }
 
 // ByAeonSurfaceDiceID returns the RogueDLCAeonDiceSurface uniquely identified by AeonSurfaceDiceID
@@ -83,11 +68,29 @@ func (a *RogueDLCAeonDiceSurfaceAccessor) ByDiceSurfaceIcon(identifier string) (
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonDiceSurfaceAccessor) ByAeonSurfaceDiceID(identifier float64) (RogueDLCAeonDiceSurface, error) {
 	if a._dataAeonSurfaceDiceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDiceSurface{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDiceSurface{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAeonSurfaceDiceID[identifier], nil
+}
+
+// ByDiceSurfaceIcon returns the RogueDLCAeonDiceSurface uniquely identified by DiceSurfaceIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonDiceSurfaceAccessor) ByDiceSurfaceIcon(identifier string) (RogueDLCAeonDiceSurface, error) {
+	if a._dataDiceSurfaceIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDiceSurface{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDiceSurfaceIcon[identifier], nil
 }

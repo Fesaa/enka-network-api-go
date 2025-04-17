@@ -40,7 +40,6 @@ func (a *MonsterDifficultyGuideAccessor) Raw() ([]MonsterDifficultyGuide, error)
 		if err != nil {
 			return []MonsterDifficultyGuide{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MonsterDifficultyGuideAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonsterDifficultyGuideAccessor) ByDifficultyGuideID(identifier float64) (MonsterDifficultyGuide, error) {
 	if a._dataDifficultyGuideID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterDifficultyGuide{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterDifficultyGuide{}, err
+			}
 		}
 		a.GroupData()
 	}

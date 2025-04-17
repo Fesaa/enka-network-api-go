@@ -40,7 +40,6 @@ func (a *RelicBaseTypeAccessor) Raw() ([]RelicBaseType, error) {
 		if err != nil {
 			return []RelicBaseType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RelicBaseTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RelicBaseTypeAccessor) ByBaseTypeIconPath(identifier string) (RelicBaseType, error) {
 	if a._dataBaseTypeIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicBaseType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicBaseType{}, err
+			}
 		}
 		a.GroupData()
 	}

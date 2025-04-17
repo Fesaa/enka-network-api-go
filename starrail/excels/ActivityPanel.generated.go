@@ -57,7 +57,6 @@ func (a *ActivityPanelAccessor) Raw() ([]ActivityPanel, error) {
 		if err != nil {
 			return []ActivityPanel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -75,9 +74,11 @@ func (a *ActivityPanelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityPanelAccessor) ByPanelID(identifier float64) (ActivityPanel, error) {
 	if a._dataPanelID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanel{}, err
+			}
 		}
 		a.GroupData()
 	}

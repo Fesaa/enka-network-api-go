@@ -38,7 +38,6 @@ func (a *HealPoolAccessor) Raw() ([]HealPool, error) {
 		if err != nil {
 			return []HealPool{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *HealPoolAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HealPoolAccessor) ByPlayerLevel(identifier float64) (HealPool, error) {
 	if a._dataPlayerLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HealPool{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HealPool{}, err
+			}
 		}
 		a.GroupData()
 	}

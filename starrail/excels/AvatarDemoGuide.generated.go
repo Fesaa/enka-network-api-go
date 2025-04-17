@@ -39,7 +39,6 @@ func (a *AvatarDemoGuideAccessor) Raw() ([]AvatarDemoGuide, error) {
 		if err != nil {
 			return []AvatarDemoGuide{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

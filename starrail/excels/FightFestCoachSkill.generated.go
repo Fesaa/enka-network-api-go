@@ -21,8 +21,8 @@ type FightFestCoachSkill struct {
 type FightFestCoachSkillAccessor struct {
 	_data            []FightFestCoachSkill
 	_dataCoachItemID map[float64]FightFestCoachSkill
-	_dataMazeBuffID  map[float64]FightFestCoachSkill
 	_dataFigurePath  map[string]FightFestCoachSkill
+	_dataMazeBuffID  map[float64]FightFestCoachSkill
 }
 
 // LoadData retrieves the data. Must be called before FightFestCoachSkill.GroupData
@@ -46,7 +46,6 @@ func (a *FightFestCoachSkillAccessor) Raw() ([]FightFestCoachSkill, error) {
 		if err != nil {
 			return []FightFestCoachSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,8 +55,8 @@ func (a *FightFestCoachSkillAccessor) Raw() ([]FightFestCoachSkill, error) {
 func (a *FightFestCoachSkillAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataCoachItemID[d.CoachItemID] = d
-		a._dataMazeBuffID[d.MazeBuffID] = d
 		a._dataFigurePath[d.FigurePath] = d
+		a._dataMazeBuffID[d.MazeBuffID] = d
 	}
 }
 
@@ -66,27 +65,15 @@ func (a *FightFestCoachSkillAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FightFestCoachSkillAccessor) ByCoachItemID(identifier float64) (FightFestCoachSkill, error) {
 	if a._dataCoachItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestCoachSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestCoachSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCoachItemID[identifier], nil
-}
-
-// ByMazeBuffID returns the FightFestCoachSkill uniquely identified by MazeBuffID
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestCoachSkillAccessor) ByMazeBuffID(identifier float64) (FightFestCoachSkill, error) {
-	if a._dataMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestCoachSkill{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMazeBuffID[identifier], nil
 }
 
 // ByFigurePath returns the FightFestCoachSkill uniquely identified by FigurePath
@@ -94,11 +81,29 @@ func (a *FightFestCoachSkillAccessor) ByMazeBuffID(identifier float64) (FightFes
 // Error is only non-nil if the source errors out
 func (a *FightFestCoachSkillAccessor) ByFigurePath(identifier string) (FightFestCoachSkill, error) {
 	if a._dataFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestCoachSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestCoachSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFigurePath[identifier], nil
+}
+
+// ByMazeBuffID returns the FightFestCoachSkill uniquely identified by MazeBuffID
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestCoachSkillAccessor) ByMazeBuffID(identifier float64) (FightFestCoachSkill, error) {
+	if a._dataMazeBuffID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestCoachSkill{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMazeBuffID[identifier], nil
 }

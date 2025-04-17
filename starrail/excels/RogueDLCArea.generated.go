@@ -32,8 +32,8 @@ type RogueDLCAreaAreaScoreMap struct {
 }
 type RogueDLCAreaAccessor struct {
 	_data            []RogueDLCArea
-	_dataFirstReward map[float64]RogueDLCArea
 	_dataAreaID      map[float64]RogueDLCArea
+	_dataFirstReward map[float64]RogueDLCArea
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCArea.GroupData
@@ -57,7 +57,6 @@ func (a *RogueDLCAreaAccessor) Raw() ([]RogueDLCArea, error) {
 		if err != nil {
 			return []RogueDLCArea{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,23 +65,9 @@ func (a *RogueDLCAreaAccessor) Raw() ([]RogueDLCArea, error) {
 // Can be called manually in conjunction with RogueDLCAreaAccessor.LoadData to preload everything
 func (a *RogueDLCAreaAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataFirstReward[d.FirstReward] = d
 		a._dataAreaID[d.AreaID] = d
+		a._dataFirstReward[d.FirstReward] = d
 	}
-}
-
-// ByFirstReward returns the RogueDLCArea uniquely identified by FirstReward
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAreaAccessor) ByFirstReward(identifier float64) (RogueDLCArea, error) {
-	if a._dataFirstReward == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCArea{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFirstReward[identifier], nil
 }
 
 // ByAreaID returns the RogueDLCArea uniquely identified by AreaID
@@ -90,11 +75,29 @@ func (a *RogueDLCAreaAccessor) ByFirstReward(identifier float64) (RogueDLCArea, 
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAreaAccessor) ByAreaID(identifier float64) (RogueDLCArea, error) {
 	if a._dataAreaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCArea{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCArea{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAreaID[identifier], nil
+}
+
+// ByFirstReward returns the RogueDLCArea uniquely identified by FirstReward
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAreaAccessor) ByFirstReward(identifier float64) (RogueDLCArea, error) {
+	if a._dataFirstReward == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCArea{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFirstReward[identifier], nil
 }

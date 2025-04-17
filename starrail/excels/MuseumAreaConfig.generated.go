@@ -18,9 +18,9 @@ type MuseumAreaConfig struct {
 }
 type MuseumAreaConfigAccessor struct {
 	_data                   []MuseumAreaConfig
-	_dataMuseumAreaTabIcon  map[string]MuseumAreaConfig
-	_dataMuseumAreaHintIcon map[string]MuseumAreaConfig
 	_dataAreaID             map[float64]MuseumAreaConfig
+	_dataMuseumAreaHintIcon map[string]MuseumAreaConfig
+	_dataMuseumAreaTabIcon  map[string]MuseumAreaConfig
 }
 
 // LoadData retrieves the data. Must be called before MuseumAreaConfig.GroupData
@@ -44,7 +44,6 @@ func (a *MuseumAreaConfigAccessor) Raw() ([]MuseumAreaConfig, error) {
 		if err != nil {
 			return []MuseumAreaConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,38 +52,10 @@ func (a *MuseumAreaConfigAccessor) Raw() ([]MuseumAreaConfig, error) {
 // Can be called manually in conjunction with MuseumAreaConfigAccessor.LoadData to preload everything
 func (a *MuseumAreaConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataMuseumAreaTabIcon[d.MuseumAreaTabIcon] = d
-		a._dataMuseumAreaHintIcon[d.MuseumAreaHintIcon] = d
 		a._dataAreaID[d.AreaID] = d
+		a._dataMuseumAreaHintIcon[d.MuseumAreaHintIcon] = d
+		a._dataMuseumAreaTabIcon[d.MuseumAreaTabIcon] = d
 	}
-}
-
-// ByMuseumAreaTabIcon returns the MuseumAreaConfig uniquely identified by MuseumAreaTabIcon
-//
-// Error is only non-nil if the source errors out
-func (a *MuseumAreaConfigAccessor) ByMuseumAreaTabIcon(identifier string) (MuseumAreaConfig, error) {
-	if a._dataMuseumAreaTabIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumAreaConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMuseumAreaTabIcon[identifier], nil
-}
-
-// ByMuseumAreaHintIcon returns the MuseumAreaConfig uniquely identified by MuseumAreaHintIcon
-//
-// Error is only non-nil if the source errors out
-func (a *MuseumAreaConfigAccessor) ByMuseumAreaHintIcon(identifier string) (MuseumAreaConfig, error) {
-	if a._dataMuseumAreaHintIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumAreaConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMuseumAreaHintIcon[identifier], nil
 }
 
 // ByAreaID returns the MuseumAreaConfig uniquely identified by AreaID
@@ -92,11 +63,45 @@ func (a *MuseumAreaConfigAccessor) ByMuseumAreaHintIcon(identifier string) (Muse
 // Error is only non-nil if the source errors out
 func (a *MuseumAreaConfigAccessor) ByAreaID(identifier float64) (MuseumAreaConfig, error) {
 	if a._dataAreaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumAreaConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumAreaConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAreaID[identifier], nil
+}
+
+// ByMuseumAreaHintIcon returns the MuseumAreaConfig uniquely identified by MuseumAreaHintIcon
+//
+// Error is only non-nil if the source errors out
+func (a *MuseumAreaConfigAccessor) ByMuseumAreaHintIcon(identifier string) (MuseumAreaConfig, error) {
+	if a._dataMuseumAreaHintIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumAreaConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMuseumAreaHintIcon[identifier], nil
+}
+
+// ByMuseumAreaTabIcon returns the MuseumAreaConfig uniquely identified by MuseumAreaTabIcon
+//
+// Error is only non-nil if the source errors out
+func (a *MuseumAreaConfigAccessor) ByMuseumAreaTabIcon(identifier string) (MuseumAreaConfig, error) {
+	if a._dataMuseumAreaTabIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumAreaConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMuseumAreaTabIcon[identifier], nil
 }

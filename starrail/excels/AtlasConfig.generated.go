@@ -38,7 +38,6 @@ func (a *AtlasConfigAccessor) Raw() ([]AtlasConfig, error) {
 		if err != nil {
 			return []AtlasConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *AtlasConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AtlasConfigAccessor) ByID(identifier float64) (AtlasConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AtlasConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AtlasConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -50,7 +50,6 @@ func (a *ItemConfigAvatarAccessor) Raw() ([]ItemConfigAvatar, error) {
 		if err != nil {
 			return []ItemConfigAvatar{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -68,9 +67,11 @@ func (a *ItemConfigAvatarAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemConfigAvatarAccessor) ByID(identifier float64) (ItemConfigAvatar, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}

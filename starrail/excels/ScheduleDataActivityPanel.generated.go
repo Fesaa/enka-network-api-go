@@ -38,7 +38,6 @@ func (a *ScheduleDataActivityPanelAccessor) Raw() ([]ScheduleDataActivityPanel, 
 		if err != nil {
 			return []ScheduleDataActivityPanel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ScheduleDataActivityPanelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataActivityPanelAccessor) ByID(identifier float64) (ScheduleDataActivityPanel, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataActivityPanel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataActivityPanel{}, err
+			}
 		}
 		a.GroupData()
 	}

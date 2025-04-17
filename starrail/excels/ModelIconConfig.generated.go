@@ -38,7 +38,6 @@ func (a *ModelIconConfigAccessor) Raw() ([]ModelIconConfig, error) {
 		if err != nil {
 			return []ModelIconConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ModelIconConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ModelIconConfigAccessor) ByID(identifier float64) (ModelIconConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ModelIconConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ModelIconConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *ModelIconConfigAccessor) ByID(identifier float64) (ModelIconConfig, err
 // Error is only non-nil if the source errors out
 func (a *ModelIconConfigAccessor) ByPrefabPath(identifier string) (ModelIconConfig, error) {
 	if a._dataPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ModelIconConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ModelIconConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

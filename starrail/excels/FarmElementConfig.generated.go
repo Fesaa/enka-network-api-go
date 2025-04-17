@@ -44,7 +44,6 @@ func (a *FarmElementConfigAccessor) Raw() ([]FarmElementConfig, error) {
 		if err != nil {
 			return []FarmElementConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *FarmElementConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FarmElementConfigAccessor) ByStageID(identifier float64) (FarmElementConfig, error) {
 	if a._dataStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FarmElementConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FarmElementConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

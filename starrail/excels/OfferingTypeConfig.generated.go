@@ -43,7 +43,6 @@ func (a *OfferingTypeConfigAccessor) Raw() ([]OfferingTypeConfig, error) {
 		if err != nil {
 			return []OfferingTypeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *OfferingTypeConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *OfferingTypeConfigAccessor) ByID(identifier float64) (OfferingTypeConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return OfferingTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return OfferingTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *OfferingTypeConfigAccessor) ByID(identifier float64) (OfferingTypeConfi
 // Error is only non-nil if the source errors out
 func (a *OfferingTypeConfigAccessor) ByItemID(identifier float64) (OfferingTypeConfig, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return OfferingTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return OfferingTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

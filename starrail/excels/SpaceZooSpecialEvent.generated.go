@@ -39,7 +39,6 @@ func (a *SpaceZooSpecialEventAccessor) Raw() ([]SpaceZooSpecialEvent, error) {
 		if err != nil {
 			return []SpaceZooSpecialEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

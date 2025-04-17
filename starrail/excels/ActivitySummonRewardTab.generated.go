@@ -16,8 +16,8 @@ type ActivitySummonRewardTab struct {
 }
 type ActivitySummonRewardTabAccessor struct {
 	_data        []ActivitySummonRewardTab
-	_dataID      map[float64]ActivitySummonRewardTab
 	_dataGroupID map[float64]ActivitySummonRewardTab
+	_dataID      map[float64]ActivitySummonRewardTab
 }
 
 // LoadData retrieves the data. Must be called before ActivitySummonRewardTab.GroupData
@@ -41,7 +41,6 @@ func (a *ActivitySummonRewardTabAccessor) Raw() ([]ActivitySummonRewardTab, erro
 		if err != nil {
 			return []ActivitySummonRewardTab{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,23 +49,9 @@ func (a *ActivitySummonRewardTabAccessor) Raw() ([]ActivitySummonRewardTab, erro
 // Can be called manually in conjunction with ActivitySummonRewardTabAccessor.LoadData to preload everything
 func (a *ActivitySummonRewardTabAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataGroupID[d.GroupID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the ActivitySummonRewardTab uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivitySummonRewardTabAccessor) ByID(identifier float64) (ActivitySummonRewardTab, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivitySummonRewardTab{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByGroupID returns the ActivitySummonRewardTab uniquely identified by GroupID
@@ -74,11 +59,29 @@ func (a *ActivitySummonRewardTabAccessor) ByID(identifier float64) (ActivitySumm
 // Error is only non-nil if the source errors out
 func (a *ActivitySummonRewardTabAccessor) ByGroupID(identifier float64) (ActivitySummonRewardTab, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivitySummonRewardTab{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivitySummonRewardTab{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGroupID[identifier], nil
+}
+
+// ByID returns the ActivitySummonRewardTab uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivitySummonRewardTabAccessor) ByID(identifier float64) (ActivitySummonRewardTab, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivitySummonRewardTab{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

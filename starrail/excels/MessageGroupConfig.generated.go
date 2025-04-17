@@ -39,7 +39,6 @@ func (a *MessageGroupConfigAccessor) Raw() ([]MessageGroupConfig, error) {
 		if err != nil {
 			return []MessageGroupConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *MessageGroupConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MessageGroupConfigAccessor) ByID(identifier float64) (MessageGroupConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageGroupConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageGroupConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -21,10 +21,10 @@ type GameplayGuideTab struct {
 }
 type GameplayGuideTabAccessor struct {
 	_data            []GameplayGuideTab
-	_dataPriority    map[float64]GameplayGuideTab
 	_dataGuideType   map[string]GameplayGuideTab
-	_dataIntroDataID map[float64]GameplayGuideTab
 	_dataID          map[float64]GameplayGuideTab
+	_dataIntroDataID map[float64]GameplayGuideTab
+	_dataPriority    map[float64]GameplayGuideTab
 }
 
 // LoadData retrieves the data. Must be called before GameplayGuideTab.GroupData
@@ -48,7 +48,6 @@ func (a *GameplayGuideTabAccessor) Raw() ([]GameplayGuideTab, error) {
 		if err != nil {
 			return []GameplayGuideTab{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,25 +56,11 @@ func (a *GameplayGuideTabAccessor) Raw() ([]GameplayGuideTab, error) {
 // Can be called manually in conjunction with GameplayGuideTabAccessor.LoadData to preload everything
 func (a *GameplayGuideTabAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataPriority[d.Priority] = d
 		a._dataGuideType[d.GuideType] = d
-		a._dataIntroDataID[d.IntroDataID] = d
 		a._dataID[d.ID] = d
+		a._dataIntroDataID[d.IntroDataID] = d
+		a._dataPriority[d.Priority] = d
 	}
-}
-
-// ByPriority returns the GameplayGuideTab uniquely identified by Priority
-//
-// Error is only non-nil if the source errors out
-func (a *GameplayGuideTabAccessor) ByPriority(identifier float64) (GameplayGuideTab, error) {
-	if a._dataPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideTab{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPriority[identifier], nil
 }
 
 // ByGuideType returns the GameplayGuideTab uniquely identified by GuideType
@@ -83,27 +68,15 @@ func (a *GameplayGuideTabAccessor) ByPriority(identifier float64) (GameplayGuide
 // Error is only non-nil if the source errors out
 func (a *GameplayGuideTabAccessor) ByGuideType(identifier string) (GameplayGuideTab, error) {
 	if a._dataGuideType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideTab{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideTab{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGuideType[identifier], nil
-}
-
-// ByIntroDataID returns the GameplayGuideTab uniquely identified by IntroDataID
-//
-// Error is only non-nil if the source errors out
-func (a *GameplayGuideTabAccessor) ByIntroDataID(identifier float64) (GameplayGuideTab, error) {
-	if a._dataIntroDataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideTab{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIntroDataID[identifier], nil
 }
 
 // ByID returns the GameplayGuideTab uniquely identified by ID
@@ -111,11 +84,45 @@ func (a *GameplayGuideTabAccessor) ByIntroDataID(identifier float64) (GameplayGu
 // Error is only non-nil if the source errors out
 func (a *GameplayGuideTabAccessor) ByID(identifier float64) (GameplayGuideTab, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideTab{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideTab{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByIntroDataID returns the GameplayGuideTab uniquely identified by IntroDataID
+//
+// Error is only non-nil if the source errors out
+func (a *GameplayGuideTabAccessor) ByIntroDataID(identifier float64) (GameplayGuideTab, error) {
+	if a._dataIntroDataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideTab{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIntroDataID[identifier], nil
+}
+
+// ByPriority returns the GameplayGuideTab uniquely identified by Priority
+//
+// Error is only non-nil if the source errors out
+func (a *GameplayGuideTabAccessor) ByPriority(identifier float64) (GameplayGuideTab, error) {
+	if a._dataPriority == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideTab{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPriority[identifier], nil
 }

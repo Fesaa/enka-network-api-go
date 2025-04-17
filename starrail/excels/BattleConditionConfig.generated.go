@@ -42,7 +42,6 @@ func (a *BattleConditionConfigAccessor) Raw() ([]BattleConditionConfig, error) {
 		if err != nil {
 			return []BattleConditionConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *BattleConditionConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BattleConditionConfigAccessor) ByID(identifier float64) (BattleConditionConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleConditionConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleConditionConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

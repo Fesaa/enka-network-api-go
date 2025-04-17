@@ -35,8 +35,8 @@ type StrongChallengeStage struct {
 }
 type StrongChallengeStageAccessor struct {
 	_data                       []StrongChallengeStage
-	_dataStrongChallengeStageID map[float64]StrongChallengeStage
 	_dataEventID                map[float64]StrongChallengeStage
+	_dataStrongChallengeStageID map[float64]StrongChallengeStage
 }
 
 // LoadData retrieves the data. Must be called before StrongChallengeStage.GroupData
@@ -60,7 +60,6 @@ func (a *StrongChallengeStageAccessor) Raw() ([]StrongChallengeStage, error) {
 		if err != nil {
 			return []StrongChallengeStage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,23 +68,9 @@ func (a *StrongChallengeStageAccessor) Raw() ([]StrongChallengeStage, error) {
 // Can be called manually in conjunction with StrongChallengeStageAccessor.LoadData to preload everything
 func (a *StrongChallengeStageAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataStrongChallengeStageID[d.StrongChallengeStageID] = d
 		a._dataEventID[d.EventID] = d
+		a._dataStrongChallengeStageID[d.StrongChallengeStageID] = d
 	}
-}
-
-// ByStrongChallengeStageID returns the StrongChallengeStage uniquely identified by StrongChallengeStageID
-//
-// Error is only non-nil if the source errors out
-func (a *StrongChallengeStageAccessor) ByStrongChallengeStageID(identifier float64) (StrongChallengeStage, error) {
-	if a._dataStrongChallengeStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StrongChallengeStage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStrongChallengeStageID[identifier], nil
 }
 
 // ByEventID returns the StrongChallengeStage uniquely identified by EventID
@@ -93,11 +78,29 @@ func (a *StrongChallengeStageAccessor) ByStrongChallengeStageID(identifier float
 // Error is only non-nil if the source errors out
 func (a *StrongChallengeStageAccessor) ByEventID(identifier float64) (StrongChallengeStage, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StrongChallengeStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StrongChallengeStage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventID[identifier], nil
+}
+
+// ByStrongChallengeStageID returns the StrongChallengeStage uniquely identified by StrongChallengeStageID
+//
+// Error is only non-nil if the source errors out
+func (a *StrongChallengeStageAccessor) ByStrongChallengeStageID(identifier float64) (StrongChallengeStage, error) {
+	if a._dataStrongChallengeStageID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StrongChallengeStage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStrongChallengeStageID[identifier], nil
 }

@@ -39,7 +39,6 @@ func (a *TutorialGuideGroupTypeAccessor) Raw() ([]TutorialGuideGroupType, error)
 		if err != nil {
 			return []TutorialGuideGroupType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *TutorialGuideGroupTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TutorialGuideGroupTypeAccessor) ByMessageIconPath(identifier string) (TutorialGuideGroupType, error) {
 	if a._dataMessageIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TutorialGuideGroupType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TutorialGuideGroupType{}, err
+			}
 		}
 		a.GroupData()
 	}

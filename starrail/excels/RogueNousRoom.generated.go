@@ -38,7 +38,6 @@ func (a *RogueNousRoomAccessor) Raw() ([]RogueNousRoom, error) {
 		if err != nil {
 			return []RogueNousRoom{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueNousRoomAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousRoomAccessor) ByRogueRoomID(identifier float64) (RogueNousRoom, error) {
 	if a._dataRogueRoomID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousRoom{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousRoom{}, err
+			}
 		}
 		a.GroupData()
 	}

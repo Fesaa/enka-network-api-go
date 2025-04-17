@@ -22,8 +22,8 @@ type MissionChapterConfig struct {
 }
 type MissionChapterConfigAccessor struct {
 	_data                       []MissionChapterConfig
-	_dataID                     map[float64]MissionChapterConfig
 	_dataChapterDisplayPriority map[float64]MissionChapterConfig
+	_dataID                     map[float64]MissionChapterConfig
 }
 
 // LoadData retrieves the data. Must be called before MissionChapterConfig.GroupData
@@ -47,7 +47,6 @@ func (a *MissionChapterConfigAccessor) Raw() ([]MissionChapterConfig, error) {
 		if err != nil {
 			return []MissionChapterConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,23 +55,9 @@ func (a *MissionChapterConfigAccessor) Raw() ([]MissionChapterConfig, error) {
 // Can be called manually in conjunction with MissionChapterConfigAccessor.LoadData to preload everything
 func (a *MissionChapterConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataChapterDisplayPriority[d.ChapterDisplayPriority] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the MissionChapterConfig uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *MissionChapterConfigAccessor) ByID(identifier float64) (MissionChapterConfig, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MissionChapterConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByChapterDisplayPriority returns the MissionChapterConfig uniquely identified by ChapterDisplayPriority
@@ -80,11 +65,29 @@ func (a *MissionChapterConfigAccessor) ByID(identifier float64) (MissionChapterC
 // Error is only non-nil if the source errors out
 func (a *MissionChapterConfigAccessor) ByChapterDisplayPriority(identifier float64) (MissionChapterConfig, error) {
 	if a._dataChapterDisplayPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MissionChapterConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MissionChapterConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataChapterDisplayPriority[identifier], nil
+}
+
+// ByID returns the MissionChapterConfig uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *MissionChapterConfigAccessor) ByID(identifier float64) (MissionChapterConfig, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MissionChapterConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

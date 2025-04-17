@@ -51,7 +51,6 @@ func (a *RogueTournWeeklyChallengeAccessor) Raw() ([]RogueTournWeeklyChallenge, 
 		if err != nil {
 			return []RogueTournWeeklyChallenge{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,9 +68,11 @@ func (a *RogueTournWeeklyChallengeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournWeeklyChallengeAccessor) ByChallengeID(identifier float64) (RogueTournWeeklyChallenge, error) {
 	if a._dataChallengeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournWeeklyChallenge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournWeeklyChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}

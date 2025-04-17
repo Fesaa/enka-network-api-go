@@ -43,7 +43,6 @@ func (a *HeliobusChallengeRaidAccessor) Raw() ([]HeliobusChallengeRaid, error) {
 		if err != nil {
 			return []HeliobusChallengeRaid{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *HeliobusChallengeRaidAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusChallengeRaidAccessor) ByChallengeRaidID(identifier float64) (HeliobusChallengeRaid, error) {
 	if a._dataChallengeRaidID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengeRaid{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengeRaid{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *HeliobusChallengeRaidAccessor) ByChallengeRaidID(identifier float64) (H
 // Error is only non-nil if the source errors out
 func (a *HeliobusChallengeRaidAccessor) ByRaidID(identifier float64) (HeliobusChallengeRaid, error) {
 	if a._dataRaidID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengeRaid{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengeRaid{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -91,9 +94,11 @@ func (a *HeliobusChallengeRaidAccessor) ByRaidID(identifier float64) (HeliobusCh
 // Error is only non-nil if the source errors out
 func (a *HeliobusChallengeRaidAccessor) ByUnlockQuestID(identifier float64) (HeliobusChallengeRaid, error) {
 	if a._dataUnlockQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengeRaid{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengeRaid{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -40,7 +40,6 @@ func (a *PlanetFesBuffTypeAccessor) Raw() ([]PlanetFesBuffType, error) {
 		if err != nil {
 			return []PlanetFesBuffType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *PlanetFesBuffTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesBuffTypeAccessor) ByID(identifier string) (PlanetFesBuffType, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesBuffType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesBuffType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *PlanetFesBuffTypeAccessor) ByID(identifier string) (PlanetFesBuffType, 
 // Error is only non-nil if the source errors out
 func (a *PlanetFesBuffTypeAccessor) ByIconPath(identifier string) (PlanetFesBuffType, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesBuffType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesBuffType{}, err
+			}
 		}
 		a.GroupData()
 	}

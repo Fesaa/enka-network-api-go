@@ -43,7 +43,6 @@ func (a *TalkBehaviorAccessor) Raw() ([]TalkBehavior, error) {
 		if err != nil {
 			return []TalkBehavior{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *TalkBehaviorAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TalkBehaviorAccessor) ByCustomString(identifier string) (TalkBehavior, error) {
 	if a._dataCustomString == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TalkBehavior{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TalkBehavior{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *TalkBehaviorAccessor) ByCustomString(identifier string) (TalkBehavior, 
 // Error is only non-nil if the source errors out
 func (a *TalkBehaviorAccessor) ByID(identifier float64) (TalkBehavior, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TalkBehavior{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TalkBehavior{}, err
+			}
 		}
 		a.GroupData()
 	}

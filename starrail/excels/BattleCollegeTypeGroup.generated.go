@@ -18,8 +18,8 @@ type BattleCollegeTypeGroup struct {
 }
 type BattleCollegeTypeGroupAccessor struct {
 	_data                         []BattleCollegeTypeGroup
-	_dataBattleCollegeTypeGroupID map[float64]BattleCollegeTypeGroup
 	_dataBackGroundImagePath      map[string]BattleCollegeTypeGroup
+	_dataBattleCollegeTypeGroupID map[float64]BattleCollegeTypeGroup
 	_dataTabIconPath              map[string]BattleCollegeTypeGroup
 }
 
@@ -44,7 +44,6 @@ func (a *BattleCollegeTypeGroupAccessor) Raw() ([]BattleCollegeTypeGroup, error)
 		if err != nil {
 			return []BattleCollegeTypeGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,24 +52,10 @@ func (a *BattleCollegeTypeGroupAccessor) Raw() ([]BattleCollegeTypeGroup, error)
 // Can be called manually in conjunction with BattleCollegeTypeGroupAccessor.LoadData to preload everything
 func (a *BattleCollegeTypeGroupAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataBattleCollegeTypeGroupID[d.BattleCollegeTypeGroupID] = d
 		a._dataBackGroundImagePath[d.BackGroundImagePath] = d
+		a._dataBattleCollegeTypeGroupID[d.BattleCollegeTypeGroupID] = d
 		a._dataTabIconPath[d.TabIconPath] = d
 	}
-}
-
-// ByBattleCollegeTypeGroupID returns the BattleCollegeTypeGroup uniquely identified by BattleCollegeTypeGroupID
-//
-// Error is only non-nil if the source errors out
-func (a *BattleCollegeTypeGroupAccessor) ByBattleCollegeTypeGroupID(identifier float64) (BattleCollegeTypeGroup, error) {
-	if a._dataBattleCollegeTypeGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeTypeGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBattleCollegeTypeGroupID[identifier], nil
 }
 
 // ByBackGroundImagePath returns the BattleCollegeTypeGroup uniquely identified by BackGroundImagePath
@@ -78,13 +63,31 @@ func (a *BattleCollegeTypeGroupAccessor) ByBattleCollegeTypeGroupID(identifier f
 // Error is only non-nil if the source errors out
 func (a *BattleCollegeTypeGroupAccessor) ByBackGroundImagePath(identifier string) (BattleCollegeTypeGroup, error) {
 	if a._dataBackGroundImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeTypeGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeTypeGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBackGroundImagePath[identifier], nil
+}
+
+// ByBattleCollegeTypeGroupID returns the BattleCollegeTypeGroup uniquely identified by BattleCollegeTypeGroupID
+//
+// Error is only non-nil if the source errors out
+func (a *BattleCollegeTypeGroupAccessor) ByBattleCollegeTypeGroupID(identifier float64) (BattleCollegeTypeGroup, error) {
+	if a._dataBattleCollegeTypeGroupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeTypeGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBattleCollegeTypeGroupID[identifier], nil
 }
 
 // ByTabIconPath returns the BattleCollegeTypeGroup uniquely identified by TabIconPath
@@ -92,9 +95,11 @@ func (a *BattleCollegeTypeGroupAccessor) ByBackGroundImagePath(identifier string
 // Error is only non-nil if the source errors out
 func (a *BattleCollegeTypeGroupAccessor) ByTabIconPath(identifier string) (BattleCollegeTypeGroup, error) {
 	if a._dataTabIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeTypeGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeTypeGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

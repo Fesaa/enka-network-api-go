@@ -38,7 +38,6 @@ func (a *AetherDivideBadgeAccessor) Raw() ([]AetherDivideBadge, error) {
 		if err != nil {
 			return []AetherDivideBadge{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *AetherDivideBadgeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AetherDivideBadgeAccessor) ByMaxSpiritLevel(identifier float64) (AetherDivideBadge, error) {
 	if a._dataMaxSpiritLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideBadge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideBadge{}, err
+			}
 		}
 		a.GroupData()
 	}

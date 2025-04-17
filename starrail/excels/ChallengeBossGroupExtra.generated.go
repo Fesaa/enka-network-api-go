@@ -46,7 +46,6 @@ func (a *ChallengeBossGroupExtraAccessor) Raw() ([]ChallengeBossGroupExtra, erro
 		if err != nil {
 			return []ChallengeBossGroupExtra{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *ChallengeBossGroupExtraAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChallengeBossGroupExtraAccessor) ByGroupID(identifier float64) (ChallengeBossGroupExtra, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeBossGroupExtra{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeBossGroupExtra{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -25,8 +25,8 @@ type GuideRogueDataOpenConditions struct {
 }
 type GuideRogueDataAccessor struct {
 	_data          []GuideRogueData
-	_dataRelatedID map[float64]GuideRogueData
 	_dataID        map[float64]GuideRogueData
+	_dataRelatedID map[float64]GuideRogueData
 }
 
 // LoadData retrieves the data. Must be called before GuideRogueData.GroupData
@@ -50,7 +50,6 @@ func (a *GuideRogueDataAccessor) Raw() ([]GuideRogueData, error) {
 		if err != nil {
 			return []GuideRogueData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,23 +58,9 @@ func (a *GuideRogueDataAccessor) Raw() ([]GuideRogueData, error) {
 // Can be called manually in conjunction with GuideRogueDataAccessor.LoadData to preload everything
 func (a *GuideRogueDataAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRelatedID[d.RelatedID] = d
 		a._dataID[d.ID] = d
+		a._dataRelatedID[d.RelatedID] = d
 	}
-}
-
-// ByRelatedID returns the GuideRogueData uniquely identified by RelatedID
-//
-// Error is only non-nil if the source errors out
-func (a *GuideRogueDataAccessor) ByRelatedID(identifier float64) (GuideRogueData, error) {
-	if a._dataRelatedID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideRogueData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRelatedID[identifier], nil
 }
 
 // ByID returns the GuideRogueData uniquely identified by ID
@@ -83,11 +68,29 @@ func (a *GuideRogueDataAccessor) ByRelatedID(identifier float64) (GuideRogueData
 // Error is only non-nil if the source errors out
 func (a *GuideRogueDataAccessor) ByID(identifier float64) (GuideRogueData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideRogueData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideRogueData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByRelatedID returns the GuideRogueData uniquely identified by RelatedID
+//
+// Error is only non-nil if the source errors out
+func (a *GuideRogueDataAccessor) ByRelatedID(identifier float64) (GuideRogueData, error) {
+	if a._dataRelatedID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideRogueData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRelatedID[identifier], nil
 }

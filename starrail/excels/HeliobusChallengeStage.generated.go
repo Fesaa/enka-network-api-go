@@ -53,7 +53,6 @@ func (a *HeliobusChallengeStageAccessor) Raw() ([]HeliobusChallengeStage, error)
 		if err != nil {
 			return []HeliobusChallengeStage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -72,9 +71,11 @@ func (a *HeliobusChallengeStageAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusChallengeStageAccessor) ByChallengeID(identifier float64) (HeliobusChallengeStage, error) {
 	if a._dataChallengeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengeStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengeStage{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -86,9 +87,11 @@ func (a *HeliobusChallengeStageAccessor) ByChallengeID(identifier float64) (Heli
 // Error is only non-nil if the source errors out
 func (a *HeliobusChallengeStageAccessor) ByEventID(identifier float64) (HeliobusChallengeStage, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengeStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengeStage{}, err
+			}
 		}
 		a.GroupData()
 	}

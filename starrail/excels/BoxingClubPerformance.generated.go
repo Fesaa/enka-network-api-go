@@ -18,10 +18,10 @@ type BoxingClubPerformance struct {
 }
 type BoxingClubPerformanceAccessor struct {
 	_data                 []BoxingClubPerformance
-	_dataName             map[string]BoxingClubPerformance
-	_dataBubbleTalkPlayer map[string]BoxingClubPerformance
 	_dataBubbleTalkEnemy  map[string]BoxingClubPerformance
+	_dataBubbleTalkPlayer map[string]BoxingClubPerformance
 	_dataID               map[float64]BoxingClubPerformance
+	_dataName             map[string]BoxingClubPerformance
 }
 
 // LoadData retrieves the data. Must be called before BoxingClubPerformance.GroupData
@@ -45,7 +45,6 @@ func (a *BoxingClubPerformanceAccessor) Raw() ([]BoxingClubPerformance, error) {
 		if err != nil {
 			return []BoxingClubPerformance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,39 +53,11 @@ func (a *BoxingClubPerformanceAccessor) Raw() ([]BoxingClubPerformance, error) {
 // Can be called manually in conjunction with BoxingClubPerformanceAccessor.LoadData to preload everything
 func (a *BoxingClubPerformanceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataName[d.Name] = d
-		a._dataBubbleTalkPlayer[d.BubbleTalkPlayer] = d
 		a._dataBubbleTalkEnemy[d.BubbleTalkEnemy] = d
+		a._dataBubbleTalkPlayer[d.BubbleTalkPlayer] = d
 		a._dataID[d.ID] = d
+		a._dataName[d.Name] = d
 	}
-}
-
-// ByName returns the BoxingClubPerformance uniquely identified by Name
-//
-// Error is only non-nil if the source errors out
-func (a *BoxingClubPerformanceAccessor) ByName(identifier string) (BoxingClubPerformance, error) {
-	if a._dataName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubPerformance{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataName[identifier], nil
-}
-
-// ByBubbleTalkPlayer returns the BoxingClubPerformance uniquely identified by BubbleTalkPlayer
-//
-// Error is only non-nil if the source errors out
-func (a *BoxingClubPerformanceAccessor) ByBubbleTalkPlayer(identifier string) (BoxingClubPerformance, error) {
-	if a._dataBubbleTalkPlayer == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubPerformance{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBubbleTalkPlayer[identifier], nil
 }
 
 // ByBubbleTalkEnemy returns the BoxingClubPerformance uniquely identified by BubbleTalkEnemy
@@ -94,13 +65,31 @@ func (a *BoxingClubPerformanceAccessor) ByBubbleTalkPlayer(identifier string) (B
 // Error is only non-nil if the source errors out
 func (a *BoxingClubPerformanceAccessor) ByBubbleTalkEnemy(identifier string) (BoxingClubPerformance, error) {
 	if a._dataBubbleTalkEnemy == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubPerformance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubPerformance{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBubbleTalkEnemy[identifier], nil
+}
+
+// ByBubbleTalkPlayer returns the BoxingClubPerformance uniquely identified by BubbleTalkPlayer
+//
+// Error is only non-nil if the source errors out
+func (a *BoxingClubPerformanceAccessor) ByBubbleTalkPlayer(identifier string) (BoxingClubPerformance, error) {
+	if a._dataBubbleTalkPlayer == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubPerformance{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBubbleTalkPlayer[identifier], nil
 }
 
 // ByID returns the BoxingClubPerformance uniquely identified by ID
@@ -108,11 +97,29 @@ func (a *BoxingClubPerformanceAccessor) ByBubbleTalkEnemy(identifier string) (Bo
 // Error is only non-nil if the source errors out
 func (a *BoxingClubPerformanceAccessor) ByID(identifier float64) (BoxingClubPerformance, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubPerformance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubPerformance{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByName returns the BoxingClubPerformance uniquely identified by Name
+//
+// Error is only non-nil if the source errors out
+func (a *BoxingClubPerformanceAccessor) ByName(identifier string) (BoxingClubPerformance, error) {
+	if a._dataName == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubPerformance{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataName[identifier], nil
 }

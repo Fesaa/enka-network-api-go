@@ -19,8 +19,8 @@ type ItemComposeType struct {
 }
 type ItemComposeTypeAccessor struct {
 	_data              []ItemComposeType
-	_dataTypeTextmapID map[string]ItemComposeType
 	_dataTypeID        map[float64]ItemComposeType
+	_dataTypeTextmapID map[string]ItemComposeType
 }
 
 // LoadData retrieves the data. Must be called before ItemComposeType.GroupData
@@ -44,7 +44,6 @@ func (a *ItemComposeTypeAccessor) Raw() ([]ItemComposeType, error) {
 		if err != nil {
 			return []ItemComposeType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,23 +52,9 @@ func (a *ItemComposeTypeAccessor) Raw() ([]ItemComposeType, error) {
 // Can be called manually in conjunction with ItemComposeTypeAccessor.LoadData to preload everything
 func (a *ItemComposeTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTypeTextmapID[d.TypeTextmapID] = d
 		a._dataTypeID[d.TypeID] = d
+		a._dataTypeTextmapID[d.TypeTextmapID] = d
 	}
-}
-
-// ByTypeTextmapID returns the ItemComposeType uniquely identified by TypeTextmapID
-//
-// Error is only non-nil if the source errors out
-func (a *ItemComposeTypeAccessor) ByTypeTextmapID(identifier string) (ItemComposeType, error) {
-	if a._dataTypeTextmapID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemComposeType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTypeTextmapID[identifier], nil
 }
 
 // ByTypeID returns the ItemComposeType uniquely identified by TypeID
@@ -77,11 +62,29 @@ func (a *ItemComposeTypeAccessor) ByTypeTextmapID(identifier string) (ItemCompos
 // Error is only non-nil if the source errors out
 func (a *ItemComposeTypeAccessor) ByTypeID(identifier float64) (ItemComposeType, error) {
 	if a._dataTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemComposeType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemComposeType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTypeID[identifier], nil
+}
+
+// ByTypeTextmapID returns the ItemComposeType uniquely identified by TypeTextmapID
+//
+// Error is only non-nil if the source errors out
+func (a *ItemComposeTypeAccessor) ByTypeTextmapID(identifier string) (ItemComposeType, error) {
+	if a._dataTypeTextmapID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemComposeType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTypeTextmapID[identifier], nil
 }

@@ -39,7 +39,6 @@ func (a *RogueNousStoryRewardAccessor) Raw() ([]RogueNousStoryReward, error) {
 		if err != nil {
 			return []RogueNousStoryReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueNousStoryRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousStoryRewardAccessor) ByMainStoryReward(identifier float64) (RogueNousStoryReward, error) {
 	if a._dataMainStoryReward == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousStoryReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousStoryReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *RogueNousStoryRewardAccessor) ByMainStoryReward(identifier float64) (Ro
 // Error is only non-nil if the source errors out
 func (a *RogueNousStoryRewardAccessor) ByQuestID(identifier float64) (RogueNousStoryReward, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousStoryReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousStoryReward{}, err
+			}
 		}
 		a.GroupData()
 	}

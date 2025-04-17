@@ -40,7 +40,6 @@ func (a *EvolveBuildRaccoonTalkAccessor) Raw() ([]EvolveBuildRaccoonTalk, error)
 		if err != nil {
 			return []EvolveBuildRaccoonTalk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *EvolveBuildRaccoonTalkAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildRaccoonTalkAccessor) ByRaccoonPicPath(identifier string) (EvolveBuildRaccoonTalk, error) {
 	if a._dataRaccoonPicPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildRaccoonTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildRaccoonTalk{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *EvolveBuildRaccoonTalkAccessor) ByRaccoonPicPath(identifier string) (Ev
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildRaccoonTalkAccessor) ByRaccoonState(identifier string) (EvolveBuildRaccoonTalk, error) {
 	if a._dataRaccoonState == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildRaccoonTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildRaccoonTalk{}, err
+			}
 		}
 		a.GroupData()
 	}

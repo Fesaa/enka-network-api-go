@@ -15,10 +15,10 @@ type PropTriggerEvent struct {
 }
 type PropTriggerEventAccessor struct {
 	_data             []PropTriggerEvent
-	_dataID           map[float64]PropTriggerEvent
-	_dataName         map[string]PropTriggerEvent
-	_dataJsonPath     map[string]PropTriggerEvent
 	_dataExitJsonPath map[string]PropTriggerEvent
+	_dataID           map[float64]PropTriggerEvent
+	_dataJsonPath     map[string]PropTriggerEvent
+	_dataName         map[string]PropTriggerEvent
 }
 
 // LoadData retrieves the data. Must be called before PropTriggerEvent.GroupData
@@ -42,7 +42,6 @@ func (a *PropTriggerEventAccessor) Raw() ([]PropTriggerEvent, error) {
 		if err != nil {
 			return []PropTriggerEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,53 +50,11 @@ func (a *PropTriggerEventAccessor) Raw() ([]PropTriggerEvent, error) {
 // Can be called manually in conjunction with PropTriggerEventAccessor.LoadData to preload everything
 func (a *PropTriggerEventAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
-		a._dataName[d.Name] = d
-		a._dataJsonPath[d.JsonPath] = d
 		a._dataExitJsonPath[d.ExitJsonPath] = d
+		a._dataID[d.ID] = d
+		a._dataJsonPath[d.JsonPath] = d
+		a._dataName[d.Name] = d
 	}
-}
-
-// ByID returns the PropTriggerEvent uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *PropTriggerEventAccessor) ByID(identifier float64) (PropTriggerEvent, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PropTriggerEvent{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
-}
-
-// ByName returns the PropTriggerEvent uniquely identified by Name
-//
-// Error is only non-nil if the source errors out
-func (a *PropTriggerEventAccessor) ByName(identifier string) (PropTriggerEvent, error) {
-	if a._dataName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PropTriggerEvent{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataName[identifier], nil
-}
-
-// ByJsonPath returns the PropTriggerEvent uniquely identified by JsonPath
-//
-// Error is only non-nil if the source errors out
-func (a *PropTriggerEventAccessor) ByJsonPath(identifier string) (PropTriggerEvent, error) {
-	if a._dataJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PropTriggerEvent{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataJsonPath[identifier], nil
 }
 
 // ByExitJsonPath returns the PropTriggerEvent uniquely identified by ExitJsonPath
@@ -105,11 +62,61 @@ func (a *PropTriggerEventAccessor) ByJsonPath(identifier string) (PropTriggerEve
 // Error is only non-nil if the source errors out
 func (a *PropTriggerEventAccessor) ByExitJsonPath(identifier string) (PropTriggerEvent, error) {
 	if a._dataExitJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PropTriggerEvent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PropTriggerEvent{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataExitJsonPath[identifier], nil
+}
+
+// ByID returns the PropTriggerEvent uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *PropTriggerEventAccessor) ByID(identifier float64) (PropTriggerEvent, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PropTriggerEvent{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByJsonPath returns the PropTriggerEvent uniquely identified by JsonPath
+//
+// Error is only non-nil if the source errors out
+func (a *PropTriggerEventAccessor) ByJsonPath(identifier string) (PropTriggerEvent, error) {
+	if a._dataJsonPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PropTriggerEvent{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataJsonPath[identifier], nil
+}
+
+// ByName returns the PropTriggerEvent uniquely identified by Name
+//
+// Error is only non-nil if the source errors out
+func (a *PropTriggerEventAccessor) ByName(identifier string) (PropTriggerEvent, error) {
+	if a._dataName == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PropTriggerEvent{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataName[identifier], nil
 }

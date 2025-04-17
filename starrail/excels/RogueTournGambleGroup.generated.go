@@ -39,7 +39,6 @@ func (a *RogueTournGambleGroupAccessor) Raw() ([]RogueTournGambleGroup, error) {
 		if err != nil {
 			return []RogueTournGambleGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueTournGambleGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournGambleGroupAccessor) ByGambleGroupID(identifier float64) (RogueTournGambleGroup, error) {
 	if a._dataGambleGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournGambleGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournGambleGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

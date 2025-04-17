@@ -40,7 +40,6 @@ func (a *SubNavMapNameAccessor) Raw() ([]SubNavMapName, error) {
 		if err != nil {
 			return []SubNavMapName{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *SubNavMapNameAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SubNavMapNameAccessor) ByFloorID(identifier float64) (SubNavMapName, error) {
 	if a._dataFloorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SubNavMapName{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SubNavMapName{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *SubNavMapNameAccessor) ByFloorID(identifier float64) (SubNavMapName, er
 // Error is only non-nil if the source errors out
 func (a *SubNavMapNameAccessor) BySubMapID(identifier float64) (SubNavMapName, error) {
 	if a._dataSubMapID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SubNavMapName{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SubNavMapName{}, err
+			}
 		}
 		a.GroupData()
 	}

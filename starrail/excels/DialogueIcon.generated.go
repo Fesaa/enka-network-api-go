@@ -36,7 +36,6 @@ func (a *DialogueIconAccessor) Raw() ([]DialogueIcon, error) {
 		if err != nil {
 			return []DialogueIcon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

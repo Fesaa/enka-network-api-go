@@ -15,9 +15,9 @@ type WorldLevelStageUnlockConfig struct {
 }
 type WorldLevelStageUnlockConfigAccessor struct {
 	_data                  []WorldLevelStageUnlockConfig
+	_dataRaidID            map[float64]WorldLevelStageUnlockConfig
 	_dataUIEntranceBgPath  map[string]WorldLevelStageUnlockConfig
 	_dataUIEnviromentParam map[float64]WorldLevelStageUnlockConfig
-	_dataRaidID            map[float64]WorldLevelStageUnlockConfig
 }
 
 // LoadData retrieves the data. Must be called before WorldLevelStageUnlockConfig.GroupData
@@ -41,7 +41,6 @@ func (a *WorldLevelStageUnlockConfigAccessor) Raw() ([]WorldLevelStageUnlockConf
 		if err != nil {
 			return []WorldLevelStageUnlockConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,10 +49,26 @@ func (a *WorldLevelStageUnlockConfigAccessor) Raw() ([]WorldLevelStageUnlockConf
 // Can be called manually in conjunction with WorldLevelStageUnlockConfigAccessor.LoadData to preload everything
 func (a *WorldLevelStageUnlockConfigAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataRaidID[d.RaidID] = d
 		a._dataUIEntranceBgPath[d.UIEntranceBgPath] = d
 		a._dataUIEnviromentParam[d.UIEnviromentParam] = d
-		a._dataRaidID[d.RaidID] = d
 	}
+}
+
+// ByRaidID returns the WorldLevelStageUnlockConfig uniquely identified by RaidID
+//
+// Error is only non-nil if the source errors out
+func (a *WorldLevelStageUnlockConfigAccessor) ByRaidID(identifier float64) (WorldLevelStageUnlockConfig, error) {
+	if a._dataRaidID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return WorldLevelStageUnlockConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRaidID[identifier], nil
 }
 
 // ByUIEntranceBgPath returns the WorldLevelStageUnlockConfig uniquely identified by UIEntranceBgPath
@@ -61,9 +76,11 @@ func (a *WorldLevelStageUnlockConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *WorldLevelStageUnlockConfigAccessor) ByUIEntranceBgPath(identifier string) (WorldLevelStageUnlockConfig, error) {
 	if a._dataUIEntranceBgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return WorldLevelStageUnlockConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return WorldLevelStageUnlockConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -75,25 +92,13 @@ func (a *WorldLevelStageUnlockConfigAccessor) ByUIEntranceBgPath(identifier stri
 // Error is only non-nil if the source errors out
 func (a *WorldLevelStageUnlockConfigAccessor) ByUIEnviromentParam(identifier float64) (WorldLevelStageUnlockConfig, error) {
 	if a._dataUIEnviromentParam == nil {
-		err := a.LoadData()
-		if err != nil {
-			return WorldLevelStageUnlockConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return WorldLevelStageUnlockConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataUIEnviromentParam[identifier], nil
-}
-
-// ByRaidID returns the WorldLevelStageUnlockConfig uniquely identified by RaidID
-//
-// Error is only non-nil if the source errors out
-func (a *WorldLevelStageUnlockConfigAccessor) ByRaidID(identifier float64) (WorldLevelStageUnlockConfig, error) {
-	if a._dataRaidID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return WorldLevelStageUnlockConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRaidID[identifier], nil
 }

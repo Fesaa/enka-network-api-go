@@ -38,7 +38,6 @@ func (a *ScheduleDataQuestAccessor) Raw() ([]ScheduleDataQuest, error) {
 		if err != nil {
 			return []ScheduleDataQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ScheduleDataQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataQuestAccessor) ByID(identifier float64) (ScheduleDataQuest, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

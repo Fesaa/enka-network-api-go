@@ -38,7 +38,6 @@ func (a *TrainPartySkillEffectAccessor) Raw() ([]TrainPartySkillEffect, error) {
 		if err != nil {
 			return []TrainPartySkillEffect{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *TrainPartySkillEffectAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartySkillEffectAccessor) ByEffectID(identifier float64) (TrainPartySkillEffect, error) {
 	if a._dataEffectID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartySkillEffect{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartySkillEffect{}, err
+			}
 		}
 		a.GroupData()
 	}

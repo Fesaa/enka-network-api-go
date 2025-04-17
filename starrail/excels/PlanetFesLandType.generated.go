@@ -17,8 +17,8 @@ type PlanetFesLandType struct {
 }
 type PlanetFesLandTypeAccessor struct {
 	_data                  []PlanetFesLandType
-	_dataIconPath          map[string]PlanetFesLandType
 	_dataBigBuffIconPath   map[string]PlanetFesLandType
+	_dataIconPath          map[string]PlanetFesLandType
 	_dataSmallBuffIconPath map[string]PlanetFesLandType
 	_dataType              map[string]PlanetFesLandType
 }
@@ -44,7 +44,6 @@ func (a *PlanetFesLandTypeAccessor) Raw() ([]PlanetFesLandType, error) {
 		if err != nil {
 			return []PlanetFesLandType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,25 +52,11 @@ func (a *PlanetFesLandTypeAccessor) Raw() ([]PlanetFesLandType, error) {
 // Can be called manually in conjunction with PlanetFesLandTypeAccessor.LoadData to preload everything
 func (a *PlanetFesLandTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIconPath[d.IconPath] = d
 		a._dataBigBuffIconPath[d.BigBuffIconPath] = d
+		a._dataIconPath[d.IconPath] = d
 		a._dataSmallBuffIconPath[d.SmallBuffIconPath] = d
 		a._dataType[d.Type] = d
 	}
-}
-
-// ByIconPath returns the PlanetFesLandType uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesLandTypeAccessor) ByIconPath(identifier string) (PlanetFesLandType, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesLandType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByBigBuffIconPath returns the PlanetFesLandType uniquely identified by BigBuffIconPath
@@ -79,13 +64,31 @@ func (a *PlanetFesLandTypeAccessor) ByIconPath(identifier string) (PlanetFesLand
 // Error is only non-nil if the source errors out
 func (a *PlanetFesLandTypeAccessor) ByBigBuffIconPath(identifier string) (PlanetFesLandType, error) {
 	if a._dataBigBuffIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesLandType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesLandType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBigBuffIconPath[identifier], nil
+}
+
+// ByIconPath returns the PlanetFesLandType uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesLandTypeAccessor) ByIconPath(identifier string) (PlanetFesLandType, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesLandType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
 }
 
 // BySmallBuffIconPath returns the PlanetFesLandType uniquely identified by SmallBuffIconPath
@@ -93,9 +96,11 @@ func (a *PlanetFesLandTypeAccessor) ByBigBuffIconPath(identifier string) (Planet
 // Error is only non-nil if the source errors out
 func (a *PlanetFesLandTypeAccessor) BySmallBuffIconPath(identifier string) (PlanetFesLandType, error) {
 	if a._dataSmallBuffIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesLandType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesLandType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -107,9 +112,11 @@ func (a *PlanetFesLandTypeAccessor) BySmallBuffIconPath(identifier string) (Plan
 // Error is only non-nil if the source errors out
 func (a *PlanetFesLandTypeAccessor) ByType(identifier string) (PlanetFesLandType, error) {
 	if a._dataType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesLandType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesLandType{}, err
+			}
 		}
 		a.GroupData()
 	}

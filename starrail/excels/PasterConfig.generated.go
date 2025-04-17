@@ -44,7 +44,6 @@ func (a *PasterConfigAccessor) Raw() ([]PasterConfig, error) {
 		if err != nil {
 			return []PasterConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *PasterConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PasterConfigAccessor) ByID(identifier float64) (PasterConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PasterConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PasterConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

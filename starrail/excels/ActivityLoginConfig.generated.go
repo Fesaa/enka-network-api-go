@@ -39,7 +39,6 @@ func (a *ActivityLoginConfigAccessor) Raw() ([]ActivityLoginConfig, error) {
 		if err != nil {
 			return []ActivityLoginConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ActivityLoginConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityLoginConfigAccessor) ByActivityModuleID(identifier float64) (ActivityLoginConfig, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityLoginConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityLoginConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *ActivityLoginConfigAccessor) ByActivityModuleID(identifier float64) (Ac
 // Error is only non-nil if the source errors out
 func (a *ActivityLoginConfigAccessor) ByID(identifier float64) (ActivityLoginConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityLoginConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityLoginConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

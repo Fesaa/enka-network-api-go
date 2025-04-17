@@ -48,7 +48,6 @@ func (a *MuseumItemAccessor) Raw() ([]MuseumItem, error) {
 		if err != nil {
 			return []MuseumItem{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,9 +65,11 @@ func (a *MuseumItemAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MuseumItemAccessor) ByItemID(identifier float64) (MuseumItem, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumItem{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumItem{}, err
+			}
 		}
 		a.GroupData()
 	}

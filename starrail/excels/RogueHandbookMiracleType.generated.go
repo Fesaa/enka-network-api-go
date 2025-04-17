@@ -41,7 +41,6 @@ func (a *RogueHandbookMiracleTypeAccessor) Raw() ([]RogueHandbookMiracleType, er
 		if err != nil {
 			return []RogueHandbookMiracleType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *RogueHandbookMiracleTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueHandbookMiracleTypeAccessor) ByRogueHandbookMiracleType(identifier float64) (RogueHandbookMiracleType, error) {
 	if a._dataRogueHandbookMiracleType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandbookMiracleType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandbookMiracleType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *RogueHandbookMiracleTypeAccessor) ByRogueHandbookMiracleType(identifier
 // Error is only non-nil if the source errors out
 func (a *RogueHandbookMiracleTypeAccessor) ByTypeIcon(identifier string) (RogueHandbookMiracleType, error) {
 	if a._dataTypeIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandbookMiracleType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandbookMiracleType{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -18,9 +18,9 @@ type MusicRhythmPhase struct {
 }
 type MusicRhythmPhaseAccessor struct {
 	_data                []MusicRhythmPhase
+	_dataFinishMissionID map[float64]MusicRhythmPhase
 	_dataPhase           map[float64]MusicRhythmPhase
 	_dataSongID          map[float64]MusicRhythmPhase
-	_dataFinishMissionID map[float64]MusicRhythmPhase
 }
 
 // LoadData retrieves the data. Must be called before MusicRhythmPhase.GroupData
@@ -44,7 +44,6 @@ func (a *MusicRhythmPhaseAccessor) Raw() ([]MusicRhythmPhase, error) {
 		if err != nil {
 			return []MusicRhythmPhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,10 +52,26 @@ func (a *MusicRhythmPhaseAccessor) Raw() ([]MusicRhythmPhase, error) {
 // Can be called manually in conjunction with MusicRhythmPhaseAccessor.LoadData to preload everything
 func (a *MusicRhythmPhaseAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataFinishMissionID[d.FinishMissionID] = d
 		a._dataPhase[d.Phase] = d
 		a._dataSongID[d.SongID] = d
-		a._dataFinishMissionID[d.FinishMissionID] = d
 	}
+}
+
+// ByFinishMissionID returns the MusicRhythmPhase uniquely identified by FinishMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmPhaseAccessor) ByFinishMissionID(identifier float64) (MusicRhythmPhase, error) {
+	if a._dataFinishMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmPhase{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFinishMissionID[identifier], nil
 }
 
 // ByPhase returns the MusicRhythmPhase uniquely identified by Phase
@@ -64,9 +79,11 @@ func (a *MusicRhythmPhaseAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmPhaseAccessor) ByPhase(identifier float64) (MusicRhythmPhase, error) {
 	if a._dataPhase == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmPhase{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,25 +95,13 @@ func (a *MusicRhythmPhaseAccessor) ByPhase(identifier float64) (MusicRhythmPhase
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmPhaseAccessor) BySongID(identifier float64) (MusicRhythmPhase, error) {
 	if a._dataSongID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmPhase{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSongID[identifier], nil
-}
-
-// ByFinishMissionID returns the MusicRhythmPhase uniquely identified by FinishMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmPhaseAccessor) ByFinishMissionID(identifier float64) (MusicRhythmPhase, error) {
-	if a._dataFinishMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmPhase{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFinishMissionID[identifier], nil
 }

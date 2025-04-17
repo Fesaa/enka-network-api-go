@@ -44,7 +44,6 @@ func (a *MarbleSkillAccessor) Raw() ([]MarbleSkill, error) {
 		if err != nil {
 			return []MarbleSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *MarbleSkillAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleSkillAccessor) ByID(identifier float64) (MarbleSkill, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleSkill{}, err
+			}
 		}
 		a.GroupData()
 	}

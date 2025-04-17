@@ -14,8 +14,8 @@ type MultipleDropFarmType struct {
 }
 type MultipleDropFarmTypeAccessor struct {
 	_data                 []MultipleDropFarmType
-	_dataUnlockID         map[float64]MultipleDropFarmType
 	_dataMultipleDropType map[string]MultipleDropFarmType
+	_dataUnlockID         map[float64]MultipleDropFarmType
 }
 
 // LoadData retrieves the data. Must be called before MultipleDropFarmType.GroupData
@@ -39,7 +39,6 @@ func (a *MultipleDropFarmTypeAccessor) Raw() ([]MultipleDropFarmType, error) {
 		if err != nil {
 			return []MultipleDropFarmType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *MultipleDropFarmTypeAccessor) Raw() ([]MultipleDropFarmType, error) {
 // Can be called manually in conjunction with MultipleDropFarmTypeAccessor.LoadData to preload everything
 func (a *MultipleDropFarmTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUnlockID[d.UnlockID] = d
 		a._dataMultipleDropType[d.MultipleDropType] = d
+		a._dataUnlockID[d.UnlockID] = d
 	}
-}
-
-// ByUnlockID returns the MultipleDropFarmType uniquely identified by UnlockID
-//
-// Error is only non-nil if the source errors out
-func (a *MultipleDropFarmTypeAccessor) ByUnlockID(identifier float64) (MultipleDropFarmType, error) {
-	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MultipleDropFarmType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockID[identifier], nil
 }
 
 // ByMultipleDropType returns the MultipleDropFarmType uniquely identified by MultipleDropType
@@ -72,11 +57,29 @@ func (a *MultipleDropFarmTypeAccessor) ByUnlockID(identifier float64) (MultipleD
 // Error is only non-nil if the source errors out
 func (a *MultipleDropFarmTypeAccessor) ByMultipleDropType(identifier string) (MultipleDropFarmType, error) {
 	if a._dataMultipleDropType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MultipleDropFarmType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MultipleDropFarmType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMultipleDropType[identifier], nil
+}
+
+// ByUnlockID returns the MultipleDropFarmType uniquely identified by UnlockID
+//
+// Error is only non-nil if the source errors out
+func (a *MultipleDropFarmTypeAccessor) ByUnlockID(identifier float64) (MultipleDropFarmType, error) {
+	if a._dataUnlockID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MultipleDropFarmType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockID[identifier], nil
 }

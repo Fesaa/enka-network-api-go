@@ -39,7 +39,6 @@ func (a *ClockParkStoryAccessor) Raw() ([]ClockParkStory, error) {
 		if err != nil {
 			return []ClockParkStory{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ClockParkStoryAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClockParkStoryAccessor) ByStoryID(identifier float64) (ClockParkStory, error) {
 	if a._dataStoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkStory{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *ClockParkStoryAccessor) ByStoryID(identifier float64) (ClockParkStory, 
 // Error is only non-nil if the source errors out
 func (a *ClockParkStoryAccessor) ByStoryJsonPath(identifier string) (ClockParkStory, error) {
 	if a._dataStoryJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkStory{}, err
+			}
 		}
 		a.GroupData()
 	}

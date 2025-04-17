@@ -38,7 +38,6 @@ func (a *MarblePhaseAccessor) Raw() ([]MarblePhase, error) {
 		if err != nil {
 			return []MarblePhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MarblePhaseAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarblePhaseAccessor) ByID(identifier string) (MarblePhase, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarblePhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarblePhase{}, err
+			}
 		}
 		a.GroupData()
 	}

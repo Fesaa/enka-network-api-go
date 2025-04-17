@@ -40,7 +40,6 @@ func (a *MatchThreeScoreCurveAccessor) Raw() ([]MatchThreeScoreCurve, error) {
 		if err != nil {
 			return []MatchThreeScoreCurve{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -19,10 +19,10 @@ type RecommendConfig struct {
 type RecommendConfigAccessor struct {
 	_data          []RecommendConfig
 	_dataID        map[float64]RecommendConfig
-	_dataOrder     map[float64]RecommendConfig
-	_dataType      map[float64]RecommendConfig
 	_dataImagePath map[string]RecommendConfig
 	_dataNameText  map[string]RecommendConfig
+	_dataOrder     map[float64]RecommendConfig
+	_dataType      map[float64]RecommendConfig
 }
 
 // LoadData retrieves the data. Must be called before RecommendConfig.GroupData
@@ -46,7 +46,6 @@ func (a *RecommendConfigAccessor) Raw() ([]RecommendConfig, error) {
 		if err != nil {
 			return []RecommendConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,10 +55,10 @@ func (a *RecommendConfigAccessor) Raw() ([]RecommendConfig, error) {
 func (a *RecommendConfigAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
-		a._dataOrder[d.Order] = d
-		a._dataType[d.Type] = d
 		a._dataImagePath[d.ImagePath] = d
 		a._dataNameText[d.NameText] = d
+		a._dataOrder[d.Order] = d
+		a._dataType[d.Type] = d
 	}
 }
 
@@ -68,41 +67,15 @@ func (a *RecommendConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RecommendConfigAccessor) ByID(identifier float64) (RecommendConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RecommendConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RecommendConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
-}
-
-// ByOrder returns the RecommendConfig uniquely identified by Order
-//
-// Error is only non-nil if the source errors out
-func (a *RecommendConfigAccessor) ByOrder(identifier float64) (RecommendConfig, error) {
-	if a._dataOrder == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RecommendConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOrder[identifier], nil
-}
-
-// ByType returns the RecommendConfig uniquely identified by Type
-//
-// Error is only non-nil if the source errors out
-func (a *RecommendConfigAccessor) ByType(identifier float64) (RecommendConfig, error) {
-	if a._dataType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RecommendConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataType[identifier], nil
 }
 
 // ByImagePath returns the RecommendConfig uniquely identified by ImagePath
@@ -110,9 +83,11 @@ func (a *RecommendConfigAccessor) ByType(identifier float64) (RecommendConfig, e
 // Error is only non-nil if the source errors out
 func (a *RecommendConfigAccessor) ByImagePath(identifier string) (RecommendConfig, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RecommendConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RecommendConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -124,11 +99,45 @@ func (a *RecommendConfigAccessor) ByImagePath(identifier string) (RecommendConfi
 // Error is only non-nil if the source errors out
 func (a *RecommendConfigAccessor) ByNameText(identifier string) (RecommendConfig, error) {
 	if a._dataNameText == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RecommendConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RecommendConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataNameText[identifier], nil
+}
+
+// ByOrder returns the RecommendConfig uniquely identified by Order
+//
+// Error is only non-nil if the source errors out
+func (a *RecommendConfigAccessor) ByOrder(identifier float64) (RecommendConfig, error) {
+	if a._dataOrder == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RecommendConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOrder[identifier], nil
+}
+
+// ByType returns the RecommendConfig uniquely identified by Type
+//
+// Error is only non-nil if the source errors out
+func (a *RecommendConfigAccessor) ByType(identifier float64) (RecommendConfig, error) {
+	if a._dataType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RecommendConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataType[identifier], nil
 }

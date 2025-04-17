@@ -51,7 +51,6 @@ func (a *ActivityResidentPanelAccessor) Raw() ([]ActivityResidentPanel, error) {
 		if err != nil {
 			return []ActivityResidentPanel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -70,9 +69,11 @@ func (a *ActivityResidentPanelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityResidentPanelAccessor) ByPanelID(identifier float64) (ActivityResidentPanel, error) {
 	if a._dataPanelID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityResidentPanel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityResidentPanel{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -84,9 +85,11 @@ func (a *ActivityResidentPanelAccessor) ByPanelID(identifier float64) (ActivityR
 // Error is only non-nil if the source errors out
 func (a *ActivityResidentPanelAccessor) BySortWeight(identifier float64) (ActivityResidentPanel, error) {
 	if a._dataSortWeight == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityResidentPanel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityResidentPanel{}, err
+			}
 		}
 		a.GroupData()
 	}

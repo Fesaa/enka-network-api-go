@@ -55,7 +55,6 @@ func (a *RogueMagicScepterAccessor) Raw() ([]RogueMagicScepter, error) {
 		if err != nil {
 			return []RogueMagicScepter{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

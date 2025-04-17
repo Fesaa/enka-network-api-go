@@ -28,12 +28,12 @@ type BattleCollegeConfig struct {
 }
 type BattleCollegeConfigAccessor struct {
 	_data               []BattleCollegeConfig
+	_dataID             map[float64]BattleCollegeConfig
 	_dataRewardID       map[float64]BattleCollegeConfig
 	_dataStageID        map[float64]BattleCollegeConfig
-	_dataVideoCoverPath map[string]BattleCollegeConfig
-	_dataVideoAssetID   map[float64]BattleCollegeConfig
-	_dataID             map[float64]BattleCollegeConfig
 	_dataTutorialID     map[float64]BattleCollegeConfig
+	_dataVideoAssetID   map[float64]BattleCollegeConfig
+	_dataVideoCoverPath map[string]BattleCollegeConfig
 }
 
 // LoadData retrieves the data. Must be called before BattleCollegeConfig.GroupData
@@ -57,7 +57,6 @@ func (a *BattleCollegeConfigAccessor) Raw() ([]BattleCollegeConfig, error) {
 		if err != nil {
 			return []BattleCollegeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,13 +65,29 @@ func (a *BattleCollegeConfigAccessor) Raw() ([]BattleCollegeConfig, error) {
 // Can be called manually in conjunction with BattleCollegeConfigAccessor.LoadData to preload everything
 func (a *BattleCollegeConfigAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataID[d.ID] = d
 		a._dataRewardID[d.RewardID] = d
 		a._dataStageID[d.StageID] = d
-		a._dataVideoCoverPath[d.VideoCoverPath] = d
-		a._dataVideoAssetID[d.VideoAssetID] = d
-		a._dataID[d.ID] = d
 		a._dataTutorialID[d.TutorialID] = d
+		a._dataVideoAssetID[d.VideoAssetID] = d
+		a._dataVideoCoverPath[d.VideoCoverPath] = d
 	}
+}
+
+// ByID returns the BattleCollegeConfig uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *BattleCollegeConfigAccessor) ByID(identifier float64) (BattleCollegeConfig, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }
 
 // ByRewardID returns the BattleCollegeConfig uniquely identified by RewardID
@@ -80,9 +95,11 @@ func (a *BattleCollegeConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BattleCollegeConfigAccessor) ByRewardID(identifier float64) (BattleCollegeConfig, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -94,55 +111,15 @@ func (a *BattleCollegeConfigAccessor) ByRewardID(identifier float64) (BattleColl
 // Error is only non-nil if the source errors out
 func (a *BattleCollegeConfigAccessor) ByStageID(identifier float64) (BattleCollegeConfig, error) {
 	if a._dataStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataStageID[identifier], nil
-}
-
-// ByVideoCoverPath returns the BattleCollegeConfig uniquely identified by VideoCoverPath
-//
-// Error is only non-nil if the source errors out
-func (a *BattleCollegeConfigAccessor) ByVideoCoverPath(identifier string) (BattleCollegeConfig, error) {
-	if a._dataVideoCoverPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataVideoCoverPath[identifier], nil
-}
-
-// ByVideoAssetID returns the BattleCollegeConfig uniquely identified by VideoAssetID
-//
-// Error is only non-nil if the source errors out
-func (a *BattleCollegeConfigAccessor) ByVideoAssetID(identifier float64) (BattleCollegeConfig, error) {
-	if a._dataVideoAssetID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataVideoAssetID[identifier], nil
-}
-
-// ByID returns the BattleCollegeConfig uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *BattleCollegeConfigAccessor) ByID(identifier float64) (BattleCollegeConfig, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByTutorialID returns the BattleCollegeConfig uniquely identified by TutorialID
@@ -150,11 +127,45 @@ func (a *BattleCollegeConfigAccessor) ByID(identifier float64) (BattleCollegeCon
 // Error is only non-nil if the source errors out
 func (a *BattleCollegeConfigAccessor) ByTutorialID(identifier float64) (BattleCollegeConfig, error) {
 	if a._dataTutorialID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTutorialID[identifier], nil
+}
+
+// ByVideoAssetID returns the BattleCollegeConfig uniquely identified by VideoAssetID
+//
+// Error is only non-nil if the source errors out
+func (a *BattleCollegeConfigAccessor) ByVideoAssetID(identifier float64) (BattleCollegeConfig, error) {
+	if a._dataVideoAssetID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataVideoAssetID[identifier], nil
+}
+
+// ByVideoCoverPath returns the BattleCollegeConfig uniquely identified by VideoCoverPath
+//
+// Error is only non-nil if the source errors out
+func (a *BattleCollegeConfigAccessor) ByVideoCoverPath(identifier string) (BattleCollegeConfig, error) {
+	if a._dataVideoCoverPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataVideoCoverPath[identifier], nil
 }

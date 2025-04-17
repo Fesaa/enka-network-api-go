@@ -38,7 +38,6 @@ func (a *TrackPhotoNpcConfigAccessor) Raw() ([]TrackPhotoNpcConfig, error) {
 		if err != nil {
 			return []TrackPhotoNpcConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

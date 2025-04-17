@@ -14,8 +14,8 @@ type RaidPerformance struct {
 }
 type RaidPerformanceAccessor struct {
 	_data              []RaidPerformance
-	_dataRaidID        map[float64]RaidPerformance
 	_dataPerformanceID map[float64]RaidPerformance
+	_dataRaidID        map[float64]RaidPerformance
 }
 
 // LoadData retrieves the data. Must be called before RaidPerformance.GroupData
@@ -39,7 +39,6 @@ func (a *RaidPerformanceAccessor) Raw() ([]RaidPerformance, error) {
 		if err != nil {
 			return []RaidPerformance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *RaidPerformanceAccessor) Raw() ([]RaidPerformance, error) {
 // Can be called manually in conjunction with RaidPerformanceAccessor.LoadData to preload everything
 func (a *RaidPerformanceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRaidID[d.RaidID] = d
 		a._dataPerformanceID[d.PerformanceID] = d
+		a._dataRaidID[d.RaidID] = d
 	}
-}
-
-// ByRaidID returns the RaidPerformance uniquely identified by RaidID
-//
-// Error is only non-nil if the source errors out
-func (a *RaidPerformanceAccessor) ByRaidID(identifier float64) (RaidPerformance, error) {
-	if a._dataRaidID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RaidPerformance{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRaidID[identifier], nil
 }
 
 // ByPerformanceID returns the RaidPerformance uniquely identified by PerformanceID
@@ -72,11 +57,29 @@ func (a *RaidPerformanceAccessor) ByRaidID(identifier float64) (RaidPerformance,
 // Error is only non-nil if the source errors out
 func (a *RaidPerformanceAccessor) ByPerformanceID(identifier float64) (RaidPerformance, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RaidPerformance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RaidPerformance{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPerformanceID[identifier], nil
+}
+
+// ByRaidID returns the RaidPerformance uniquely identified by RaidID
+//
+// Error is only non-nil if the source errors out
+func (a *RaidPerformanceAccessor) ByRaidID(identifier float64) (RaidPerformance, error) {
+	if a._dataRaidID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RaidPerformance{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRaidID[identifier], nil
 }

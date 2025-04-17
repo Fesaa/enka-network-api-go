@@ -42,7 +42,6 @@ func (a *PlanetFesGachaBasicAccessor) Raw() ([]PlanetFesGachaBasic, error) {
 		if err != nil {
 			return []PlanetFesGachaBasic{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *PlanetFesGachaBasicAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesGachaBasicAccessor) ByGachaID(identifier float64) (PlanetFesGachaBasic, error) {
 	if a._dataGachaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGachaBasic{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGachaBasic{}, err
+			}
 		}
 		a.GroupData()
 	}

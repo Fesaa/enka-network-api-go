@@ -46,7 +46,6 @@ func (a *FinishWayRogueAccessor) Raw() ([]FinishWayRogue, error) {
 		if err != nil {
 			return []FinishWayRogue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *FinishWayRogueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FinishWayRogueAccessor) ByID(identifier float64) (FinishWayRogue, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FinishWayRogue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FinishWayRogue{}, err
+			}
 		}
 		a.GroupData()
 	}

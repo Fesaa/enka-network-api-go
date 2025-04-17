@@ -17,9 +17,9 @@ type ActivityNewbiePromote struct {
 }
 type ActivityNewbiePromoteAccessor struct {
 	_data            []ActivityNewbiePromote
-	_dataID          map[float64]ActivityNewbiePromote
 	_dataDisplayItem map[float64]ActivityNewbiePromote
 	_dataFinishQuest map[float64]ActivityNewbiePromote
+	_dataID          map[float64]ActivityNewbiePromote
 	_dataSortID      map[float64]ActivityNewbiePromote
 }
 
@@ -44,7 +44,6 @@ func (a *ActivityNewbiePromoteAccessor) Raw() ([]ActivityNewbiePromote, error) {
 		if err != nil {
 			return []ActivityNewbiePromote{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,25 +52,11 @@ func (a *ActivityNewbiePromoteAccessor) Raw() ([]ActivityNewbiePromote, error) {
 // Can be called manually in conjunction with ActivityNewbiePromoteAccessor.LoadData to preload everything
 func (a *ActivityNewbiePromoteAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataDisplayItem[d.DisplayItem] = d
 		a._dataFinishQuest[d.FinishQuest] = d
+		a._dataID[d.ID] = d
 		a._dataSortID[d.SortID] = d
 	}
-}
-
-// ByID returns the ActivityNewbiePromote uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityNewbiePromoteAccessor) ByID(identifier float64) (ActivityNewbiePromote, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityNewbiePromote{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByDisplayItem returns the ActivityNewbiePromote uniquely identified by DisplayItem
@@ -79,9 +64,11 @@ func (a *ActivityNewbiePromoteAccessor) ByID(identifier float64) (ActivityNewbie
 // Error is only non-nil if the source errors out
 func (a *ActivityNewbiePromoteAccessor) ByDisplayItem(identifier float64) (ActivityNewbiePromote, error) {
 	if a._dataDisplayItem == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityNewbiePromote{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityNewbiePromote{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -93,13 +80,31 @@ func (a *ActivityNewbiePromoteAccessor) ByDisplayItem(identifier float64) (Activ
 // Error is only non-nil if the source errors out
 func (a *ActivityNewbiePromoteAccessor) ByFinishQuest(identifier float64) (ActivityNewbiePromote, error) {
 	if a._dataFinishQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityNewbiePromote{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityNewbiePromote{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFinishQuest[identifier], nil
+}
+
+// ByID returns the ActivityNewbiePromote uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityNewbiePromoteAccessor) ByID(identifier float64) (ActivityNewbiePromote, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityNewbiePromote{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }
 
 // BySortID returns the ActivityNewbiePromote uniquely identified by SortID
@@ -107,9 +112,11 @@ func (a *ActivityNewbiePromoteAccessor) ByFinishQuest(identifier float64) (Activ
 // Error is only non-nil if the source errors out
 func (a *ActivityNewbiePromoteAccessor) BySortID(identifier float64) (ActivityNewbiePromote, error) {
 	if a._dataSortID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityNewbiePromote{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityNewbiePromote{}, err
+			}
 		}
 		a.GroupData()
 	}

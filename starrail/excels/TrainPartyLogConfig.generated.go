@@ -40,7 +40,6 @@ func (a *TrainPartyLogConfigAccessor) Raw() ([]TrainPartyLogConfig, error) {
 		if err != nil {
 			return []TrainPartyLogConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *TrainPartyLogConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyLogConfigAccessor) ByLogType(identifier string) (TrainPartyLogConfig, error) {
 	if a._dataLogType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyLogConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyLogConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *TrainPartyLogConfigAccessor) ByLogType(identifier string) (TrainPartyLo
 // Error is only non-nil if the source errors out
 func (a *TrainPartyLogConfigAccessor) ByPriority(identifier float64) (TrainPartyLogConfig, error) {
 	if a._dataPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyLogConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyLogConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

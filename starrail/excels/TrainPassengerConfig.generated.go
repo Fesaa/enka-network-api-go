@@ -37,7 +37,6 @@ func (a *TrainPassengerConfigAccessor) Raw() ([]TrainPassengerConfig, error) {
 		if err != nil {
 			return []TrainPassengerConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *TrainPassengerConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPassengerConfigAccessor) ByPassengerID(identifier float64) (TrainPassengerConfig, error) {
 	if a._dataPassengerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPassengerConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPassengerConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

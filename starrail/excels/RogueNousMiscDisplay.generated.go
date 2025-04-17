@@ -38,7 +38,6 @@ func (a *RogueNousMiscDisplayAccessor) Raw() ([]RogueNousMiscDisplay, error) {
 		if err != nil {
 			return []RogueNousMiscDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueNousMiscDisplayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousMiscDisplayAccessor) ByDisplayID(identifier float64) (RogueNousMiscDisplay, error) {
 	if a._dataDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousMiscDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousMiscDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}

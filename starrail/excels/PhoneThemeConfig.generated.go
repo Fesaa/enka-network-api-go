@@ -17,10 +17,10 @@ type PhoneThemeConfig struct {
 }
 type PhoneThemeConfigAccessor struct {
 	_data               []PhoneThemeConfig
+	_dataID             map[float64]PhoneThemeConfig
+	_dataPhoneThemeApp  map[string]PhoneThemeConfig
 	_dataPhoneThemeItem map[string]PhoneThemeConfig
 	_dataPhoneThemeMain map[string]PhoneThemeConfig
-	_dataPhoneThemeApp  map[string]PhoneThemeConfig
-	_dataID             map[float64]PhoneThemeConfig
 }
 
 // LoadData retrieves the data. Must be called before PhoneThemeConfig.GroupData
@@ -44,7 +44,6 @@ func (a *PhoneThemeConfigAccessor) Raw() ([]PhoneThemeConfig, error) {
 		if err != nil {
 			return []PhoneThemeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,11 +52,43 @@ func (a *PhoneThemeConfigAccessor) Raw() ([]PhoneThemeConfig, error) {
 // Can be called manually in conjunction with PhoneThemeConfigAccessor.LoadData to preload everything
 func (a *PhoneThemeConfigAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataID[d.ID] = d
+		a._dataPhoneThemeApp[d.PhoneThemeApp] = d
 		a._dataPhoneThemeItem[d.PhoneThemeItem] = d
 		a._dataPhoneThemeMain[d.PhoneThemeMain] = d
-		a._dataPhoneThemeApp[d.PhoneThemeApp] = d
-		a._dataID[d.ID] = d
 	}
+}
+
+// ByID returns the PhoneThemeConfig uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *PhoneThemeConfigAccessor) ByID(identifier float64) (PhoneThemeConfig, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneThemeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByPhoneThemeApp returns the PhoneThemeConfig uniquely identified by PhoneThemeApp
+//
+// Error is only non-nil if the source errors out
+func (a *PhoneThemeConfigAccessor) ByPhoneThemeApp(identifier string) (PhoneThemeConfig, error) {
+	if a._dataPhoneThemeApp == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneThemeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPhoneThemeApp[identifier], nil
 }
 
 // ByPhoneThemeItem returns the PhoneThemeConfig uniquely identified by PhoneThemeItem
@@ -65,9 +96,11 @@ func (a *PhoneThemeConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PhoneThemeConfigAccessor) ByPhoneThemeItem(identifier string) (PhoneThemeConfig, error) {
 	if a._dataPhoneThemeItem == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneThemeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneThemeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -79,39 +112,13 @@ func (a *PhoneThemeConfigAccessor) ByPhoneThemeItem(identifier string) (PhoneThe
 // Error is only non-nil if the source errors out
 func (a *PhoneThemeConfigAccessor) ByPhoneThemeMain(identifier string) (PhoneThemeConfig, error) {
 	if a._dataPhoneThemeMain == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneThemeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneThemeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPhoneThemeMain[identifier], nil
-}
-
-// ByPhoneThemeApp returns the PhoneThemeConfig uniquely identified by PhoneThemeApp
-//
-// Error is only non-nil if the source errors out
-func (a *PhoneThemeConfigAccessor) ByPhoneThemeApp(identifier string) (PhoneThemeConfig, error) {
-	if a._dataPhoneThemeApp == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneThemeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPhoneThemeApp[identifier], nil
-}
-
-// ByID returns the PhoneThemeConfig uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *PhoneThemeConfigAccessor) ByID(identifier float64) (PhoneThemeConfig, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneThemeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }

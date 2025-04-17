@@ -40,7 +40,6 @@ func (a *Anniversary2NDContentConfigAccessor) Raw() ([]Anniversary2NDContentConf
 		if err != nil {
 			return []Anniversary2NDContentConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *Anniversary2NDContentConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *Anniversary2NDContentConfigAccessor) ByContentID(identifier float64) (Anniversary2NDContentConfig, error) {
 	if a._dataContentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return Anniversary2NDContentConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return Anniversary2NDContentConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

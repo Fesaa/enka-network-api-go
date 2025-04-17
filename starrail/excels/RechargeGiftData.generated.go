@@ -41,7 +41,6 @@ func (a *RechargeGiftDataAccessor) Raw() ([]RechargeGiftData, error) {
 		if err != nil {
 			return []RechargeGiftData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RechargeGiftDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RechargeGiftDataAccessor) ByGiftID(identifier float64) (RechargeGiftData, error) {
 	if a._dataGiftID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RechargeGiftData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RechargeGiftData{}, err
+			}
 		}
 		a.GroupData()
 	}

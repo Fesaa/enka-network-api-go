@@ -40,7 +40,6 @@ func (a *PamAnchorAccessor) Raw() ([]PamAnchor, error) {
 		if err != nil {
 			return []PamAnchor{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *PamAnchorAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PamAnchorAccessor) ByID(identifier float64) (PamAnchor, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamAnchor{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamAnchor{}, err
+			}
 		}
 		a.GroupData()
 	}

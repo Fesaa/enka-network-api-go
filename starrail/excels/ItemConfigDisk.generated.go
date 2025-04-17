@@ -53,7 +53,6 @@ func (a *ItemConfigDiskAccessor) Raw() ([]ItemConfigDisk, error) {
 		if err != nil {
 			return []ItemConfigDisk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -71,9 +70,11 @@ func (a *ItemConfigDiskAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemConfigDiskAccessor) ByID(identifier float64) (ItemConfigDisk, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigDisk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigDisk{}, err
+			}
 		}
 		a.GroupData()
 	}

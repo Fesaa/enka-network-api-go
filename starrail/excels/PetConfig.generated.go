@@ -40,7 +40,6 @@ func (a *PetConfigAccessor) Raw() ([]PetConfig, error) {
 		if err != nil {
 			return []PetConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *PetConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PetConfigAccessor) ByPetID(identifier float64) (PetConfig, error) {
 	if a._dataPetID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *PetConfigAccessor) ByPetID(identifier float64) (PetConfig, error) {
 // Error is only non-nil if the source errors out
 func (a *PetConfigAccessor) ByPetItemID(identifier float64) (PetConfig, error) {
 	if a._dataPetItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,9 +91,11 @@ func (a *PetConfigAccessor) ByPetItemID(identifier float64) (PetConfig, error) {
 // Error is only non-nil if the source errors out
 func (a *PetConfigAccessor) BySummonUnitID(identifier float64) (PetConfig, error) {
 	if a._dataSummonUnitID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

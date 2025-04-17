@@ -56,7 +56,6 @@ func (a *PlayerReturnConfigAccessor) Raw() ([]PlayerReturnConfig, error) {
 		if err != nil {
 			return []PlayerReturnConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -74,9 +73,11 @@ func (a *PlayerReturnConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnConfigAccessor) ByPlayerReturnID(identifier float64) (PlayerReturnConfig, error) {
 	if a._dataPlayerReturnID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *TrainPartyMTSkillAccessor) Raw() ([]TrainPartyMTSkill, error) {
 		if err != nil {
 			return []TrainPartyMTSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

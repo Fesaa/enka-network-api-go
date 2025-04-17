@@ -19,8 +19,8 @@ type PlanetFesCard struct {
 }
 type PlanetFesCardAccessor struct {
 	_data        []PlanetFesCard
-	_dataPicPath map[string]PlanetFesCard
 	_dataCardID  map[float64]PlanetFesCard
+	_dataPicPath map[string]PlanetFesCard
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesCard.GroupData
@@ -44,7 +44,6 @@ func (a *PlanetFesCardAccessor) Raw() ([]PlanetFesCard, error) {
 		if err != nil {
 			return []PlanetFesCard{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,23 +52,9 @@ func (a *PlanetFesCardAccessor) Raw() ([]PlanetFesCard, error) {
 // Can be called manually in conjunction with PlanetFesCardAccessor.LoadData to preload everything
 func (a *PlanetFesCardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataPicPath[d.PicPath] = d
 		a._dataCardID[d.CardID] = d
+		a._dataPicPath[d.PicPath] = d
 	}
-}
-
-// ByPicPath returns the PlanetFesCard uniquely identified by PicPath
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesCardAccessor) ByPicPath(identifier string) (PlanetFesCard, error) {
-	if a._dataPicPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesCard{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPicPath[identifier], nil
 }
 
 // ByCardID returns the PlanetFesCard uniquely identified by CardID
@@ -77,11 +62,29 @@ func (a *PlanetFesCardAccessor) ByPicPath(identifier string) (PlanetFesCard, err
 // Error is only non-nil if the source errors out
 func (a *PlanetFesCardAccessor) ByCardID(identifier float64) (PlanetFesCard, error) {
 	if a._dataCardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesCard{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesCard{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCardID[identifier], nil
+}
+
+// ByPicPath returns the PlanetFesCard uniquely identified by PicPath
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesCardAccessor) ByPicPath(identifier string) (PlanetFesCard, error) {
+	if a._dataPicPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesCard{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPicPath[identifier], nil
 }

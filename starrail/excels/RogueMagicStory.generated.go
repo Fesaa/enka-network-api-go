@@ -19,8 +19,8 @@ type RogueMagicStory struct {
 }
 type RogueMagicStoryAccessor struct {
 	_data               []RogueMagicStory
-	_dataStoryID        map[float64]RogueMagicStory
 	_dataLevelGraphPath map[string]RogueMagicStory
+	_dataStoryID        map[float64]RogueMagicStory
 }
 
 // LoadData retrieves the data. Must be called before RogueMagicStory.GroupData
@@ -44,7 +44,6 @@ func (a *RogueMagicStoryAccessor) Raw() ([]RogueMagicStory, error) {
 		if err != nil {
 			return []RogueMagicStory{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,23 +52,9 @@ func (a *RogueMagicStoryAccessor) Raw() ([]RogueMagicStory, error) {
 // Can be called manually in conjunction with RogueMagicStoryAccessor.LoadData to preload everything
 func (a *RogueMagicStoryAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataStoryID[d.StoryID] = d
 		a._dataLevelGraphPath[d.LevelGraphPath] = d
+		a._dataStoryID[d.StoryID] = d
 	}
-}
-
-// ByStoryID returns the RogueMagicStory uniquely identified by StoryID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueMagicStoryAccessor) ByStoryID(identifier float64) (RogueMagicStory, error) {
-	if a._dataStoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicStory{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStoryID[identifier], nil
 }
 
 // ByLevelGraphPath returns the RogueMagicStory uniquely identified by LevelGraphPath
@@ -77,11 +62,29 @@ func (a *RogueMagicStoryAccessor) ByStoryID(identifier float64) (RogueMagicStory
 // Error is only non-nil if the source errors out
 func (a *RogueMagicStoryAccessor) ByLevelGraphPath(identifier string) (RogueMagicStory, error) {
 	if a._dataLevelGraphPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicStory{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLevelGraphPath[identifier], nil
+}
+
+// ByStoryID returns the RogueMagicStory uniquely identified by StoryID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueMagicStoryAccessor) ByStoryID(identifier float64) (RogueMagicStory, error) {
+	if a._dataStoryID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicStory{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStoryID[identifier], nil
 }

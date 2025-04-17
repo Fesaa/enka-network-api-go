@@ -37,7 +37,6 @@ func (a *CommonActiveSkillConfigAccessor) Raw() ([]CommonActiveSkillConfig, erro
 		if err != nil {
 			return []CommonActiveSkillConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *CommonActiveSkillConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *CommonActiveSkillConfigAccessor) ByCommonActiveSkillID(identifier float64) (CommonActiveSkillConfig, error) {
 	if a._dataCommonActiveSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CommonActiveSkillConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CommonActiveSkillConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

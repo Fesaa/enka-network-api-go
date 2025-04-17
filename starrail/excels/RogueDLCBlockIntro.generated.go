@@ -20,9 +20,9 @@ type RogueDLCBlockIntro struct {
 }
 type RogueDLCBlockIntroAccessor struct {
 	_data               []RogueDLCBlockIntro
+	_dataBlockIntroID   map[float64]RogueDLCBlockIntro
 	_dataBlockIntroIcon map[string]RogueDLCBlockIntro
 	_dataSort           map[float64]RogueDLCBlockIntro
-	_dataBlockIntroID   map[float64]RogueDLCBlockIntro
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCBlockIntro.GroupData
@@ -46,7 +46,6 @@ func (a *RogueDLCBlockIntroAccessor) Raw() ([]RogueDLCBlockIntro, error) {
 		if err != nil {
 			return []RogueDLCBlockIntro{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,10 +54,26 @@ func (a *RogueDLCBlockIntroAccessor) Raw() ([]RogueDLCBlockIntro, error) {
 // Can be called manually in conjunction with RogueDLCBlockIntroAccessor.LoadData to preload everything
 func (a *RogueDLCBlockIntroAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataBlockIntroID[d.BlockIntroID] = d
 		a._dataBlockIntroIcon[d.BlockIntroIcon] = d
 		a._dataSort[d.Sort] = d
-		a._dataBlockIntroID[d.BlockIntroID] = d
 	}
+}
+
+// ByBlockIntroID returns the RogueDLCBlockIntro uniquely identified by BlockIntroID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCBlockIntroAccessor) ByBlockIntroID(identifier float64) (RogueDLCBlockIntro, error) {
+	if a._dataBlockIntroID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCBlockIntro{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBlockIntroID[identifier], nil
 }
 
 // ByBlockIntroIcon returns the RogueDLCBlockIntro uniquely identified by BlockIntroIcon
@@ -66,9 +81,11 @@ func (a *RogueDLCBlockIntroAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCBlockIntroAccessor) ByBlockIntroIcon(identifier string) (RogueDLCBlockIntro, error) {
 	if a._dataBlockIntroIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCBlockIntro{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCBlockIntro{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -80,25 +97,13 @@ func (a *RogueDLCBlockIntroAccessor) ByBlockIntroIcon(identifier string) (RogueD
 // Error is only non-nil if the source errors out
 func (a *RogueDLCBlockIntroAccessor) BySort(identifier float64) (RogueDLCBlockIntro, error) {
 	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCBlockIntro{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCBlockIntro{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSort[identifier], nil
-}
-
-// ByBlockIntroID returns the RogueDLCBlockIntro uniquely identified by BlockIntroID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCBlockIntroAccessor) ByBlockIntroID(identifier float64) (RogueDLCBlockIntro, error) {
-	if a._dataBlockIntroID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCBlockIntro{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBlockIntroID[identifier], nil
 }

@@ -38,7 +38,6 @@ func (a *AudioBookDataAccessor) Raw() ([]AudioBookData, error) {
 		if err != nil {
 			return []AudioBookData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *AudioBookDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AudioBookDataAccessor) ByAudioEvent(identifier string) (AudioBookData, error) {
 	if a._dataAudioEvent == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AudioBookData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AudioBookData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *AudioBookDataAccessor) ByAudioEvent(identifier string) (AudioBookData, 
 // Error is only non-nil if the source errors out
 func (a *AudioBookDataAccessor) ByBookID(identifier float64) (AudioBookData, error) {
 	if a._dataBookID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AudioBookData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AudioBookData{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -42,7 +42,6 @@ func (a *AlleyMapEffectAccessor) Raw() ([]AlleyMapEffect, error) {
 		if err != nil {
 			return []AlleyMapEffect{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *AlleyMapEffectAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AlleyMapEffectAccessor) ByMapEffectID(identifier float64) (AlleyMapEffect, error) {
 	if a._dataMapEffectID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyMapEffect{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyMapEffect{}, err
+			}
 		}
 		a.GroupData()
 	}

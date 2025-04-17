@@ -37,7 +37,6 @@ func (a *RogueMagicWorkbenchAccessor) Raw() ([]RogueMagicWorkbench, error) {
 		if err != nil {
 			return []RogueMagicWorkbench{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *RogueMagicWorkbenchAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicWorkbenchAccessor) ByWorkbenchID(identifier float64) (RogueMagicWorkbench, error) {
 	if a._dataWorkbenchID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicWorkbench{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicWorkbench{}, err
+			}
 		}
 		a.GroupData()
 	}

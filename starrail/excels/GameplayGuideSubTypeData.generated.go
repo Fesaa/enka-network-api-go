@@ -41,7 +41,6 @@ func (a *GameplayGuideSubTypeDataAccessor) Raw() ([]GameplayGuideSubTypeData, er
 		if err != nil {
 			return []GameplayGuideSubTypeData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *GameplayGuideSubTypeDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GameplayGuideSubTypeDataAccessor) BySubTypeID(identifier float64) (GameplayGuideSubTypeData, error) {
 	if a._dataSubTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideSubTypeData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideSubTypeData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *GameplayGuideSubTypeDataAccessor) BySubTypeID(identifier float64) (Game
 // Error is only non-nil if the source errors out
 func (a *GameplayGuideSubTypeDataAccessor) ByTabIconPath(identifier string) (GameplayGuideSubTypeData, error) {
 	if a._dataTabIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideSubTypeData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideSubTypeData{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -51,7 +51,6 @@ func (a *AvatarRelicRecommendAccessor) Raw() ([]AvatarRelicRecommend, error) {
 		if err != nil {
 			return []AvatarRelicRecommend{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,9 +68,11 @@ func (a *AvatarRelicRecommendAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarRelicRecommendAccessor) ByAvatarID(identifier float64) (AvatarRelicRecommend, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarRelicRecommend{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarRelicRecommend{}, err
+			}
 		}
 		a.GroupData()
 	}

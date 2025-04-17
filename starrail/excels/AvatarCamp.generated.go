@@ -16,8 +16,8 @@ type AvatarCamp struct {
 }
 type AvatarCampAccessor struct {
 	_data       []AvatarCamp
-	_dataSortID map[float64]AvatarCamp
 	_dataID     map[float64]AvatarCamp
+	_dataSortID map[float64]AvatarCamp
 }
 
 // LoadData retrieves the data. Must be called before AvatarCamp.GroupData
@@ -41,7 +41,6 @@ func (a *AvatarCampAccessor) Raw() ([]AvatarCamp, error) {
 		if err != nil {
 			return []AvatarCamp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,23 +49,9 @@ func (a *AvatarCampAccessor) Raw() ([]AvatarCamp, error) {
 // Can be called manually in conjunction with AvatarCampAccessor.LoadData to preload everything
 func (a *AvatarCampAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSortID[d.SortID] = d
 		a._dataID[d.ID] = d
+		a._dataSortID[d.SortID] = d
 	}
-}
-
-// BySortID returns the AvatarCamp uniquely identified by SortID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarCampAccessor) BySortID(identifier float64) (AvatarCamp, error) {
-	if a._dataSortID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarCamp{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSortID[identifier], nil
 }
 
 // ByID returns the AvatarCamp uniquely identified by ID
@@ -74,11 +59,29 @@ func (a *AvatarCampAccessor) BySortID(identifier float64) (AvatarCamp, error) {
 // Error is only non-nil if the source errors out
 func (a *AvatarCampAccessor) ByID(identifier float64) (AvatarCamp, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarCamp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarCamp{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// BySortID returns the AvatarCamp uniquely identified by SortID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarCampAccessor) BySortID(identifier float64) (AvatarCamp, error) {
+	if a._dataSortID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarCamp{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSortID[identifier], nil
 }

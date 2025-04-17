@@ -24,8 +24,8 @@ type MultiplePathAvatarConfigUnlockConditions struct {
 }
 type MultiplePathAvatarConfigAccessor struct {
 	_data                 []MultiplePathAvatarConfig
-	_dataChangeConfigPath map[string]MultiplePathAvatarConfig
 	_dataAvatarID         map[float64]MultiplePathAvatarConfig
+	_dataChangeConfigPath map[string]MultiplePathAvatarConfig
 }
 
 // LoadData retrieves the data. Must be called before MultiplePathAvatarConfig.GroupData
@@ -49,7 +49,6 @@ func (a *MultiplePathAvatarConfigAccessor) Raw() ([]MultiplePathAvatarConfig, er
 		if err != nil {
 			return []MultiplePathAvatarConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,23 +57,9 @@ func (a *MultiplePathAvatarConfigAccessor) Raw() ([]MultiplePathAvatarConfig, er
 // Can be called manually in conjunction with MultiplePathAvatarConfigAccessor.LoadData to preload everything
 func (a *MultiplePathAvatarConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataChangeConfigPath[d.ChangeConfigPath] = d
 		a._dataAvatarID[d.AvatarID] = d
+		a._dataChangeConfigPath[d.ChangeConfigPath] = d
 	}
-}
-
-// ByChangeConfigPath returns the MultiplePathAvatarConfig uniquely identified by ChangeConfigPath
-//
-// Error is only non-nil if the source errors out
-func (a *MultiplePathAvatarConfigAccessor) ByChangeConfigPath(identifier string) (MultiplePathAvatarConfig, error) {
-	if a._dataChangeConfigPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MultiplePathAvatarConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataChangeConfigPath[identifier], nil
 }
 
 // ByAvatarID returns the MultiplePathAvatarConfig uniquely identified by AvatarID
@@ -82,11 +67,29 @@ func (a *MultiplePathAvatarConfigAccessor) ByChangeConfigPath(identifier string)
 // Error is only non-nil if the source errors out
 func (a *MultiplePathAvatarConfigAccessor) ByAvatarID(identifier float64) (MultiplePathAvatarConfig, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MultiplePathAvatarConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MultiplePathAvatarConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarID[identifier], nil
+}
+
+// ByChangeConfigPath returns the MultiplePathAvatarConfig uniquely identified by ChangeConfigPath
+//
+// Error is only non-nil if the source errors out
+func (a *MultiplePathAvatarConfigAccessor) ByChangeConfigPath(identifier string) (MultiplePathAvatarConfig, error) {
+	if a._dataChangeConfigPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MultiplePathAvatarConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataChangeConfigPath[identifier], nil
 }

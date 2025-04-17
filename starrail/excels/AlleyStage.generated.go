@@ -20,9 +20,9 @@ type AlleyStage struct {
 }
 type AlleyStageAccessor struct {
 	_data                 []AlleyStage
-	_dataStageTarget      map[float64]AlleyStage
-	_dataStageMainMission map[float64]AlleyStage
 	_dataStageID          map[float64]AlleyStage
+	_dataStageMainMission map[float64]AlleyStage
+	_dataStageTarget      map[float64]AlleyStage
 	_dataTakeMainMission  map[float64]AlleyStage
 }
 
@@ -47,7 +47,6 @@ func (a *AlleyStageAccessor) Raw() ([]AlleyStage, error) {
 		if err != nil {
 			return []AlleyStage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,39 +55,11 @@ func (a *AlleyStageAccessor) Raw() ([]AlleyStage, error) {
 // Can be called manually in conjunction with AlleyStageAccessor.LoadData to preload everything
 func (a *AlleyStageAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataStageTarget[d.StageTarget] = d
-		a._dataStageMainMission[d.StageMainMission] = d
 		a._dataStageID[d.StageID] = d
+		a._dataStageMainMission[d.StageMainMission] = d
+		a._dataStageTarget[d.StageTarget] = d
 		a._dataTakeMainMission[d.TakeMainMission] = d
 	}
-}
-
-// ByStageTarget returns the AlleyStage uniquely identified by StageTarget
-//
-// Error is only non-nil if the source errors out
-func (a *AlleyStageAccessor) ByStageTarget(identifier float64) (AlleyStage, error) {
-	if a._dataStageTarget == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyStage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStageTarget[identifier], nil
-}
-
-// ByStageMainMission returns the AlleyStage uniquely identified by StageMainMission
-//
-// Error is only non-nil if the source errors out
-func (a *AlleyStageAccessor) ByStageMainMission(identifier float64) (AlleyStage, error) {
-	if a._dataStageMainMission == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyStage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStageMainMission[identifier], nil
 }
 
 // ByStageID returns the AlleyStage uniquely identified by StageID
@@ -96,13 +67,47 @@ func (a *AlleyStageAccessor) ByStageMainMission(identifier float64) (AlleyStage,
 // Error is only non-nil if the source errors out
 func (a *AlleyStageAccessor) ByStageID(identifier float64) (AlleyStage, error) {
 	if a._dataStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyStage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataStageID[identifier], nil
+}
+
+// ByStageMainMission returns the AlleyStage uniquely identified by StageMainMission
+//
+// Error is only non-nil if the source errors out
+func (a *AlleyStageAccessor) ByStageMainMission(identifier float64) (AlleyStage, error) {
+	if a._dataStageMainMission == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyStage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStageMainMission[identifier], nil
+}
+
+// ByStageTarget returns the AlleyStage uniquely identified by StageTarget
+//
+// Error is only non-nil if the source errors out
+func (a *AlleyStageAccessor) ByStageTarget(identifier float64) (AlleyStage, error) {
+	if a._dataStageTarget == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyStage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStageTarget[identifier], nil
 }
 
 // ByTakeMainMission returns the AlleyStage uniquely identified by TakeMainMission
@@ -110,9 +115,11 @@ func (a *AlleyStageAccessor) ByStageID(identifier float64) (AlleyStage, error) {
 // Error is only non-nil if the source errors out
 func (a *AlleyStageAccessor) ByTakeMainMission(identifier float64) (AlleyStage, error) {
 	if a._dataTakeMainMission == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyStage{}, err
+			}
 		}
 		a.GroupData()
 	}

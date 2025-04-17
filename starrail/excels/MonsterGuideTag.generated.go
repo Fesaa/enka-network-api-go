@@ -42,7 +42,6 @@ func (a *MonsterGuideTagAccessor) Raw() ([]MonsterGuideTag, error) {
 		if err != nil {
 			return []MonsterGuideTag{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *MonsterGuideTagAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonsterGuideTagAccessor) ByTagID(identifier float64) (MonsterGuideTag, error) {
 	if a._dataTagID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterGuideTag{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterGuideTag{}, err
+			}
 		}
 		a.GroupData()
 	}

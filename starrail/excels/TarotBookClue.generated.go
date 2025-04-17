@@ -39,7 +39,6 @@ func (a *TarotBookClueAccessor) Raw() ([]TarotBookClue, error) {
 		if err != nil {
 			return []TarotBookClue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *TarotBookClueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TarotBookClueAccessor) ByID(identifier float64) (TarotBookClue, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookClue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookClue{}, err
+			}
 		}
 		a.GroupData()
 	}

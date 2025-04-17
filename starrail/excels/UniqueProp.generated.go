@@ -37,7 +37,6 @@ func (a *UniquePropAccessor) Raw() ([]UniqueProp, error) {
 		if err != nil {
 			return []UniqueProp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *UniquePropAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *UniquePropAccessor) ByUniqueName(identifier string) (UniqueProp, error) {
 	if a._dataUniqueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return UniqueProp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return UniqueProp{}, err
+			}
 		}
 		a.GroupData()
 	}

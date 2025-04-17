@@ -23,11 +23,11 @@ type AetherDividePassiveSkill struct {
 }
 type AetherDividePassiveSkillAccessor struct {
 	_data                        []AetherDividePassiveSkill
+	_dataAbilityName             map[string]AetherDividePassiveSkill
+	_dataItemDescription         map[string]AetherDividePassiveSkill
 	_dataItemID                  map[float64]AetherDividePassiveSkill
 	_dataPassiveSkillDescription map[string]AetherDividePassiveSkill
-	_dataItemDescription         map[string]AetherDividePassiveSkill
 	_dataPassiveSkillName        map[string]AetherDividePassiveSkill
-	_dataAbilityName             map[string]AetherDividePassiveSkill
 }
 
 // LoadData retrieves the data. Must be called before AetherDividePassiveSkill.GroupData
@@ -51,7 +51,6 @@ func (a *AetherDividePassiveSkillAccessor) Raw() ([]AetherDividePassiveSkill, er
 		if err != nil {
 			return []AetherDividePassiveSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,12 +59,44 @@ func (a *AetherDividePassiveSkillAccessor) Raw() ([]AetherDividePassiveSkill, er
 // Can be called manually in conjunction with AetherDividePassiveSkillAccessor.LoadData to preload everything
 func (a *AetherDividePassiveSkillAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataAbilityName[d.AbilityName] = d
+		a._dataItemDescription[d.ItemDescription] = d
 		a._dataItemID[d.ItemID] = d
 		a._dataPassiveSkillDescription[d.PassiveSkillDescription] = d
-		a._dataItemDescription[d.ItemDescription] = d
 		a._dataPassiveSkillName[d.PassiveSkillName] = d
-		a._dataAbilityName[d.AbilityName] = d
 	}
+}
+
+// ByAbilityName returns the AetherDividePassiveSkill uniquely identified by AbilityName
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDividePassiveSkillAccessor) ByAbilityName(identifier string) (AetherDividePassiveSkill, error) {
+	if a._dataAbilityName == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDividePassiveSkill{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAbilityName[identifier], nil
+}
+
+// ByItemDescription returns the AetherDividePassiveSkill uniquely identified by ItemDescription
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDividePassiveSkillAccessor) ByItemDescription(identifier string) (AetherDividePassiveSkill, error) {
+	if a._dataItemDescription == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDividePassiveSkill{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemDescription[identifier], nil
 }
 
 // ByItemID returns the AetherDividePassiveSkill uniquely identified by ItemID
@@ -73,9 +104,11 @@ func (a *AetherDividePassiveSkillAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AetherDividePassiveSkillAccessor) ByItemID(identifier float64) (AetherDividePassiveSkill, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDividePassiveSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDividePassiveSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -87,27 +120,15 @@ func (a *AetherDividePassiveSkillAccessor) ByItemID(identifier float64) (AetherD
 // Error is only non-nil if the source errors out
 func (a *AetherDividePassiveSkillAccessor) ByPassiveSkillDescription(identifier string) (AetherDividePassiveSkill, error) {
 	if a._dataPassiveSkillDescription == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDividePassiveSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDividePassiveSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPassiveSkillDescription[identifier], nil
-}
-
-// ByItemDescription returns the AetherDividePassiveSkill uniquely identified by ItemDescription
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDividePassiveSkillAccessor) ByItemDescription(identifier string) (AetherDividePassiveSkill, error) {
-	if a._dataItemDescription == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDividePassiveSkill{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemDescription[identifier], nil
 }
 
 // ByPassiveSkillName returns the AetherDividePassiveSkill uniquely identified by PassiveSkillName
@@ -115,25 +136,13 @@ func (a *AetherDividePassiveSkillAccessor) ByItemDescription(identifier string) 
 // Error is only non-nil if the source errors out
 func (a *AetherDividePassiveSkillAccessor) ByPassiveSkillName(identifier string) (AetherDividePassiveSkill, error) {
 	if a._dataPassiveSkillName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDividePassiveSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDividePassiveSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPassiveSkillName[identifier], nil
-}
-
-// ByAbilityName returns the AetherDividePassiveSkill uniquely identified by AbilityName
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDividePassiveSkillAccessor) ByAbilityName(identifier string) (AetherDividePassiveSkill, error) {
-	if a._dataAbilityName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDividePassiveSkill{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAbilityName[identifier], nil
 }

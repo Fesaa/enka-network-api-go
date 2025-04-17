@@ -19,10 +19,10 @@ type PlanetFesAvatarRarity struct {
 }
 type PlanetFesAvatarRarityAccessor struct {
 	_data                 []PlanetFesAvatarRarity
-	_dataIncomeParam      map[float64]PlanetFesAvatarRarity
 	_dataCostParam        map[float64]PlanetFesAvatarRarity
-	_dataPieceTransferNum map[float64]PlanetFesAvatarRarity
 	_dataIconPath         map[string]PlanetFesAvatarRarity
+	_dataIncomeParam      map[float64]PlanetFesAvatarRarity
+	_dataPieceTransferNum map[float64]PlanetFesAvatarRarity
 	_dataRarity           map[float64]PlanetFesAvatarRarity
 }
 
@@ -47,7 +47,6 @@ func (a *PlanetFesAvatarRarityAccessor) Raw() ([]PlanetFesAvatarRarity, error) {
 		if err != nil {
 			return []PlanetFesAvatarRarity{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,26 +55,12 @@ func (a *PlanetFesAvatarRarityAccessor) Raw() ([]PlanetFesAvatarRarity, error) {
 // Can be called manually in conjunction with PlanetFesAvatarRarityAccessor.LoadData to preload everything
 func (a *PlanetFesAvatarRarityAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIncomeParam[d.IncomeParam] = d
 		a._dataCostParam[d.CostParam] = d
-		a._dataPieceTransferNum[d.PieceTransferNum] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataIncomeParam[d.IncomeParam] = d
+		a._dataPieceTransferNum[d.PieceTransferNum] = d
 		a._dataRarity[d.Rarity] = d
 	}
-}
-
-// ByIncomeParam returns the PlanetFesAvatarRarity uniquely identified by IncomeParam
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAvatarRarityAccessor) ByIncomeParam(identifier float64) (PlanetFesAvatarRarity, error) {
-	if a._dataIncomeParam == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatarRarity{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIncomeParam[identifier], nil
 }
 
 // ByCostParam returns the PlanetFesAvatarRarity uniquely identified by CostParam
@@ -83,27 +68,15 @@ func (a *PlanetFesAvatarRarityAccessor) ByIncomeParam(identifier float64) (Plane
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAvatarRarityAccessor) ByCostParam(identifier float64) (PlanetFesAvatarRarity, error) {
 	if a._dataCostParam == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatarRarity{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatarRarity{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCostParam[identifier], nil
-}
-
-// ByPieceTransferNum returns the PlanetFesAvatarRarity uniquely identified by PieceTransferNum
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAvatarRarityAccessor) ByPieceTransferNum(identifier float64) (PlanetFesAvatarRarity, error) {
-	if a._dataPieceTransferNum == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatarRarity{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPieceTransferNum[identifier], nil
 }
 
 // ByIconPath returns the PlanetFesAvatarRarity uniquely identified by IconPath
@@ -111,13 +84,47 @@ func (a *PlanetFesAvatarRarityAccessor) ByPieceTransferNum(identifier float64) (
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAvatarRarityAccessor) ByIconPath(identifier string) (PlanetFesAvatarRarity, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatarRarity{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatarRarity{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// ByIncomeParam returns the PlanetFesAvatarRarity uniquely identified by IncomeParam
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAvatarRarityAccessor) ByIncomeParam(identifier float64) (PlanetFesAvatarRarity, error) {
+	if a._dataIncomeParam == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatarRarity{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIncomeParam[identifier], nil
+}
+
+// ByPieceTransferNum returns the PlanetFesAvatarRarity uniquely identified by PieceTransferNum
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAvatarRarityAccessor) ByPieceTransferNum(identifier float64) (PlanetFesAvatarRarity, error) {
+	if a._dataPieceTransferNum == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatarRarity{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPieceTransferNum[identifier], nil
 }
 
 // ByRarity returns the PlanetFesAvatarRarity uniquely identified by Rarity
@@ -125,9 +132,11 @@ func (a *PlanetFesAvatarRarityAccessor) ByIconPath(identifier string) (PlanetFes
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAvatarRarityAccessor) ByRarity(identifier float64) (PlanetFesAvatarRarity, error) {
 	if a._dataRarity == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatarRarity{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatarRarity{}, err
+			}
 		}
 		a.GroupData()
 	}

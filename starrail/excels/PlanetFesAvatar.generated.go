@@ -31,14 +31,14 @@ type PlanetFesAvatar struct {
 type PlanetFesAvatarAccessor struct {
 	_data            []PlanetFesAvatar
 	_dataAnimConfig  map[string]PlanetFesAvatar
-	_dataItemID      map[float64]PlanetFesAvatar
-	_dataDescription map[string]PlanetFesAvatar
-	_dataHeadIcon    map[string]PlanetFesAvatar
-	_dataMidIcon     map[string]PlanetFesAvatar
-	_dataID          map[float64]PlanetFesAvatar
-	_dataMiniIcon    map[string]PlanetFesAvatar
 	_dataBody        map[string]PlanetFesAvatar
 	_dataCargoIcon   map[string]PlanetFesAvatar
+	_dataDescription map[string]PlanetFesAvatar
+	_dataHeadIcon    map[string]PlanetFesAvatar
+	_dataID          map[float64]PlanetFesAvatar
+	_dataItemID      map[float64]PlanetFesAvatar
+	_dataMidIcon     map[string]PlanetFesAvatar
+	_dataMiniIcon    map[string]PlanetFesAvatar
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesAvatar.GroupData
@@ -62,7 +62,6 @@ func (a *PlanetFesAvatarAccessor) Raw() ([]PlanetFesAvatar, error) {
 		if err != nil {
 			return []PlanetFesAvatar{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -72,14 +71,14 @@ func (a *PlanetFesAvatarAccessor) Raw() ([]PlanetFesAvatar, error) {
 func (a *PlanetFesAvatarAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataAnimConfig[d.AnimConfig] = d
-		a._dataItemID[d.ItemID] = d
-		a._dataDescription[d.Description] = d
-		a._dataHeadIcon[d.HeadIcon] = d
-		a._dataMidIcon[d.MidIcon] = d
-		a._dataID[d.ID] = d
-		a._dataMiniIcon[d.MiniIcon] = d
 		a._dataBody[d.Body] = d
 		a._dataCargoIcon[d.CargoIcon] = d
+		a._dataDescription[d.Description] = d
+		a._dataHeadIcon[d.HeadIcon] = d
+		a._dataID[d.ID] = d
+		a._dataItemID[d.ItemID] = d
+		a._dataMidIcon[d.MidIcon] = d
+		a._dataMiniIcon[d.MiniIcon] = d
 	}
 }
 
@@ -88,97 +87,15 @@ func (a *PlanetFesAvatarAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAvatarAccessor) ByAnimConfig(identifier string) (PlanetFesAvatar, error) {
 	if a._dataAnimConfig == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAnimConfig[identifier], nil
-}
-
-// ByItemID returns the PlanetFesAvatar uniquely identified by ItemID
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAvatarAccessor) ByItemID(identifier float64) (PlanetFesAvatar, error) {
-	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatar{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemID[identifier], nil
-}
-
-// ByDescription returns the PlanetFesAvatar uniquely identified by Description
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAvatarAccessor) ByDescription(identifier string) (PlanetFesAvatar, error) {
-	if a._dataDescription == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatar{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDescription[identifier], nil
-}
-
-// ByHeadIcon returns the PlanetFesAvatar uniquely identified by HeadIcon
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAvatarAccessor) ByHeadIcon(identifier string) (PlanetFesAvatar, error) {
-	if a._dataHeadIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatar{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataHeadIcon[identifier], nil
-}
-
-// ByMidIcon returns the PlanetFesAvatar uniquely identified by MidIcon
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAvatarAccessor) ByMidIcon(identifier string) (PlanetFesAvatar, error) {
-	if a._dataMidIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatar{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMidIcon[identifier], nil
-}
-
-// ByID returns the PlanetFesAvatar uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAvatarAccessor) ByID(identifier float64) (PlanetFesAvatar, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatar{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
-}
-
-// ByMiniIcon returns the PlanetFesAvatar uniquely identified by MiniIcon
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAvatarAccessor) ByMiniIcon(identifier string) (PlanetFesAvatar, error) {
-	if a._dataMiniIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatar{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMiniIcon[identifier], nil
 }
 
 // ByBody returns the PlanetFesAvatar uniquely identified by Body
@@ -186,9 +103,11 @@ func (a *PlanetFesAvatarAccessor) ByMiniIcon(identifier string) (PlanetFesAvatar
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAvatarAccessor) ByBody(identifier string) (PlanetFesAvatar, error) {
 	if a._dataBody == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -200,11 +119,109 @@ func (a *PlanetFesAvatarAccessor) ByBody(identifier string) (PlanetFesAvatar, er
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAvatarAccessor) ByCargoIcon(identifier string) (PlanetFesAvatar, error) {
 	if a._dataCargoIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCargoIcon[identifier], nil
+}
+
+// ByDescription returns the PlanetFesAvatar uniquely identified by Description
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAvatarAccessor) ByDescription(identifier string) (PlanetFesAvatar, error) {
+	if a._dataDescription == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatar{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDescription[identifier], nil
+}
+
+// ByHeadIcon returns the PlanetFesAvatar uniquely identified by HeadIcon
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAvatarAccessor) ByHeadIcon(identifier string) (PlanetFesAvatar, error) {
+	if a._dataHeadIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatar{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataHeadIcon[identifier], nil
+}
+
+// ByID returns the PlanetFesAvatar uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAvatarAccessor) ByID(identifier float64) (PlanetFesAvatar, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatar{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByItemID returns the PlanetFesAvatar uniquely identified by ItemID
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAvatarAccessor) ByItemID(identifier float64) (PlanetFesAvatar, error) {
+	if a._dataItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatar{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemID[identifier], nil
+}
+
+// ByMidIcon returns the PlanetFesAvatar uniquely identified by MidIcon
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAvatarAccessor) ByMidIcon(identifier string) (PlanetFesAvatar, error) {
+	if a._dataMidIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatar{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMidIcon[identifier], nil
+}
+
+// ByMiniIcon returns the PlanetFesAvatar uniquely identified by MiniIcon
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAvatarAccessor) ByMiniIcon(identifier string) (PlanetFesAvatar, error) {
+	if a._dataMiniIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatar{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMiniIcon[identifier], nil
 }

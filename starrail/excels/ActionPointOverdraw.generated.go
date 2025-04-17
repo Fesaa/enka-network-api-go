@@ -37,7 +37,6 @@ func (a *ActionPointOverdrawAccessor) Raw() ([]ActionPointOverdraw, error) {
 		if err != nil {
 			return []ActionPointOverdraw{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ActionPointOverdrawAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActionPointOverdrawAccessor) ByActionPoint(identifier float64) (ActionPointOverdraw, error) {
 	if a._dataActionPoint == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActionPointOverdraw{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActionPointOverdraw{}, err
+			}
 		}
 		a.GroupData()
 	}

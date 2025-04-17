@@ -39,7 +39,6 @@ func (a *RogueMiracleAccessor) Raw() ([]RogueMiracle, error) {
 		if err != nil {
 			return []RogueMiracle{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueMiracleAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMiracleAccessor) ByMiracleID(identifier float64) (RogueMiracle, error) {
 	if a._dataMiracleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMiracle{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMiracle{}, err
+			}
 		}
 		a.GroupData()
 	}

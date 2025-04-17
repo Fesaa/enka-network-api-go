@@ -37,7 +37,6 @@ func (a *RogueMagicDifficultyDropAccessor) Raw() ([]RogueMagicDifficultyDrop, er
 		if err != nil {
 			return []RogueMagicDifficultyDrop{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

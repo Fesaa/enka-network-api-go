@@ -42,7 +42,6 @@ func (a *RogueAeonLevelConfigAccessor) Raw() ([]RogueAeonLevelConfig, error) {
 		if err != nil {
 			return []RogueAeonLevelConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

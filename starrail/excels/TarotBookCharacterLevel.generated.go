@@ -39,7 +39,6 @@ func (a *TarotBookCharacterLevelAccessor) Raw() ([]TarotBookCharacterLevel, erro
 		if err != nil {
 			return []TarotBookCharacterLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

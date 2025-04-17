@@ -24,13 +24,13 @@ type TrainPartyPassengerConfig struct {
 type TrainPartyPassengerConfigAccessor struct {
 	_data                     []TrainPartyPassengerConfig
 	_dataAvatarCardPrefabPath map[string]TrainPartyPassengerConfig
+	_dataAvatarRoundIconPath  map[string]TrainPartyPassengerConfig
+	_dataDiaryOrder           map[float64]TrainPartyPassengerConfig
+	_dataIconPath             map[string]TrainPartyPassengerConfig
+	_dataMeetingIconPath      map[string]TrainPartyPassengerConfig
 	_dataMiniIconPath         map[string]TrainPartyPassengerConfig
 	_dataPassengerID          map[float64]TrainPartyPassengerConfig
 	_dataPassengerQuest       map[float64]TrainPartyPassengerConfig
-	_dataIconPath             map[string]TrainPartyPassengerConfig
-	_dataAvatarRoundIconPath  map[string]TrainPartyPassengerConfig
-	_dataMeetingIconPath      map[string]TrainPartyPassengerConfig
-	_dataDiaryOrder           map[float64]TrainPartyPassengerConfig
 }
 
 // LoadData retrieves the data. Must be called before TrainPartyPassengerConfig.GroupData
@@ -54,7 +54,6 @@ func (a *TrainPartyPassengerConfigAccessor) Raw() ([]TrainPartyPassengerConfig, 
 		if err != nil {
 			return []TrainPartyPassengerConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,13 +63,13 @@ func (a *TrainPartyPassengerConfigAccessor) Raw() ([]TrainPartyPassengerConfig, 
 func (a *TrainPartyPassengerConfigAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataAvatarCardPrefabPath[d.AvatarCardPrefabPath] = d
+		a._dataAvatarRoundIconPath[d.AvatarRoundIconPath] = d
+		a._dataDiaryOrder[d.DiaryOrder] = d
+		a._dataIconPath[d.IconPath] = d
+		a._dataMeetingIconPath[d.MeetingIconPath] = d
 		a._dataMiniIconPath[d.MiniIconPath] = d
 		a._dataPassengerID[d.PassengerID] = d
 		a._dataPassengerQuest[d.PassengerQuest] = d
-		a._dataIconPath[d.IconPath] = d
-		a._dataAvatarRoundIconPath[d.AvatarRoundIconPath] = d
-		a._dataMeetingIconPath[d.MeetingIconPath] = d
-		a._dataDiaryOrder[d.DiaryOrder] = d
 	}
 }
 
@@ -79,13 +78,79 @@ func (a *TrainPartyPassengerConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyPassengerConfigAccessor) ByAvatarCardPrefabPath(identifier string) (TrainPartyPassengerConfig, error) {
 	if a._dataAvatarCardPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyPassengerConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyPassengerConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarCardPrefabPath[identifier], nil
+}
+
+// ByAvatarRoundIconPath returns the TrainPartyPassengerConfig uniquely identified by AvatarRoundIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *TrainPartyPassengerConfigAccessor) ByAvatarRoundIconPath(identifier string) (TrainPartyPassengerConfig, error) {
+	if a._dataAvatarRoundIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyPassengerConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarRoundIconPath[identifier], nil
+}
+
+// ByDiaryOrder returns the TrainPartyPassengerConfig uniquely identified by DiaryOrder
+//
+// Error is only non-nil if the source errors out
+func (a *TrainPartyPassengerConfigAccessor) ByDiaryOrder(identifier float64) (TrainPartyPassengerConfig, error) {
+	if a._dataDiaryOrder == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyPassengerConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDiaryOrder[identifier], nil
+}
+
+// ByIconPath returns the TrainPartyPassengerConfig uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *TrainPartyPassengerConfigAccessor) ByIconPath(identifier string) (TrainPartyPassengerConfig, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyPassengerConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
+}
+
+// ByMeetingIconPath returns the TrainPartyPassengerConfig uniquely identified by MeetingIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *TrainPartyPassengerConfigAccessor) ByMeetingIconPath(identifier string) (TrainPartyPassengerConfig, error) {
+	if a._dataMeetingIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyPassengerConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMeetingIconPath[identifier], nil
 }
 
 // ByMiniIconPath returns the TrainPartyPassengerConfig uniquely identified by MiniIconPath
@@ -93,9 +158,11 @@ func (a *TrainPartyPassengerConfigAccessor) ByAvatarCardPrefabPath(identifier st
 // Error is only non-nil if the source errors out
 func (a *TrainPartyPassengerConfigAccessor) ByMiniIconPath(identifier string) (TrainPartyPassengerConfig, error) {
 	if a._dataMiniIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyPassengerConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyPassengerConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -107,9 +174,11 @@ func (a *TrainPartyPassengerConfigAccessor) ByMiniIconPath(identifier string) (T
 // Error is only non-nil if the source errors out
 func (a *TrainPartyPassengerConfigAccessor) ByPassengerID(identifier float64) (TrainPartyPassengerConfig, error) {
 	if a._dataPassengerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyPassengerConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyPassengerConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -121,67 +190,13 @@ func (a *TrainPartyPassengerConfigAccessor) ByPassengerID(identifier float64) (T
 // Error is only non-nil if the source errors out
 func (a *TrainPartyPassengerConfigAccessor) ByPassengerQuest(identifier float64) (TrainPartyPassengerConfig, error) {
 	if a._dataPassengerQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyPassengerConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyPassengerConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPassengerQuest[identifier], nil
-}
-
-// ByIconPath returns the TrainPartyPassengerConfig uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *TrainPartyPassengerConfigAccessor) ByIconPath(identifier string) (TrainPartyPassengerConfig, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyPassengerConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
-}
-
-// ByAvatarRoundIconPath returns the TrainPartyPassengerConfig uniquely identified by AvatarRoundIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *TrainPartyPassengerConfigAccessor) ByAvatarRoundIconPath(identifier string) (TrainPartyPassengerConfig, error) {
-	if a._dataAvatarRoundIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyPassengerConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarRoundIconPath[identifier], nil
-}
-
-// ByMeetingIconPath returns the TrainPartyPassengerConfig uniquely identified by MeetingIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *TrainPartyPassengerConfigAccessor) ByMeetingIconPath(identifier string) (TrainPartyPassengerConfig, error) {
-	if a._dataMeetingIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyPassengerConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMeetingIconPath[identifier], nil
-}
-
-// ByDiaryOrder returns the TrainPartyPassengerConfig uniquely identified by DiaryOrder
-//
-// Error is only non-nil if the source errors out
-func (a *TrainPartyPassengerConfigAccessor) ByDiaryOrder(identifier float64) (TrainPartyPassengerConfig, error) {
-	if a._dataDiaryOrder == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyPassengerConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDiaryOrder[identifier], nil
 }

@@ -39,7 +39,6 @@ func (a *RogueDLCChessBoardAccessor) Raw() ([]RogueDLCChessBoard, error) {
 		if err != nil {
 			return []RogueDLCChessBoard{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueDLCChessBoardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCChessBoardAccessor) ByChessBoardID(identifier float64) (RogueDLCChessBoard, error) {
 	if a._dataChessBoardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCChessBoard{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCChessBoard{}, err
+			}
 		}
 		a.GroupData()
 	}

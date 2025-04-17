@@ -40,7 +40,6 @@ func (a *HeliobusPostTypeConfigAccessor) Raw() ([]HeliobusPostTypeConfig, error)
 		if err != nil {
 			return []HeliobusPostTypeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *HeliobusPostTypeConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusPostTypeConfigAccessor) ByPostType(identifier string) (HeliobusPostTypeConfig, error) {
 	if a._dataPostType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusPostTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusPostTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

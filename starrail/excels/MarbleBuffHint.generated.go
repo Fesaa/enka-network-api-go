@@ -38,7 +38,6 @@ func (a *MarbleBuffHintAccessor) Raw() ([]MarbleBuffHint, error) {
 		if err != nil {
 			return []MarbleBuffHint{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MarbleBuffHintAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleBuffHintAccessor) ByID(identifier float64) (MarbleBuffHint, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleBuffHint{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleBuffHint{}, err
+			}
 		}
 		a.GroupData()
 	}

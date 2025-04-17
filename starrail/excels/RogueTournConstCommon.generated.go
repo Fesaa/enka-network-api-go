@@ -38,7 +38,6 @@ func (a *RogueTournConstCommonAccessor) Raw() ([]RogueTournConstCommon, error) {
 		if err != nil {
 			return []RogueTournConstCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueTournConstCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournConstCommonAccessor) ByConstValueName(identifier string) (RogueTournConstCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournConstCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournConstCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

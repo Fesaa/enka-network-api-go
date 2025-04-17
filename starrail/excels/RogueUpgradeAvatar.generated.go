@@ -21,8 +21,8 @@ type RogueUpgradeAvatar struct {
 }
 type RogueUpgradeAvatarAccessor struct {
 	_data               []RogueUpgradeAvatar
-	_dataEquipmentLevel map[float64]RogueUpgradeAvatar
 	_dataAvatarLevel    map[float64]RogueUpgradeAvatar
+	_dataEquipmentLevel map[float64]RogueUpgradeAvatar
 }
 
 // LoadData retrieves the data. Must be called before RogueUpgradeAvatar.GroupData
@@ -46,7 +46,6 @@ func (a *RogueUpgradeAvatarAccessor) Raw() ([]RogueUpgradeAvatar, error) {
 		if err != nil {
 			return []RogueUpgradeAvatar{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,23 +54,9 @@ func (a *RogueUpgradeAvatarAccessor) Raw() ([]RogueUpgradeAvatar, error) {
 // Can be called manually in conjunction with RogueUpgradeAvatarAccessor.LoadData to preload everything
 func (a *RogueUpgradeAvatarAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataEquipmentLevel[d.EquipmentLevel] = d
 		a._dataAvatarLevel[d.AvatarLevel] = d
+		a._dataEquipmentLevel[d.EquipmentLevel] = d
 	}
-}
-
-// ByEquipmentLevel returns the RogueUpgradeAvatar uniquely identified by EquipmentLevel
-//
-// Error is only non-nil if the source errors out
-func (a *RogueUpgradeAvatarAccessor) ByEquipmentLevel(identifier float64) (RogueUpgradeAvatar, error) {
-	if a._dataEquipmentLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueUpgradeAvatar{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEquipmentLevel[identifier], nil
 }
 
 // ByAvatarLevel returns the RogueUpgradeAvatar uniquely identified by AvatarLevel
@@ -79,11 +64,29 @@ func (a *RogueUpgradeAvatarAccessor) ByEquipmentLevel(identifier float64) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueUpgradeAvatarAccessor) ByAvatarLevel(identifier float64) (RogueUpgradeAvatar, error) {
 	if a._dataAvatarLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueUpgradeAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueUpgradeAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarLevel[identifier], nil
+}
+
+// ByEquipmentLevel returns the RogueUpgradeAvatar uniquely identified by EquipmentLevel
+//
+// Error is only non-nil if the source errors out
+func (a *RogueUpgradeAvatarAccessor) ByEquipmentLevel(identifier float64) (RogueUpgradeAvatar, error) {
+	if a._dataEquipmentLevel == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueUpgradeAvatar{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEquipmentLevel[identifier], nil
 }

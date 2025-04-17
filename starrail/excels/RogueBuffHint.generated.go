@@ -38,7 +38,6 @@ func (a *RogueBuffHintAccessor) Raw() ([]RogueBuffHint, error) {
 		if err != nil {
 			return []RogueBuffHint{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueBuffHintAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueBuffHintAccessor) ByHintID(identifier float64) (RogueBuffHint, error) {
 	if a._dataHintID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueBuffHint{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueBuffHint{}, err
+			}
 		}
 		a.GroupData()
 	}

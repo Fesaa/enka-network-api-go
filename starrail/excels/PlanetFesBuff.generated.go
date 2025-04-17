@@ -40,7 +40,6 @@ func (a *PlanetFesBuffAccessor) Raw() ([]PlanetFesBuff, error) {
 		if err != nil {
 			return []PlanetFesBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *PlanetFesBuffAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesBuffAccessor) ByID(identifier float64) (PlanetFesBuff, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesBuff{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesBuff{}, err
+			}
 		}
 		a.GroupData()
 	}

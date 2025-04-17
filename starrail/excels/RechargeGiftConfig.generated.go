@@ -14,8 +14,8 @@ type RechargeGiftConfig struct {
 }
 type RechargeGiftConfigAccessor struct {
 	_data         []RechargeGiftConfig
-	_dataGiftType map[float64]RechargeGiftConfig
 	_dataDiscount map[float64]RechargeGiftConfig
+	_dataGiftType map[float64]RechargeGiftConfig
 }
 
 // LoadData retrieves the data. Must be called before RechargeGiftConfig.GroupData
@@ -39,7 +39,6 @@ func (a *RechargeGiftConfigAccessor) Raw() ([]RechargeGiftConfig, error) {
 		if err != nil {
 			return []RechargeGiftConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *RechargeGiftConfigAccessor) Raw() ([]RechargeGiftConfig, error) {
 // Can be called manually in conjunction with RechargeGiftConfigAccessor.LoadData to preload everything
 func (a *RechargeGiftConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataGiftType[d.GiftType] = d
 		a._dataDiscount[d.Discount] = d
+		a._dataGiftType[d.GiftType] = d
 	}
-}
-
-// ByGiftType returns the RechargeGiftConfig uniquely identified by GiftType
-//
-// Error is only non-nil if the source errors out
-func (a *RechargeGiftConfigAccessor) ByGiftType(identifier float64) (RechargeGiftConfig, error) {
-	if a._dataGiftType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RechargeGiftConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGiftType[identifier], nil
 }
 
 // ByDiscount returns the RechargeGiftConfig uniquely identified by Discount
@@ -72,11 +57,29 @@ func (a *RechargeGiftConfigAccessor) ByGiftType(identifier float64) (RechargeGif
 // Error is only non-nil if the source errors out
 func (a *RechargeGiftConfigAccessor) ByDiscount(identifier float64) (RechargeGiftConfig, error) {
 	if a._dataDiscount == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RechargeGiftConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RechargeGiftConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDiscount[identifier], nil
+}
+
+// ByGiftType returns the RechargeGiftConfig uniquely identified by GiftType
+//
+// Error is only non-nil if the source errors out
+func (a *RechargeGiftConfigAccessor) ByGiftType(identifier float64) (RechargeGiftConfig, error) {
+	if a._dataGiftType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RechargeGiftConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGiftType[identifier], nil
 }

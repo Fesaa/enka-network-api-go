@@ -19,12 +19,12 @@ type RelicDataInfo struct {
 }
 type RelicDataInfoAccessor struct {
 	_data                   []RelicDataInfo
+	_dataBGStoryContent     map[string]RelicDataInfo
+	_dataBGStoryTitle       map[string]RelicDataInfo
+	_dataIconPath           map[string]RelicDataInfo
+	_dataItemBGDesc         map[string]RelicDataInfo
 	_dataItemFigureIconPath map[string]RelicDataInfo
 	_dataRelicName          map[string]RelicDataInfo
-	_dataBGStoryTitle       map[string]RelicDataInfo
-	_dataItemBGDesc         map[string]RelicDataInfo
-	_dataBGStoryContent     map[string]RelicDataInfo
-	_dataIconPath           map[string]RelicDataInfo
 }
 
 // LoadData retrieves the data. Must be called before RelicDataInfo.GroupData
@@ -48,7 +48,6 @@ func (a *RelicDataInfoAccessor) Raw() ([]RelicDataInfo, error) {
 		if err != nil {
 			return []RelicDataInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,13 +56,77 @@ func (a *RelicDataInfoAccessor) Raw() ([]RelicDataInfo, error) {
 // Can be called manually in conjunction with RelicDataInfoAccessor.LoadData to preload everything
 func (a *RelicDataInfoAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataBGStoryContent[d.BGStoryContent] = d
+		a._dataBGStoryTitle[d.BGStoryTitle] = d
+		a._dataIconPath[d.IconPath] = d
+		a._dataItemBGDesc[d.ItemBGDesc] = d
 		a._dataItemFigureIconPath[d.ItemFigureIconPath] = d
 		a._dataRelicName[d.RelicName] = d
-		a._dataBGStoryTitle[d.BGStoryTitle] = d
-		a._dataItemBGDesc[d.ItemBGDesc] = d
-		a._dataBGStoryContent[d.BGStoryContent] = d
-		a._dataIconPath[d.IconPath] = d
 	}
+}
+
+// ByBGStoryContent returns the RelicDataInfo uniquely identified by BGStoryContent
+//
+// Error is only non-nil if the source errors out
+func (a *RelicDataInfoAccessor) ByBGStoryContent(identifier string) (RelicDataInfo, error) {
+	if a._dataBGStoryContent == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicDataInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBGStoryContent[identifier], nil
+}
+
+// ByBGStoryTitle returns the RelicDataInfo uniquely identified by BGStoryTitle
+//
+// Error is only non-nil if the source errors out
+func (a *RelicDataInfoAccessor) ByBGStoryTitle(identifier string) (RelicDataInfo, error) {
+	if a._dataBGStoryTitle == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicDataInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBGStoryTitle[identifier], nil
+}
+
+// ByIconPath returns the RelicDataInfo uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *RelicDataInfoAccessor) ByIconPath(identifier string) (RelicDataInfo, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicDataInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
+}
+
+// ByItemBGDesc returns the RelicDataInfo uniquely identified by ItemBGDesc
+//
+// Error is only non-nil if the source errors out
+func (a *RelicDataInfoAccessor) ByItemBGDesc(identifier string) (RelicDataInfo, error) {
+	if a._dataItemBGDesc == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicDataInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemBGDesc[identifier], nil
 }
 
 // ByItemFigureIconPath returns the RelicDataInfo uniquely identified by ItemFigureIconPath
@@ -71,9 +134,11 @@ func (a *RelicDataInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RelicDataInfoAccessor) ByItemFigureIconPath(identifier string) (RelicDataInfo, error) {
 	if a._dataItemFigureIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicDataInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicDataInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -85,67 +150,13 @@ func (a *RelicDataInfoAccessor) ByItemFigureIconPath(identifier string) (RelicDa
 // Error is only non-nil if the source errors out
 func (a *RelicDataInfoAccessor) ByRelicName(identifier string) (RelicDataInfo, error) {
 	if a._dataRelicName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicDataInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicDataInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRelicName[identifier], nil
-}
-
-// ByBGStoryTitle returns the RelicDataInfo uniquely identified by BGStoryTitle
-//
-// Error is only non-nil if the source errors out
-func (a *RelicDataInfoAccessor) ByBGStoryTitle(identifier string) (RelicDataInfo, error) {
-	if a._dataBGStoryTitle == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicDataInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBGStoryTitle[identifier], nil
-}
-
-// ByItemBGDesc returns the RelicDataInfo uniquely identified by ItemBGDesc
-//
-// Error is only non-nil if the source errors out
-func (a *RelicDataInfoAccessor) ByItemBGDesc(identifier string) (RelicDataInfo, error) {
-	if a._dataItemBGDesc == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicDataInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemBGDesc[identifier], nil
-}
-
-// ByBGStoryContent returns the RelicDataInfo uniquely identified by BGStoryContent
-//
-// Error is only non-nil if the source errors out
-func (a *RelicDataInfoAccessor) ByBGStoryContent(identifier string) (RelicDataInfo, error) {
-	if a._dataBGStoryContent == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicDataInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBGStoryContent[identifier], nil
-}
-
-// ByIconPath returns the RelicDataInfo uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *RelicDataInfoAccessor) ByIconPath(identifier string) (RelicDataInfo, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicDataInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }

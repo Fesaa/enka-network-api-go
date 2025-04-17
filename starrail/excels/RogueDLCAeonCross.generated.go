@@ -40,7 +40,6 @@ func (a *RogueDLCAeonCrossAccessor) Raw() ([]RogueDLCAeonCross, error) {
 		if err != nil {
 			return []RogueDLCAeonCross{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueDLCAeonCrossAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonCrossAccessor) ByBuffGroup(identifier float64) (RogueDLCAeonCross, error) {
 	if a._dataBuffGroup == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonCross{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonCross{}, err
+			}
 		}
 		a.GroupData()
 	}

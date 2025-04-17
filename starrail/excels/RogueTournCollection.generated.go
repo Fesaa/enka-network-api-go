@@ -20,9 +20,9 @@ type RogueTournCollection struct {
 }
 type RogueTournCollectionAccessor struct {
 	_data             []RogueTournCollection
+	_dataCollectionID map[float64]RogueTournCollection
 	_dataIconPath     map[string]RogueTournCollection
 	_dataPrefabPath   map[string]RogueTournCollection
-	_dataCollectionID map[float64]RogueTournCollection
 	_dataUnlockID     map[float64]RogueTournCollection
 }
 
@@ -47,7 +47,6 @@ func (a *RogueTournCollectionAccessor) Raw() ([]RogueTournCollection, error) {
 		if err != nil {
 			return []RogueTournCollection{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,11 +55,27 @@ func (a *RogueTournCollectionAccessor) Raw() ([]RogueTournCollection, error) {
 // Can be called manually in conjunction with RogueTournCollectionAccessor.LoadData to preload everything
 func (a *RogueTournCollectionAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataCollectionID[d.CollectionID] = d
 		a._dataIconPath[d.IconPath] = d
 		a._dataPrefabPath[d.PrefabPath] = d
-		a._dataCollectionID[d.CollectionID] = d
 		a._dataUnlockID[d.UnlockID] = d
 	}
+}
+
+// ByCollectionID returns the RogueTournCollection uniquely identified by CollectionID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournCollectionAccessor) ByCollectionID(identifier float64) (RogueTournCollection, error) {
+	if a._dataCollectionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournCollection{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataCollectionID[identifier], nil
 }
 
 // ByIconPath returns the RogueTournCollection uniquely identified by IconPath
@@ -68,9 +83,11 @@ func (a *RogueTournCollectionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournCollectionAccessor) ByIconPath(identifier string) (RogueTournCollection, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournCollection{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournCollection{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -82,27 +99,15 @@ func (a *RogueTournCollectionAccessor) ByIconPath(identifier string) (RogueTourn
 // Error is only non-nil if the source errors out
 func (a *RogueTournCollectionAccessor) ByPrefabPath(identifier string) (RogueTournCollection, error) {
 	if a._dataPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournCollection{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournCollection{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPrefabPath[identifier], nil
-}
-
-// ByCollectionID returns the RogueTournCollection uniquely identified by CollectionID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueTournCollectionAccessor) ByCollectionID(identifier float64) (RogueTournCollection, error) {
-	if a._dataCollectionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournCollection{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataCollectionID[identifier], nil
 }
 
 // ByUnlockID returns the RogueTournCollection uniquely identified by UnlockID
@@ -110,9 +115,11 @@ func (a *RogueTournCollectionAccessor) ByCollectionID(identifier float64) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueTournCollectionAccessor) ByUnlockID(identifier float64) (RogueTournCollection, error) {
 	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournCollection{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournCollection{}, err
+			}
 		}
 		a.GroupData()
 	}

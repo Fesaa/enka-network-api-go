@@ -47,7 +47,6 @@ func (a *RogueNousMainStoryAccessor) Raw() ([]RogueNousMainStory, error) {
 		if err != nil {
 			return []RogueNousMainStory{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *RogueNousMainStoryAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousMainStoryAccessor) ByQuestID(identifier float64) (RogueNousMainStory, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousMainStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousMainStory{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,9 +82,11 @@ func (a *RogueNousMainStoryAccessor) ByQuestID(identifier float64) (RogueNousMai
 // Error is only non-nil if the source errors out
 func (a *RogueNousMainStoryAccessor) ByRogueNPCID(identifier float64) (RogueNousMainStory, error) {
 	if a._dataRogueNPCID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousMainStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousMainStory{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -95,9 +98,11 @@ func (a *RogueNousMainStoryAccessor) ByRogueNPCID(identifier float64) (RogueNous
 // Error is only non-nil if the source errors out
 func (a *RogueNousMainStoryAccessor) ByStoryID(identifier float64) (RogueNousMainStory, error) {
 	if a._dataStoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousMainStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousMainStory{}, err
+			}
 		}
 		a.GroupData()
 	}

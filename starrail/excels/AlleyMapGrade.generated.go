@@ -44,7 +44,6 @@ func (a *AlleyMapGradeAccessor) Raw() ([]AlleyMapGrade, error) {
 		if err != nil {
 			return []AlleyMapGrade{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *AlleyMapGradeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AlleyMapGradeAccessor) ByGradeID(identifier float64) (AlleyMapGrade, error) {
 	if a._dataGradeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyMapGrade{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyMapGrade{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *AlleyMapGradeAccessor) ByGradeID(identifier float64) (AlleyMapGrade, er
 // Error is only non-nil if the source errors out
 func (a *AlleyMapGradeAccessor) ByMapConfig(identifier string) (AlleyMapGrade, error) {
 	if a._dataMapConfig == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyMapGrade{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyMapGrade{}, err
+			}
 		}
 		a.GroupData()
 	}

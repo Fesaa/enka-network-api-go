@@ -38,7 +38,6 @@ func (a *ChallengeBossMazeExtraAccessor) Raw() ([]ChallengeBossMazeExtra, error)
 		if err != nil {
 			return []ChallengeBossMazeExtra{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ChallengeBossMazeExtraAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChallengeBossMazeExtraAccessor) ByID(identifier float64) (ChallengeBossMazeExtra, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeBossMazeExtra{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeBossMazeExtra{}, err
+			}
 		}
 		a.GroupData()
 	}

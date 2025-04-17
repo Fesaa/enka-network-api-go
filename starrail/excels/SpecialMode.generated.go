@@ -18,9 +18,9 @@ type SpecialMode struct {
 }
 type SpecialModeAccessor struct {
 	_data              []SpecialMode
+	_dataDesc01        map[string]SpecialMode
 	_dataSpecialModeID map[float64]SpecialMode
 	_dataTitle         map[string]SpecialMode
-	_dataDesc01        map[string]SpecialMode
 }
 
 // LoadData retrieves the data. Must be called before SpecialMode.GroupData
@@ -44,7 +44,6 @@ func (a *SpecialModeAccessor) Raw() ([]SpecialMode, error) {
 		if err != nil {
 			return []SpecialMode{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,10 +52,26 @@ func (a *SpecialModeAccessor) Raw() ([]SpecialMode, error) {
 // Can be called manually in conjunction with SpecialModeAccessor.LoadData to preload everything
 func (a *SpecialModeAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataDesc01[d.Desc01] = d
 		a._dataSpecialModeID[d.SpecialModeID] = d
 		a._dataTitle[d.Title] = d
-		a._dataDesc01[d.Desc01] = d
 	}
+}
+
+// ByDesc01 returns the SpecialMode uniquely identified by Desc01
+//
+// Error is only non-nil if the source errors out
+func (a *SpecialModeAccessor) ByDesc01(identifier string) (SpecialMode, error) {
+	if a._dataDesc01 == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialMode{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDesc01[identifier], nil
 }
 
 // BySpecialModeID returns the SpecialMode uniquely identified by SpecialModeID
@@ -64,9 +79,11 @@ func (a *SpecialModeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpecialModeAccessor) BySpecialModeID(identifier float64) (SpecialMode, error) {
 	if a._dataSpecialModeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialMode{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialMode{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,25 +95,13 @@ func (a *SpecialModeAccessor) BySpecialModeID(identifier float64) (SpecialMode, 
 // Error is only non-nil if the source errors out
 func (a *SpecialModeAccessor) ByTitle(identifier string) (SpecialMode, error) {
 	if a._dataTitle == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialMode{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialMode{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTitle[identifier], nil
-}
-
-// ByDesc01 returns the SpecialMode uniquely identified by Desc01
-//
-// Error is only non-nil if the source errors out
-func (a *SpecialModeAccessor) ByDesc01(identifier string) (SpecialMode, error) {
-	if a._dataDesc01 == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialMode{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDesc01[identifier], nil
 }

@@ -40,7 +40,6 @@ func (a *ExpeditionGroupAccessor) Raw() ([]ExpeditionGroup, error) {
 		if err != nil {
 			return []ExpeditionGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ExpeditionGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ExpeditionGroupAccessor) ByGroupID(identifier float64) (ExpeditionGroup, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ExpeditionGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ExpeditionGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *ExpeditionGroupAccessor) ByGroupID(identifier float64) (ExpeditionGroup
 // Error is only non-nil if the source errors out
 func (a *ExpeditionGroupAccessor) ByIconPath(identifier string) (ExpeditionGroup, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ExpeditionGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ExpeditionGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

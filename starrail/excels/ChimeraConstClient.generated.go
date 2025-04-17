@@ -45,7 +45,6 @@ func (a *ChimeraConstClientAccessor) Raw() ([]ChimeraConstClient, error) {
 		if err != nil {
 			return []ChimeraConstClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *ChimeraConstClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraConstClientAccessor) ByConstValueName(identifier string) (ChimeraConstClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraConstClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraConstClient{}, err
+			}
 		}
 		a.GroupData()
 	}

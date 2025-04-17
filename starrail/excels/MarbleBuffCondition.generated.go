@@ -40,7 +40,6 @@ func (a *MarbleBuffConditionAccessor) Raw() ([]MarbleBuffCondition, error) {
 		if err != nil {
 			return []MarbleBuffCondition{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MarbleBuffConditionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleBuffConditionAccessor) ByID(identifier float64) (MarbleBuffCondition, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleBuffCondition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleBuffCondition{}, err
+			}
 		}
 		a.GroupData()
 	}

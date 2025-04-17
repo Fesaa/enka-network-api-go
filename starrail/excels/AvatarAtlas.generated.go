@@ -43,7 +43,6 @@ func (a *AvatarAtlasAccessor) Raw() ([]AvatarAtlas, error) {
 		if err != nil {
 			return []AvatarAtlas{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *AvatarAtlasAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarAtlasAccessor) ByAvatarID(identifier float64) (AvatarAtlas, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarAtlas{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarAtlas{}, err
+			}
 		}
 		a.GroupData()
 	}

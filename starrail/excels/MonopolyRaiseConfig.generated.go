@@ -37,7 +37,6 @@ func (a *MonopolyRaiseConfigAccessor) Raw() ([]MonopolyRaiseConfig, error) {
 		if err != nil {
 			return []MonopolyRaiseConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -42,7 +42,6 @@ func (a *PamSkinConfigAccessor) Raw() ([]PamSkinConfig, error) {
 		if err != nil {
 			return []PamSkinConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *PamSkinConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PamSkinConfigAccessor) ByConfigEntityPath(identifier string) (PamSkinConfig, error) {
 	if a._dataConfigEntityPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamSkinConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamSkinConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *PamSkinConfigAccessor) ByConfigEntityPath(identifier string) (PamSkinCo
 // Error is only non-nil if the source errors out
 func (a *PamSkinConfigAccessor) ByJsonPath(identifier string) (PamSkinConfig, error) {
 	if a._dataJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamSkinConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamSkinConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -91,9 +94,11 @@ func (a *PamSkinConfigAccessor) ByJsonPath(identifier string) (PamSkinConfig, er
 // Error is only non-nil if the source errors out
 func (a *PamSkinConfigAccessor) BySkinID(identifier float64) (PamSkinConfig, error) {
 	if a._dataSkinID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamSkinConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamSkinConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -105,9 +110,11 @@ func (a *PamSkinConfigAccessor) BySkinID(identifier float64) (PamSkinConfig, err
 // Error is only non-nil if the source errors out
 func (a *PamSkinConfigAccessor) BySkinIcon(identifier string) (PamSkinConfig, error) {
 	if a._dataSkinIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamSkinConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamSkinConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

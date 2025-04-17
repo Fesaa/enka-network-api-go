@@ -37,7 +37,6 @@ func (a *ExpeditionTeamAccessor) Raw() ([]ExpeditionTeam, error) {
 		if err != nil {
 			return []ExpeditionTeam{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ExpeditionTeamAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ExpeditionTeamAccessor) ByTeamID(identifier float64) (ExpeditionTeam, error) {
 	if a._dataTeamID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ExpeditionTeam{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ExpeditionTeam{}, err
+			}
 		}
 		a.GroupData()
 	}

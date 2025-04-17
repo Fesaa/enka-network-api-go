@@ -42,7 +42,6 @@ func (a *SilverWolfSubTabAccessor) Raw() ([]SilverWolfSubTab, error) {
 		if err != nil {
 			return []SilverWolfSubTab{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *SilverWolfSubTabAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SilverWolfSubTabAccessor) ByFinalQuest(identifier float64) (SilverWolfSubTab, error) {
 	if a._dataFinalQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SilverWolfSubTab{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SilverWolfSubTab{}, err
+			}
 		}
 		a.GroupData()
 	}

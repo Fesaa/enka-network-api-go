@@ -20,8 +20,8 @@ type PhoneCaseConfigAccessor struct {
 	_data               []PhoneCaseConfig
 	_dataCaseID         map[float64]PhoneCaseConfig
 	_dataIconPath       map[string]PhoneCaseConfig
-	_dataItemFigurePath map[string]PhoneCaseConfig
 	_dataImagePath      map[string]PhoneCaseConfig
+	_dataItemFigurePath map[string]PhoneCaseConfig
 	_dataPrefabPath     map[string]PhoneCaseConfig
 	_dataShowType       map[string]PhoneCaseConfig
 }
@@ -47,7 +47,6 @@ func (a *PhoneCaseConfigAccessor) Raw() ([]PhoneCaseConfig, error) {
 		if err != nil {
 			return []PhoneCaseConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,8 +57,8 @@ func (a *PhoneCaseConfigAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataCaseID[d.CaseID] = d
 		a._dataIconPath[d.IconPath] = d
-		a._dataItemFigurePath[d.ItemFigurePath] = d
 		a._dataImagePath[d.ImagePath] = d
+		a._dataItemFigurePath[d.ItemFigurePath] = d
 		a._dataPrefabPath[d.PrefabPath] = d
 		a._dataShowType[d.ShowType] = d
 	}
@@ -70,9 +69,11 @@ func (a *PhoneCaseConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PhoneCaseConfigAccessor) ByCaseID(identifier float64) (PhoneCaseConfig, error) {
 	if a._dataCaseID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneCaseConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneCaseConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -84,27 +85,15 @@ func (a *PhoneCaseConfigAccessor) ByCaseID(identifier float64) (PhoneCaseConfig,
 // Error is only non-nil if the source errors out
 func (a *PhoneCaseConfigAccessor) ByIconPath(identifier string) (PhoneCaseConfig, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneCaseConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneCaseConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
-}
-
-// ByItemFigurePath returns the PhoneCaseConfig uniquely identified by ItemFigurePath
-//
-// Error is only non-nil if the source errors out
-func (a *PhoneCaseConfigAccessor) ByItemFigurePath(identifier string) (PhoneCaseConfig, error) {
-	if a._dataItemFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneCaseConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemFigurePath[identifier], nil
 }
 
 // ByImagePath returns the PhoneCaseConfig uniquely identified by ImagePath
@@ -112,13 +101,31 @@ func (a *PhoneCaseConfigAccessor) ByItemFigurePath(identifier string) (PhoneCase
 // Error is only non-nil if the source errors out
 func (a *PhoneCaseConfigAccessor) ByImagePath(identifier string) (PhoneCaseConfig, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneCaseConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneCaseConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataImagePath[identifier], nil
+}
+
+// ByItemFigurePath returns the PhoneCaseConfig uniquely identified by ItemFigurePath
+//
+// Error is only non-nil if the source errors out
+func (a *PhoneCaseConfigAccessor) ByItemFigurePath(identifier string) (PhoneCaseConfig, error) {
+	if a._dataItemFigurePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneCaseConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemFigurePath[identifier], nil
 }
 
 // ByPrefabPath returns the PhoneCaseConfig uniquely identified by PrefabPath
@@ -126,9 +133,11 @@ func (a *PhoneCaseConfigAccessor) ByImagePath(identifier string) (PhoneCaseConfi
 // Error is only non-nil if the source errors out
 func (a *PhoneCaseConfigAccessor) ByPrefabPath(identifier string) (PhoneCaseConfig, error) {
 	if a._dataPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneCaseConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneCaseConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -140,9 +149,11 @@ func (a *PhoneCaseConfigAccessor) ByPrefabPath(identifier string) (PhoneCaseConf
 // Error is only non-nil if the source errors out
 func (a *PhoneCaseConfigAccessor) ByShowType(identifier string) (PhoneCaseConfig, error) {
 	if a._dataShowType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhoneCaseConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhoneCaseConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

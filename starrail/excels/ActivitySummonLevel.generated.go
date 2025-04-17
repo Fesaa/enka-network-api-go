@@ -45,7 +45,6 @@ func (a *ActivitySummonLevelAccessor) Raw() ([]ActivitySummonLevel, error) {
 		if err != nil {
 			return []ActivitySummonLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *ActivitySummonLevelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivitySummonLevelAccessor) ByEventID(identifier float64) (ActivitySummonLevel, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivitySummonLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivitySummonLevel{}, err
+			}
 		}
 		a.GroupData()
 	}

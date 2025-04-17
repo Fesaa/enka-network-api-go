@@ -38,7 +38,6 @@ func (a *TelevisionConstValueCommonAccessor) Raw() ([]TelevisionConstValueCommon
 		if err != nil {
 			return []TelevisionConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *TelevisionConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TelevisionConstValueCommonAccessor) ByConstValueName(identifier string) (TelevisionConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TelevisionConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TelevisionConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

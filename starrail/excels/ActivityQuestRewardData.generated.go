@@ -40,7 +40,6 @@ func (a *ActivityQuestRewardDataAccessor) Raw() ([]ActivityQuestRewardData, erro
 		if err != nil {
 			return []ActivityQuestRewardData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ActivityQuestRewardDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityQuestRewardDataAccessor) ByQuestTabID(identifier float64) (ActivityQuestRewardData, error) {
 	if a._dataQuestTabID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityQuestRewardData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityQuestRewardData{}, err
+			}
 		}
 		a.GroupData()
 	}

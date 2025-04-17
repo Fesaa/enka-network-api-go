@@ -38,7 +38,6 @@ func (a *PSTrophyGroupAccessor) Raw() ([]PSTrophyGroup, error) {
 		if err != nil {
 			return []PSTrophyGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *PSTrophyGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PSTrophyGroupAccessor) ByPSTrophyGroup(identifier float64) (PSTrophyGroup, error) {
 	if a._dataPSTrophyGroup == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PSTrophyGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PSTrophyGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

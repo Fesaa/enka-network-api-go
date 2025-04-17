@@ -38,7 +38,6 @@ func (a *InteractiveSceneConstClientAccessor) Raw() ([]InteractiveSceneConstClie
 		if err != nil {
 			return []InteractiveSceneConstClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *InteractiveSceneConstClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *InteractiveSceneConstClientAccessor) ByConstValueName(identifier string) (InteractiveSceneConstClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InteractiveSceneConstClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InteractiveSceneConstClient{}, err
+			}
 		}
 		a.GroupData()
 	}

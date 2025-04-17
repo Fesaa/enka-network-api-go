@@ -38,7 +38,6 @@ func (a *Anniversary2NDConstValueAccessor) Raw() ([]Anniversary2NDConstValue, er
 		if err != nil {
 			return []Anniversary2NDConstValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *Anniversary2NDConstValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *Anniversary2NDConstValueAccessor) ByConstValueName(identifier string) (Anniversary2NDConstValue, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return Anniversary2NDConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return Anniversary2NDConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}

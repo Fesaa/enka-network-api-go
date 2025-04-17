@@ -42,7 +42,6 @@ func (a *MuseumCommentsAccessor) Raw() ([]MuseumComments, error) {
 		if err != nil {
 			return []MuseumComments{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *MuseumCommentsAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MuseumCommentsAccessor) ByCommentID(identifier float64) (MuseumComments, error) {
 	if a._dataCommentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumComments{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumComments{}, err
+			}
 		}
 		a.GroupData()
 	}

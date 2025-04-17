@@ -45,7 +45,6 @@ func (a *RogueTournCurseChestAccessor) Raw() ([]RogueTournCurseChest, error) {
 		if err != nil {
 			return []RogueTournCurseChest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *RogueTournCurseChestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournCurseChestAccessor) ByChestID(identifier float64) (RogueTournCurseChest, error) {
 	if a._dataChestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournCurseChest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournCurseChest{}, err
+			}
 		}
 		a.GroupData()
 	}

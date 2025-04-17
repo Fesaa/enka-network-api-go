@@ -37,7 +37,6 @@ func (a *AvatarAbilityStatisticsAccessor) Raw() ([]AvatarAbilityStatistics, erro
 		if err != nil {
 			return []AvatarAbilityStatistics{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *AvatarAbilityStatisticsAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarAbilityStatisticsAccessor) ByAvatarID(identifier float64) (AvatarAbilityStatistics, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarAbilityStatistics{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarAbilityStatistics{}, err
+			}
 		}
 		a.GroupData()
 	}

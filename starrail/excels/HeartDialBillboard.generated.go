@@ -37,7 +37,6 @@ func (a *HeartDialBillboardAccessor) Raw() ([]HeartDialBillboard, error) {
 		if err != nil {
 			return []HeartDialBillboard{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

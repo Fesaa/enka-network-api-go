@@ -51,7 +51,6 @@ func (a *PlanetFesRecommendTeamAccessor) Raw() ([]PlanetFesRecommendTeam, error)
 		if err != nil {
 			return []PlanetFesRecommendTeam{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

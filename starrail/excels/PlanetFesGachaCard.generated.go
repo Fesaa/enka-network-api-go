@@ -14,8 +14,8 @@ type PlanetFesGachaCard struct {
 }
 type PlanetFesGachaCardAccessor struct {
 	_data            []PlanetFesGachaCard
-	_dataGachaID     map[float64]PlanetFesGachaCard
 	_dataCardThemeID map[float64]PlanetFesGachaCard
+	_dataGachaID     map[float64]PlanetFesGachaCard
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesGachaCard.GroupData
@@ -39,7 +39,6 @@ func (a *PlanetFesGachaCardAccessor) Raw() ([]PlanetFesGachaCard, error) {
 		if err != nil {
 			return []PlanetFesGachaCard{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *PlanetFesGachaCardAccessor) Raw() ([]PlanetFesGachaCard, error) {
 // Can be called manually in conjunction with PlanetFesGachaCardAccessor.LoadData to preload everything
 func (a *PlanetFesGachaCardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataGachaID[d.GachaID] = d
 		a._dataCardThemeID[d.CardThemeID] = d
+		a._dataGachaID[d.GachaID] = d
 	}
-}
-
-// ByGachaID returns the PlanetFesGachaCard uniquely identified by GachaID
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesGachaCardAccessor) ByGachaID(identifier float64) (PlanetFesGachaCard, error) {
-	if a._dataGachaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGachaCard{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGachaID[identifier], nil
 }
 
 // ByCardThemeID returns the PlanetFesGachaCard uniquely identified by CardThemeID
@@ -72,11 +57,29 @@ func (a *PlanetFesGachaCardAccessor) ByGachaID(identifier float64) (PlanetFesGac
 // Error is only non-nil if the source errors out
 func (a *PlanetFesGachaCardAccessor) ByCardThemeID(identifier float64) (PlanetFesGachaCard, error) {
 	if a._dataCardThemeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGachaCard{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGachaCard{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCardThemeID[identifier], nil
+}
+
+// ByGachaID returns the PlanetFesGachaCard uniquely identified by GachaID
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesGachaCardAccessor) ByGachaID(identifier float64) (PlanetFesGachaCard, error) {
+	if a._dataGachaID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGachaCard{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGachaID[identifier], nil
 }

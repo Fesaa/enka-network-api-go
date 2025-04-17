@@ -23,12 +23,12 @@ type DrinkMakerGuest struct {
 }
 type DrinkMakerGuestAccessor struct {
 	_data                   []DrinkMakerGuest
-	_dataLinePath           map[string]DrinkMakerGuest
-	_dataFinishQuestID      map[float64]DrinkMakerGuest
-	_dataGuestID            map[float64]DrinkMakerGuest
-	_dataFinishSubMissionID map[float64]DrinkMakerGuest
-	_dataIconPath           map[string]DrinkMakerGuest
 	_dataBigIconPath        map[string]DrinkMakerGuest
+	_dataFinishQuestID      map[float64]DrinkMakerGuest
+	_dataFinishSubMissionID map[float64]DrinkMakerGuest
+	_dataGuestID            map[float64]DrinkMakerGuest
+	_dataIconPath           map[string]DrinkMakerGuest
+	_dataLinePath           map[string]DrinkMakerGuest
 }
 
 // LoadData retrieves the data. Must be called before DrinkMakerGuest.GroupData
@@ -52,7 +52,6 @@ func (a *DrinkMakerGuestAccessor) Raw() ([]DrinkMakerGuest, error) {
 		if err != nil {
 			return []DrinkMakerGuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,83 +60,13 @@ func (a *DrinkMakerGuestAccessor) Raw() ([]DrinkMakerGuest, error) {
 // Can be called manually in conjunction with DrinkMakerGuestAccessor.LoadData to preload everything
 func (a *DrinkMakerGuestAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataLinePath[d.LinePath] = d
-		a._dataFinishQuestID[d.FinishQuestID] = d
-		a._dataGuestID[d.GuestID] = d
-		a._dataFinishSubMissionID[d.FinishSubMissionID] = d
-		a._dataIconPath[d.IconPath] = d
 		a._dataBigIconPath[d.BigIconPath] = d
+		a._dataFinishQuestID[d.FinishQuestID] = d
+		a._dataFinishSubMissionID[d.FinishSubMissionID] = d
+		a._dataGuestID[d.GuestID] = d
+		a._dataIconPath[d.IconPath] = d
+		a._dataLinePath[d.LinePath] = d
 	}
-}
-
-// ByLinePath returns the DrinkMakerGuest uniquely identified by LinePath
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerGuestAccessor) ByLinePath(identifier string) (DrinkMakerGuest, error) {
-	if a._dataLinePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerGuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataLinePath[identifier], nil
-}
-
-// ByFinishQuestID returns the DrinkMakerGuest uniquely identified by FinishQuestID
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerGuestAccessor) ByFinishQuestID(identifier float64) (DrinkMakerGuest, error) {
-	if a._dataFinishQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerGuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFinishQuestID[identifier], nil
-}
-
-// ByGuestID returns the DrinkMakerGuest uniquely identified by GuestID
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerGuestAccessor) ByGuestID(identifier float64) (DrinkMakerGuest, error) {
-	if a._dataGuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerGuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGuestID[identifier], nil
-}
-
-// ByFinishSubMissionID returns the DrinkMakerGuest uniquely identified by FinishSubMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerGuestAccessor) ByFinishSubMissionID(identifier float64) (DrinkMakerGuest, error) {
-	if a._dataFinishSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerGuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFinishSubMissionID[identifier], nil
-}
-
-// ByIconPath returns the DrinkMakerGuest uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerGuestAccessor) ByIconPath(identifier string) (DrinkMakerGuest, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerGuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByBigIconPath returns the DrinkMakerGuest uniquely identified by BigIconPath
@@ -145,11 +74,93 @@ func (a *DrinkMakerGuestAccessor) ByIconPath(identifier string) (DrinkMakerGuest
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerGuestAccessor) ByBigIconPath(identifier string) (DrinkMakerGuest, error) {
 	if a._dataBigIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerGuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerGuest{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBigIconPath[identifier], nil
+}
+
+// ByFinishQuestID returns the DrinkMakerGuest uniquely identified by FinishQuestID
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerGuestAccessor) ByFinishQuestID(identifier float64) (DrinkMakerGuest, error) {
+	if a._dataFinishQuestID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerGuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFinishQuestID[identifier], nil
+}
+
+// ByFinishSubMissionID returns the DrinkMakerGuest uniquely identified by FinishSubMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerGuestAccessor) ByFinishSubMissionID(identifier float64) (DrinkMakerGuest, error) {
+	if a._dataFinishSubMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerGuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFinishSubMissionID[identifier], nil
+}
+
+// ByGuestID returns the DrinkMakerGuest uniquely identified by GuestID
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerGuestAccessor) ByGuestID(identifier float64) (DrinkMakerGuest, error) {
+	if a._dataGuestID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerGuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGuestID[identifier], nil
+}
+
+// ByIconPath returns the DrinkMakerGuest uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerGuestAccessor) ByIconPath(identifier string) (DrinkMakerGuest, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerGuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
+}
+
+// ByLinePath returns the DrinkMakerGuest uniquely identified by LinePath
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerGuestAccessor) ByLinePath(identifier string) (DrinkMakerGuest, error) {
+	if a._dataLinePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerGuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataLinePath[identifier], nil
 }

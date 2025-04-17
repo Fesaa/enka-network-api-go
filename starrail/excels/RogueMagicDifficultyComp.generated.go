@@ -18,8 +18,8 @@ type RogueMagicDifficultyComp struct {
 type RogueMagicDifficultyCompAccessor struct {
 	_data                 []RogueMagicDifficultyComp
 	_dataDifficultyCompID map[float64]RogueMagicDifficultyComp
-	_dataUnlockID         map[float64]RogueMagicDifficultyComp
 	_dataLevel            map[float64]RogueMagicDifficultyComp
+	_dataUnlockID         map[float64]RogueMagicDifficultyComp
 }
 
 // LoadData retrieves the data. Must be called before RogueMagicDifficultyComp.GroupData
@@ -43,7 +43,6 @@ func (a *RogueMagicDifficultyCompAccessor) Raw() ([]RogueMagicDifficultyComp, er
 		if err != nil {
 			return []RogueMagicDifficultyComp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,8 +52,8 @@ func (a *RogueMagicDifficultyCompAccessor) Raw() ([]RogueMagicDifficultyComp, er
 func (a *RogueMagicDifficultyCompAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataDifficultyCompID[d.DifficultyCompID] = d
-		a._dataUnlockID[d.UnlockID] = d
 		a._dataLevel[d.Level] = d
+		a._dataUnlockID[d.UnlockID] = d
 	}
 }
 
@@ -63,27 +62,15 @@ func (a *RogueMagicDifficultyCompAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicDifficultyCompAccessor) ByDifficultyCompID(identifier float64) (RogueMagicDifficultyComp, error) {
 	if a._dataDifficultyCompID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicDifficultyComp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicDifficultyComp{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDifficultyCompID[identifier], nil
-}
-
-// ByUnlockID returns the RogueMagicDifficultyComp uniquely identified by UnlockID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueMagicDifficultyCompAccessor) ByUnlockID(identifier float64) (RogueMagicDifficultyComp, error) {
-	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicDifficultyComp{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockID[identifier], nil
 }
 
 // ByLevel returns the RogueMagicDifficultyComp uniquely identified by Level
@@ -91,11 +78,29 @@ func (a *RogueMagicDifficultyCompAccessor) ByUnlockID(identifier float64) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueMagicDifficultyCompAccessor) ByLevel(identifier float64) (RogueMagicDifficultyComp, error) {
 	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicDifficultyComp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicDifficultyComp{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLevel[identifier], nil
+}
+
+// ByUnlockID returns the RogueMagicDifficultyComp uniquely identified by UnlockID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueMagicDifficultyCompAccessor) ByUnlockID(identifier float64) (RogueMagicDifficultyComp, error) {
+	if a._dataUnlockID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicDifficultyComp{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockID[identifier], nil
 }

@@ -40,7 +40,6 @@ func (a *DrinkMakerGuestSequenceAccessor) Raw() ([]DrinkMakerGuestSequence, erro
 		if err != nil {
 			return []DrinkMakerGuestSequence{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *DrinkMakerGuestSequenceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerGuestSequenceAccessor) BySequenceID(identifier float64) (DrinkMakerGuestSequence, error) {
 	if a._dataSequenceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerGuestSequence{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerGuestSequence{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *DrinkMakerGuestSequenceAccessor) BySequenceID(identifier float64) (Drin
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerGuestSequenceAccessor) ByStartChatID(identifier float64) (DrinkMakerGuestSequence, error) {
 	if a._dataStartChatID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerGuestSequence{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerGuestSequence{}, err
+			}
 		}
 		a.GroupData()
 	}

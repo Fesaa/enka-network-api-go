@@ -19,8 +19,8 @@ type RogueHandbookMiracleAccessor struct {
 	_data                       []RogueHandbookMiracle
 	_dataMiracleDisplayID       map[float64]RogueHandbookMiracle
 	_dataMiracleEffectDisplayID map[float64]RogueHandbookMiracle
-	_dataOrder                  map[float64]RogueHandbookMiracle
 	_dataMiracleHandbookID      map[float64]RogueHandbookMiracle
+	_dataOrder                  map[float64]RogueHandbookMiracle
 }
 
 // LoadData retrieves the data. Must be called before RogueHandbookMiracle.GroupData
@@ -44,7 +44,6 @@ func (a *RogueHandbookMiracleAccessor) Raw() ([]RogueHandbookMiracle, error) {
 		if err != nil {
 			return []RogueHandbookMiracle{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,8 +54,8 @@ func (a *RogueHandbookMiracleAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataMiracleDisplayID[d.MiracleDisplayID] = d
 		a._dataMiracleEffectDisplayID[d.MiracleEffectDisplayID] = d
-		a._dataOrder[d.Order] = d
 		a._dataMiracleHandbookID[d.MiracleHandbookID] = d
+		a._dataOrder[d.Order] = d
 	}
 }
 
@@ -65,9 +64,11 @@ func (a *RogueHandbookMiracleAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueHandbookMiracleAccessor) ByMiracleDisplayID(identifier float64) (RogueHandbookMiracle, error) {
 	if a._dataMiracleDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandbookMiracle{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandbookMiracle{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -79,27 +80,15 @@ func (a *RogueHandbookMiracleAccessor) ByMiracleDisplayID(identifier float64) (R
 // Error is only non-nil if the source errors out
 func (a *RogueHandbookMiracleAccessor) ByMiracleEffectDisplayID(identifier float64) (RogueHandbookMiracle, error) {
 	if a._dataMiracleEffectDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandbookMiracle{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandbookMiracle{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMiracleEffectDisplayID[identifier], nil
-}
-
-// ByOrder returns the RogueHandbookMiracle uniquely identified by Order
-//
-// Error is only non-nil if the source errors out
-func (a *RogueHandbookMiracleAccessor) ByOrder(identifier float64) (RogueHandbookMiracle, error) {
-	if a._dataOrder == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandbookMiracle{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOrder[identifier], nil
 }
 
 // ByMiracleHandbookID returns the RogueHandbookMiracle uniquely identified by MiracleHandbookID
@@ -107,11 +96,29 @@ func (a *RogueHandbookMiracleAccessor) ByOrder(identifier float64) (RogueHandboo
 // Error is only non-nil if the source errors out
 func (a *RogueHandbookMiracleAccessor) ByMiracleHandbookID(identifier float64) (RogueHandbookMiracle, error) {
 	if a._dataMiracleHandbookID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandbookMiracle{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandbookMiracle{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMiracleHandbookID[identifier], nil
+}
+
+// ByOrder returns the RogueHandbookMiracle uniquely identified by Order
+//
+// Error is only non-nil if the source errors out
+func (a *RogueHandbookMiracleAccessor) ByOrder(identifier float64) (RogueHandbookMiracle, error) {
+	if a._dataOrder == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandbookMiracle{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOrder[identifier], nil
 }

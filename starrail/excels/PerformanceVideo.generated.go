@@ -44,7 +44,6 @@ func (a *PerformanceVideoAccessor) Raw() ([]PerformanceVideo, error) {
 		if err != nil {
 			return []PerformanceVideo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *PerformanceVideoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PerformanceVideoAccessor) ByPerformanceID(identifier float64) (PerformanceVideo, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceVideo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceVideo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *PerformanceVideoAccessor) ByPerformanceID(identifier float64) (Performa
 // Error is only non-nil if the source errors out
 func (a *PerformanceVideoAccessor) ByPerformancePath(identifier string) (PerformanceVideo, error) {
 	if a._dataPerformancePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceVideo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceVideo{}, err
+			}
 		}
 		a.GroupData()
 	}

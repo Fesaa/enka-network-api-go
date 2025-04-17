@@ -41,7 +41,6 @@ func (a *UIRedDotAccessor) Raw() ([]UIRedDot, error) {
 		if err != nil {
 			return []UIRedDot{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *UIRedDotAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *UIRedDotAccessor) ByRedDot(identifier string) (UIRedDot, error) {
 	if a._dataRedDot == nil {
-		err := a.LoadData()
-		if err != nil {
-			return UIRedDot{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return UIRedDot{}, err
+			}
 		}
 		a.GroupData()
 	}

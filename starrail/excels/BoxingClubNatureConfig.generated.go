@@ -16,11 +16,11 @@ type BoxingClubNatureConfig struct {
 }
 type BoxingClubNatureConfigAccessor struct {
 	_data                         []BoxingClubNatureConfig
-	_dataBoxingBuffIconBackground map[string]BoxingClubNatureConfig
-	_dataNatureIconBackGround     map[string]BoxingClubNatureConfig
-	_dataBoxingClubNatureType     map[string]BoxingClubNatureConfig
-	_dataBoxingBuffIcon           map[string]BoxingClubNatureConfig
 	_dataBoxingBuffBackground     map[string]BoxingClubNatureConfig
+	_dataBoxingBuffIcon           map[string]BoxingClubNatureConfig
+	_dataBoxingBuffIconBackground map[string]BoxingClubNatureConfig
+	_dataBoxingClubNatureType     map[string]BoxingClubNatureConfig
+	_dataNatureIconBackGround     map[string]BoxingClubNatureConfig
 }
 
 // LoadData retrieves the data. Must be called before BoxingClubNatureConfig.GroupData
@@ -44,7 +44,6 @@ func (a *BoxingClubNatureConfigAccessor) Raw() ([]BoxingClubNatureConfig, error)
 		if err != nil {
 			return []BoxingClubNatureConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,68 +52,12 @@ func (a *BoxingClubNatureConfigAccessor) Raw() ([]BoxingClubNatureConfig, error)
 // Can be called manually in conjunction with BoxingClubNatureConfigAccessor.LoadData to preload everything
 func (a *BoxingClubNatureConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataBoxingBuffIconBackground[d.BoxingBuffIconBackground] = d
-		a._dataNatureIconBackGround[d.NatureIconBackGround] = d
-		a._dataBoxingClubNatureType[d.BoxingClubNatureType] = d
-		a._dataBoxingBuffIcon[d.BoxingBuffIcon] = d
 		a._dataBoxingBuffBackground[d.BoxingBuffBackground] = d
+		a._dataBoxingBuffIcon[d.BoxingBuffIcon] = d
+		a._dataBoxingBuffIconBackground[d.BoxingBuffIconBackground] = d
+		a._dataBoxingClubNatureType[d.BoxingClubNatureType] = d
+		a._dataNatureIconBackGround[d.NatureIconBackGround] = d
 	}
-}
-
-// ByBoxingBuffIconBackground returns the BoxingClubNatureConfig uniquely identified by BoxingBuffIconBackground
-//
-// Error is only non-nil if the source errors out
-func (a *BoxingClubNatureConfigAccessor) ByBoxingBuffIconBackground(identifier string) (BoxingClubNatureConfig, error) {
-	if a._dataBoxingBuffIconBackground == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubNatureConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBoxingBuffIconBackground[identifier], nil
-}
-
-// ByNatureIconBackGround returns the BoxingClubNatureConfig uniquely identified by NatureIconBackGround
-//
-// Error is only non-nil if the source errors out
-func (a *BoxingClubNatureConfigAccessor) ByNatureIconBackGround(identifier string) (BoxingClubNatureConfig, error) {
-	if a._dataNatureIconBackGround == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubNatureConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataNatureIconBackGround[identifier], nil
-}
-
-// ByBoxingClubNatureType returns the BoxingClubNatureConfig uniquely identified by BoxingClubNatureType
-//
-// Error is only non-nil if the source errors out
-func (a *BoxingClubNatureConfigAccessor) ByBoxingClubNatureType(identifier string) (BoxingClubNatureConfig, error) {
-	if a._dataBoxingClubNatureType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubNatureConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBoxingClubNatureType[identifier], nil
-}
-
-// ByBoxingBuffIcon returns the BoxingClubNatureConfig uniquely identified by BoxingBuffIcon
-//
-// Error is only non-nil if the source errors out
-func (a *BoxingClubNatureConfigAccessor) ByBoxingBuffIcon(identifier string) (BoxingClubNatureConfig, error) {
-	if a._dataBoxingBuffIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubNatureConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBoxingBuffIcon[identifier], nil
 }
 
 // ByBoxingBuffBackground returns the BoxingClubNatureConfig uniquely identified by BoxingBuffBackground
@@ -122,11 +65,77 @@ func (a *BoxingClubNatureConfigAccessor) ByBoxingBuffIcon(identifier string) (Bo
 // Error is only non-nil if the source errors out
 func (a *BoxingClubNatureConfigAccessor) ByBoxingBuffBackground(identifier string) (BoxingClubNatureConfig, error) {
 	if a._dataBoxingBuffBackground == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubNatureConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubNatureConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBoxingBuffBackground[identifier], nil
+}
+
+// ByBoxingBuffIcon returns the BoxingClubNatureConfig uniquely identified by BoxingBuffIcon
+//
+// Error is only non-nil if the source errors out
+func (a *BoxingClubNatureConfigAccessor) ByBoxingBuffIcon(identifier string) (BoxingClubNatureConfig, error) {
+	if a._dataBoxingBuffIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubNatureConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBoxingBuffIcon[identifier], nil
+}
+
+// ByBoxingBuffIconBackground returns the BoxingClubNatureConfig uniquely identified by BoxingBuffIconBackground
+//
+// Error is only non-nil if the source errors out
+func (a *BoxingClubNatureConfigAccessor) ByBoxingBuffIconBackground(identifier string) (BoxingClubNatureConfig, error) {
+	if a._dataBoxingBuffIconBackground == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubNatureConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBoxingBuffIconBackground[identifier], nil
+}
+
+// ByBoxingClubNatureType returns the BoxingClubNatureConfig uniquely identified by BoxingClubNatureType
+//
+// Error is only non-nil if the source errors out
+func (a *BoxingClubNatureConfigAccessor) ByBoxingClubNatureType(identifier string) (BoxingClubNatureConfig, error) {
+	if a._dataBoxingClubNatureType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubNatureConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBoxingClubNatureType[identifier], nil
+}
+
+// ByNatureIconBackGround returns the BoxingClubNatureConfig uniquely identified by NatureIconBackGround
+//
+// Error is only non-nil if the source errors out
+func (a *BoxingClubNatureConfigAccessor) ByNatureIconBackGround(identifier string) (BoxingClubNatureConfig, error) {
+	if a._dataNatureIconBackGround == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubNatureConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataNatureIconBackGround[identifier], nil
 }

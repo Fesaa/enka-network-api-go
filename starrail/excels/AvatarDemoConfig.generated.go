@@ -55,7 +55,6 @@ func (a *AvatarDemoConfigAccessor) Raw() ([]AvatarDemoConfig, error) {
 		if err != nil {
 			return []AvatarDemoConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -73,9 +72,11 @@ func (a *AvatarDemoConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarDemoConfigAccessor) ByStageID(identifier float64) (AvatarDemoConfig, error) {
 	if a._dataStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDemoConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDemoConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

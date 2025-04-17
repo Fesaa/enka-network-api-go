@@ -1,2 +1,6 @@
 github.com/Fesaa/yoitsu v0.0.0-20250417180212-e294784ae402 h1:Uq4kJG0UsmRbvY6bv737lOSB6JDAAAN+vqPPm4I00O8=
 github.com/Fesaa/yoitsu v0.0.0-20250417180212-e294784ae402/go.mod h1:t2TdtXN5+biRtvhL2l02gupSQllAgw8qQgmYDpq73OY=
+github.com/Fesaa/yoitsu v0.0.0-20250417184303-6c037652b3b5 h1:SHjQ2dseB+I/hZcdaV4l1NnCt8lf8aLr3xxZhnfMpRE=
+github.com/Fesaa/yoitsu v0.0.0-20250417184303-6c037652b3b5/go.mod h1:t2TdtXN5+biRtvhL2l02gupSQllAgw8qQgmYDpq73OY=
+github.com/Fesaa/yoitsu v0.0.0-20250417184532-07219ae9e388 h1:JNzLHge3myWB+BR4fmdRY/i1mK4WeCEH106RdEU7kJU=
+github.com/Fesaa/yoitsu v0.0.0-20250417184532-07219ae9e388/go.mod h1:t2TdtXN5+biRtvhL2l02gupSQllAgw8qQgmYDpq73OY=

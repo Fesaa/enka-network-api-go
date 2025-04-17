@@ -39,7 +39,6 @@ func (a *MatchThreeVsTalkAccessor) Raw() ([]MatchThreeVsTalk, error) {
 		if err != nil {
 			return []MatchThreeVsTalk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *MatchThreeVsTalkAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeVsTalkAccessor) ByID(identifier float64) (MatchThreeVsTalk, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeVsTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeVsTalk{}, err
+			}
 		}
 		a.GroupData()
 	}

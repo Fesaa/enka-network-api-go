@@ -16,8 +16,8 @@ type MuseumAreaMission struct {
 }
 type MuseumAreaMissionAccessor struct {
 	_data          []MuseumAreaMission
-	_dataMissionID map[float64]MuseumAreaMission
 	_dataAreaID    map[float64]MuseumAreaMission
+	_dataMissionID map[float64]MuseumAreaMission
 }
 
 // LoadData retrieves the data. Must be called before MuseumAreaMission.GroupData
@@ -41,7 +41,6 @@ func (a *MuseumAreaMissionAccessor) Raw() ([]MuseumAreaMission, error) {
 		if err != nil {
 			return []MuseumAreaMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,23 +49,9 @@ func (a *MuseumAreaMissionAccessor) Raw() ([]MuseumAreaMission, error) {
 // Can be called manually in conjunction with MuseumAreaMissionAccessor.LoadData to preload everything
 func (a *MuseumAreaMissionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataMissionID[d.MissionID] = d
 		a._dataAreaID[d.AreaID] = d
+		a._dataMissionID[d.MissionID] = d
 	}
-}
-
-// ByMissionID returns the MuseumAreaMission uniquely identified by MissionID
-//
-// Error is only non-nil if the source errors out
-func (a *MuseumAreaMissionAccessor) ByMissionID(identifier float64) (MuseumAreaMission, error) {
-	if a._dataMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumAreaMission{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMissionID[identifier], nil
 }
 
 // ByAreaID returns the MuseumAreaMission uniquely identified by AreaID
@@ -74,11 +59,29 @@ func (a *MuseumAreaMissionAccessor) ByMissionID(identifier float64) (MuseumAreaM
 // Error is only non-nil if the source errors out
 func (a *MuseumAreaMissionAccessor) ByAreaID(identifier float64) (MuseumAreaMission, error) {
 	if a._dataAreaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumAreaMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumAreaMission{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAreaID[identifier], nil
+}
+
+// ByMissionID returns the MuseumAreaMission uniquely identified by MissionID
+//
+// Error is only non-nil if the source errors out
+func (a *MuseumAreaMissionAccessor) ByMissionID(identifier float64) (MuseumAreaMission, error) {
+	if a._dataMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumAreaMission{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMissionID[identifier], nil
 }

@@ -42,7 +42,6 @@ func (a *TrackPhotoTrashCanConfigAccessor) Raw() ([]TrackPhotoTrashCanConfig, er
 		if err != nil {
 			return []TrackPhotoTrashCanConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *TrackPhotoTrashCanConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrackPhotoTrashCanConfigAccessor) ByCanTypeID(identifier string) (TrackPhotoTrashCanConfig, error) {
 	if a._dataCanTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrackPhotoTrashCanConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrackPhotoTrashCanConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -75,9 +76,11 @@ func (a *TrackPhotoTrashCanConfigAccessor) ByCanTypeID(identifier string) (Track
 // Error is only non-nil if the source errors out
 func (a *TrackPhotoTrashCanConfigAccessor) ByNpcTemplateID(identifier float64) (TrackPhotoTrashCanConfig, error) {
 	if a._dataNpcTemplateID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrackPhotoTrashCanConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrackPhotoTrashCanConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

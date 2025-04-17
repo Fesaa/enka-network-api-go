@@ -51,7 +51,6 @@ func (a *ActivityFarmMultipleDropAccessor) Raw() ([]ActivityFarmMultipleDrop, er
 		if err != nil {
 			return []ActivityFarmMultipleDrop{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,9 +68,11 @@ func (a *ActivityFarmMultipleDropAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityFarmMultipleDropAccessor) ByID(identifier float64) (ActivityFarmMultipleDrop, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityFarmMultipleDrop{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityFarmMultipleDrop{}, err
+			}
 		}
 		a.GroupData()
 	}

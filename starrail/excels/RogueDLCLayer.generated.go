@@ -40,7 +40,6 @@ func (a *RogueDLCLayerAccessor) Raw() ([]RogueDLCLayer, error) {
 		if err != nil {
 			return []RogueDLCLayer{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueDLCLayerAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCLayerAccessor) ByLayerID(identifier float64) (RogueDLCLayer, error) {
 	if a._dataLayerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCLayer{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCLayer{}, err
+			}
 		}
 		a.GroupData()
 	}

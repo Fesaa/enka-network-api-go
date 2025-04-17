@@ -40,7 +40,6 @@ func (a *RogueMapAccessor) Raw() ([]RogueMap, error) {
 		if err != nil {
 			return []RogueMap{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

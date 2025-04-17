@@ -48,7 +48,6 @@ func (a *ChatInviteConfigAccessor) Raw() ([]ChatInviteConfig, error) {
 		if err != nil {
 			return []ChatInviteConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *ChatInviteConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChatInviteConfigAccessor) ByID(identifier float64) (ChatInviteConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChatInviteConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChatInviteConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,9 +82,11 @@ func (a *ChatInviteConfigAccessor) ByID(identifier float64) (ChatInviteConfig, e
 // Error is only non-nil if the source errors out
 func (a *ChatInviteConfigAccessor) ByPicPath(identifier string) (ChatInviteConfig, error) {
 	if a._dataPicPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChatInviteConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChatInviteConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

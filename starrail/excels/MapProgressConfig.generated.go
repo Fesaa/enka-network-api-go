@@ -40,7 +40,6 @@ func (a *MapProgressConfigAccessor) Raw() ([]MapProgressConfig, error) {
 		if err != nil {
 			return []MapProgressConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *MapProgressConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MapProgressConfigAccessor) ByID(identifier string) (MapProgressConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapProgressConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapProgressConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *MapProgressConfigAccessor) ByID(identifier string) (MapProgressConfig, 
 // Error is only non-nil if the source errors out
 func (a *MapProgressConfigAccessor) ByIconPath(identifier string) (MapProgressConfig, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapProgressConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapProgressConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

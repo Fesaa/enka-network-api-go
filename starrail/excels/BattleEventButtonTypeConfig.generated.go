@@ -16,8 +16,8 @@ type BattleEventButtonTypeConfig struct {
 }
 type BattleEventButtonTypeConfigAccessor struct {
 	_data           []BattleEventButtonTypeConfig
-	_dataID         map[float64]BattleEventButtonTypeConfig
 	_dataButtonPath map[string]BattleEventButtonTypeConfig
+	_dataID         map[float64]BattleEventButtonTypeConfig
 }
 
 // LoadData retrieves the data. Must be called before BattleEventButtonTypeConfig.GroupData
@@ -41,7 +41,6 @@ func (a *BattleEventButtonTypeConfigAccessor) Raw() ([]BattleEventButtonTypeConf
 		if err != nil {
 			return []BattleEventButtonTypeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,23 +49,9 @@ func (a *BattleEventButtonTypeConfigAccessor) Raw() ([]BattleEventButtonTypeConf
 // Can be called manually in conjunction with BattleEventButtonTypeConfigAccessor.LoadData to preload everything
 func (a *BattleEventButtonTypeConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataButtonPath[d.ButtonPath] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the BattleEventButtonTypeConfig uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *BattleEventButtonTypeConfigAccessor) ByID(identifier float64) (BattleEventButtonTypeConfig, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleEventButtonTypeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByButtonPath returns the BattleEventButtonTypeConfig uniquely identified by ButtonPath
@@ -74,11 +59,29 @@ func (a *BattleEventButtonTypeConfigAccessor) ByID(identifier float64) (BattleEv
 // Error is only non-nil if the source errors out
 func (a *BattleEventButtonTypeConfigAccessor) ByButtonPath(identifier string) (BattleEventButtonTypeConfig, error) {
 	if a._dataButtonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleEventButtonTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleEventButtonTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataButtonPath[identifier], nil
+}
+
+// ByID returns the BattleEventButtonTypeConfig uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *BattleEventButtonTypeConfigAccessor) ByID(identifier float64) (BattleEventButtonTypeConfig, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleEventButtonTypeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

@@ -39,7 +39,6 @@ func (a *RogueTournLayerRoomAccessor) Raw() ([]RogueTournLayerRoom, error) {
 		if err != nil {
 			return []RogueTournLayerRoom{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

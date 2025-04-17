@@ -26,8 +26,8 @@ type AetherDivideChallengeList struct {
 }
 type AetherDivideChallengeListAccessor struct {
 	_data        []AetherDivideChallengeList
-	_dataID      map[float64]AetherDivideChallengeList
 	_dataEventID map[float64]AetherDivideChallengeList
+	_dataID      map[float64]AetherDivideChallengeList
 }
 
 // LoadData retrieves the data. Must be called before AetherDivideChallengeList.GroupData
@@ -51,7 +51,6 @@ func (a *AetherDivideChallengeListAccessor) Raw() ([]AetherDivideChallengeList, 
 		if err != nil {
 			return []AetherDivideChallengeList{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,23 +59,9 @@ func (a *AetherDivideChallengeListAccessor) Raw() ([]AetherDivideChallengeList, 
 // Can be called manually in conjunction with AetherDivideChallengeListAccessor.LoadData to preload everything
 func (a *AetherDivideChallengeListAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataEventID[d.EventID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the AetherDivideChallengeList uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideChallengeListAccessor) ByID(identifier float64) (AetherDivideChallengeList, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideChallengeList{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByEventID returns the AetherDivideChallengeList uniquely identified by EventID
@@ -84,11 +69,29 @@ func (a *AetherDivideChallengeListAccessor) ByID(identifier float64) (AetherDivi
 // Error is only non-nil if the source errors out
 func (a *AetherDivideChallengeListAccessor) ByEventID(identifier float64) (AetherDivideChallengeList, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideChallengeList{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideChallengeList{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventID[identifier], nil
+}
+
+// ByID returns the AetherDivideChallengeList uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideChallengeListAccessor) ByID(identifier float64) (AetherDivideChallengeList, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideChallengeList{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

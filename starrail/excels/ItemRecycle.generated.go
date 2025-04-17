@@ -41,7 +41,6 @@ func (a *ItemRecycleAccessor) Raw() ([]ItemRecycle, error) {
 		if err != nil {
 			return []ItemRecycle{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ItemRecycleAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemRecycleAccessor) ByItemID(identifier float64) (ItemRecycle, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRecycle{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRecycle{}, err
+			}
 		}
 		a.GroupData()
 	}

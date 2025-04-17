@@ -40,7 +40,6 @@ func (a *IntroDataAccessor) Raw() ([]IntroData, error) {
 		if err != nil {
 			return []IntroData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *IntroDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *IntroDataAccessor) ByID(identifier float64) (IntroData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return IntroData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return IntroData{}, err
+			}
 		}
 		a.GroupData()
 	}

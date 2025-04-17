@@ -16,8 +16,8 @@ type PlanetFesCardTheme struct {
 }
 type PlanetFesCardThemeAccessor struct {
 	_data         []PlanetFesCardTheme
-	_dataThemeID  map[float64]PlanetFesCardTheme
 	_dataIconPath map[string]PlanetFesCardTheme
+	_dataThemeID  map[float64]PlanetFesCardTheme
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesCardTheme.GroupData
@@ -41,7 +41,6 @@ func (a *PlanetFesCardThemeAccessor) Raw() ([]PlanetFesCardTheme, error) {
 		if err != nil {
 			return []PlanetFesCardTheme{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,23 +49,9 @@ func (a *PlanetFesCardThemeAccessor) Raw() ([]PlanetFesCardTheme, error) {
 // Can be called manually in conjunction with PlanetFesCardThemeAccessor.LoadData to preload everything
 func (a *PlanetFesCardThemeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataThemeID[d.ThemeID] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataThemeID[d.ThemeID] = d
 	}
-}
-
-// ByThemeID returns the PlanetFesCardTheme uniquely identified by ThemeID
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesCardThemeAccessor) ByThemeID(identifier float64) (PlanetFesCardTheme, error) {
-	if a._dataThemeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesCardTheme{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataThemeID[identifier], nil
 }
 
 // ByIconPath returns the PlanetFesCardTheme uniquely identified by IconPath
@@ -74,11 +59,29 @@ func (a *PlanetFesCardThemeAccessor) ByThemeID(identifier float64) (PlanetFesCar
 // Error is only non-nil if the source errors out
 func (a *PlanetFesCardThemeAccessor) ByIconPath(identifier string) (PlanetFesCardTheme, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesCardTheme{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesCardTheme{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// ByThemeID returns the PlanetFesCardTheme uniquely identified by ThemeID
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesCardThemeAccessor) ByThemeID(identifier float64) (PlanetFesCardTheme, error) {
+	if a._dataThemeID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesCardTheme{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataThemeID[identifier], nil
 }

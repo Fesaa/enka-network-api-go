@@ -37,7 +37,6 @@ func (a *MonopolyContentDisplayAccessor) Raw() ([]MonopolyContentDisplay, error)
 		if err != nil {
 			return []MonopolyContentDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

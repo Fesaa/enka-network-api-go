@@ -17,10 +17,10 @@ type RogueTournExhibition struct {
 }
 type RogueTournExhibitionAccessor struct {
 	_data               []RogueTournExhibition
-	_dataImagePath      map[string]RogueTournExhibition
-	_dataProgramGroupID map[float64]RogueTournExhibition
 	_dataExhibitionID   map[float64]RogueTournExhibition
 	_dataIconPath       map[string]RogueTournExhibition
+	_dataImagePath      map[string]RogueTournExhibition
+	_dataProgramGroupID map[float64]RogueTournExhibition
 	_dataSlotIconPath   map[string]RogueTournExhibition
 }
 
@@ -45,7 +45,6 @@ func (a *RogueTournExhibitionAccessor) Raw() ([]RogueTournExhibition, error) {
 		if err != nil {
 			return []RogueTournExhibition{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,40 +53,12 @@ func (a *RogueTournExhibitionAccessor) Raw() ([]RogueTournExhibition, error) {
 // Can be called manually in conjunction with RogueTournExhibitionAccessor.LoadData to preload everything
 func (a *RogueTournExhibitionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataImagePath[d.ImagePath] = d
-		a._dataProgramGroupID[d.ProgramGroupID] = d
 		a._dataExhibitionID[d.ExhibitionID] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataImagePath[d.ImagePath] = d
+		a._dataProgramGroupID[d.ProgramGroupID] = d
 		a._dataSlotIconPath[d.SlotIconPath] = d
 	}
-}
-
-// ByImagePath returns the RogueTournExhibition uniquely identified by ImagePath
-//
-// Error is only non-nil if the source errors out
-func (a *RogueTournExhibitionAccessor) ByImagePath(identifier string) (RogueTournExhibition, error) {
-	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournExhibition{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataImagePath[identifier], nil
-}
-
-// ByProgramGroupID returns the RogueTournExhibition uniquely identified by ProgramGroupID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueTournExhibitionAccessor) ByProgramGroupID(identifier float64) (RogueTournExhibition, error) {
-	if a._dataProgramGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournExhibition{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataProgramGroupID[identifier], nil
 }
 
 // ByExhibitionID returns the RogueTournExhibition uniquely identified by ExhibitionID
@@ -95,9 +66,11 @@ func (a *RogueTournExhibitionAccessor) ByProgramGroupID(identifier float64) (Rog
 // Error is only non-nil if the source errors out
 func (a *RogueTournExhibitionAccessor) ByExhibitionID(identifier float64) (RogueTournExhibition, error) {
 	if a._dataExhibitionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournExhibition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournExhibition{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -109,13 +82,47 @@ func (a *RogueTournExhibitionAccessor) ByExhibitionID(identifier float64) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueTournExhibitionAccessor) ByIconPath(identifier string) (RogueTournExhibition, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournExhibition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournExhibition{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// ByImagePath returns the RogueTournExhibition uniquely identified by ImagePath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournExhibitionAccessor) ByImagePath(identifier string) (RogueTournExhibition, error) {
+	if a._dataImagePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournExhibition{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataImagePath[identifier], nil
+}
+
+// ByProgramGroupID returns the RogueTournExhibition uniquely identified by ProgramGroupID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournExhibitionAccessor) ByProgramGroupID(identifier float64) (RogueTournExhibition, error) {
+	if a._dataProgramGroupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournExhibition{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataProgramGroupID[identifier], nil
 }
 
 // BySlotIconPath returns the RogueTournExhibition uniquely identified by SlotIconPath
@@ -123,9 +130,11 @@ func (a *RogueTournExhibitionAccessor) ByIconPath(identifier string) (RogueTourn
 // Error is only non-nil if the source errors out
 func (a *RogueTournExhibitionAccessor) BySlotIconPath(identifier string) (RogueTournExhibition, error) {
 	if a._dataSlotIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournExhibition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournExhibition{}, err
+			}
 		}
 		a.GroupData()
 	}

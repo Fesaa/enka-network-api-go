@@ -43,7 +43,6 @@ func (a *TrackPhotoConstValueClientAccessor) Raw() ([]TrackPhotoConstValueClient
 		if err != nil {
 			return []TrackPhotoConstValueClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *TrackPhotoConstValueClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrackPhotoConstValueClientAccessor) ByConstValueName(identifier string) (TrackPhotoConstValueClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrackPhotoConstValueClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrackPhotoConstValueClient{}, err
+			}
 		}
 		a.GroupData()
 	}

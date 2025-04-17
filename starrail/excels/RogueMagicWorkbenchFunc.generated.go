@@ -42,7 +42,6 @@ func (a *RogueMagicWorkbenchFuncAccessor) Raw() ([]RogueMagicWorkbenchFunc, erro
 		if err != nil {
 			return []RogueMagicWorkbenchFunc{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *RogueMagicWorkbenchFuncAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicWorkbenchFuncAccessor) ByFuncID(identifier float64) (RogueMagicWorkbenchFunc, error) {
 	if a._dataFuncID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicWorkbenchFunc{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicWorkbenchFunc{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -75,9 +76,11 @@ func (a *RogueMagicWorkbenchFuncAccessor) ByFuncID(identifier float64) (RogueMag
 // Error is only non-nil if the source errors out
 func (a *RogueMagicWorkbenchFuncAccessor) ByFuncType(identifier string) (RogueMagicWorkbenchFunc, error) {
 	if a._dataFuncType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicWorkbenchFunc{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicWorkbenchFunc{}, err
+			}
 		}
 		a.GroupData()
 	}

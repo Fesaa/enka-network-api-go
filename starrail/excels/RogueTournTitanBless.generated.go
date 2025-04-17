@@ -18,8 +18,8 @@ type RogueTournTitanBless struct {
 }
 type RogueTournTitanBlessAccessor struct {
 	_data             []RogueTournTitanBless
-	_dataTitanBlessID map[float64]RogueTournTitanBless
 	_dataMazeBuffID   map[float64]RogueTournTitanBless
+	_dataTitanBlessID map[float64]RogueTournTitanBless
 }
 
 // LoadData retrieves the data. Must be called before RogueTournTitanBless.GroupData
@@ -43,7 +43,6 @@ func (a *RogueTournTitanBlessAccessor) Raw() ([]RogueTournTitanBless, error) {
 		if err != nil {
 			return []RogueTournTitanBless{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,23 +51,9 @@ func (a *RogueTournTitanBlessAccessor) Raw() ([]RogueTournTitanBless, error) {
 // Can be called manually in conjunction with RogueTournTitanBlessAccessor.LoadData to preload everything
 func (a *RogueTournTitanBlessAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTitanBlessID[d.TitanBlessID] = d
 		a._dataMazeBuffID[d.MazeBuffID] = d
+		a._dataTitanBlessID[d.TitanBlessID] = d
 	}
-}
-
-// ByTitanBlessID returns the RogueTournTitanBless uniquely identified by TitanBlessID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueTournTitanBlessAccessor) ByTitanBlessID(identifier float64) (RogueTournTitanBless, error) {
-	if a._dataTitanBlessID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournTitanBless{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTitanBlessID[identifier], nil
 }
 
 // ByMazeBuffID returns the RogueTournTitanBless uniquely identified by MazeBuffID
@@ -76,11 +61,29 @@ func (a *RogueTournTitanBlessAccessor) ByTitanBlessID(identifier float64) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueTournTitanBlessAccessor) ByMazeBuffID(identifier float64) (RogueTournTitanBless, error) {
 	if a._dataMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournTitanBless{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournTitanBless{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMazeBuffID[identifier], nil
+}
+
+// ByTitanBlessID returns the RogueTournTitanBless uniquely identified by TitanBlessID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournTitanBlessAccessor) ByTitanBlessID(identifier float64) (RogueTournTitanBless, error) {
+	if a._dataTitanBlessID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournTitanBless{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTitanBlessID[identifier], nil
 }

@@ -19,13 +19,13 @@ type PlayerPersonalCard struct {
 }
 type PlayerPersonalCardAccessor struct {
 	_data                  []PlayerPersonalCard
-	_dataFriendPrefabPath  map[string]PlayerPersonalCard
-	_dataSupportPrefabPath map[string]PlayerPersonalCard
-	_dataShowType          map[string]PlayerPersonalCard
 	_dataCardID            map[float64]PlayerPersonalCard
-	_dataReplaceIconPath   map[string]PlayerPersonalCard
 	_dataCardPrefabPath    map[string]PlayerPersonalCard
 	_dataChatPrefabPath    map[string]PlayerPersonalCard
+	_dataFriendPrefabPath  map[string]PlayerPersonalCard
+	_dataReplaceIconPath   map[string]PlayerPersonalCard
+	_dataShowType          map[string]PlayerPersonalCard
+	_dataSupportPrefabPath map[string]PlayerPersonalCard
 }
 
 // LoadData retrieves the data. Must be called before PlayerPersonalCard.GroupData
@@ -49,7 +49,6 @@ func (a *PlayerPersonalCardAccessor) Raw() ([]PlayerPersonalCard, error) {
 		if err != nil {
 			return []PlayerPersonalCard{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,56 +57,14 @@ func (a *PlayerPersonalCardAccessor) Raw() ([]PlayerPersonalCard, error) {
 // Can be called manually in conjunction with PlayerPersonalCardAccessor.LoadData to preload everything
 func (a *PlayerPersonalCardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataFriendPrefabPath[d.FriendPrefabPath] = d
-		a._dataSupportPrefabPath[d.SupportPrefabPath] = d
-		a._dataShowType[d.ShowType] = d
 		a._dataCardID[d.CardID] = d
-		a._dataReplaceIconPath[d.ReplaceIconPath] = d
 		a._dataCardPrefabPath[d.CardPrefabPath] = d
 		a._dataChatPrefabPath[d.ChatPrefabPath] = d
+		a._dataFriendPrefabPath[d.FriendPrefabPath] = d
+		a._dataReplaceIconPath[d.ReplaceIconPath] = d
+		a._dataShowType[d.ShowType] = d
+		a._dataSupportPrefabPath[d.SupportPrefabPath] = d
 	}
-}
-
-// ByFriendPrefabPath returns the PlayerPersonalCard uniquely identified by FriendPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *PlayerPersonalCardAccessor) ByFriendPrefabPath(identifier string) (PlayerPersonalCard, error) {
-	if a._dataFriendPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerPersonalCard{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFriendPrefabPath[identifier], nil
-}
-
-// BySupportPrefabPath returns the PlayerPersonalCard uniquely identified by SupportPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *PlayerPersonalCardAccessor) BySupportPrefabPath(identifier string) (PlayerPersonalCard, error) {
-	if a._dataSupportPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerPersonalCard{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSupportPrefabPath[identifier], nil
-}
-
-// ByShowType returns the PlayerPersonalCard uniquely identified by ShowType
-//
-// Error is only non-nil if the source errors out
-func (a *PlayerPersonalCardAccessor) ByShowType(identifier string) (PlayerPersonalCard, error) {
-	if a._dataShowType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerPersonalCard{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataShowType[identifier], nil
 }
 
 // ByCardID returns the PlayerPersonalCard uniquely identified by CardID
@@ -115,27 +72,15 @@ func (a *PlayerPersonalCardAccessor) ByShowType(identifier string) (PlayerPerson
 // Error is only non-nil if the source errors out
 func (a *PlayerPersonalCardAccessor) ByCardID(identifier float64) (PlayerPersonalCard, error) {
 	if a._dataCardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerPersonalCard{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerPersonalCard{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCardID[identifier], nil
-}
-
-// ByReplaceIconPath returns the PlayerPersonalCard uniquely identified by ReplaceIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *PlayerPersonalCardAccessor) ByReplaceIconPath(identifier string) (PlayerPersonalCard, error) {
-	if a._dataReplaceIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerPersonalCard{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataReplaceIconPath[identifier], nil
 }
 
 // ByCardPrefabPath returns the PlayerPersonalCard uniquely identified by CardPrefabPath
@@ -143,9 +88,11 @@ func (a *PlayerPersonalCardAccessor) ByReplaceIconPath(identifier string) (Playe
 // Error is only non-nil if the source errors out
 func (a *PlayerPersonalCardAccessor) ByCardPrefabPath(identifier string) (PlayerPersonalCard, error) {
 	if a._dataCardPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerPersonalCard{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerPersonalCard{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -157,11 +104,77 @@ func (a *PlayerPersonalCardAccessor) ByCardPrefabPath(identifier string) (Player
 // Error is only non-nil if the source errors out
 func (a *PlayerPersonalCardAccessor) ByChatPrefabPath(identifier string) (PlayerPersonalCard, error) {
 	if a._dataChatPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerPersonalCard{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerPersonalCard{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataChatPrefabPath[identifier], nil
+}
+
+// ByFriendPrefabPath returns the PlayerPersonalCard uniquely identified by FriendPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *PlayerPersonalCardAccessor) ByFriendPrefabPath(identifier string) (PlayerPersonalCard, error) {
+	if a._dataFriendPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerPersonalCard{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFriendPrefabPath[identifier], nil
+}
+
+// ByReplaceIconPath returns the PlayerPersonalCard uniquely identified by ReplaceIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *PlayerPersonalCardAccessor) ByReplaceIconPath(identifier string) (PlayerPersonalCard, error) {
+	if a._dataReplaceIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerPersonalCard{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataReplaceIconPath[identifier], nil
+}
+
+// ByShowType returns the PlayerPersonalCard uniquely identified by ShowType
+//
+// Error is only non-nil if the source errors out
+func (a *PlayerPersonalCardAccessor) ByShowType(identifier string) (PlayerPersonalCard, error) {
+	if a._dataShowType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerPersonalCard{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataShowType[identifier], nil
+}
+
+// BySupportPrefabPath returns the PlayerPersonalCard uniquely identified by SupportPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *PlayerPersonalCardAccessor) BySupportPrefabPath(identifier string) (PlayerPersonalCard, error) {
+	if a._dataSupportPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerPersonalCard{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSupportPrefabPath[identifier], nil
 }

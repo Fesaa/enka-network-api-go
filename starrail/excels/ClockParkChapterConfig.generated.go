@@ -48,7 +48,6 @@ func (a *ClockParkChapterConfigAccessor) Raw() ([]ClockParkChapterConfig, error)
 		if err != nil {
 			return []ClockParkChapterConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,9 +65,11 @@ func (a *ClockParkChapterConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClockParkChapterConfigAccessor) ByChapterID(identifier float64) (ClockParkChapterConfig, error) {
 	if a._dataChapterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkChapterConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkChapterConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

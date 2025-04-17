@@ -40,7 +40,6 @@ func (a *RelicMainAffixConfigAccessor) Raw() ([]RelicMainAffixConfig, error) {
 		if err != nil {
 			return []RelicMainAffixConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

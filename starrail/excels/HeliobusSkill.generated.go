@@ -20,10 +20,10 @@ type HeliobusSkill struct {
 }
 type HeliobusSkillAccessor struct {
 	_data                     []HeliobusSkill
-	_dataSkillIconPath        map[string]HeliobusSkill
-	_dataRelatedEventID       map[float64]HeliobusSkill
-	_dataSkillUIPosition      map[float64]HeliobusSkill
 	_dataHeliobusSkillID      map[float64]HeliobusSkill
+	_dataRelatedEventID       map[float64]HeliobusSkill
+	_dataSkillIconPath        map[string]HeliobusSkill
+	_dataSkillUIPosition      map[float64]HeliobusSkill
 	_dataUnlockMissionID      map[float64]HeliobusSkill
 	_dataUnlockToastMissionID map[float64]HeliobusSkill
 }
@@ -49,7 +49,6 @@ func (a *HeliobusSkillAccessor) Raw() ([]HeliobusSkill, error) {
 		if err != nil {
 			return []HeliobusSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,55 +57,13 @@ func (a *HeliobusSkillAccessor) Raw() ([]HeliobusSkill, error) {
 // Can be called manually in conjunction with HeliobusSkillAccessor.LoadData to preload everything
 func (a *HeliobusSkillAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSkillIconPath[d.SkillIconPath] = d
-		a._dataRelatedEventID[d.RelatedEventID] = d
-		a._dataSkillUIPosition[d.SkillUIPosition] = d
 		a._dataHeliobusSkillID[d.HeliobusSkillID] = d
+		a._dataRelatedEventID[d.RelatedEventID] = d
+		a._dataSkillIconPath[d.SkillIconPath] = d
+		a._dataSkillUIPosition[d.SkillUIPosition] = d
 		a._dataUnlockMissionID[d.UnlockMissionID] = d
 		a._dataUnlockToastMissionID[d.UnlockToastMissionID] = d
 	}
-}
-
-// BySkillIconPath returns the HeliobusSkill uniquely identified by SkillIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *HeliobusSkillAccessor) BySkillIconPath(identifier string) (HeliobusSkill, error) {
-	if a._dataSkillIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusSkill{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSkillIconPath[identifier], nil
-}
-
-// ByRelatedEventID returns the HeliobusSkill uniquely identified by RelatedEventID
-//
-// Error is only non-nil if the source errors out
-func (a *HeliobusSkillAccessor) ByRelatedEventID(identifier float64) (HeliobusSkill, error) {
-	if a._dataRelatedEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusSkill{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRelatedEventID[identifier], nil
-}
-
-// BySkillUIPosition returns the HeliobusSkill uniquely identified by SkillUIPosition
-//
-// Error is only non-nil if the source errors out
-func (a *HeliobusSkillAccessor) BySkillUIPosition(identifier float64) (HeliobusSkill, error) {
-	if a._dataSkillUIPosition == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusSkill{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSkillUIPosition[identifier], nil
 }
 
 // ByHeliobusSkillID returns the HeliobusSkill uniquely identified by HeliobusSkillID
@@ -114,13 +71,63 @@ func (a *HeliobusSkillAccessor) BySkillUIPosition(identifier float64) (HeliobusS
 // Error is only non-nil if the source errors out
 func (a *HeliobusSkillAccessor) ByHeliobusSkillID(identifier float64) (HeliobusSkill, error) {
 	if a._dataHeliobusSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataHeliobusSkillID[identifier], nil
+}
+
+// ByRelatedEventID returns the HeliobusSkill uniquely identified by RelatedEventID
+//
+// Error is only non-nil if the source errors out
+func (a *HeliobusSkillAccessor) ByRelatedEventID(identifier float64) (HeliobusSkill, error) {
+	if a._dataRelatedEventID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusSkill{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRelatedEventID[identifier], nil
+}
+
+// BySkillIconPath returns the HeliobusSkill uniquely identified by SkillIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *HeliobusSkillAccessor) BySkillIconPath(identifier string) (HeliobusSkill, error) {
+	if a._dataSkillIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusSkill{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSkillIconPath[identifier], nil
+}
+
+// BySkillUIPosition returns the HeliobusSkill uniquely identified by SkillUIPosition
+//
+// Error is only non-nil if the source errors out
+func (a *HeliobusSkillAccessor) BySkillUIPosition(identifier float64) (HeliobusSkill, error) {
+	if a._dataSkillUIPosition == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusSkill{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSkillUIPosition[identifier], nil
 }
 
 // ByUnlockMissionID returns the HeliobusSkill uniquely identified by UnlockMissionID
@@ -128,9 +135,11 @@ func (a *HeliobusSkillAccessor) ByHeliobusSkillID(identifier float64) (HeliobusS
 // Error is only non-nil if the source errors out
 func (a *HeliobusSkillAccessor) ByUnlockMissionID(identifier float64) (HeliobusSkill, error) {
 	if a._dataUnlockMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -142,9 +151,11 @@ func (a *HeliobusSkillAccessor) ByUnlockMissionID(identifier float64) (HeliobusS
 // Error is only non-nil if the source errors out
 func (a *HeliobusSkillAccessor) ByUnlockToastMissionID(identifier float64) (HeliobusSkill, error) {
 	if a._dataUnlockToastMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusSkill{}, err
+			}
 		}
 		a.GroupData()
 	}

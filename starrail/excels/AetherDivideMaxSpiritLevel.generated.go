@@ -38,7 +38,6 @@ func (a *AetherDivideMaxSpiritLevelAccessor) Raw() ([]AetherDivideMaxSpiritLevel
 		if err != nil {
 			return []AetherDivideMaxSpiritLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *AetherDivideMaxSpiritLevelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AetherDivideMaxSpiritLevelAccessor) ByMaxSpiritLevel(identifier float64) (AetherDivideMaxSpiritLevel, error) {
 	if a._dataMaxSpiritLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideMaxSpiritLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideMaxSpiritLevel{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *AetherDivideMaxSpiritLevelAccessor) ByMaxSpiritLevel(identifier float64
 // Error is only non-nil if the source errors out
 func (a *AetherDivideMaxSpiritLevelAccessor) ByUnlockID(identifier float64) (AetherDivideMaxSpiritLevel, error) {
 	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideMaxSpiritLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideMaxSpiritLevel{}, err
+			}
 		}
 		a.GroupData()
 	}

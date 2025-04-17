@@ -37,7 +37,6 @@ func (a *ItemHintSpecialAccessor) Raw() ([]ItemHintSpecial, error) {
 		if err != nil {
 			return []ItemHintSpecial{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ItemHintSpecialAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemHintSpecialAccessor) ByIGIDDGDHAGI(identifier float64) (ItemHintSpecial, error) {
 	if a._dataIGIDDGDHAGI == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemHintSpecial{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemHintSpecial{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *ActivityRaidCollectionConstAccessor) Raw() ([]ActivityRaidCollectionCon
 		if err != nil {
 			return []ActivityRaidCollectionConst{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ActivityRaidCollectionConstAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityRaidCollectionConstAccessor) ByConstValueName(identifier string) (ActivityRaidCollectionConst, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidCollectionConst{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidCollectionConst{}, err
+			}
 		}
 		a.GroupData()
 	}

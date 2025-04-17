@@ -30,10 +30,10 @@ type ActivityGuessSilhouette struct {
 type ActivityGuessSilhouetteAccessor struct {
 	_data                   []ActivityGuessSilhouette
 	_dataAim02              map[string]ActivityGuessSilhouette
+	_dataKeyIconPath        map[string]ActivityGuessSilhouette
 	_dataSilhouetteID       map[float64]ActivityGuessSilhouette
 	_dataSilhouetteIconPath map[string]ActivityGuessSilhouette
 	_dataTitle              map[string]ActivityGuessSilhouette
-	_dataKeyIconPath        map[string]ActivityGuessSilhouette
 }
 
 // LoadData retrieves the data. Must be called before ActivityGuessSilhouette.GroupData
@@ -57,7 +57,6 @@ func (a *ActivityGuessSilhouetteAccessor) Raw() ([]ActivityGuessSilhouette, erro
 		if err != nil {
 			return []ActivityGuessSilhouette{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,10 +66,10 @@ func (a *ActivityGuessSilhouetteAccessor) Raw() ([]ActivityGuessSilhouette, erro
 func (a *ActivityGuessSilhouetteAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataAim02[d.Aim02] = d
+		a._dataKeyIconPath[d.KeyIconPath] = d
 		a._dataSilhouetteID[d.SilhouetteID] = d
 		a._dataSilhouetteIconPath[d.SilhouetteIconPath] = d
 		a._dataTitle[d.Title] = d
-		a._dataKeyIconPath[d.KeyIconPath] = d
 	}
 }
 
@@ -79,13 +78,31 @@ func (a *ActivityGuessSilhouetteAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityGuessSilhouetteAccessor) ByAim02(identifier string) (ActivityGuessSilhouette, error) {
 	if a._dataAim02 == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityGuessSilhouette{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityGuessSilhouette{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAim02[identifier], nil
+}
+
+// ByKeyIconPath returns the ActivityGuessSilhouette uniquely identified by KeyIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityGuessSilhouetteAccessor) ByKeyIconPath(identifier string) (ActivityGuessSilhouette, error) {
+	if a._dataKeyIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityGuessSilhouette{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataKeyIconPath[identifier], nil
 }
 
 // BySilhouetteID returns the ActivityGuessSilhouette uniquely identified by SilhouetteID
@@ -93,9 +110,11 @@ func (a *ActivityGuessSilhouetteAccessor) ByAim02(identifier string) (ActivityGu
 // Error is only non-nil if the source errors out
 func (a *ActivityGuessSilhouetteAccessor) BySilhouetteID(identifier float64) (ActivityGuessSilhouette, error) {
 	if a._dataSilhouetteID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityGuessSilhouette{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityGuessSilhouette{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -107,9 +126,11 @@ func (a *ActivityGuessSilhouetteAccessor) BySilhouetteID(identifier float64) (Ac
 // Error is only non-nil if the source errors out
 func (a *ActivityGuessSilhouetteAccessor) BySilhouetteIconPath(identifier string) (ActivityGuessSilhouette, error) {
 	if a._dataSilhouetteIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityGuessSilhouette{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityGuessSilhouette{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -121,25 +142,13 @@ func (a *ActivityGuessSilhouetteAccessor) BySilhouetteIconPath(identifier string
 // Error is only non-nil if the source errors out
 func (a *ActivityGuessSilhouetteAccessor) ByTitle(identifier string) (ActivityGuessSilhouette, error) {
 	if a._dataTitle == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityGuessSilhouette{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityGuessSilhouette{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTitle[identifier], nil
-}
-
-// ByKeyIconPath returns the ActivityGuessSilhouette uniquely identified by KeyIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityGuessSilhouetteAccessor) ByKeyIconPath(identifier string) (ActivityGuessSilhouette, error) {
-	if a._dataKeyIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityGuessSilhouette{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataKeyIconPath[identifier], nil
 }

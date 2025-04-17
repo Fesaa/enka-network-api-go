@@ -30,10 +30,10 @@ type EquipmentConfig struct {
 }
 type EquipmentConfigAccessor struct {
 	_data              []EquipmentConfig
-	_dataSkillID       map[float64]EquipmentConfig
-	_dataThumbnailPath map[string]EquipmentConfig
 	_dataEquipmentID   map[float64]EquipmentConfig
 	_dataImagePath     map[string]EquipmentConfig
+	_dataSkillID       map[float64]EquipmentConfig
+	_dataThumbnailPath map[string]EquipmentConfig
 }
 
 // LoadData retrieves the data. Must be called before EquipmentConfig.GroupData
@@ -57,7 +57,6 @@ func (a *EquipmentConfigAccessor) Raw() ([]EquipmentConfig, error) {
 		if err != nil {
 			return []EquipmentConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,39 +65,11 @@ func (a *EquipmentConfigAccessor) Raw() ([]EquipmentConfig, error) {
 // Can be called manually in conjunction with EquipmentConfigAccessor.LoadData to preload everything
 func (a *EquipmentConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSkillID[d.SkillID] = d
-		a._dataThumbnailPath[d.ThumbnailPath] = d
 		a._dataEquipmentID[d.EquipmentID] = d
 		a._dataImagePath[d.ImagePath] = d
+		a._dataSkillID[d.SkillID] = d
+		a._dataThumbnailPath[d.ThumbnailPath] = d
 	}
-}
-
-// BySkillID returns the EquipmentConfig uniquely identified by SkillID
-//
-// Error is only non-nil if the source errors out
-func (a *EquipmentConfigAccessor) BySkillID(identifier float64) (EquipmentConfig, error) {
-	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EquipmentConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSkillID[identifier], nil
-}
-
-// ByThumbnailPath returns the EquipmentConfig uniquely identified by ThumbnailPath
-//
-// Error is only non-nil if the source errors out
-func (a *EquipmentConfigAccessor) ByThumbnailPath(identifier string) (EquipmentConfig, error) {
-	if a._dataThumbnailPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EquipmentConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataThumbnailPath[identifier], nil
 }
 
 // ByEquipmentID returns the EquipmentConfig uniquely identified by EquipmentID
@@ -106,9 +77,11 @@ func (a *EquipmentConfigAccessor) ByThumbnailPath(identifier string) (EquipmentC
 // Error is only non-nil if the source errors out
 func (a *EquipmentConfigAccessor) ByEquipmentID(identifier float64) (EquipmentConfig, error) {
 	if a._dataEquipmentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EquipmentConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EquipmentConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -120,11 +93,45 @@ func (a *EquipmentConfigAccessor) ByEquipmentID(identifier float64) (EquipmentCo
 // Error is only non-nil if the source errors out
 func (a *EquipmentConfigAccessor) ByImagePath(identifier string) (EquipmentConfig, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EquipmentConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EquipmentConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataImagePath[identifier], nil
+}
+
+// BySkillID returns the EquipmentConfig uniquely identified by SkillID
+//
+// Error is only non-nil if the source errors out
+func (a *EquipmentConfigAccessor) BySkillID(identifier float64) (EquipmentConfig, error) {
+	if a._dataSkillID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EquipmentConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSkillID[identifier], nil
+}
+
+// ByThumbnailPath returns the EquipmentConfig uniquely identified by ThumbnailPath
+//
+// Error is only non-nil if the source errors out
+func (a *EquipmentConfigAccessor) ByThumbnailPath(identifier string) (EquipmentConfig, error) {
+	if a._dataThumbnailPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EquipmentConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataThumbnailPath[identifier], nil
 }

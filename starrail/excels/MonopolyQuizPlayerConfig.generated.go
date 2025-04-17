@@ -40,7 +40,6 @@ func (a *MonopolyQuizPlayerConfigAccessor) Raw() ([]MonopolyQuizPlayerConfig, er
 		if err != nil {
 			return []MonopolyQuizPlayerConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *MonopolyQuizPlayerConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyQuizPlayerConfigAccessor) ByIconPath(identifier string) (MonopolyQuizPlayerConfig, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyQuizPlayerConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyQuizPlayerConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *MonopolyQuizPlayerConfigAccessor) ByIconPath(identifier string) (Monopo
 // Error is only non-nil if the source errors out
 func (a *MonopolyQuizPlayerConfigAccessor) ByQuizPlayerID(identifier float64) (MonopolyQuizPlayerConfig, error) {
 	if a._dataQuizPlayerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyQuizPlayerConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyQuizPlayerConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

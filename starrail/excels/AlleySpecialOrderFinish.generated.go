@@ -41,7 +41,6 @@ func (a *AlleySpecialOrderFinishAccessor) Raw() ([]AlleySpecialOrderFinish, erro
 		if err != nil {
 			return []AlleySpecialOrderFinish{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *AlleySpecialOrderFinishAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AlleySpecialOrderFinishAccessor) BySpecialOrderFinishID(identifier float64) (AlleySpecialOrderFinish, error) {
 	if a._dataSpecialOrderFinishID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleySpecialOrderFinish{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleySpecialOrderFinish{}, err
+			}
 		}
 		a.GroupData()
 	}

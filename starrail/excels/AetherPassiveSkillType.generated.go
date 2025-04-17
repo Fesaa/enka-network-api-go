@@ -14,8 +14,8 @@ type AetherPassiveSkillType struct {
 }
 type AetherPassiveSkillTypeAccessor struct {
 	_data         []AetherPassiveSkillType
-	_dataName     map[string]AetherPassiveSkillType
 	_dataIconPath map[string]AetherPassiveSkillType
+	_dataName     map[string]AetherPassiveSkillType
 }
 
 // LoadData retrieves the data. Must be called before AetherPassiveSkillType.GroupData
@@ -39,7 +39,6 @@ func (a *AetherPassiveSkillTypeAccessor) Raw() ([]AetherPassiveSkillType, error)
 		if err != nil {
 			return []AetherPassiveSkillType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *AetherPassiveSkillTypeAccessor) Raw() ([]AetherPassiveSkillType, error)
 // Can be called manually in conjunction with AetherPassiveSkillTypeAccessor.LoadData to preload everything
 func (a *AetherPassiveSkillTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataName[d.Name] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataName[d.Name] = d
 	}
-}
-
-// ByName returns the AetherPassiveSkillType uniquely identified by Name
-//
-// Error is only non-nil if the source errors out
-func (a *AetherPassiveSkillTypeAccessor) ByName(identifier string) (AetherPassiveSkillType, error) {
-	if a._dataName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherPassiveSkillType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataName[identifier], nil
 }
 
 // ByIconPath returns the AetherPassiveSkillType uniquely identified by IconPath
@@ -72,11 +57,29 @@ func (a *AetherPassiveSkillTypeAccessor) ByName(identifier string) (AetherPassiv
 // Error is only non-nil if the source errors out
 func (a *AetherPassiveSkillTypeAccessor) ByIconPath(identifier string) (AetherPassiveSkillType, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherPassiveSkillType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherPassiveSkillType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// ByName returns the AetherPassiveSkillType uniquely identified by Name
+//
+// Error is only non-nil if the source errors out
+func (a *AetherPassiveSkillTypeAccessor) ByName(identifier string) (AetherPassiveSkillType, error) {
+	if a._dataName == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherPassiveSkillType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataName[identifier], nil
 }

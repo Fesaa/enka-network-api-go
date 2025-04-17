@@ -14,9 +14,9 @@ type EquipmentExpItemConfig struct {
 }
 type EquipmentExpItemConfigAccessor struct {
 	_data           []EquipmentExpItemConfig
-	_dataItemID     map[float64]EquipmentExpItemConfig
-	_dataExpProvide map[float64]EquipmentExpItemConfig
 	_dataCoinCost   map[float64]EquipmentExpItemConfig
+	_dataExpProvide map[float64]EquipmentExpItemConfig
+	_dataItemID     map[float64]EquipmentExpItemConfig
 }
 
 // LoadData retrieves the data. Must be called before EquipmentExpItemConfig.GroupData
@@ -40,7 +40,6 @@ func (a *EquipmentExpItemConfigAccessor) Raw() ([]EquipmentExpItemConfig, error)
 		if err != nil {
 			return []EquipmentExpItemConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,38 +48,10 @@ func (a *EquipmentExpItemConfigAccessor) Raw() ([]EquipmentExpItemConfig, error)
 // Can be called manually in conjunction with EquipmentExpItemConfigAccessor.LoadData to preload everything
 func (a *EquipmentExpItemConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataItemID[d.ItemID] = d
-		a._dataExpProvide[d.ExpProvide] = d
 		a._dataCoinCost[d.CoinCost] = d
+		a._dataExpProvide[d.ExpProvide] = d
+		a._dataItemID[d.ItemID] = d
 	}
-}
-
-// ByItemID returns the EquipmentExpItemConfig uniquely identified by ItemID
-//
-// Error is only non-nil if the source errors out
-func (a *EquipmentExpItemConfigAccessor) ByItemID(identifier float64) (EquipmentExpItemConfig, error) {
-	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EquipmentExpItemConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemID[identifier], nil
-}
-
-// ByExpProvide returns the EquipmentExpItemConfig uniquely identified by ExpProvide
-//
-// Error is only non-nil if the source errors out
-func (a *EquipmentExpItemConfigAccessor) ByExpProvide(identifier float64) (EquipmentExpItemConfig, error) {
-	if a._dataExpProvide == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EquipmentExpItemConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataExpProvide[identifier], nil
 }
 
 // ByCoinCost returns the EquipmentExpItemConfig uniquely identified by CoinCost
@@ -88,11 +59,45 @@ func (a *EquipmentExpItemConfigAccessor) ByExpProvide(identifier float64) (Equip
 // Error is only non-nil if the source errors out
 func (a *EquipmentExpItemConfigAccessor) ByCoinCost(identifier float64) (EquipmentExpItemConfig, error) {
 	if a._dataCoinCost == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EquipmentExpItemConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EquipmentExpItemConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCoinCost[identifier], nil
+}
+
+// ByExpProvide returns the EquipmentExpItemConfig uniquely identified by ExpProvide
+//
+// Error is only non-nil if the source errors out
+func (a *EquipmentExpItemConfigAccessor) ByExpProvide(identifier float64) (EquipmentExpItemConfig, error) {
+	if a._dataExpProvide == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EquipmentExpItemConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataExpProvide[identifier], nil
+}
+
+// ByItemID returns the EquipmentExpItemConfig uniquely identified by ItemID
+//
+// Error is only non-nil if the source errors out
+func (a *EquipmentExpItemConfigAccessor) ByItemID(identifier float64) (EquipmentExpItemConfig, error) {
+	if a._dataItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EquipmentExpItemConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemID[identifier], nil
 }

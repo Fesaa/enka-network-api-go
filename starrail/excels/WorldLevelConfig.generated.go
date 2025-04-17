@@ -42,7 +42,6 @@ func (a *WorldLevelConfigAccessor) Raw() ([]WorldLevelConfig, error) {
 		if err != nil {
 			return []WorldLevelConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *WorldLevelConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *WorldLevelConfigAccessor) ByMaxPlayerLevel(identifier float64) (WorldLevelConfig, error) {
 	if a._dataMaxPlayerLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return WorldLevelConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return WorldLevelConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

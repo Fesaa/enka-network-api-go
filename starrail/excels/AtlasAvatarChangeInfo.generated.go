@@ -15,10 +15,10 @@ type AtlasAvatarChangeInfo struct {
 }
 type AtlasAvatarChangeInfoAccessor struct {
 	_data            []AtlasAvatarChangeInfo
-	_dataOELNFIJLCOL map[float64]AtlasAvatarChangeInfo
 	_dataCCOFCKBMMMI map[float64]AtlasAvatarChangeInfo
 	_dataDJPCAIKIONP map[float64]AtlasAvatarChangeInfo
 	_dataEBBHGBKEPAA map[float64]AtlasAvatarChangeInfo
+	_dataOELNFIJLCOL map[float64]AtlasAvatarChangeInfo
 }
 
 // LoadData retrieves the data. Must be called before AtlasAvatarChangeInfo.GroupData
@@ -42,7 +42,6 @@ func (a *AtlasAvatarChangeInfoAccessor) Raw() ([]AtlasAvatarChangeInfo, error) {
 		if err != nil {
 			return []AtlasAvatarChangeInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,25 +50,11 @@ func (a *AtlasAvatarChangeInfoAccessor) Raw() ([]AtlasAvatarChangeInfo, error) {
 // Can be called manually in conjunction with AtlasAvatarChangeInfoAccessor.LoadData to preload everything
 func (a *AtlasAvatarChangeInfoAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataOELNFIJLCOL[d.OELNFIJLCOL] = d
 		a._dataCCOFCKBMMMI[d.CCOFCKBMMMI] = d
 		a._dataDJPCAIKIONP[d.DJPCAIKIONP] = d
 		a._dataEBBHGBKEPAA[d.EBBHGBKEPAA] = d
+		a._dataOELNFIJLCOL[d.OELNFIJLCOL] = d
 	}
-}
-
-// ByOELNFIJLCOL returns the AtlasAvatarChangeInfo uniquely identified by OELNFIJLCOL
-//
-// Error is only non-nil if the source errors out
-func (a *AtlasAvatarChangeInfoAccessor) ByOELNFIJLCOL(identifier float64) (AtlasAvatarChangeInfo, error) {
-	if a._dataOELNFIJLCOL == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AtlasAvatarChangeInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOELNFIJLCOL[identifier], nil
 }
 
 // ByCCOFCKBMMMI returns the AtlasAvatarChangeInfo uniquely identified by CCOFCKBMMMI
@@ -77,9 +62,11 @@ func (a *AtlasAvatarChangeInfoAccessor) ByOELNFIJLCOL(identifier float64) (Atlas
 // Error is only non-nil if the source errors out
 func (a *AtlasAvatarChangeInfoAccessor) ByCCOFCKBMMMI(identifier float64) (AtlasAvatarChangeInfo, error) {
 	if a._dataCCOFCKBMMMI == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AtlasAvatarChangeInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AtlasAvatarChangeInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -91,9 +78,11 @@ func (a *AtlasAvatarChangeInfoAccessor) ByCCOFCKBMMMI(identifier float64) (Atlas
 // Error is only non-nil if the source errors out
 func (a *AtlasAvatarChangeInfoAccessor) ByDJPCAIKIONP(identifier float64) (AtlasAvatarChangeInfo, error) {
 	if a._dataDJPCAIKIONP == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AtlasAvatarChangeInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AtlasAvatarChangeInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -105,11 +94,29 @@ func (a *AtlasAvatarChangeInfoAccessor) ByDJPCAIKIONP(identifier float64) (Atlas
 // Error is only non-nil if the source errors out
 func (a *AtlasAvatarChangeInfoAccessor) ByEBBHGBKEPAA(identifier float64) (AtlasAvatarChangeInfo, error) {
 	if a._dataEBBHGBKEPAA == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AtlasAvatarChangeInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AtlasAvatarChangeInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEBBHGBKEPAA[identifier], nil
+}
+
+// ByOELNFIJLCOL returns the AtlasAvatarChangeInfo uniquely identified by OELNFIJLCOL
+//
+// Error is only non-nil if the source errors out
+func (a *AtlasAvatarChangeInfoAccessor) ByOELNFIJLCOL(identifier float64) (AtlasAvatarChangeInfo, error) {
+	if a._dataOELNFIJLCOL == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AtlasAvatarChangeInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOELNFIJLCOL[identifier], nil
 }

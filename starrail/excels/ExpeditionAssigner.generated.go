@@ -38,7 +38,6 @@ func (a *ExpeditionAssignerAccessor) Raw() ([]ExpeditionAssigner, error) {
 		if err != nil {
 			return []ExpeditionAssigner{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ExpeditionAssignerAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ExpeditionAssignerAccessor) ByAssignerID(identifier float64) (ExpeditionAssigner, error) {
 	if a._dataAssignerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ExpeditionAssigner{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ExpeditionAssigner{}, err
+			}
 		}
 		a.GroupData()
 	}

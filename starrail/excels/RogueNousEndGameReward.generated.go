@@ -17,9 +17,9 @@ type RogueNousEndGameReward struct {
 }
 type RogueNousEndGameRewardAccessor struct {
 	_data                []RogueNousEndGameReward
+	_dataEndGameRewardID map[float64]RogueNousEndGameReward
 	_dataQuestID         map[float64]RogueNousEndGameReward
 	_dataUnlockID        map[float64]RogueNousEndGameReward
-	_dataEndGameRewardID map[float64]RogueNousEndGameReward
 }
 
 // LoadData retrieves the data. Must be called before RogueNousEndGameReward.GroupData
@@ -43,7 +43,6 @@ func (a *RogueNousEndGameRewardAccessor) Raw() ([]RogueNousEndGameReward, error)
 		if err != nil {
 			return []RogueNousEndGameReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,10 +51,26 @@ func (a *RogueNousEndGameRewardAccessor) Raw() ([]RogueNousEndGameReward, error)
 // Can be called manually in conjunction with RogueNousEndGameRewardAccessor.LoadData to preload everything
 func (a *RogueNousEndGameRewardAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataEndGameRewardID[d.EndGameRewardID] = d
 		a._dataQuestID[d.QuestID] = d
 		a._dataUnlockID[d.UnlockID] = d
-		a._dataEndGameRewardID[d.EndGameRewardID] = d
 	}
+}
+
+// ByEndGameRewardID returns the RogueNousEndGameReward uniquely identified by EndGameRewardID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueNousEndGameRewardAccessor) ByEndGameRewardID(identifier float64) (RogueNousEndGameReward, error) {
+	if a._dataEndGameRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousEndGameReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEndGameRewardID[identifier], nil
 }
 
 // ByQuestID returns the RogueNousEndGameReward uniquely identified by QuestID
@@ -63,9 +78,11 @@ func (a *RogueNousEndGameRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousEndGameRewardAccessor) ByQuestID(identifier float64) (RogueNousEndGameReward, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousEndGameReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousEndGameReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,25 +94,13 @@ func (a *RogueNousEndGameRewardAccessor) ByQuestID(identifier float64) (RogueNou
 // Error is only non-nil if the source errors out
 func (a *RogueNousEndGameRewardAccessor) ByUnlockID(identifier float64) (RogueNousEndGameReward, error) {
 	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousEndGameReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousEndGameReward{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataUnlockID[identifier], nil
-}
-
-// ByEndGameRewardID returns the RogueNousEndGameReward uniquely identified by EndGameRewardID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueNousEndGameRewardAccessor) ByEndGameRewardID(identifier float64) (RogueNousEndGameReward, error) {
-	if a._dataEndGameRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousEndGameReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEndGameRewardID[identifier], nil
 }

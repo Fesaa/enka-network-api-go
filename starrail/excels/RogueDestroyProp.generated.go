@@ -39,7 +39,6 @@ func (a *RogueDestroyPropAccessor) Raw() ([]RogueDestroyProp, error) {
 		if err != nil {
 			return []RogueDestroyProp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueDestroyPropAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDestroyPropAccessor) ByParamGroupID(identifier float64) (RogueDestroyProp, error) {
 	if a._dataParamGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDestroyProp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDestroyProp{}, err
+			}
 		}
 		a.GroupData()
 	}

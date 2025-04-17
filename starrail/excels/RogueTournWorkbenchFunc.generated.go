@@ -41,7 +41,6 @@ func (a *RogueTournWorkbenchFuncAccessor) Raw() ([]RogueTournWorkbenchFunc, erro
 		if err != nil {
 			return []RogueTournWorkbenchFunc{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *RogueTournWorkbenchFuncAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournWorkbenchFuncAccessor) ByFuncID(identifier float64) (RogueTournWorkbenchFunc, error) {
 	if a._dataFuncID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournWorkbenchFunc{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournWorkbenchFunc{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *RogueTournWorkbenchFuncAccessor) ByFuncID(identifier float64) (RogueTou
 // Error is only non-nil if the source errors out
 func (a *RogueTournWorkbenchFuncAccessor) ByFuncType(identifier string) (RogueTournWorkbenchFunc, error) {
 	if a._dataFuncType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournWorkbenchFunc{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournWorkbenchFunc{}, err
+			}
 		}
 		a.GroupData()
 	}

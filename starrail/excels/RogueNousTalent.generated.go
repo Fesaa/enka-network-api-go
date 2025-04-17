@@ -49,7 +49,6 @@ func (a *RogueNousTalentAccessor) Raw() ([]RogueNousTalent, error) {
 		if err != nil {
 			return []RogueNousTalent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *RogueNousTalentAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousTalentAccessor) ByTalentID(identifier float64) (RogueNousTalent, error) {
 	if a._dataTalentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousTalent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousTalent{}, err
+			}
 		}
 		a.GroupData()
 	}

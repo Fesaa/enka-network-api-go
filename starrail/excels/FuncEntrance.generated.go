@@ -52,7 +52,6 @@ func (a *FuncEntranceAccessor) Raw() ([]FuncEntrance, error) {
 		if err != nil {
 			return []FuncEntrance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -70,9 +69,11 @@ func (a *FuncEntranceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FuncEntranceAccessor) ByID(identifier float64) (FuncEntrance, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FuncEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FuncEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}

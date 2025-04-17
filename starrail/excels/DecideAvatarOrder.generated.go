@@ -13,8 +13,8 @@ type DecideAvatarOrder struct {
 }
 type DecideAvatarOrderAccessor struct {
 	_data       []DecideAvatarOrder
-	_dataOrder  map[float64]DecideAvatarOrder
 	_dataItemID map[float64]DecideAvatarOrder
+	_dataOrder  map[float64]DecideAvatarOrder
 }
 
 // LoadData retrieves the data. Must be called before DecideAvatarOrder.GroupData
@@ -38,7 +38,6 @@ func (a *DecideAvatarOrderAccessor) Raw() ([]DecideAvatarOrder, error) {
 		if err != nil {
 			return []DecideAvatarOrder{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *DecideAvatarOrderAccessor) Raw() ([]DecideAvatarOrder, error) {
 // Can be called manually in conjunction with DecideAvatarOrderAccessor.LoadData to preload everything
 func (a *DecideAvatarOrderAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataOrder[d.Order] = d
 		a._dataItemID[d.ItemID] = d
+		a._dataOrder[d.Order] = d
 	}
-}
-
-// ByOrder returns the DecideAvatarOrder uniquely identified by Order
-//
-// Error is only non-nil if the source errors out
-func (a *DecideAvatarOrderAccessor) ByOrder(identifier float64) (DecideAvatarOrder, error) {
-	if a._dataOrder == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DecideAvatarOrder{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOrder[identifier], nil
 }
 
 // ByItemID returns the DecideAvatarOrder uniquely identified by ItemID
@@ -71,11 +56,29 @@ func (a *DecideAvatarOrderAccessor) ByOrder(identifier float64) (DecideAvatarOrd
 // Error is only non-nil if the source errors out
 func (a *DecideAvatarOrderAccessor) ByItemID(identifier float64) (DecideAvatarOrder, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DecideAvatarOrder{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DecideAvatarOrder{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataItemID[identifier], nil
+}
+
+// ByOrder returns the DecideAvatarOrder uniquely identified by Order
+//
+// Error is only non-nil if the source errors out
+func (a *DecideAvatarOrderAccessor) ByOrder(identifier float64) (DecideAvatarOrder, error) {
+	if a._dataOrder == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DecideAvatarOrder{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOrder[identifier], nil
 }

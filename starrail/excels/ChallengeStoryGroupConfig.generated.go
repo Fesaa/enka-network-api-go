@@ -23,8 +23,8 @@ type ChallengeStoryGroupConfig struct {
 }
 type ChallengeStoryGroupConfigAccessor struct {
 	_data               []ChallengeStoryGroupConfig
-	_dataScheduleDataID map[float64]ChallengeStoryGroupConfig
 	_dataGroupID        map[float64]ChallengeStoryGroupConfig
+	_dataScheduleDataID map[float64]ChallengeStoryGroupConfig
 }
 
 // LoadData retrieves the data. Must be called before ChallengeStoryGroupConfig.GroupData
@@ -48,7 +48,6 @@ func (a *ChallengeStoryGroupConfigAccessor) Raw() ([]ChallengeStoryGroupConfig, 
 		if err != nil {
 			return []ChallengeStoryGroupConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,23 +56,9 @@ func (a *ChallengeStoryGroupConfigAccessor) Raw() ([]ChallengeStoryGroupConfig, 
 // Can be called manually in conjunction with ChallengeStoryGroupConfigAccessor.LoadData to preload everything
 func (a *ChallengeStoryGroupConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataScheduleDataID[d.ScheduleDataID] = d
 		a._dataGroupID[d.GroupID] = d
+		a._dataScheduleDataID[d.ScheduleDataID] = d
 	}
-}
-
-// ByScheduleDataID returns the ChallengeStoryGroupConfig uniquely identified by ScheduleDataID
-//
-// Error is only non-nil if the source errors out
-func (a *ChallengeStoryGroupConfigAccessor) ByScheduleDataID(identifier float64) (ChallengeStoryGroupConfig, error) {
-	if a._dataScheduleDataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeStoryGroupConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataScheduleDataID[identifier], nil
 }
 
 // ByGroupID returns the ChallengeStoryGroupConfig uniquely identified by GroupID
@@ -81,11 +66,29 @@ func (a *ChallengeStoryGroupConfigAccessor) ByScheduleDataID(identifier float64)
 // Error is only non-nil if the source errors out
 func (a *ChallengeStoryGroupConfigAccessor) ByGroupID(identifier float64) (ChallengeStoryGroupConfig, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeStoryGroupConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeStoryGroupConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGroupID[identifier], nil
+}
+
+// ByScheduleDataID returns the ChallengeStoryGroupConfig uniquely identified by ScheduleDataID
+//
+// Error is only non-nil if the source errors out
+func (a *ChallengeStoryGroupConfigAccessor) ByScheduleDataID(identifier float64) (ChallengeStoryGroupConfig, error) {
+	if a._dataScheduleDataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeStoryGroupConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataScheduleDataID[identifier], nil
 }

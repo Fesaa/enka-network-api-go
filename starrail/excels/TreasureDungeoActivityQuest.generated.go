@@ -39,7 +39,6 @@ func (a *TreasureDungeoActivityQuestAccessor) Raw() ([]TreasureDungeoActivityQue
 		if err != nil {
 			return []TreasureDungeoActivityQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

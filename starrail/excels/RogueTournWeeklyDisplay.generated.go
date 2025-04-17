@@ -43,7 +43,6 @@ func (a *RogueTournWeeklyDisplayAccessor) Raw() ([]RogueTournWeeklyDisplay, erro
 		if err != nil {
 			return []RogueTournWeeklyDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *RogueTournWeeklyDisplayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournWeeklyDisplayAccessor) ByWeeklyDisplayID(identifier float64) (RogueTournWeeklyDisplay, error) {
 	if a._dataWeeklyDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournWeeklyDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournWeeklyDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}

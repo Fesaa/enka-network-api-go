@@ -14,8 +14,8 @@ type MessageContactsCondition struct {
 }
 type MessageContactsConditionAccessor struct {
 	_data              []MessageContactsCondition
-	_dataID            map[float64]MessageContactsCondition
 	_dataFakeContactID map[float64]MessageContactsCondition
+	_dataID            map[float64]MessageContactsCondition
 }
 
 // LoadData retrieves the data. Must be called before MessageContactsCondition.GroupData
@@ -39,7 +39,6 @@ func (a *MessageContactsConditionAccessor) Raw() ([]MessageContactsCondition, er
 		if err != nil {
 			return []MessageContactsCondition{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *MessageContactsConditionAccessor) Raw() ([]MessageContactsCondition, er
 // Can be called manually in conjunction with MessageContactsConditionAccessor.LoadData to preload everything
 func (a *MessageContactsConditionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataFakeContactID[d.FakeContactID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the MessageContactsCondition uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *MessageContactsConditionAccessor) ByID(identifier float64) (MessageContactsCondition, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageContactsCondition{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByFakeContactID returns the MessageContactsCondition uniquely identified by FakeContactID
@@ -72,11 +57,29 @@ func (a *MessageContactsConditionAccessor) ByID(identifier float64) (MessageCont
 // Error is only non-nil if the source errors out
 func (a *MessageContactsConditionAccessor) ByFakeContactID(identifier float64) (MessageContactsCondition, error) {
 	if a._dataFakeContactID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageContactsCondition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageContactsCondition{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFakeContactID[identifier], nil
+}
+
+// ByID returns the MessageContactsCondition uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *MessageContactsConditionAccessor) ByID(identifier float64) (MessageContactsCondition, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageContactsCondition{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

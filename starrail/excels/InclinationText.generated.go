@@ -38,7 +38,6 @@ func (a *InclinationTextAccessor) Raw() ([]InclinationText, error) {
 		if err != nil {
 			return []InclinationText{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *InclinationTextAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *InclinationTextAccessor) ByTalkSentenceID(identifier float64) (InclinationText, error) {
 	if a._dataTalkSentenceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InclinationText{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InclinationText{}, err
+			}
 		}
 		a.GroupData()
 	}

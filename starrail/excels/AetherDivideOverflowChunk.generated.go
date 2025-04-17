@@ -17,9 +17,9 @@ type AetherDivideOverflowChunk struct {
 }
 type AetherDivideOverflowChunkAccessor struct {
 	_data         []AetherDivideOverflowChunk
-	_dataSpiritID map[float64]AetherDivideOverflowChunk
-	_dataID       map[float64]AetherDivideOverflowChunk
 	_dataEventID  map[float64]AetherDivideOverflowChunk
+	_dataID       map[float64]AetherDivideOverflowChunk
+	_dataSpiritID map[float64]AetherDivideOverflowChunk
 }
 
 // LoadData retrieves the data. Must be called before AetherDivideOverflowChunk.GroupData
@@ -43,7 +43,6 @@ func (a *AetherDivideOverflowChunkAccessor) Raw() ([]AetherDivideOverflowChunk, 
 		if err != nil {
 			return []AetherDivideOverflowChunk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,38 +51,10 @@ func (a *AetherDivideOverflowChunkAccessor) Raw() ([]AetherDivideOverflowChunk, 
 // Can be called manually in conjunction with AetherDivideOverflowChunkAccessor.LoadData to preload everything
 func (a *AetherDivideOverflowChunkAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSpiritID[d.SpiritID] = d
-		a._dataID[d.ID] = d
 		a._dataEventID[d.EventID] = d
+		a._dataID[d.ID] = d
+		a._dataSpiritID[d.SpiritID] = d
 	}
-}
-
-// BySpiritID returns the AetherDivideOverflowChunk uniquely identified by SpiritID
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideOverflowChunkAccessor) BySpiritID(identifier float64) (AetherDivideOverflowChunk, error) {
-	if a._dataSpiritID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideOverflowChunk{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSpiritID[identifier], nil
-}
-
-// ByID returns the AetherDivideOverflowChunk uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideOverflowChunkAccessor) ByID(identifier float64) (AetherDivideOverflowChunk, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideOverflowChunk{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByEventID returns the AetherDivideOverflowChunk uniquely identified by EventID
@@ -91,11 +62,45 @@ func (a *AetherDivideOverflowChunkAccessor) ByID(identifier float64) (AetherDivi
 // Error is only non-nil if the source errors out
 func (a *AetherDivideOverflowChunkAccessor) ByEventID(identifier float64) (AetherDivideOverflowChunk, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideOverflowChunk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideOverflowChunk{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventID[identifier], nil
+}
+
+// ByID returns the AetherDivideOverflowChunk uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideOverflowChunkAccessor) ByID(identifier float64) (AetherDivideOverflowChunk, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideOverflowChunk{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// BySpiritID returns the AetherDivideOverflowChunk uniquely identified by SpiritID
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideOverflowChunkAccessor) BySpiritID(identifier float64) (AetherDivideOverflowChunk, error) {
+	if a._dataSpiritID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideOverflowChunk{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSpiritID[identifier], nil
 }

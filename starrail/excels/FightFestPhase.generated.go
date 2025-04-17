@@ -51,7 +51,6 @@ func (a *FightFestPhaseAccessor) Raw() ([]FightFestPhase, error) {
 		if err != nil {
 			return []FightFestPhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -71,9 +70,11 @@ func (a *FightFestPhaseAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FightFestPhaseAccessor) ByPhaseID(identifier float64) (FightFestPhase, error) {
 	if a._dataPhaseID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestPhase{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -85,9 +86,11 @@ func (a *FightFestPhaseAccessor) ByPhaseID(identifier float64) (FightFestPhase, 
 // Error is only non-nil if the source errors out
 func (a *FightFestPhaseAccessor) BySortWeight(identifier float64) (FightFestPhase, error) {
 	if a._dataSortWeight == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestPhase{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -99,9 +102,11 @@ func (a *FightFestPhaseAccessor) BySortWeight(identifier float64) (FightFestPhas
 // Error is only non-nil if the source errors out
 func (a *FightFestPhaseAccessor) ByUnlockSubMissionID(identifier float64) (FightFestPhase, error) {
 	if a._dataUnlockSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestPhase{}, err
+			}
 		}
 		a.GroupData()
 	}

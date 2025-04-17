@@ -26,8 +26,8 @@ type ActivityItemConfigAvatar struct {
 }
 type ActivityItemConfigAvatarAccessor struct {
 	_data                   []ActivityItemConfigAvatar
-	_dataItemAvatarIconPath map[string]ActivityItemConfigAvatar
 	_dataID                 map[float64]ActivityItemConfigAvatar
+	_dataItemAvatarIconPath map[string]ActivityItemConfigAvatar
 	_dataItemFigureIconPath map[string]ActivityItemConfigAvatar
 	_dataItemIconPath       map[string]ActivityItemConfigAvatar
 }
@@ -53,7 +53,6 @@ func (a *ActivityItemConfigAvatarAccessor) Raw() ([]ActivityItemConfigAvatar, er
 		if err != nil {
 			return []ActivityItemConfigAvatar{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,25 +61,11 @@ func (a *ActivityItemConfigAvatarAccessor) Raw() ([]ActivityItemConfigAvatar, er
 // Can be called manually in conjunction with ActivityItemConfigAvatarAccessor.LoadData to preload everything
 func (a *ActivityItemConfigAvatarAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataItemAvatarIconPath[d.ItemAvatarIconPath] = d
 		a._dataID[d.ID] = d
+		a._dataItemAvatarIconPath[d.ItemAvatarIconPath] = d
 		a._dataItemFigureIconPath[d.ItemFigureIconPath] = d
 		a._dataItemIconPath[d.ItemIconPath] = d
 	}
-}
-
-// ByItemAvatarIconPath returns the ActivityItemConfigAvatar uniquely identified by ItemAvatarIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityItemConfigAvatarAccessor) ByItemAvatarIconPath(identifier string) (ActivityItemConfigAvatar, error) {
-	if a._dataItemAvatarIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityItemConfigAvatar{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemAvatarIconPath[identifier], nil
 }
 
 // ByID returns the ActivityItemConfigAvatar uniquely identified by ID
@@ -88,13 +73,31 @@ func (a *ActivityItemConfigAvatarAccessor) ByItemAvatarIconPath(identifier strin
 // Error is only non-nil if the source errors out
 func (a *ActivityItemConfigAvatarAccessor) ByID(identifier float64) (ActivityItemConfigAvatar, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityItemConfigAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityItemConfigAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByItemAvatarIconPath returns the ActivityItemConfigAvatar uniquely identified by ItemAvatarIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityItemConfigAvatarAccessor) ByItemAvatarIconPath(identifier string) (ActivityItemConfigAvatar, error) {
+	if a._dataItemAvatarIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityItemConfigAvatar{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemAvatarIconPath[identifier], nil
 }
 
 // ByItemFigureIconPath returns the ActivityItemConfigAvatar uniquely identified by ItemFigureIconPath
@@ -102,9 +105,11 @@ func (a *ActivityItemConfigAvatarAccessor) ByID(identifier float64) (ActivityIte
 // Error is only non-nil if the source errors out
 func (a *ActivityItemConfigAvatarAccessor) ByItemFigureIconPath(identifier string) (ActivityItemConfigAvatar, error) {
 	if a._dataItemFigureIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityItemConfigAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityItemConfigAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -116,9 +121,11 @@ func (a *ActivityItemConfigAvatarAccessor) ByItemFigureIconPath(identifier strin
 // Error is only non-nil if the source errors out
 func (a *ActivityItemConfigAvatarAccessor) ByItemIconPath(identifier string) (ActivityItemConfigAvatar, error) {
 	if a._dataItemIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityItemConfigAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityItemConfigAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}

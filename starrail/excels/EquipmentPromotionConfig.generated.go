@@ -51,7 +51,6 @@ func (a *EquipmentPromotionConfigAccessor) Raw() ([]EquipmentPromotionConfig, er
 		if err != nil {
 			return []EquipmentPromotionConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -14,9 +14,9 @@ type ScheduleDataChallengeBoss struct {
 }
 type ScheduleDataChallengeBossAccessor struct {
 	_data          []ScheduleDataChallengeBoss
-	_dataID        map[float64]ScheduleDataChallengeBoss
 	_dataBeginTime map[string]ScheduleDataChallengeBoss
 	_dataEndTime   map[string]ScheduleDataChallengeBoss
+	_dataID        map[float64]ScheduleDataChallengeBoss
 }
 
 // LoadData retrieves the data. Must be called before ScheduleDataChallengeBoss.GroupData
@@ -40,7 +40,6 @@ func (a *ScheduleDataChallengeBossAccessor) Raw() ([]ScheduleDataChallengeBoss, 
 		if err != nil {
 			return []ScheduleDataChallengeBoss{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,24 +48,10 @@ func (a *ScheduleDataChallengeBossAccessor) Raw() ([]ScheduleDataChallengeBoss, 
 // Can be called manually in conjunction with ScheduleDataChallengeBossAccessor.LoadData to preload everything
 func (a *ScheduleDataChallengeBossAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the ScheduleDataChallengeBoss uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *ScheduleDataChallengeBossAccessor) ByID(identifier float64) (ScheduleDataChallengeBoss, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataChallengeBoss{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByBeginTime returns the ScheduleDataChallengeBoss uniquely identified by BeginTime
@@ -74,9 +59,11 @@ func (a *ScheduleDataChallengeBossAccessor) ByID(identifier float64) (ScheduleDa
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataChallengeBossAccessor) ByBeginTime(identifier string) (ScheduleDataChallengeBoss, error) {
 	if a._dataBeginTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataChallengeBoss{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataChallengeBoss{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,11 +75,29 @@ func (a *ScheduleDataChallengeBossAccessor) ByBeginTime(identifier string) (Sche
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataChallengeBossAccessor) ByEndTime(identifier string) (ScheduleDataChallengeBoss, error) {
 	if a._dataEndTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataChallengeBoss{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataChallengeBoss{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEndTime[identifier], nil
+}
+
+// ByID returns the ScheduleDataChallengeBoss uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ScheduleDataChallengeBossAccessor) ByID(identifier float64) (ScheduleDataChallengeBoss, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataChallengeBoss{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

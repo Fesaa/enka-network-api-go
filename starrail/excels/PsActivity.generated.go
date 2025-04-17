@@ -41,7 +41,6 @@ func (a *PsActivityAccessor) Raw() ([]PsActivity, error) {
 		if err != nil {
 			return []PsActivity{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *PsActivityAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PsActivityAccessor) ByActivityID(identifier float64) (PsActivity, error) {
 	if a._dataActivityID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PsActivity{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PsActivity{}, err
+			}
 		}
 		a.GroupData()
 	}

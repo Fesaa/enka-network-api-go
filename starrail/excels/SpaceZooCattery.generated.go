@@ -40,7 +40,6 @@ func (a *SpaceZooCatteryAccessor) Raw() ([]SpaceZooCattery, error) {
 		if err != nil {
 			return []SpaceZooCattery{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *SpaceZooCatteryAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooCatteryAccessor) ByCatteryID(identifier float64) (SpaceZooCattery, error) {
 	if a._dataCatteryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooCattery{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooCattery{}, err
+			}
 		}
 		a.GroupData()
 	}

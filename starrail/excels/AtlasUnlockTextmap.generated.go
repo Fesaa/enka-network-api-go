@@ -38,7 +38,6 @@ func (a *AtlasUnlockTextmapAccessor) Raw() ([]AtlasUnlockTextmap, error) {
 		if err != nil {
 			return []AtlasUnlockTextmap{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *AtlasUnlockTextmapAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AtlasUnlockTextmapAccessor) ByUnlockID(identifier float64) (AtlasUnlockTextmap, error) {
 	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AtlasUnlockTextmap{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AtlasUnlockTextmap{}, err
+			}
 		}
 		a.GroupData()
 	}

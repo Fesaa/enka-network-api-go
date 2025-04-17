@@ -38,7 +38,6 @@ func (a *ClockParkRoundAccessor) Raw() ([]ClockParkRound, error) {
 		if err != nil {
 			return []ClockParkRound{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ClockParkRoundAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClockParkRoundAccessor) ByRoundID(identifier float64) (ClockParkRound, error) {
 	if a._dataRoundID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkRound{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkRound{}, err
+			}
 		}
 		a.GroupData()
 	}

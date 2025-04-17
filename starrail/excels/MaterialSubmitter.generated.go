@@ -22,9 +22,9 @@ type MaterialSubmitterMaterialList struct {
 type MaterialSubmitterAccessor struct {
 	_data                 []MaterialSubmitter
 	_dataActivityModuleID map[float64]MaterialSubmitter
+	_dataID               map[float64]MaterialSubmitter
 	_dataMissionID        map[float64]MaterialSubmitter
 	_dataRewardID         map[float64]MaterialSubmitter
-	_dataID               map[float64]MaterialSubmitter
 }
 
 // LoadData retrieves the data. Must be called before MaterialSubmitter.GroupData
@@ -48,7 +48,6 @@ func (a *MaterialSubmitterAccessor) Raw() ([]MaterialSubmitter, error) {
 		if err != nil {
 			return []MaterialSubmitter{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,9 @@ func (a *MaterialSubmitterAccessor) Raw() ([]MaterialSubmitter, error) {
 func (a *MaterialSubmitterAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataActivityModuleID[d.ActivityModuleID] = d
+		a._dataID[d.ID] = d
 		a._dataMissionID[d.MissionID] = d
 		a._dataRewardID[d.RewardID] = d
-		a._dataID[d.ID] = d
 	}
 }
 
@@ -69,13 +68,31 @@ func (a *MaterialSubmitterAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MaterialSubmitterAccessor) ByActivityModuleID(identifier float64) (MaterialSubmitter, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MaterialSubmitter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MaterialSubmitter{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityModuleID[identifier], nil
+}
+
+// ByID returns the MaterialSubmitter uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *MaterialSubmitterAccessor) ByID(identifier float64) (MaterialSubmitter, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MaterialSubmitter{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }
 
 // ByMissionID returns the MaterialSubmitter uniquely identified by MissionID
@@ -83,9 +100,11 @@ func (a *MaterialSubmitterAccessor) ByActivityModuleID(identifier float64) (Mate
 // Error is only non-nil if the source errors out
 func (a *MaterialSubmitterAccessor) ByMissionID(identifier float64) (MaterialSubmitter, error) {
 	if a._dataMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MaterialSubmitter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MaterialSubmitter{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -97,25 +116,13 @@ func (a *MaterialSubmitterAccessor) ByMissionID(identifier float64) (MaterialSub
 // Error is only non-nil if the source errors out
 func (a *MaterialSubmitterAccessor) ByRewardID(identifier float64) (MaterialSubmitter, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MaterialSubmitter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MaterialSubmitter{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRewardID[identifier], nil
-}
-
-// ByID returns the MaterialSubmitter uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *MaterialSubmitterAccessor) ByID(identifier float64) (MaterialSubmitter, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MaterialSubmitter{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }

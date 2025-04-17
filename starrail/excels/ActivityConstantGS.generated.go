@@ -38,7 +38,6 @@ func (a *ActivityConstantGSAccessor) Raw() ([]ActivityConstantGS, error) {
 		if err != nil {
 			return []ActivityConstantGS{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ActivityConstantGSAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityConstantGSAccessor) ByConstValueName(identifier string) (ActivityConstantGS, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityConstantGS{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityConstantGS{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *ActivityConstantGSAccessor) ByConstValueName(identifier string) (Activi
 // Error is only non-nil if the source errors out
 func (a *ActivityConstantGSAccessor) ByValue(identifier string) (ActivityConstantGS, error) {
 	if a._dataValue == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityConstantGS{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityConstantGS{}, err
+			}
 		}
 		a.GroupData()
 	}

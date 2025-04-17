@@ -45,7 +45,6 @@ func (a *AmphoreusCurioUIConfigAccessor) Raw() ([]AmphoreusCurioUIConfig, error)
 		if err != nil {
 			return []AmphoreusCurioUIConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *AmphoreusCurioUIConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AmphoreusCurioUIConfigAccessor) ByID(identifier float64) (AmphoreusCurioUIConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AmphoreusCurioUIConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AmphoreusCurioUIConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *AmphoreusCurioUIConfigAccessor) ByID(identifier float64) (AmphoreusCuri
 // Error is only non-nil if the source errors out
 func (a *AmphoreusCurioUIConfigAccessor) ByIconPath(identifier string) (AmphoreusCurioUIConfig, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AmphoreusCurioUIConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AmphoreusCurioUIConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -42,7 +42,6 @@ func (a *RogueNousDifficultyLevelAccessor) Raw() ([]RogueNousDifficultyLevel, er
 		if err != nil {
 			return []RogueNousDifficultyLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *RogueNousDifficultyLevelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousDifficultyLevelAccessor) ByDifficultyID(identifier float64) (RogueNousDifficultyLevel, error) {
 	if a._dataDifficultyID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDifficultyLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDifficultyLevel{}, err
+			}
 		}
 		a.GroupData()
 	}

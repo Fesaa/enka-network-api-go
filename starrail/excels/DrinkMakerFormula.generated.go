@@ -26,9 +26,9 @@ type DrinkMakerFormula struct {
 }
 type DrinkMakerFormulaAccessor struct {
 	_data              []DrinkMakerFormula
-	_dataSmallIconPath map[string]DrinkMakerFormula
-	_dataIconPath      map[string]DrinkMakerFormula
 	_dataFormulaID     map[float64]DrinkMakerFormula
+	_dataIconPath      map[string]DrinkMakerFormula
+	_dataSmallIconPath map[string]DrinkMakerFormula
 }
 
 // LoadData retrieves the data. Must be called before DrinkMakerFormula.GroupData
@@ -52,7 +52,6 @@ func (a *DrinkMakerFormulaAccessor) Raw() ([]DrinkMakerFormula, error) {
 		if err != nil {
 			return []DrinkMakerFormula{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,38 +60,10 @@ func (a *DrinkMakerFormulaAccessor) Raw() ([]DrinkMakerFormula, error) {
 // Can be called manually in conjunction with DrinkMakerFormulaAccessor.LoadData to preload everything
 func (a *DrinkMakerFormulaAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSmallIconPath[d.SmallIconPath] = d
-		a._dataIconPath[d.IconPath] = d
 		a._dataFormulaID[d.FormulaID] = d
+		a._dataIconPath[d.IconPath] = d
+		a._dataSmallIconPath[d.SmallIconPath] = d
 	}
-}
-
-// BySmallIconPath returns the DrinkMakerFormula uniquely identified by SmallIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerFormulaAccessor) BySmallIconPath(identifier string) (DrinkMakerFormula, error) {
-	if a._dataSmallIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerFormula{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSmallIconPath[identifier], nil
-}
-
-// ByIconPath returns the DrinkMakerFormula uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerFormulaAccessor) ByIconPath(identifier string) (DrinkMakerFormula, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerFormula{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByFormulaID returns the DrinkMakerFormula uniquely identified by FormulaID
@@ -100,11 +71,45 @@ func (a *DrinkMakerFormulaAccessor) ByIconPath(identifier string) (DrinkMakerFor
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerFormulaAccessor) ByFormulaID(identifier float64) (DrinkMakerFormula, error) {
 	if a._dataFormulaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerFormula{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerFormula{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFormulaID[identifier], nil
+}
+
+// ByIconPath returns the DrinkMakerFormula uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerFormulaAccessor) ByIconPath(identifier string) (DrinkMakerFormula, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerFormula{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
+}
+
+// BySmallIconPath returns the DrinkMakerFormula uniquely identified by SmallIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerFormulaAccessor) BySmallIconPath(identifier string) (DrinkMakerFormula, error) {
+	if a._dataSmallIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerFormula{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSmallIconPath[identifier], nil
 }

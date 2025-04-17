@@ -52,7 +52,6 @@ func (a *EventMissionAccessor) Raw() ([]EventMission, error) {
 		if err != nil {
 			return []EventMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -71,9 +70,11 @@ func (a *EventMissionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EventMissionAccessor) ByFinishWayID(identifier float64) (EventMission, error) {
 	if a._dataFinishWayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventMission{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -85,9 +86,11 @@ func (a *EventMissionAccessor) ByFinishWayID(identifier float64) (EventMission, 
 // Error is only non-nil if the source errors out
 func (a *EventMissionAccessor) ByID(identifier float64) (EventMission, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventMission{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -37,7 +37,6 @@ func (a *BattleBGMAccessor) Raw() ([]BattleBGM, error) {
 		if err != nil {
 			return []BattleBGM{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

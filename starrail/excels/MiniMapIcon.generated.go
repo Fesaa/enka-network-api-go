@@ -51,7 +51,6 @@ func (a *MiniMapIconAccessor) Raw() ([]MiniMapIcon, error) {
 		if err != nil {
 			return []MiniMapIcon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,9 +68,11 @@ func (a *MiniMapIconAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MiniMapIconAccessor) ByID(identifier float64) (MiniMapIcon, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MiniMapIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MiniMapIcon{}, err
+			}
 		}
 		a.GroupData()
 	}

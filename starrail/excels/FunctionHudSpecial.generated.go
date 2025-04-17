@@ -19,8 +19,8 @@ type FunctionHudSpecial struct {
 }
 type FunctionHudSpecialAccessor struct {
 	_data               []FunctionHudSpecial
-	_dataID             map[float64]FunctionHudSpecial
 	_dataFirstWorldText map[string]FunctionHudSpecial
+	_dataID             map[float64]FunctionHudSpecial
 }
 
 // LoadData retrieves the data. Must be called before FunctionHudSpecial.GroupData
@@ -44,7 +44,6 @@ func (a *FunctionHudSpecialAccessor) Raw() ([]FunctionHudSpecial, error) {
 		if err != nil {
 			return []FunctionHudSpecial{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,23 +52,9 @@ func (a *FunctionHudSpecialAccessor) Raw() ([]FunctionHudSpecial, error) {
 // Can be called manually in conjunction with FunctionHudSpecialAccessor.LoadData to preload everything
 func (a *FunctionHudSpecialAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataFirstWorldText[d.FirstWorldText] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the FunctionHudSpecial uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *FunctionHudSpecialAccessor) ByID(identifier float64) (FunctionHudSpecial, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FunctionHudSpecial{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByFirstWorldText returns the FunctionHudSpecial uniquely identified by FirstWorldText
@@ -77,11 +62,29 @@ func (a *FunctionHudSpecialAccessor) ByID(identifier float64) (FunctionHudSpecia
 // Error is only non-nil if the source errors out
 func (a *FunctionHudSpecialAccessor) ByFirstWorldText(identifier string) (FunctionHudSpecial, error) {
 	if a._dataFirstWorldText == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FunctionHudSpecial{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FunctionHudSpecial{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFirstWorldText[identifier], nil
+}
+
+// ByID returns the FunctionHudSpecial uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *FunctionHudSpecialAccessor) ByID(identifier float64) (FunctionHudSpecial, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FunctionHudSpecial{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

@@ -41,7 +41,6 @@ func (a *RogueMagicRoomMarkAccessor) Raw() ([]RogueMagicRoomMark, error) {
 		if err != nil {
 			return []RogueMagicRoomMark{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

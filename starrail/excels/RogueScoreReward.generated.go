@@ -39,7 +39,6 @@ func (a *RogueScoreRewardAccessor) Raw() ([]RogueScoreReward, error) {
 		if err != nil {
 			return []RogueScoreReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueScoreRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueScoreRewardAccessor) ByReward(identifier float64) (RogueScoreReward, error) {
 	if a._dataReward == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueScoreReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueScoreReward{}, err
+			}
 		}
 		a.GroupData()
 	}

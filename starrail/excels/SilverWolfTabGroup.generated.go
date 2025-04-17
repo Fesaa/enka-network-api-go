@@ -23,10 +23,10 @@ type SilverWolfTabGroupConditions struct {
 }
 type SilverWolfTabGroupAccessor struct {
 	_data                  []SilverWolfTabGroup
-	_dataExploreFigurePath map[string]SilverWolfTabGroup
-	_dataRaidFigurePath    map[string]SilverWolfTabGroup
 	_dataActivityModuleID  map[float64]SilverWolfTabGroup
+	_dataExploreFigurePath map[string]SilverWolfTabGroup
 	_dataGroupID           map[float64]SilverWolfTabGroup
+	_dataRaidFigurePath    map[string]SilverWolfTabGroup
 }
 
 // LoadData retrieves the data. Must be called before SilverWolfTabGroup.GroupData
@@ -50,7 +50,6 @@ func (a *SilverWolfTabGroupAccessor) Raw() ([]SilverWolfTabGroup, error) {
 		if err != nil {
 			return []SilverWolfTabGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,39 +58,11 @@ func (a *SilverWolfTabGroupAccessor) Raw() ([]SilverWolfTabGroup, error) {
 // Can be called manually in conjunction with SilverWolfTabGroupAccessor.LoadData to preload everything
 func (a *SilverWolfTabGroupAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataExploreFigurePath[d.ExploreFigurePath] = d
-		a._dataRaidFigurePath[d.RaidFigurePath] = d
 		a._dataActivityModuleID[d.ActivityModuleID] = d
+		a._dataExploreFigurePath[d.ExploreFigurePath] = d
 		a._dataGroupID[d.GroupID] = d
+		a._dataRaidFigurePath[d.RaidFigurePath] = d
 	}
-}
-
-// ByExploreFigurePath returns the SilverWolfTabGroup uniquely identified by ExploreFigurePath
-//
-// Error is only non-nil if the source errors out
-func (a *SilverWolfTabGroupAccessor) ByExploreFigurePath(identifier string) (SilverWolfTabGroup, error) {
-	if a._dataExploreFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SilverWolfTabGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataExploreFigurePath[identifier], nil
-}
-
-// ByRaidFigurePath returns the SilverWolfTabGroup uniquely identified by RaidFigurePath
-//
-// Error is only non-nil if the source errors out
-func (a *SilverWolfTabGroupAccessor) ByRaidFigurePath(identifier string) (SilverWolfTabGroup, error) {
-	if a._dataRaidFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SilverWolfTabGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRaidFigurePath[identifier], nil
 }
 
 // ByActivityModuleID returns the SilverWolfTabGroup uniquely identified by ActivityModuleID
@@ -99,13 +70,31 @@ func (a *SilverWolfTabGroupAccessor) ByRaidFigurePath(identifier string) (Silver
 // Error is only non-nil if the source errors out
 func (a *SilverWolfTabGroupAccessor) ByActivityModuleID(identifier float64) (SilverWolfTabGroup, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SilverWolfTabGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SilverWolfTabGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityModuleID[identifier], nil
+}
+
+// ByExploreFigurePath returns the SilverWolfTabGroup uniquely identified by ExploreFigurePath
+//
+// Error is only non-nil if the source errors out
+func (a *SilverWolfTabGroupAccessor) ByExploreFigurePath(identifier string) (SilverWolfTabGroup, error) {
+	if a._dataExploreFigurePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SilverWolfTabGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataExploreFigurePath[identifier], nil
 }
 
 // ByGroupID returns the SilverWolfTabGroup uniquely identified by GroupID
@@ -113,11 +102,29 @@ func (a *SilverWolfTabGroupAccessor) ByActivityModuleID(identifier float64) (Sil
 // Error is only non-nil if the source errors out
 func (a *SilverWolfTabGroupAccessor) ByGroupID(identifier float64) (SilverWolfTabGroup, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SilverWolfTabGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SilverWolfTabGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGroupID[identifier], nil
+}
+
+// ByRaidFigurePath returns the SilverWolfTabGroup uniquely identified by RaidFigurePath
+//
+// Error is only non-nil if the source errors out
+func (a *SilverWolfTabGroupAccessor) ByRaidFigurePath(identifier string) (SilverWolfTabGroup, error) {
+	if a._dataRaidFigurePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SilverWolfTabGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRaidFigurePath[identifier], nil
 }

@@ -52,7 +52,6 @@ func (a *ActivityConfigPunkLordAccessor) Raw() ([]ActivityConfigPunkLord, error)
 		if err != nil {
 			return []ActivityConfigPunkLord{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

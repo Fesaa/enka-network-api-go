@@ -40,7 +40,6 @@ func (a *TrainPartyDynamicConfigAccessor) Raw() ([]TrainPartyDynamicConfig, erro
 		if err != nil {
 			return []TrainPartyDynamicConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *TrainPartyDynamicConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyDynamicConfigAccessor) ByID(identifier float64) (TrainPartyDynamicConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyDynamicConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyDynamicConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *TrainPartyDynamicConfigAccessor) ByID(identifier float64) (TrainPartyDy
 // Error is only non-nil if the source errors out
 func (a *TrainPartyDynamicConfigAccessor) ByPrefabPath(identifier string) (TrainPartyDynamicConfig, error) {
 	if a._dataPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyDynamicConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyDynamicConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

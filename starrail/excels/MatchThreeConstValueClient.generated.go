@@ -38,7 +38,6 @@ func (a *MatchThreeConstValueClientAccessor) Raw() ([]MatchThreeConstValueClient
 		if err != nil {
 			return []MatchThreeConstValueClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MatchThreeConstValueClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeConstValueClientAccessor) ByConstValueName(identifier string) (MatchThreeConstValueClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeConstValueClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeConstValueClient{}, err
+			}
 		}
 		a.GroupData()
 	}

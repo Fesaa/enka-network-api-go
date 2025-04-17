@@ -37,7 +37,6 @@ func (a *ItemDisplaySortAccessor) Raw() ([]ItemDisplaySort, error) {
 		if err != nil {
 			return []ItemDisplaySort{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ItemDisplaySortAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemDisplaySortAccessor) ByID(identifier float64) (ItemDisplaySort, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemDisplaySort{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemDisplaySort{}, err
+			}
 		}
 		a.GroupData()
 	}

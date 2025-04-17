@@ -45,7 +45,6 @@ func (a *CycleQuestAccessor) Raw() ([]CycleQuest, error) {
 		if err != nil {
 			return []CycleQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *CycleQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *CycleQuestAccessor) ByCycleID(identifier float64) (CycleQuest, error) {
 	if a._dataCycleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CycleQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CycleQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

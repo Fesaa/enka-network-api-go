@@ -36,7 +36,6 @@ func (a *MuseumPhaseUpgradeAccessor) Raw() ([]MuseumPhaseUpgrade, error) {
 		if err != nil {
 			return []MuseumPhaseUpgrade{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

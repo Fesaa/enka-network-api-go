@@ -38,7 +38,6 @@ func (a *PlanetFesGameRewardPoolAccessor) Raw() ([]PlanetFesGameRewardPool, erro
 		if err != nil {
 			return []PlanetFesGameRewardPool{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

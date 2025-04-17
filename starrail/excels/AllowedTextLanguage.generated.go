@@ -30,9 +30,9 @@ type AllowedTextLanguage struct {
 }
 type AllowedTextLanguageAccessor struct {
 	_data                    []AllowedTextLanguage
-	_dataSDKkey              map[string]AllowedTextLanguage
 	_dataLanguageCultureCode map[string]AllowedTextLanguage
 	_dataLanguageType        map[float64]AllowedTextLanguage
+	_dataSDKkey              map[string]AllowedTextLanguage
 	_dataTextLanguageKey     map[string]AllowedTextLanguage
 }
 
@@ -57,7 +57,6 @@ func (a *AllowedTextLanguageAccessor) Raw() ([]AllowedTextLanguage, error) {
 		if err != nil {
 			return []AllowedTextLanguage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,25 +65,11 @@ func (a *AllowedTextLanguageAccessor) Raw() ([]AllowedTextLanguage, error) {
 // Can be called manually in conjunction with AllowedTextLanguageAccessor.LoadData to preload everything
 func (a *AllowedTextLanguageAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSDKkey[d.SDKkey] = d
 		a._dataLanguageCultureCode[d.LanguageCultureCode] = d
 		a._dataLanguageType[d.LanguageType] = d
+		a._dataSDKkey[d.SDKkey] = d
 		a._dataTextLanguageKey[d.TextLanguageKey] = d
 	}
-}
-
-// BySDKkey returns the AllowedTextLanguage uniquely identified by SDKkey
-//
-// Error is only non-nil if the source errors out
-func (a *AllowedTextLanguageAccessor) BySDKkey(identifier string) (AllowedTextLanguage, error) {
-	if a._dataSDKkey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AllowedTextLanguage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSDKkey[identifier], nil
 }
 
 // ByLanguageCultureCode returns the AllowedTextLanguage uniquely identified by LanguageCultureCode
@@ -92,9 +77,11 @@ func (a *AllowedTextLanguageAccessor) BySDKkey(identifier string) (AllowedTextLa
 // Error is only non-nil if the source errors out
 func (a *AllowedTextLanguageAccessor) ByLanguageCultureCode(identifier string) (AllowedTextLanguage, error) {
 	if a._dataLanguageCultureCode == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AllowedTextLanguage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AllowedTextLanguage{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -106,13 +93,31 @@ func (a *AllowedTextLanguageAccessor) ByLanguageCultureCode(identifier string) (
 // Error is only non-nil if the source errors out
 func (a *AllowedTextLanguageAccessor) ByLanguageType(identifier float64) (AllowedTextLanguage, error) {
 	if a._dataLanguageType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AllowedTextLanguage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AllowedTextLanguage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLanguageType[identifier], nil
+}
+
+// BySDKkey returns the AllowedTextLanguage uniquely identified by SDKkey
+//
+// Error is only non-nil if the source errors out
+func (a *AllowedTextLanguageAccessor) BySDKkey(identifier string) (AllowedTextLanguage, error) {
+	if a._dataSDKkey == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AllowedTextLanguage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSDKkey[identifier], nil
 }
 
 // ByTextLanguageKey returns the AllowedTextLanguage uniquely identified by TextLanguageKey
@@ -120,9 +125,11 @@ func (a *AllowedTextLanguageAccessor) ByLanguageType(identifier float64) (Allowe
 // Error is only non-nil if the source errors out
 func (a *AllowedTextLanguageAccessor) ByTextLanguageKey(identifier string) (AllowedTextLanguage, error) {
 	if a._dataTextLanguageKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AllowedTextLanguage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AllowedTextLanguage{}, err
+			}
 		}
 		a.GroupData()
 	}

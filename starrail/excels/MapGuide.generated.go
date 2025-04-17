@@ -44,7 +44,6 @@ func (a *MapGuideAccessor) Raw() ([]MapGuide, error) {
 		if err != nil {
 			return []MapGuide{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *MapGuideAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MapGuideAccessor) ByID(identifier float64) (MapGuide, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapGuide{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapGuide{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *MapGuideAccessor) ByID(identifier float64) (MapGuide, error) {
 // Error is only non-nil if the source errors out
 func (a *MapGuideAccessor) BySheetID(identifier float64) (MapGuide, error) {
 	if a._dataSheetID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapGuide{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapGuide{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -92,9 +95,11 @@ func (a *MapGuideAccessor) BySheetID(identifier float64) (MapGuide, error) {
 // Error is only non-nil if the source errors out
 func (a *MapGuideAccessor) BySheetType(identifier float64) (MapGuide, error) {
 	if a._dataSheetType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapGuide{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapGuide{}, err
+			}
 		}
 		a.GroupData()
 	}

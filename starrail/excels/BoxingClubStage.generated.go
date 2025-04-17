@@ -43,7 +43,6 @@ func (a *BoxingClubStageAccessor) Raw() ([]BoxingClubStage, error) {
 		if err != nil {
 			return []BoxingClubStage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *BoxingClubStageAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BoxingClubStageAccessor) ByEventID(identifier float64) (BoxingClubStage, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubStage{}, err
+			}
 		}
 		a.GroupData()
 	}

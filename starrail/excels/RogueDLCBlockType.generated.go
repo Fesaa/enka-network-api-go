@@ -18,9 +18,9 @@ type RogueDLCBlockType struct {
 }
 type RogueDLCBlockTypeAccessor struct {
 	_data                        []RogueDLCBlockType
-	_dataBlockTypeIcon           map[string]RogueDLCBlockType
 	_dataBlockTypeChessBoardIcon map[string]RogueDLCBlockType
 	_dataBlockTypeID             map[float64]RogueDLCBlockType
+	_dataBlockTypeIcon           map[string]RogueDLCBlockType
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCBlockType.GroupData
@@ -44,7 +44,6 @@ func (a *RogueDLCBlockTypeAccessor) Raw() ([]RogueDLCBlockType, error) {
 		if err != nil {
 			return []RogueDLCBlockType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,24 +52,10 @@ func (a *RogueDLCBlockTypeAccessor) Raw() ([]RogueDLCBlockType, error) {
 // Can be called manually in conjunction with RogueDLCBlockTypeAccessor.LoadData to preload everything
 func (a *RogueDLCBlockTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataBlockTypeIcon[d.BlockTypeIcon] = d
 		a._dataBlockTypeChessBoardIcon[d.BlockTypeChessBoardIcon] = d
 		a._dataBlockTypeID[d.BlockTypeID] = d
+		a._dataBlockTypeIcon[d.BlockTypeIcon] = d
 	}
-}
-
-// ByBlockTypeIcon returns the RogueDLCBlockType uniquely identified by BlockTypeIcon
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCBlockTypeAccessor) ByBlockTypeIcon(identifier string) (RogueDLCBlockType, error) {
-	if a._dataBlockTypeIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCBlockType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBlockTypeIcon[identifier], nil
 }
 
 // ByBlockTypeChessBoardIcon returns the RogueDLCBlockType uniquely identified by BlockTypeChessBoardIcon
@@ -78,9 +63,11 @@ func (a *RogueDLCBlockTypeAccessor) ByBlockTypeIcon(identifier string) (RogueDLC
 // Error is only non-nil if the source errors out
 func (a *RogueDLCBlockTypeAccessor) ByBlockTypeChessBoardIcon(identifier string) (RogueDLCBlockType, error) {
 	if a._dataBlockTypeChessBoardIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCBlockType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCBlockType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -92,11 +79,29 @@ func (a *RogueDLCBlockTypeAccessor) ByBlockTypeChessBoardIcon(identifier string)
 // Error is only non-nil if the source errors out
 func (a *RogueDLCBlockTypeAccessor) ByBlockTypeID(identifier float64) (RogueDLCBlockType, error) {
 	if a._dataBlockTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCBlockType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCBlockType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBlockTypeID[identifier], nil
+}
+
+// ByBlockTypeIcon returns the RogueDLCBlockType uniquely identified by BlockTypeIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCBlockTypeAccessor) ByBlockTypeIcon(identifier string) (RogueDLCBlockType, error) {
+	if a._dataBlockTypeIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCBlockType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBlockTypeIcon[identifier], nil
 }

@@ -21,10 +21,10 @@ type CityShopConfig struct {
 type CityShopConfigAccessor struct {
 	_data                  []CityShopConfig
 	_dataItemID            map[float64]CityShopConfig
-	_dataWorldID           map[float64]CityShopConfig
-	_dataShopID            map[float64]CityShopConfig
-	_dataRewardListGroupID map[float64]CityShopConfig
 	_dataMaxLevel          map[float64]CityShopConfig
+	_dataRewardListGroupID map[float64]CityShopConfig
+	_dataShopID            map[float64]CityShopConfig
+	_dataWorldID           map[float64]CityShopConfig
 	_dataWorldImgPath      map[string]CityShopConfig
 }
 
@@ -49,7 +49,6 @@ func (a *CityShopConfigAccessor) Raw() ([]CityShopConfig, error) {
 		if err != nil {
 			return []CityShopConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,10 +58,10 @@ func (a *CityShopConfigAccessor) Raw() ([]CityShopConfig, error) {
 func (a *CityShopConfigAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
-		a._dataWorldID[d.WorldID] = d
-		a._dataShopID[d.ShopID] = d
-		a._dataRewardListGroupID[d.RewardListGroupID] = d
 		a._dataMaxLevel[d.MaxLevel] = d
+		a._dataRewardListGroupID[d.RewardListGroupID] = d
+		a._dataShopID[d.ShopID] = d
+		a._dataWorldID[d.WorldID] = d
 		a._dataWorldImgPath[d.WorldImgPath] = d
 	}
 }
@@ -72,55 +71,15 @@ func (a *CityShopConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *CityShopConfigAccessor) ByItemID(identifier float64) (CityShopConfig, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CityShopConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CityShopConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataItemID[identifier], nil
-}
-
-// ByWorldID returns the CityShopConfig uniquely identified by WorldID
-//
-// Error is only non-nil if the source errors out
-func (a *CityShopConfigAccessor) ByWorldID(identifier float64) (CityShopConfig, error) {
-	if a._dataWorldID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CityShopConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataWorldID[identifier], nil
-}
-
-// ByShopID returns the CityShopConfig uniquely identified by ShopID
-//
-// Error is only non-nil if the source errors out
-func (a *CityShopConfigAccessor) ByShopID(identifier float64) (CityShopConfig, error) {
-	if a._dataShopID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CityShopConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataShopID[identifier], nil
-}
-
-// ByRewardListGroupID returns the CityShopConfig uniquely identified by RewardListGroupID
-//
-// Error is only non-nil if the source errors out
-func (a *CityShopConfigAccessor) ByRewardListGroupID(identifier float64) (CityShopConfig, error) {
-	if a._dataRewardListGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CityShopConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardListGroupID[identifier], nil
 }
 
 // ByMaxLevel returns the CityShopConfig uniquely identified by MaxLevel
@@ -128,13 +87,63 @@ func (a *CityShopConfigAccessor) ByRewardListGroupID(identifier float64) (CitySh
 // Error is only non-nil if the source errors out
 func (a *CityShopConfigAccessor) ByMaxLevel(identifier float64) (CityShopConfig, error) {
 	if a._dataMaxLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CityShopConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CityShopConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMaxLevel[identifier], nil
+}
+
+// ByRewardListGroupID returns the CityShopConfig uniquely identified by RewardListGroupID
+//
+// Error is only non-nil if the source errors out
+func (a *CityShopConfigAccessor) ByRewardListGroupID(identifier float64) (CityShopConfig, error) {
+	if a._dataRewardListGroupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CityShopConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardListGroupID[identifier], nil
+}
+
+// ByShopID returns the CityShopConfig uniquely identified by ShopID
+//
+// Error is only non-nil if the source errors out
+func (a *CityShopConfigAccessor) ByShopID(identifier float64) (CityShopConfig, error) {
+	if a._dataShopID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CityShopConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataShopID[identifier], nil
+}
+
+// ByWorldID returns the CityShopConfig uniquely identified by WorldID
+//
+// Error is only non-nil if the source errors out
+func (a *CityShopConfigAccessor) ByWorldID(identifier float64) (CityShopConfig, error) {
+	if a._dataWorldID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CityShopConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataWorldID[identifier], nil
 }
 
 // ByWorldImgPath returns the CityShopConfig uniquely identified by WorldImgPath
@@ -142,9 +151,11 @@ func (a *CityShopConfigAccessor) ByMaxLevel(identifier float64) (CityShopConfig,
 // Error is only non-nil if the source errors out
 func (a *CityShopConfigAccessor) ByWorldImgPath(identifier string) (CityShopConfig, error) {
 	if a._dataWorldImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CityShopConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CityShopConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

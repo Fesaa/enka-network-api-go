@@ -42,21 +42,21 @@ type AetherDivideSpirit struct {
 }
 type AetherDivideSpiritAccessor struct {
 	_data                          []AetherDivideSpirit
-	_dataExpItemID                 map[float64]AetherDivideSpirit
-	_dataMiddleAvatarHeadIconPath  map[string]AetherDivideSpirit
-	_dataDefaultAvatarModelPath    map[string]AetherDivideSpirit
-	_dataDefaultAvatarHeadIconPath map[string]AetherDivideSpirit
-	_dataUltraSkillCutInPrefabPath map[string]AetherDivideSpirit
-	_dataTeamLeftPrefabPath        map[string]AetherDivideSpirit
-	_dataWaitingAvatarHeadIconPath map[string]AetherDivideSpirit
-	_dataTeamRightPrefabPath       map[string]AetherDivideSpirit
-	_dataSideAvatarHeadIconPath    map[string]AetherDivideSpirit
-	_dataManikinAvatarModelPath    map[string]AetherDivideSpirit
+	_dataActionAvatarHeadIconPath  map[string]AetherDivideSpirit
 	_dataAtlasAvatarHeadIconPath   map[string]AetherDivideSpirit
 	_dataAvatarID                  map[float64]AetherDivideSpirit
-	_dataActionAvatarHeadIconPath  map[string]AetherDivideSpirit
-	_dataJsonPath                  map[string]AetherDivideSpirit
 	_dataAvatarSideIconPath        map[string]AetherDivideSpirit
+	_dataDefaultAvatarHeadIconPath map[string]AetherDivideSpirit
+	_dataDefaultAvatarModelPath    map[string]AetherDivideSpirit
+	_dataExpItemID                 map[float64]AetherDivideSpirit
+	_dataJsonPath                  map[string]AetherDivideSpirit
+	_dataManikinAvatarModelPath    map[string]AetherDivideSpirit
+	_dataMiddleAvatarHeadIconPath  map[string]AetherDivideSpirit
+	_dataSideAvatarHeadIconPath    map[string]AetherDivideSpirit
+	_dataTeamLeftPrefabPath        map[string]AetherDivideSpirit
+	_dataTeamRightPrefabPath       map[string]AetherDivideSpirit
+	_dataUltraSkillCutInPrefabPath map[string]AetherDivideSpirit
+	_dataWaitingAvatarHeadIconPath map[string]AetherDivideSpirit
 }
 
 // LoadData retrieves the data. Must be called before AetherDivideSpirit.GroupData
@@ -80,7 +80,6 @@ func (a *AetherDivideSpiritAccessor) Raw() ([]AetherDivideSpirit, error) {
 		if err != nil {
 			return []AetherDivideSpirit{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -89,162 +88,38 @@ func (a *AetherDivideSpiritAccessor) Raw() ([]AetherDivideSpirit, error) {
 // Can be called manually in conjunction with AetherDivideSpiritAccessor.LoadData to preload everything
 func (a *AetherDivideSpiritAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataExpItemID[d.ExpItemID] = d
-		a._dataMiddleAvatarHeadIconPath[d.MiddleAvatarHeadIconPath] = d
-		a._dataDefaultAvatarModelPath[d.DefaultAvatarModelPath] = d
-		a._dataDefaultAvatarHeadIconPath[d.DefaultAvatarHeadIconPath] = d
-		a._dataUltraSkillCutInPrefabPath[d.UltraSkillCutInPrefabPath] = d
-		a._dataTeamLeftPrefabPath[d.TeamLeftPrefabPath] = d
-		a._dataWaitingAvatarHeadIconPath[d.WaitingAvatarHeadIconPath] = d
-		a._dataTeamRightPrefabPath[d.TeamRightPrefabPath] = d
-		a._dataSideAvatarHeadIconPath[d.SideAvatarHeadIconPath] = d
-		a._dataManikinAvatarModelPath[d.ManikinAvatarModelPath] = d
+		a._dataActionAvatarHeadIconPath[d.ActionAvatarHeadIconPath] = d
 		a._dataAtlasAvatarHeadIconPath[d.AtlasAvatarHeadIconPath] = d
 		a._dataAvatarID[d.AvatarID] = d
-		a._dataActionAvatarHeadIconPath[d.ActionAvatarHeadIconPath] = d
-		a._dataJsonPath[d.JsonPath] = d
 		a._dataAvatarSideIconPath[d.AvatarSideIconPath] = d
+		a._dataDefaultAvatarHeadIconPath[d.DefaultAvatarHeadIconPath] = d
+		a._dataDefaultAvatarModelPath[d.DefaultAvatarModelPath] = d
+		a._dataExpItemID[d.ExpItemID] = d
+		a._dataJsonPath[d.JsonPath] = d
+		a._dataManikinAvatarModelPath[d.ManikinAvatarModelPath] = d
+		a._dataMiddleAvatarHeadIconPath[d.MiddleAvatarHeadIconPath] = d
+		a._dataSideAvatarHeadIconPath[d.SideAvatarHeadIconPath] = d
+		a._dataTeamLeftPrefabPath[d.TeamLeftPrefabPath] = d
+		a._dataTeamRightPrefabPath[d.TeamRightPrefabPath] = d
+		a._dataUltraSkillCutInPrefabPath[d.UltraSkillCutInPrefabPath] = d
+		a._dataWaitingAvatarHeadIconPath[d.WaitingAvatarHeadIconPath] = d
 	}
 }
 
-// ByExpItemID returns the AetherDivideSpirit uniquely identified by ExpItemID
+// ByActionAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by ActionAvatarHeadIconPath
 //
 // Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByExpItemID(identifier float64) (AetherDivideSpirit, error) {
-	if a._dataExpItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
+func (a *AetherDivideSpiritAccessor) ByActionAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataActionAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataExpItemID[identifier], nil
-}
-
-// ByMiddleAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by MiddleAvatarHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByMiddleAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataMiddleAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMiddleAvatarHeadIconPath[identifier], nil
-}
-
-// ByDefaultAvatarModelPath returns the AetherDivideSpirit uniquely identified by DefaultAvatarModelPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByDefaultAvatarModelPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataDefaultAvatarModelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDefaultAvatarModelPath[identifier], nil
-}
-
-// ByDefaultAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by DefaultAvatarHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByDefaultAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataDefaultAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDefaultAvatarHeadIconPath[identifier], nil
-}
-
-// ByUltraSkillCutInPrefabPath returns the AetherDivideSpirit uniquely identified by UltraSkillCutInPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByUltraSkillCutInPrefabPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataUltraSkillCutInPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUltraSkillCutInPrefabPath[identifier], nil
-}
-
-// ByTeamLeftPrefabPath returns the AetherDivideSpirit uniquely identified by TeamLeftPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByTeamLeftPrefabPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataTeamLeftPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTeamLeftPrefabPath[identifier], nil
-}
-
-// ByWaitingAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by WaitingAvatarHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByWaitingAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataWaitingAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataWaitingAvatarHeadIconPath[identifier], nil
-}
-
-// ByTeamRightPrefabPath returns the AetherDivideSpirit uniquely identified by TeamRightPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByTeamRightPrefabPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataTeamRightPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTeamRightPrefabPath[identifier], nil
-}
-
-// BySideAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by SideAvatarHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) BySideAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataSideAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSideAvatarHeadIconPath[identifier], nil
-}
-
-// ByManikinAvatarModelPath returns the AetherDivideSpirit uniquely identified by ManikinAvatarModelPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByManikinAvatarModelPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataManikinAvatarModelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataManikinAvatarModelPath[identifier], nil
+	return a._dataActionAvatarHeadIconPath[identifier], nil
 }
 
 // ByAtlasAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by AtlasAvatarHeadIconPath
@@ -252,9 +127,11 @@ func (a *AetherDivideSpiritAccessor) ByManikinAvatarModelPath(identifier string)
 // Error is only non-nil if the source errors out
 func (a *AetherDivideSpiritAccessor) ByAtlasAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
 	if a._dataAtlasAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -266,41 +143,15 @@ func (a *AetherDivideSpiritAccessor) ByAtlasAvatarHeadIconPath(identifier string
 // Error is only non-nil if the source errors out
 func (a *AetherDivideSpiritAccessor) ByAvatarID(identifier float64) (AetherDivideSpirit, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarID[identifier], nil
-}
-
-// ByActionAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by ActionAvatarHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByActionAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataActionAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataActionAvatarHeadIconPath[identifier], nil
-}
-
-// ByJsonPath returns the AetherDivideSpirit uniquely identified by JsonPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideSpiritAccessor) ByJsonPath(identifier string) (AetherDivideSpirit, error) {
-	if a._dataJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataJsonPath[identifier], nil
 }
 
 // ByAvatarSideIconPath returns the AetherDivideSpirit uniquely identified by AvatarSideIconPath
@@ -308,11 +159,189 @@ func (a *AetherDivideSpiritAccessor) ByJsonPath(identifier string) (AetherDivide
 // Error is only non-nil if the source errors out
 func (a *AetherDivideSpiritAccessor) ByAvatarSideIconPath(identifier string) (AetherDivideSpirit, error) {
 	if a._dataAvatarSideIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpirit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarSideIconPath[identifier], nil
+}
+
+// ByDefaultAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by DefaultAvatarHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByDefaultAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataDefaultAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDefaultAvatarHeadIconPath[identifier], nil
+}
+
+// ByDefaultAvatarModelPath returns the AetherDivideSpirit uniquely identified by DefaultAvatarModelPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByDefaultAvatarModelPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataDefaultAvatarModelPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDefaultAvatarModelPath[identifier], nil
+}
+
+// ByExpItemID returns the AetherDivideSpirit uniquely identified by ExpItemID
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByExpItemID(identifier float64) (AetherDivideSpirit, error) {
+	if a._dataExpItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataExpItemID[identifier], nil
+}
+
+// ByJsonPath returns the AetherDivideSpirit uniquely identified by JsonPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByJsonPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataJsonPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataJsonPath[identifier], nil
+}
+
+// ByManikinAvatarModelPath returns the AetherDivideSpirit uniquely identified by ManikinAvatarModelPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByManikinAvatarModelPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataManikinAvatarModelPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataManikinAvatarModelPath[identifier], nil
+}
+
+// ByMiddleAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by MiddleAvatarHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByMiddleAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataMiddleAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMiddleAvatarHeadIconPath[identifier], nil
+}
+
+// BySideAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by SideAvatarHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) BySideAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataSideAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSideAvatarHeadIconPath[identifier], nil
+}
+
+// ByTeamLeftPrefabPath returns the AetherDivideSpirit uniquely identified by TeamLeftPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByTeamLeftPrefabPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataTeamLeftPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTeamLeftPrefabPath[identifier], nil
+}
+
+// ByTeamRightPrefabPath returns the AetherDivideSpirit uniquely identified by TeamRightPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByTeamRightPrefabPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataTeamRightPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTeamRightPrefabPath[identifier], nil
+}
+
+// ByUltraSkillCutInPrefabPath returns the AetherDivideSpirit uniquely identified by UltraSkillCutInPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByUltraSkillCutInPrefabPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataUltraSkillCutInPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUltraSkillCutInPrefabPath[identifier], nil
+}
+
+// ByWaitingAvatarHeadIconPath returns the AetherDivideSpirit uniquely identified by WaitingAvatarHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideSpiritAccessor) ByWaitingAvatarHeadIconPath(identifier string) (AetherDivideSpirit, error) {
+	if a._dataWaitingAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpirit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataWaitingAvatarHeadIconPath[identifier], nil
 }

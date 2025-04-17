@@ -40,7 +40,6 @@ func (a *PlanetFesTaskAccessor) Raw() ([]PlanetFesTask, error) {
 		if err != nil {
 			return []PlanetFesTask{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *PlanetFesTaskAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesTaskAccessor) ByTaskID(identifier float64) (PlanetFesTask, error) {
 	if a._dataTaskID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesTask{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesTask{}, err
+			}
 		}
 		a.GroupData()
 	}

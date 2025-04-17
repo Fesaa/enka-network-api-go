@@ -14,8 +14,8 @@ type AlleyShip struct {
 }
 type AlleyShipAccessor struct {
 	_data           []AlleyShip
-	_dataShipID     map[float64]AlleyShip
 	_dataShipConfig map[string]AlleyShip
+	_dataShipID     map[float64]AlleyShip
 	_dataShipType   map[string]AlleyShip
 }
 
@@ -40,7 +40,6 @@ func (a *AlleyShipAccessor) Raw() ([]AlleyShip, error) {
 		if err != nil {
 			return []AlleyShip{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,24 +48,10 @@ func (a *AlleyShipAccessor) Raw() ([]AlleyShip, error) {
 // Can be called manually in conjunction with AlleyShipAccessor.LoadData to preload everything
 func (a *AlleyShipAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataShipID[d.ShipID] = d
 		a._dataShipConfig[d.ShipConfig] = d
+		a._dataShipID[d.ShipID] = d
 		a._dataShipType[d.ShipType] = d
 	}
-}
-
-// ByShipID returns the AlleyShip uniquely identified by ShipID
-//
-// Error is only non-nil if the source errors out
-func (a *AlleyShipAccessor) ByShipID(identifier float64) (AlleyShip, error) {
-	if a._dataShipID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyShip{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataShipID[identifier], nil
 }
 
 // ByShipConfig returns the AlleyShip uniquely identified by ShipConfig
@@ -74,13 +59,31 @@ func (a *AlleyShipAccessor) ByShipID(identifier float64) (AlleyShip, error) {
 // Error is only non-nil if the source errors out
 func (a *AlleyShipAccessor) ByShipConfig(identifier string) (AlleyShip, error) {
 	if a._dataShipConfig == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyShip{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyShip{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataShipConfig[identifier], nil
+}
+
+// ByShipID returns the AlleyShip uniquely identified by ShipID
+//
+// Error is only non-nil if the source errors out
+func (a *AlleyShipAccessor) ByShipID(identifier float64) (AlleyShip, error) {
+	if a._dataShipID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyShip{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataShipID[identifier], nil
 }
 
 // ByShipType returns the AlleyShip uniquely identified by ShipType
@@ -88,9 +91,11 @@ func (a *AlleyShipAccessor) ByShipConfig(identifier string) (AlleyShip, error) {
 // Error is only non-nil if the source errors out
 func (a *AlleyShipAccessor) ByShipType(identifier string) (AlleyShip, error) {
 	if a._dataShipType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyShip{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyShip{}, err
+			}
 		}
 		a.GroupData()
 	}

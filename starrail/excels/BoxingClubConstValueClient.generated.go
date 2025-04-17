@@ -43,7 +43,6 @@ func (a *BoxingClubConstValueClientAccessor) Raw() ([]BoxingClubConstValueClient
 		if err != nil {
 			return []BoxingClubConstValueClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *BoxingClubConstValueClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BoxingClubConstValueClientAccessor) ByConstValueName(identifier string) (BoxingClubConstValueClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubConstValueClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubConstValueClient{}, err
+			}
 		}
 		a.GroupData()
 	}

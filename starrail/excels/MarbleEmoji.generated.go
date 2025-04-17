@@ -38,7 +38,6 @@ func (a *MarbleEmojiAccessor) Raw() ([]MarbleEmoji, error) {
 		if err != nil {
 			return []MarbleEmoji{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MarbleEmojiAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleEmojiAccessor) ByID(identifier float64) (MarbleEmoji, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleEmoji{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleEmoji{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -39,7 +39,6 @@ func (a *MazeFloorConnectivityAccessor) Raw() ([]MazeFloorConnectivity, error) {
 		if err != nil {
 			return []MazeFloorConnectivity{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

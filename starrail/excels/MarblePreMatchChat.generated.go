@@ -14,8 +14,8 @@ type MarblePreMatchChat struct {
 }
 type MarblePreMatchChatAccessor struct {
 	_data        []MarblePreMatchChat
-	_dataSealID  map[float64]MarblePreMatchChat
 	_dataMatchID map[float64]MarblePreMatchChat
+	_dataSealID  map[float64]MarblePreMatchChat
 }
 
 // LoadData retrieves the data. Must be called before MarblePreMatchChat.GroupData
@@ -39,7 +39,6 @@ func (a *MarblePreMatchChatAccessor) Raw() ([]MarblePreMatchChat, error) {
 		if err != nil {
 			return []MarblePreMatchChat{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *MarblePreMatchChatAccessor) Raw() ([]MarblePreMatchChat, error) {
 // Can be called manually in conjunction with MarblePreMatchChatAccessor.LoadData to preload everything
 func (a *MarblePreMatchChatAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSealID[d.SealID] = d
 		a._dataMatchID[d.MatchID] = d
+		a._dataSealID[d.SealID] = d
 	}
-}
-
-// BySealID returns the MarblePreMatchChat uniquely identified by SealID
-//
-// Error is only non-nil if the source errors out
-func (a *MarblePreMatchChatAccessor) BySealID(identifier float64) (MarblePreMatchChat, error) {
-	if a._dataSealID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarblePreMatchChat{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSealID[identifier], nil
 }
 
 // ByMatchID returns the MarblePreMatchChat uniquely identified by MatchID
@@ -72,11 +57,29 @@ func (a *MarblePreMatchChatAccessor) BySealID(identifier float64) (MarblePreMatc
 // Error is only non-nil if the source errors out
 func (a *MarblePreMatchChatAccessor) ByMatchID(identifier float64) (MarblePreMatchChat, error) {
 	if a._dataMatchID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarblePreMatchChat{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarblePreMatchChat{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMatchID[identifier], nil
+}
+
+// BySealID returns the MarblePreMatchChat uniquely identified by SealID
+//
+// Error is only non-nil if the source errors out
+func (a *MarblePreMatchChatAccessor) BySealID(identifier float64) (MarblePreMatchChat, error) {
+	if a._dataSealID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarblePreMatchChat{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSealID[identifier], nil
 }

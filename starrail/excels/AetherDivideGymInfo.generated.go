@@ -26,15 +26,15 @@ type AetherDivideGymInfo struct {
 }
 type AetherDivideGymInfoAccessor struct {
 	_data              []AetherDivideGymInfo
-	_dataIconPath      map[string]AetherDivideGymInfo
-	_dataBadgeUnlockID map[float64]AetherDivideGymInfo
-	_dataSpiritQuest   map[float64]AetherDivideGymInfo
-	_dataID            map[float64]AetherDivideGymInfo
-	_dataUnlockID      map[float64]AetherDivideGymInfo
-	_dataEntranceID    map[float64]AetherDivideGymInfo
-	_dataTabIconPath   map[string]AetherDivideGymInfo
 	_dataBGPath        map[string]AetherDivideGymInfo
+	_dataBadgeUnlockID map[float64]AetherDivideGymInfo
+	_dataEntranceID    map[float64]AetherDivideGymInfo
+	_dataID            map[float64]AetherDivideGymInfo
+	_dataIconPath      map[string]AetherDivideGymInfo
+	_dataSpiritQuest   map[float64]AetherDivideGymInfo
+	_dataTabIconPath   map[string]AetherDivideGymInfo
 	_dataTrainerQuest  map[float64]AetherDivideGymInfo
+	_dataUnlockID      map[float64]AetherDivideGymInfo
 }
 
 // LoadData retrieves the data. Must be called before AetherDivideGymInfo.GroupData
@@ -58,7 +58,6 @@ func (a *AetherDivideGymInfoAccessor) Raw() ([]AetherDivideGymInfo, error) {
 		if err != nil {
 			return []AetherDivideGymInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,114 +66,16 @@ func (a *AetherDivideGymInfoAccessor) Raw() ([]AetherDivideGymInfo, error) {
 // Can be called manually in conjunction with AetherDivideGymInfoAccessor.LoadData to preload everything
 func (a *AetherDivideGymInfoAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIconPath[d.IconPath] = d
-		a._dataBadgeUnlockID[d.BadgeUnlockID] = d
-		a._dataSpiritQuest[d.SpiritQuest] = d
-		a._dataID[d.ID] = d
-		a._dataUnlockID[d.UnlockID] = d
-		a._dataEntranceID[d.EntranceID] = d
-		a._dataTabIconPath[d.TabIconPath] = d
 		a._dataBGPath[d.BGPath] = d
+		a._dataBadgeUnlockID[d.BadgeUnlockID] = d
+		a._dataEntranceID[d.EntranceID] = d
+		a._dataID[d.ID] = d
+		a._dataIconPath[d.IconPath] = d
+		a._dataSpiritQuest[d.SpiritQuest] = d
+		a._dataTabIconPath[d.TabIconPath] = d
 		a._dataTrainerQuest[d.TrainerQuest] = d
+		a._dataUnlockID[d.UnlockID] = d
 	}
-}
-
-// ByIconPath returns the AetherDivideGymInfo uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideGymInfoAccessor) ByIconPath(identifier string) (AetherDivideGymInfo, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideGymInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
-}
-
-// ByBadgeUnlockID returns the AetherDivideGymInfo uniquely identified by BadgeUnlockID
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideGymInfoAccessor) ByBadgeUnlockID(identifier float64) (AetherDivideGymInfo, error) {
-	if a._dataBadgeUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideGymInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBadgeUnlockID[identifier], nil
-}
-
-// BySpiritQuest returns the AetherDivideGymInfo uniquely identified by SpiritQuest
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideGymInfoAccessor) BySpiritQuest(identifier float64) (AetherDivideGymInfo, error) {
-	if a._dataSpiritQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideGymInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSpiritQuest[identifier], nil
-}
-
-// ByID returns the AetherDivideGymInfo uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideGymInfoAccessor) ByID(identifier float64) (AetherDivideGymInfo, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideGymInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
-}
-
-// ByUnlockID returns the AetherDivideGymInfo uniquely identified by UnlockID
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideGymInfoAccessor) ByUnlockID(identifier float64) (AetherDivideGymInfo, error) {
-	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideGymInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockID[identifier], nil
-}
-
-// ByEntranceID returns the AetherDivideGymInfo uniquely identified by EntranceID
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideGymInfoAccessor) ByEntranceID(identifier float64) (AetherDivideGymInfo, error) {
-	if a._dataEntranceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideGymInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEntranceID[identifier], nil
-}
-
-// ByTabIconPath returns the AetherDivideGymInfo uniquely identified by TabIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideGymInfoAccessor) ByTabIconPath(identifier string) (AetherDivideGymInfo, error) {
-	if a._dataTabIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideGymInfo{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTabIconPath[identifier], nil
 }
 
 // ByBGPath returns the AetherDivideGymInfo uniquely identified by BGPath
@@ -182,13 +83,111 @@ func (a *AetherDivideGymInfoAccessor) ByTabIconPath(identifier string) (AetherDi
 // Error is only non-nil if the source errors out
 func (a *AetherDivideGymInfoAccessor) ByBGPath(identifier string) (AetherDivideGymInfo, error) {
 	if a._dataBGPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideGymInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideGymInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBGPath[identifier], nil
+}
+
+// ByBadgeUnlockID returns the AetherDivideGymInfo uniquely identified by BadgeUnlockID
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideGymInfoAccessor) ByBadgeUnlockID(identifier float64) (AetherDivideGymInfo, error) {
+	if a._dataBadgeUnlockID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideGymInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBadgeUnlockID[identifier], nil
+}
+
+// ByEntranceID returns the AetherDivideGymInfo uniquely identified by EntranceID
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideGymInfoAccessor) ByEntranceID(identifier float64) (AetherDivideGymInfo, error) {
+	if a._dataEntranceID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideGymInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEntranceID[identifier], nil
+}
+
+// ByID returns the AetherDivideGymInfo uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideGymInfoAccessor) ByID(identifier float64) (AetherDivideGymInfo, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideGymInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByIconPath returns the AetherDivideGymInfo uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideGymInfoAccessor) ByIconPath(identifier string) (AetherDivideGymInfo, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideGymInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
+}
+
+// BySpiritQuest returns the AetherDivideGymInfo uniquely identified by SpiritQuest
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideGymInfoAccessor) BySpiritQuest(identifier float64) (AetherDivideGymInfo, error) {
+	if a._dataSpiritQuest == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideGymInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSpiritQuest[identifier], nil
+}
+
+// ByTabIconPath returns the AetherDivideGymInfo uniquely identified by TabIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideGymInfoAccessor) ByTabIconPath(identifier string) (AetherDivideGymInfo, error) {
+	if a._dataTabIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideGymInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTabIconPath[identifier], nil
 }
 
 // ByTrainerQuest returns the AetherDivideGymInfo uniquely identified by TrainerQuest
@@ -196,11 +195,29 @@ func (a *AetherDivideGymInfoAccessor) ByBGPath(identifier string) (AetherDivideG
 // Error is only non-nil if the source errors out
 func (a *AetherDivideGymInfoAccessor) ByTrainerQuest(identifier float64) (AetherDivideGymInfo, error) {
 	if a._dataTrainerQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideGymInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideGymInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTrainerQuest[identifier], nil
+}
+
+// ByUnlockID returns the AetherDivideGymInfo uniquely identified by UnlockID
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideGymInfoAccessor) ByUnlockID(identifier float64) (AetherDivideGymInfo, error) {
+	if a._dataUnlockID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideGymInfo{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockID[identifier], nil
 }

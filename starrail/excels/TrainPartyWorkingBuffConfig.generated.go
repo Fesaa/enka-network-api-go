@@ -41,7 +41,6 @@ func (a *TrainPartyWorkingBuffConfigAccessor) Raw() ([]TrainPartyWorkingBuffConf
 		if err != nil {
 			return []TrainPartyWorkingBuffConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *TrainPartyWorkingBuffConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyWorkingBuffConfigAccessor) ByIconPath(identifier string) (TrainPartyWorkingBuffConfig, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyWorkingBuffConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyWorkingBuffConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *TrainPartyWorkingBuffConfigAccessor) ByIconPath(identifier string) (Tra
 // Error is only non-nil if the source errors out
 func (a *TrainPartyWorkingBuffConfigAccessor) ByWorkingBuffID(identifier float64) (TrainPartyWorkingBuffConfig, error) {
 	if a._dataWorkingBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyWorkingBuffConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyWorkingBuffConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

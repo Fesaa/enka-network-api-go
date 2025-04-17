@@ -20,9 +20,9 @@ type MazePuzzleOrigamiColonyMaterialCost struct {
 }
 type MazePuzzleOrigamiColonyAccessor struct {
 	_data                []MazePuzzleOrigamiColony
-	_dataOrigamiColonyID map[float64]MazePuzzleOrigamiColony
-	_dataFloorID         map[float64]MazePuzzleOrigamiColony
 	_dataFinishQuestID   map[float64]MazePuzzleOrigamiColony
+	_dataFloorID         map[float64]MazePuzzleOrigamiColony
+	_dataOrigamiColonyID map[float64]MazePuzzleOrigamiColony
 }
 
 // LoadData retrieves the data. Must be called before MazePuzzleOrigamiColony.GroupData
@@ -46,7 +46,6 @@ func (a *MazePuzzleOrigamiColonyAccessor) Raw() ([]MazePuzzleOrigamiColony, erro
 		if err != nil {
 			return []MazePuzzleOrigamiColony{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,38 +54,10 @@ func (a *MazePuzzleOrigamiColonyAccessor) Raw() ([]MazePuzzleOrigamiColony, erro
 // Can be called manually in conjunction with MazePuzzleOrigamiColonyAccessor.LoadData to preload everything
 func (a *MazePuzzleOrigamiColonyAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataOrigamiColonyID[d.OrigamiColonyID] = d
-		a._dataFloorID[d.FloorID] = d
 		a._dataFinishQuestID[d.FinishQuestID] = d
+		a._dataFloorID[d.FloorID] = d
+		a._dataOrigamiColonyID[d.OrigamiColonyID] = d
 	}
-}
-
-// ByOrigamiColonyID returns the MazePuzzleOrigamiColony uniquely identified by OrigamiColonyID
-//
-// Error is only non-nil if the source errors out
-func (a *MazePuzzleOrigamiColonyAccessor) ByOrigamiColonyID(identifier float64) (MazePuzzleOrigamiColony, error) {
-	if a._dataOrigamiColonyID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazePuzzleOrigamiColony{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOrigamiColonyID[identifier], nil
-}
-
-// ByFloorID returns the MazePuzzleOrigamiColony uniquely identified by FloorID
-//
-// Error is only non-nil if the source errors out
-func (a *MazePuzzleOrigamiColonyAccessor) ByFloorID(identifier float64) (MazePuzzleOrigamiColony, error) {
-	if a._dataFloorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazePuzzleOrigamiColony{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFloorID[identifier], nil
 }
 
 // ByFinishQuestID returns the MazePuzzleOrigamiColony uniquely identified by FinishQuestID
@@ -94,11 +65,45 @@ func (a *MazePuzzleOrigamiColonyAccessor) ByFloorID(identifier float64) (MazePuz
 // Error is only non-nil if the source errors out
 func (a *MazePuzzleOrigamiColonyAccessor) ByFinishQuestID(identifier float64) (MazePuzzleOrigamiColony, error) {
 	if a._dataFinishQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazePuzzleOrigamiColony{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazePuzzleOrigamiColony{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFinishQuestID[identifier], nil
+}
+
+// ByFloorID returns the MazePuzzleOrigamiColony uniquely identified by FloorID
+//
+// Error is only non-nil if the source errors out
+func (a *MazePuzzleOrigamiColonyAccessor) ByFloorID(identifier float64) (MazePuzzleOrigamiColony, error) {
+	if a._dataFloorID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazePuzzleOrigamiColony{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFloorID[identifier], nil
+}
+
+// ByOrigamiColonyID returns the MazePuzzleOrigamiColony uniquely identified by OrigamiColonyID
+//
+// Error is only non-nil if the source errors out
+func (a *MazePuzzleOrigamiColonyAccessor) ByOrigamiColonyID(identifier float64) (MazePuzzleOrigamiColony, error) {
+	if a._dataOrigamiColonyID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazePuzzleOrigamiColony{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOrigamiColonyID[identifier], nil
 }

@@ -40,7 +40,6 @@ func (a *AutoFightVOAccessor) Raw() ([]AutoFightVO, error) {
 		if err != nil {
 			return []AutoFightVO{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *AutoFightVOAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AutoFightVOAccessor) ByLightHit(identifier float64) (AutoFightVO, error) {
 	if a._dataLightHit == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AutoFightVO{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AutoFightVO{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *AutoFightVOAccessor) ByLightHit(identifier float64) (AutoFightVO, error
 // Error is only non-nil if the source errors out
 func (a *AutoFightVOAccessor) ByMode(identifier float64) (AutoFightVO, error) {
 	if a._dataMode == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AutoFightVO{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AutoFightVO{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,9 +91,11 @@ func (a *AutoFightVOAccessor) ByMode(identifier float64) (AutoFightVO, error) {
 // Error is only non-nil if the source errors out
 func (a *AutoFightVOAccessor) ByReceiveBuff(identifier float64) (AutoFightVO, error) {
 	if a._dataReceiveBuff == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AutoFightVO{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AutoFightVO{}, err
+			}
 		}
 		a.GroupData()
 	}

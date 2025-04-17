@@ -46,7 +46,6 @@ func (a *MazePuzzleDollyZoomTeleportAccessor) Raw() ([]MazePuzzleDollyZoomTelepo
 		if err != nil {
 			return []MazePuzzleDollyZoomTeleport{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *MazePuzzleDollyZoomTeleportAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MazePuzzleDollyZoomTeleportAccessor) ByID(identifier float64) (MazePuzzleDollyZoomTeleport, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazePuzzleDollyZoomTeleport{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazePuzzleDollyZoomTeleport{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -49,7 +49,6 @@ func (a *RogueTournPermanentTalentAccessor) Raw() ([]RogueTournPermanentTalent, 
 		if err != nil {
 			return []RogueTournPermanentTalent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *RogueTournPermanentTalentAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournPermanentTalentAccessor) ByTalentID(identifier float64) (RogueTournPermanentTalent, error) {
 	if a._dataTalentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournPermanentTalent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournPermanentTalent{}, err
+			}
 		}
 		a.GroupData()
 	}

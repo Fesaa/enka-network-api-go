@@ -62,7 +62,6 @@ func (a *RewardDataAccessor) Raw() ([]RewardData, error) {
 		if err != nil {
 			return []RewardData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -80,9 +79,11 @@ func (a *RewardDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RewardDataAccessor) ByRewardID(identifier float64) (RewardData, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RewardData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RewardData{}, err
+			}
 		}
 		a.GroupData()
 	}

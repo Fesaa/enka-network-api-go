@@ -18,8 +18,8 @@ type MonsterCamp struct {
 type MonsterCampAccessor struct {
 	_data         []MonsterCamp
 	_dataID       map[float64]MonsterCamp
-	_dataSortID   map[float64]MonsterCamp
 	_dataIconPath map[string]MonsterCamp
+	_dataSortID   map[float64]MonsterCamp
 }
 
 // LoadData retrieves the data. Must be called before MonsterCamp.GroupData
@@ -43,7 +43,6 @@ func (a *MonsterCampAccessor) Raw() ([]MonsterCamp, error) {
 		if err != nil {
 			return []MonsterCamp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,8 +52,8 @@ func (a *MonsterCampAccessor) Raw() ([]MonsterCamp, error) {
 func (a *MonsterCampAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
-		a._dataSortID[d.SortID] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataSortID[d.SortID] = d
 	}
 }
 
@@ -63,27 +62,15 @@ func (a *MonsterCampAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonsterCampAccessor) ByID(identifier float64) (MonsterCamp, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterCamp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterCamp{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
-}
-
-// BySortID returns the MonsterCamp uniquely identified by SortID
-//
-// Error is only non-nil if the source errors out
-func (a *MonsterCampAccessor) BySortID(identifier float64) (MonsterCamp, error) {
-	if a._dataSortID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterCamp{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSortID[identifier], nil
 }
 
 // ByIconPath returns the MonsterCamp uniquely identified by IconPath
@@ -91,11 +78,29 @@ func (a *MonsterCampAccessor) BySortID(identifier float64) (MonsterCamp, error) 
 // Error is only non-nil if the source errors out
 func (a *MonsterCampAccessor) ByIconPath(identifier string) (MonsterCamp, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterCamp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterCamp{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// BySortID returns the MonsterCamp uniquely identified by SortID
+//
+// Error is only non-nil if the source errors out
+func (a *MonsterCampAccessor) BySortID(identifier float64) (MonsterCamp, error) {
+	if a._dataSortID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterCamp{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSortID[identifier], nil
 }

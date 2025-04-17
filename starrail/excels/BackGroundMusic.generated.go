@@ -21,8 +21,8 @@ type BackGroundMusic struct {
 }
 type BackGroundMusicAccessor struct {
 	_data                []BackGroundMusic
-	_dataMusicSwitchName map[string]BackGroundMusic
 	_dataID              map[float64]BackGroundMusic
+	_dataMusicSwitchName map[string]BackGroundMusic
 }
 
 // LoadData retrieves the data. Must be called before BackGroundMusic.GroupData
@@ -46,7 +46,6 @@ func (a *BackGroundMusicAccessor) Raw() ([]BackGroundMusic, error) {
 		if err != nil {
 			return []BackGroundMusic{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,23 +54,9 @@ func (a *BackGroundMusicAccessor) Raw() ([]BackGroundMusic, error) {
 // Can be called manually in conjunction with BackGroundMusicAccessor.LoadData to preload everything
 func (a *BackGroundMusicAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataMusicSwitchName[d.MusicSwitchName] = d
 		a._dataID[d.ID] = d
+		a._dataMusicSwitchName[d.MusicSwitchName] = d
 	}
-}
-
-// ByMusicSwitchName returns the BackGroundMusic uniquely identified by MusicSwitchName
-//
-// Error is only non-nil if the source errors out
-func (a *BackGroundMusicAccessor) ByMusicSwitchName(identifier string) (BackGroundMusic, error) {
-	if a._dataMusicSwitchName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BackGroundMusic{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMusicSwitchName[identifier], nil
 }
 
 // ByID returns the BackGroundMusic uniquely identified by ID
@@ -79,11 +64,29 @@ func (a *BackGroundMusicAccessor) ByMusicSwitchName(identifier string) (BackGrou
 // Error is only non-nil if the source errors out
 func (a *BackGroundMusicAccessor) ByID(identifier float64) (BackGroundMusic, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BackGroundMusic{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BackGroundMusic{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByMusicSwitchName returns the BackGroundMusic uniquely identified by MusicSwitchName
+//
+// Error is only non-nil if the source errors out
+func (a *BackGroundMusicAccessor) ByMusicSwitchName(identifier string) (BackGroundMusic, error) {
+	if a._dataMusicSwitchName == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BackGroundMusic{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMusicSwitchName[identifier], nil
 }

@@ -39,7 +39,6 @@ func (a *RogueAdventureRoomAccessor) Raw() ([]RogueAdventureRoom, error) {
 		if err != nil {
 			return []RogueAdventureRoom{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueAdventureRoomAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueAdventureRoomAccessor) ByParamGroupID(identifier float64) (RogueAdventureRoom, error) {
 	if a._dataParamGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAdventureRoom{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAdventureRoom{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *RogueAdventureRoomAccessor) ByParamGroupID(identifier float64) (RogueAd
 // Error is only non-nil if the source errors out
 func (a *RogueAdventureRoomAccessor) ByRoomID(identifier float64) (RogueAdventureRoom, error) {
 	if a._dataRoomID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAdventureRoom{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAdventureRoom{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -15,9 +15,9 @@ type AvatarPlayerIcon struct {
 }
 type AvatarPlayerIconAccessor struct {
 	_data          []AvatarPlayerIcon
+	_dataAvatarID  map[float64]AvatarPlayerIcon
 	_dataID        map[float64]AvatarPlayerIcon
 	_dataImagePath map[string]AvatarPlayerIcon
-	_dataAvatarID  map[float64]AvatarPlayerIcon
 }
 
 // LoadData retrieves the data. Must be called before AvatarPlayerIcon.GroupData
@@ -41,7 +41,6 @@ func (a *AvatarPlayerIconAccessor) Raw() ([]AvatarPlayerIcon, error) {
 		if err != nil {
 			return []AvatarPlayerIcon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,10 +49,26 @@ func (a *AvatarPlayerIconAccessor) Raw() ([]AvatarPlayerIcon, error) {
 // Can be called manually in conjunction with AvatarPlayerIconAccessor.LoadData to preload everything
 func (a *AvatarPlayerIconAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataAvatarID[d.AvatarID] = d
 		a._dataID[d.ID] = d
 		a._dataImagePath[d.ImagePath] = d
-		a._dataAvatarID[d.AvatarID] = d
 	}
+}
+
+// ByAvatarID returns the AvatarPlayerIcon uniquely identified by AvatarID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarPlayerIconAccessor) ByAvatarID(identifier float64) (AvatarPlayerIcon, error) {
+	if a._dataAvatarID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarPlayerIcon{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarID[identifier], nil
 }
 
 // ByID returns the AvatarPlayerIcon uniquely identified by ID
@@ -61,9 +76,11 @@ func (a *AvatarPlayerIconAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarPlayerIconAccessor) ByID(identifier float64) (AvatarPlayerIcon, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarPlayerIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarPlayerIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -75,25 +92,13 @@ func (a *AvatarPlayerIconAccessor) ByID(identifier float64) (AvatarPlayerIcon, e
 // Error is only non-nil if the source errors out
 func (a *AvatarPlayerIconAccessor) ByImagePath(identifier string) (AvatarPlayerIcon, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarPlayerIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarPlayerIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataImagePath[identifier], nil
-}
-
-// ByAvatarID returns the AvatarPlayerIcon uniquely identified by AvatarID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarPlayerIconAccessor) ByAvatarID(identifier float64) (AvatarPlayerIcon, error) {
-	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarPlayerIcon{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarID[identifier], nil
 }

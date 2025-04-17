@@ -38,7 +38,6 @@ func (a *TrainPartyConstValueCommonAccessor) Raw() ([]TrainPartyConstValueCommon
 		if err != nil {
 			return []TrainPartyConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *TrainPartyConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyConstValueCommonAccessor) ByConstValueName(identifier string) (TrainPartyConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

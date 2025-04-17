@@ -40,7 +40,6 @@ func (a *MonopolyGameResourceAccessor) Raw() ([]MonopolyGameResource, error) {
 		if err != nil {
 			return []MonopolyGameResource{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MonopolyGameResourceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyGameResourceAccessor) ByResourceID(identifier float64) (MonopolyGameResource, error) {
 	if a._dataResourceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyGameResource{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyGameResource{}, err
+			}
 		}
 		a.GroupData()
 	}

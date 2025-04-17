@@ -38,7 +38,6 @@ func (a *GameplayGuideConstValueAccessor) Raw() ([]GameplayGuideConstValue, erro
 		if err != nil {
 			return []GameplayGuideConstValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *GameplayGuideConstValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GameplayGuideConstValueAccessor) ByGameplayGuideConstValueName(identifier string) (GameplayGuideConstValue, error) {
 	if a._dataGameplayGuideConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *GameplayGuideConstValueAccessor) ByGameplayGuideConstValueName(identifi
 // Error is only non-nil if the source errors out
 func (a *GameplayGuideConstValueAccessor) ByValue(identifier string) (GameplayGuideConstValue, error) {
 	if a._dataValue == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}

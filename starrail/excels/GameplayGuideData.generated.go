@@ -53,7 +53,6 @@ func (a *GameplayGuideDataAccessor) Raw() ([]GameplayGuideData, error) {
 		if err != nil {
 			return []GameplayGuideData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -72,9 +71,11 @@ func (a *GameplayGuideDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GameplayGuideDataAccessor) ByID(identifier float64) (GameplayGuideData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -86,9 +87,11 @@ func (a *GameplayGuideDataAccessor) ByID(identifier float64) (GameplayGuideData,
 // Error is only non-nil if the source errors out
 func (a *GameplayGuideDataAccessor) ByOrder(identifier float64) (GameplayGuideData, error) {
 	if a._dataOrder == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GameplayGuideData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GameplayGuideData{}, err
+			}
 		}
 		a.GroupData()
 	}

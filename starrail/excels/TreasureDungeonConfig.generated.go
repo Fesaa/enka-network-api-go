@@ -29,8 +29,8 @@ type TreasureDungeonConfig struct {
 }
 type TreasureDungeonConfigAccessor struct {
 	_data                 []TreasureDungeonConfig
-	_dataEntranceIconPath map[string]TreasureDungeonConfig
 	_dataDungeonID        map[float64]TreasureDungeonConfig
+	_dataEntranceIconPath map[string]TreasureDungeonConfig
 }
 
 // LoadData retrieves the data. Must be called before TreasureDungeonConfig.GroupData
@@ -54,7 +54,6 @@ func (a *TreasureDungeonConfigAccessor) Raw() ([]TreasureDungeonConfig, error) {
 		if err != nil {
 			return []TreasureDungeonConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,23 +62,9 @@ func (a *TreasureDungeonConfigAccessor) Raw() ([]TreasureDungeonConfig, error) {
 // Can be called manually in conjunction with TreasureDungeonConfigAccessor.LoadData to preload everything
 func (a *TreasureDungeonConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataEntranceIconPath[d.EntranceIconPath] = d
 		a._dataDungeonID[d.DungeonID] = d
+		a._dataEntranceIconPath[d.EntranceIconPath] = d
 	}
-}
-
-// ByEntranceIconPath returns the TreasureDungeonConfig uniquely identified by EntranceIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *TreasureDungeonConfigAccessor) ByEntranceIconPath(identifier string) (TreasureDungeonConfig, error) {
-	if a._dataEntranceIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TreasureDungeonConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEntranceIconPath[identifier], nil
 }
 
 // ByDungeonID returns the TreasureDungeonConfig uniquely identified by DungeonID
@@ -87,11 +72,29 @@ func (a *TreasureDungeonConfigAccessor) ByEntranceIconPath(identifier string) (T
 // Error is only non-nil if the source errors out
 func (a *TreasureDungeonConfigAccessor) ByDungeonID(identifier float64) (TreasureDungeonConfig, error) {
 	if a._dataDungeonID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TreasureDungeonConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TreasureDungeonConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDungeonID[identifier], nil
+}
+
+// ByEntranceIconPath returns the TreasureDungeonConfig uniquely identified by EntranceIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *TreasureDungeonConfigAccessor) ByEntranceIconPath(identifier string) (TreasureDungeonConfig, error) {
+	if a._dataEntranceIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TreasureDungeonConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEntranceIconPath[identifier], nil
 }

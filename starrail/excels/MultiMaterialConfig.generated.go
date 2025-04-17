@@ -41,7 +41,6 @@ func (a *MultiMaterialConfigAccessor) Raw() ([]MultiMaterialConfig, error) {
 		if err != nil {
 			return []MultiMaterialConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *MultiMaterialConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MultiMaterialConfigAccessor) ByItemID(identifier float64) (MultiMaterialConfig, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MultiMaterialConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MultiMaterialConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *MultiMaterialConfigAccessor) ByItemID(identifier float64) (MultiMateria
 // Error is only non-nil if the source errors out
 func (a *MultiMaterialConfigAccessor) ByPurposeID(identifier float64) (MultiMaterialConfig, error) {
 	if a._dataPurposeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MultiMaterialConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MultiMaterialConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

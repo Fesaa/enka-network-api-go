@@ -48,7 +48,6 @@ func (a *RaidTargetConfigAccessor) Raw() ([]RaidTargetConfig, error) {
 		if err != nil {
 			return []RaidTargetConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,9 +65,11 @@ func (a *RaidTargetConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RaidTargetConfigAccessor) ByID(identifier float64) (RaidTargetConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RaidTargetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RaidTargetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

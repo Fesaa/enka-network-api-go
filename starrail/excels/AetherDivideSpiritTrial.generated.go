@@ -39,7 +39,6 @@ func (a *AetherDivideSpiritTrialAccessor) Raw() ([]AetherDivideSpiritTrial, erro
 		if err != nil {
 			return []AetherDivideSpiritTrial{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *AetherDivideSpiritTrialAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AetherDivideSpiritTrialAccessor) ByID(identifier float64) (AetherDivideSpiritTrial, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpiritTrial{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpiritTrial{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *AetherDivideSpiritTrialAccessor) ByID(identifier float64) (AetherDivide
 // Error is only non-nil if the source errors out
 func (a *AetherDivideSpiritTrialAccessor) BySpiritID(identifier float64) (AetherDivideSpiritTrial, error) {
 	if a._dataSpiritID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideSpiritTrial{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideSpiritTrial{}, err
+			}
 		}
 		a.GroupData()
 	}

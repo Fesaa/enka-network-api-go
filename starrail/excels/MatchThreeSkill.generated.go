@@ -43,7 +43,6 @@ func (a *MatchThreeSkillAccessor) Raw() ([]MatchThreeSkill, error) {
 		if err != nil {
 			return []MatchThreeSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *MatchThreeSkillAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeSkillAccessor) BySkillID(identifier float64) (MatchThreeSkill, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *MatchThreeSkillAccessor) BySkillID(identifier float64) (MatchThreeSkill
 // Error is only non-nil if the source errors out
 func (a *MatchThreeSkillAccessor) BySkillJson(identifier string) (MatchThreeSkill, error) {
 	if a._dataSkillJson == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeSkill{}, err
+			}
 		}
 		a.GroupData()
 	}

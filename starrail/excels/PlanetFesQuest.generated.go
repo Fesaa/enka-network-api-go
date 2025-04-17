@@ -23,8 +23,8 @@ type PlanetFesQuestRewardItemList struct {
 }
 type PlanetFesQuestAccessor struct {
 	_data            []PlanetFesQuest
-	_dataID          map[float64]PlanetFesQuest
 	_dataFinishwayID map[float64]PlanetFesQuest
+	_dataID          map[float64]PlanetFesQuest
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesQuest.GroupData
@@ -48,7 +48,6 @@ func (a *PlanetFesQuestAccessor) Raw() ([]PlanetFesQuest, error) {
 		if err != nil {
 			return []PlanetFesQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,23 +56,9 @@ func (a *PlanetFesQuestAccessor) Raw() ([]PlanetFesQuest, error) {
 // Can be called manually in conjunction with PlanetFesQuestAccessor.LoadData to preload everything
 func (a *PlanetFesQuestAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataFinishwayID[d.FinishwayID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the PlanetFesQuest uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesQuestAccessor) ByID(identifier float64) (PlanetFesQuest, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesQuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByFinishwayID returns the PlanetFesQuest uniquely identified by FinishwayID
@@ -81,11 +66,29 @@ func (a *PlanetFesQuestAccessor) ByID(identifier float64) (PlanetFesQuest, error
 // Error is only non-nil if the source errors out
 func (a *PlanetFesQuestAccessor) ByFinishwayID(identifier float64) (PlanetFesQuest, error) {
 	if a._dataFinishwayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesQuest{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFinishwayID[identifier], nil
+}
+
+// ByID returns the PlanetFesQuest uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesQuestAccessor) ByID(identifier float64) (PlanetFesQuest, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesQuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

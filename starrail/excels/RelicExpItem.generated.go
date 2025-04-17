@@ -14,9 +14,9 @@ type RelicExpItem struct {
 }
 type RelicExpItemAccessor struct {
 	_data           []RelicExpItem
-	_dataItemID     map[float64]RelicExpItem
-	_dataExpProvide map[float64]RelicExpItem
 	_dataCoinCost   map[float64]RelicExpItem
+	_dataExpProvide map[float64]RelicExpItem
+	_dataItemID     map[float64]RelicExpItem
 }
 
 // LoadData retrieves the data. Must be called before RelicExpItem.GroupData
@@ -40,7 +40,6 @@ func (a *RelicExpItemAccessor) Raw() ([]RelicExpItem, error) {
 		if err != nil {
 			return []RelicExpItem{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,38 +48,10 @@ func (a *RelicExpItemAccessor) Raw() ([]RelicExpItem, error) {
 // Can be called manually in conjunction with RelicExpItemAccessor.LoadData to preload everything
 func (a *RelicExpItemAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataItemID[d.ItemID] = d
-		a._dataExpProvide[d.ExpProvide] = d
 		a._dataCoinCost[d.CoinCost] = d
+		a._dataExpProvide[d.ExpProvide] = d
+		a._dataItemID[d.ItemID] = d
 	}
-}
-
-// ByItemID returns the RelicExpItem uniquely identified by ItemID
-//
-// Error is only non-nil if the source errors out
-func (a *RelicExpItemAccessor) ByItemID(identifier float64) (RelicExpItem, error) {
-	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicExpItem{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemID[identifier], nil
-}
-
-// ByExpProvide returns the RelicExpItem uniquely identified by ExpProvide
-//
-// Error is only non-nil if the source errors out
-func (a *RelicExpItemAccessor) ByExpProvide(identifier float64) (RelicExpItem, error) {
-	if a._dataExpProvide == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicExpItem{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataExpProvide[identifier], nil
 }
 
 // ByCoinCost returns the RelicExpItem uniquely identified by CoinCost
@@ -88,11 +59,45 @@ func (a *RelicExpItemAccessor) ByExpProvide(identifier float64) (RelicExpItem, e
 // Error is only non-nil if the source errors out
 func (a *RelicExpItemAccessor) ByCoinCost(identifier float64) (RelicExpItem, error) {
 	if a._dataCoinCost == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicExpItem{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicExpItem{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCoinCost[identifier], nil
+}
+
+// ByExpProvide returns the RelicExpItem uniquely identified by ExpProvide
+//
+// Error is only non-nil if the source errors out
+func (a *RelicExpItemAccessor) ByExpProvide(identifier float64) (RelicExpItem, error) {
+	if a._dataExpProvide == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicExpItem{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataExpProvide[identifier], nil
+}
+
+// ByItemID returns the RelicExpItem uniquely identified by ItemID
+//
+// Error is only non-nil if the source errors out
+func (a *RelicExpItemAccessor) ByItemID(identifier float64) (RelicExpItem, error) {
+	if a._dataItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicExpItem{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemID[identifier], nil
 }

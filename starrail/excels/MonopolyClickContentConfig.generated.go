@@ -37,7 +37,6 @@ func (a *MonopolyClickContentConfigAccessor) Raw() ([]MonopolyClickContentConfig
 		if err != nil {
 			return []MonopolyClickContentConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MonopolyClickContentConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyClickContentConfigAccessor) ByID(identifier float64) (MonopolyClickContentConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyClickContentConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyClickContentConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

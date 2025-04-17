@@ -41,7 +41,6 @@ func (a *TreasureDungeonAvatarAccessor) Raw() ([]TreasureDungeonAvatar, error) {
 		if err != nil {
 			return []TreasureDungeonAvatar{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *TreasureDungeonAvatarAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TreasureDungeonAvatarAccessor) ByAvatarPickID(identifier float64) (TreasureDungeonAvatar, error) {
 	if a._dataAvatarPickID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TreasureDungeonAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TreasureDungeonAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}

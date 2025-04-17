@@ -47,7 +47,6 @@ func (a *InteractConfigAccessor) Raw() ([]InteractConfig, error) {
 		if err != nil {
 			return []InteractConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -65,9 +64,11 @@ func (a *InteractConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *InteractConfigAccessor) ByInteractID(identifier float64) (InteractConfig, error) {
 	if a._dataInteractID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InteractConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InteractConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

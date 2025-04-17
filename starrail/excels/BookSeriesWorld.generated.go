@@ -16,9 +16,9 @@ type BookSeriesWorld struct {
 }
 type BookSeriesWorldAccessor struct {
 	_data                              []BookSeriesWorld
-	_dataBookSeriesWorldIconPath       map[string]BookSeriesWorld
-	_dataBookSeriesWorldBackgroundPath map[string]BookSeriesWorld
 	_dataBookSeriesWorld               map[float64]BookSeriesWorld
+	_dataBookSeriesWorldBackgroundPath map[string]BookSeriesWorld
+	_dataBookSeriesWorldIconPath       map[string]BookSeriesWorld
 }
 
 // LoadData retrieves the data. Must be called before BookSeriesWorld.GroupData
@@ -42,7 +42,6 @@ func (a *BookSeriesWorldAccessor) Raw() ([]BookSeriesWorld, error) {
 		if err != nil {
 			return []BookSeriesWorld{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,38 +50,10 @@ func (a *BookSeriesWorldAccessor) Raw() ([]BookSeriesWorld, error) {
 // Can be called manually in conjunction with BookSeriesWorldAccessor.LoadData to preload everything
 func (a *BookSeriesWorldAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataBookSeriesWorldIconPath[d.BookSeriesWorldIconPath] = d
-		a._dataBookSeriesWorldBackgroundPath[d.BookSeriesWorldBackgroundPath] = d
 		a._dataBookSeriesWorld[d.BookSeriesWorld] = d
+		a._dataBookSeriesWorldBackgroundPath[d.BookSeriesWorldBackgroundPath] = d
+		a._dataBookSeriesWorldIconPath[d.BookSeriesWorldIconPath] = d
 	}
-}
-
-// ByBookSeriesWorldIconPath returns the BookSeriesWorld uniquely identified by BookSeriesWorldIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *BookSeriesWorldAccessor) ByBookSeriesWorldIconPath(identifier string) (BookSeriesWorld, error) {
-	if a._dataBookSeriesWorldIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BookSeriesWorld{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBookSeriesWorldIconPath[identifier], nil
-}
-
-// ByBookSeriesWorldBackgroundPath returns the BookSeriesWorld uniquely identified by BookSeriesWorldBackgroundPath
-//
-// Error is only non-nil if the source errors out
-func (a *BookSeriesWorldAccessor) ByBookSeriesWorldBackgroundPath(identifier string) (BookSeriesWorld, error) {
-	if a._dataBookSeriesWorldBackgroundPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BookSeriesWorld{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBookSeriesWorldBackgroundPath[identifier], nil
 }
 
 // ByBookSeriesWorld returns the BookSeriesWorld uniquely identified by BookSeriesWorld
@@ -90,11 +61,45 @@ func (a *BookSeriesWorldAccessor) ByBookSeriesWorldBackgroundPath(identifier str
 // Error is only non-nil if the source errors out
 func (a *BookSeriesWorldAccessor) ByBookSeriesWorld(identifier float64) (BookSeriesWorld, error) {
 	if a._dataBookSeriesWorld == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BookSeriesWorld{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BookSeriesWorld{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBookSeriesWorld[identifier], nil
+}
+
+// ByBookSeriesWorldBackgroundPath returns the BookSeriesWorld uniquely identified by BookSeriesWorldBackgroundPath
+//
+// Error is only non-nil if the source errors out
+func (a *BookSeriesWorldAccessor) ByBookSeriesWorldBackgroundPath(identifier string) (BookSeriesWorld, error) {
+	if a._dataBookSeriesWorldBackgroundPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BookSeriesWorld{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBookSeriesWorldBackgroundPath[identifier], nil
+}
+
+// ByBookSeriesWorldIconPath returns the BookSeriesWorld uniquely identified by BookSeriesWorldIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *BookSeriesWorldAccessor) ByBookSeriesWorldIconPath(identifier string) (BookSeriesWorld, error) {
+	if a._dataBookSeriesWorldIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BookSeriesWorld{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBookSeriesWorldIconPath[identifier], nil
 }

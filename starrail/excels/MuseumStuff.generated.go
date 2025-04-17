@@ -28,8 +28,8 @@ type MuseumStuff struct {
 }
 type MuseumStuffAccessor struct {
 	_data            []MuseumStuff
-	_dataScenePropID map[float64]MuseumStuff
 	_dataItemID      map[float64]MuseumStuff
+	_dataScenePropID map[float64]MuseumStuff
 }
 
 // LoadData retrieves the data. Must be called before MuseumStuff.GroupData
@@ -53,7 +53,6 @@ func (a *MuseumStuffAccessor) Raw() ([]MuseumStuff, error) {
 		if err != nil {
 			return []MuseumStuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,23 +61,9 @@ func (a *MuseumStuffAccessor) Raw() ([]MuseumStuff, error) {
 // Can be called manually in conjunction with MuseumStuffAccessor.LoadData to preload everything
 func (a *MuseumStuffAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataScenePropID[d.ScenePropID] = d
 		a._dataItemID[d.ItemID] = d
+		a._dataScenePropID[d.ScenePropID] = d
 	}
-}
-
-// ByScenePropID returns the MuseumStuff uniquely identified by ScenePropID
-//
-// Error is only non-nil if the source errors out
-func (a *MuseumStuffAccessor) ByScenePropID(identifier float64) (MuseumStuff, error) {
-	if a._dataScenePropID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumStuff{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataScenePropID[identifier], nil
 }
 
 // ByItemID returns the MuseumStuff uniquely identified by ItemID
@@ -86,11 +71,29 @@ func (a *MuseumStuffAccessor) ByScenePropID(identifier float64) (MuseumStuff, er
 // Error is only non-nil if the source errors out
 func (a *MuseumStuffAccessor) ByItemID(identifier float64) (MuseumStuff, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumStuff{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumStuff{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataItemID[identifier], nil
+}
+
+// ByScenePropID returns the MuseumStuff uniquely identified by ScenePropID
+//
+// Error is only non-nil if the source errors out
+func (a *MuseumStuffAccessor) ByScenePropID(identifier float64) (MuseumStuff, error) {
+	if a._dataScenePropID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumStuff{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataScenePropID[identifier], nil
 }

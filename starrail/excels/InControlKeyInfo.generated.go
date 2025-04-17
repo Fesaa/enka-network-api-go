@@ -41,7 +41,6 @@ func (a *InControlKeyInfoAccessor) Raw() ([]InControlKeyInfo, error) {
 		if err != nil {
 			return []InControlKeyInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *InControlKeyInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *InControlKeyInfoAccessor) Bykey(identifier string) (InControlKeyInfo, error) {
 	if a._dataKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InControlKeyInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InControlKeyInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

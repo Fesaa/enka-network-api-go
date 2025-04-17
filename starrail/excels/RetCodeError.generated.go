@@ -38,7 +38,6 @@ func (a *RetCodeErrorAccessor) Raw() ([]RetCodeError, error) {
 		if err != nil {
 			return []RetCodeError{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

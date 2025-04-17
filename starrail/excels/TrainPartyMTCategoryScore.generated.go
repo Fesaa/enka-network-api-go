@@ -39,7 +39,6 @@ func (a *TrainPartyMTCategoryScoreAccessor) Raw() ([]TrainPartyMTCategoryScore, 
 		if err != nil {
 			return []TrainPartyMTCategoryScore{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *TrainPartyMTCategoryScoreAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyMTCategoryScoreAccessor) ByCategoryID(identifier float64) (TrainPartyMTCategoryScore, error) {
 	if a._dataCategoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyMTCategoryScore{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyMTCategoryScore{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *TrainPartyMTCategoryScoreAccessor) ByCategoryID(identifier float64) (Tr
 // Error is only non-nil if the source errors out
 func (a *TrainPartyMTCategoryScoreAccessor) ByRatio(identifier float64) (TrainPartyMTCategoryScore, error) {
 	if a._dataRatio == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyMTCategoryScore{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyMTCategoryScore{}, err
+			}
 		}
 		a.GroupData()
 	}

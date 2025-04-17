@@ -43,7 +43,6 @@ func (a *SpaceZooConstValueCommonAccessor) Raw() ([]SpaceZooConstValueCommon, er
 		if err != nil {
 			return []SpaceZooConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *SpaceZooConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooConstValueCommonAccessor) ByConstValueName(identifier string) (SpaceZooConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

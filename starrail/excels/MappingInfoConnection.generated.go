@@ -39,7 +39,6 @@ func (a *MappingInfoConnectionAccessor) Raw() ([]MappingInfoConnection, error) {
 		if err != nil {
 			return []MappingInfoConnection{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *MappingInfoConnectionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MappingInfoConnectionAccessor) BySourceMappingInfoID(identifier float64) (MappingInfoConnection, error) {
 	if a._dataSourceMappingInfoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MappingInfoConnection{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MappingInfoConnection{}, err
+			}
 		}
 		a.GroupData()
 	}

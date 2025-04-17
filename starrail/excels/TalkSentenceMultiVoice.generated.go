@@ -37,7 +37,6 @@ func (a *TalkSentenceMultiVoiceAccessor) Raw() ([]TalkSentenceMultiVoice, error)
 		if err != nil {
 			return []TalkSentenceMultiVoice{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *TalkSentenceMultiVoiceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TalkSentenceMultiVoiceAccessor) ByTalkSentenceID(identifier float64) (TalkSentenceMultiVoice, error) {
 	if a._dataTalkSentenceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TalkSentenceMultiVoice{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TalkSentenceMultiVoice{}, err
+			}
 		}
 		a.GroupData()
 	}

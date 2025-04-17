@@ -16,9 +16,9 @@ type ChimeraGalleryAct struct {
 }
 type ChimeraGalleryActAccessor struct {
 	_data      []ChimeraGalleryAct
-	_dataSort  map[float64]ChimeraGalleryAct
 	_dataActID map[float64]ChimeraGalleryAct
 	_dataIcon  map[string]ChimeraGalleryAct
+	_dataSort  map[float64]ChimeraGalleryAct
 }
 
 // LoadData retrieves the data. Must be called before ChimeraGalleryAct.GroupData
@@ -42,7 +42,6 @@ func (a *ChimeraGalleryActAccessor) Raw() ([]ChimeraGalleryAct, error) {
 		if err != nil {
 			return []ChimeraGalleryAct{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,24 +50,10 @@ func (a *ChimeraGalleryActAccessor) Raw() ([]ChimeraGalleryAct, error) {
 // Can be called manually in conjunction with ChimeraGalleryActAccessor.LoadData to preload everything
 func (a *ChimeraGalleryActAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSort[d.Sort] = d
 		a._dataActID[d.ActID] = d
 		a._dataIcon[d.Icon] = d
+		a._dataSort[d.Sort] = d
 	}
-}
-
-// BySort returns the ChimeraGalleryAct uniquely identified by Sort
-//
-// Error is only non-nil if the source errors out
-func (a *ChimeraGalleryActAccessor) BySort(identifier float64) (ChimeraGalleryAct, error) {
-	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraGalleryAct{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSort[identifier], nil
 }
 
 // ByActID returns the ChimeraGalleryAct uniquely identified by ActID
@@ -76,9 +61,11 @@ func (a *ChimeraGalleryActAccessor) BySort(identifier float64) (ChimeraGalleryAc
 // Error is only non-nil if the source errors out
 func (a *ChimeraGalleryActAccessor) ByActID(identifier float64) (ChimeraGalleryAct, error) {
 	if a._dataActID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraGalleryAct{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraGalleryAct{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -90,11 +77,29 @@ func (a *ChimeraGalleryActAccessor) ByActID(identifier float64) (ChimeraGalleryA
 // Error is only non-nil if the source errors out
 func (a *ChimeraGalleryActAccessor) ByIcon(identifier string) (ChimeraGalleryAct, error) {
 	if a._dataIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraGalleryAct{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraGalleryAct{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIcon[identifier], nil
+}
+
+// BySort returns the ChimeraGalleryAct uniquely identified by Sort
+//
+// Error is only non-nil if the source errors out
+func (a *ChimeraGalleryActAccessor) BySort(identifier float64) (ChimeraGalleryAct, error) {
+	if a._dataSort == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraGalleryAct{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSort[identifier], nil
 }

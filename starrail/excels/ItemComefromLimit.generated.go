@@ -39,7 +39,6 @@ func (a *ItemComefromLimitAccessor) Raw() ([]ItemComefromLimit, error) {
 		if err != nil {
 			return []ItemComefromLimit{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ItemComefromLimitAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemComefromLimitAccessor) ByComefromID(identifier float64) (ItemComefromLimit, error) {
 	if a._dataComefromID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemComefromLimit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemComefromLimit{}, err
+			}
 		}
 		a.GroupData()
 	}

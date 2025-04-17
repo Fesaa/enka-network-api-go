@@ -46,7 +46,6 @@ func (a *RelicSetSkillConfigAccessor) Raw() ([]RelicSetSkillConfig, error) {
 		if err != nil {
 			return []RelicSetSkillConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *RelicSetSkillConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RelicSetSkillConfigAccessor) BySkillDesc(identifier string) (RelicSetSkillConfig, error) {
 	if a._dataSkillDesc == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicSetSkillConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicSetSkillConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -17,8 +17,8 @@ type RogueImage struct {
 }
 type RogueImageAccessor struct {
 	_data          []RogueImage
-	_dataImagePath map[string]RogueImage
 	_dataImageID   map[float64]RogueImage
+	_dataImagePath map[string]RogueImage
 }
 
 // LoadData retrieves the data. Must be called before RogueImage.GroupData
@@ -42,7 +42,6 @@ func (a *RogueImageAccessor) Raw() ([]RogueImage, error) {
 		if err != nil {
 			return []RogueImage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,23 +50,9 @@ func (a *RogueImageAccessor) Raw() ([]RogueImage, error) {
 // Can be called manually in conjunction with RogueImageAccessor.LoadData to preload everything
 func (a *RogueImageAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataImagePath[d.ImagePath] = d
 		a._dataImageID[d.ImageID] = d
+		a._dataImagePath[d.ImagePath] = d
 	}
-}
-
-// ByImagePath returns the RogueImage uniquely identified by ImagePath
-//
-// Error is only non-nil if the source errors out
-func (a *RogueImageAccessor) ByImagePath(identifier string) (RogueImage, error) {
-	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueImage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataImagePath[identifier], nil
 }
 
 // ByImageID returns the RogueImage uniquely identified by ImageID
@@ -75,11 +60,29 @@ func (a *RogueImageAccessor) ByImagePath(identifier string) (RogueImage, error) 
 // Error is only non-nil if the source errors out
 func (a *RogueImageAccessor) ByImageID(identifier float64) (RogueImage, error) {
 	if a._dataImageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueImage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueImage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataImageID[identifier], nil
+}
+
+// ByImagePath returns the RogueImage uniquely identified by ImagePath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueImageAccessor) ByImagePath(identifier string) (RogueImage, error) {
+	if a._dataImagePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueImage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataImagePath[identifier], nil
 }

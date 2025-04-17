@@ -42,7 +42,6 @@ func (a *HeartDialConstValueAccessor) Raw() ([]HeartDialConstValue, error) {
 		if err != nil {
 			return []HeartDialConstValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *HeartDialConstValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeartDialConstValueAccessor) ByConstValueName(identifier string) (HeartDialConstValue, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeartDialConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeartDialConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}

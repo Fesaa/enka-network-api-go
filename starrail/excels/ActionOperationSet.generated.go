@@ -37,7 +37,6 @@ func (a *ActionOperationSetAccessor) Raw() ([]ActionOperationSet, error) {
 		if err != nil {
 			return []ActionOperationSet{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ActionOperationSetAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActionOperationSetAccessor) ByID(identifier float64) (ActionOperationSet, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActionOperationSet{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActionOperationSet{}, err
+			}
 		}
 		a.GroupData()
 	}

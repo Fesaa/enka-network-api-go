@@ -63,7 +63,6 @@ func (a *AvatarServantSkillConfigAccessor) Raw() ([]AvatarServantSkillConfig, er
 		if err != nil {
 			return []AvatarServantSkillConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

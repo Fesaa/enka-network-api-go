@@ -20,8 +20,8 @@ type MonopolyAssetConfig struct {
 }
 type MonopolyAssetConfigAccessor struct {
 	_data           []MonopolyAssetConfig
-	_dataFigurePath map[string]MonopolyAssetConfig
 	_dataAssetID    map[float64]MonopolyAssetConfig
+	_dataFigurePath map[string]MonopolyAssetConfig
 }
 
 // LoadData retrieves the data. Must be called before MonopolyAssetConfig.GroupData
@@ -45,7 +45,6 @@ func (a *MonopolyAssetConfigAccessor) Raw() ([]MonopolyAssetConfig, error) {
 		if err != nil {
 			return []MonopolyAssetConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,23 +53,9 @@ func (a *MonopolyAssetConfigAccessor) Raw() ([]MonopolyAssetConfig, error) {
 // Can be called manually in conjunction with MonopolyAssetConfigAccessor.LoadData to preload everything
 func (a *MonopolyAssetConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataFigurePath[d.FigurePath] = d
 		a._dataAssetID[d.AssetID] = d
+		a._dataFigurePath[d.FigurePath] = d
 	}
-}
-
-// ByFigurePath returns the MonopolyAssetConfig uniquely identified by FigurePath
-//
-// Error is only non-nil if the source errors out
-func (a *MonopolyAssetConfigAccessor) ByFigurePath(identifier string) (MonopolyAssetConfig, error) {
-	if a._dataFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyAssetConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFigurePath[identifier], nil
 }
 
 // ByAssetID returns the MonopolyAssetConfig uniquely identified by AssetID
@@ -78,11 +63,29 @@ func (a *MonopolyAssetConfigAccessor) ByFigurePath(identifier string) (MonopolyA
 // Error is only non-nil if the source errors out
 func (a *MonopolyAssetConfigAccessor) ByAssetID(identifier float64) (MonopolyAssetConfig, error) {
 	if a._dataAssetID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyAssetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyAssetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAssetID[identifier], nil
+}
+
+// ByFigurePath returns the MonopolyAssetConfig uniquely identified by FigurePath
+//
+// Error is only non-nil if the source errors out
+func (a *MonopolyAssetConfigAccessor) ByFigurePath(identifier string) (MonopolyAssetConfig, error) {
+	if a._dataFigurePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyAssetConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFigurePath[identifier], nil
 }

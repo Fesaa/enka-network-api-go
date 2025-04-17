@@ -38,7 +38,6 @@ func (a *CharacterNatureConfigAccessor) Raw() ([]CharacterNatureConfig, error) {
 		if err != nil {
 			return []CharacterNatureConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *CharacterNatureConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *CharacterNatureConfigAccessor) ByNatureID(identifier float64) (CharacterNatureConfig, error) {
 	if a._dataNatureID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CharacterNatureConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CharacterNatureConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

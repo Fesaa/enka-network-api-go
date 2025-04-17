@@ -39,7 +39,6 @@ func (a *ChimeraTalkAccessor) Raw() ([]ChimeraTalk, error) {
 		if err != nil {
 			return []ChimeraTalk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ChimeraTalkAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraTalkAccessor) ByTalkID(identifier float64) (ChimeraTalk, error) {
 	if a._dataTalkID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraTalk{}, err
+			}
 		}
 		a.GroupData()
 	}

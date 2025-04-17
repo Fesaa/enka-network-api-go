@@ -40,7 +40,6 @@ func (a *ShopGroupAccessor) Raw() ([]ShopGroup, error) {
 		if err != nil {
 			return []ShopGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ShopGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ShopGroupAccessor) ByID(identifier float64) (ShopGroup, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ShopGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ShopGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *ShopGroupAccessor) ByID(identifier float64) (ShopGroup, error) {
 // Error is only non-nil if the source errors out
 func (a *ShopGroupAccessor) ByIconPath(identifier string) (ShopGroup, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ShopGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ShopGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

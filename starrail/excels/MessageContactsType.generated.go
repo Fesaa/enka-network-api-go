@@ -40,7 +40,6 @@ func (a *MessageContactsTypeAccessor) Raw() ([]MessageContactsType, error) {
 		if err != nil {
 			return []MessageContactsType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *MessageContactsTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MessageContactsTypeAccessor) ByContactsType(identifier float64) (MessageContactsType, error) {
 	if a._dataContactsType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageContactsType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageContactsType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *MessageContactsTypeAccessor) ByContactsType(identifier float64) (Messag
 // Error is only non-nil if the source errors out
 func (a *MessageContactsTypeAccessor) BySortID(identifier float64) (MessageContactsType, error) {
 	if a._dataSortID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageContactsType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageContactsType{}, err
+			}
 		}
 		a.GroupData()
 	}

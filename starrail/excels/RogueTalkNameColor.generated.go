@@ -37,7 +37,6 @@ func (a *RogueTalkNameColorAccessor) Raw() ([]RogueTalkNameColor, error) {
 		if err != nil {
 			return []RogueTalkNameColor{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

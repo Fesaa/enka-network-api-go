@@ -39,7 +39,6 @@ func (a *RogueDLCUnlockAccessor) Raw() ([]RogueDLCUnlock, error) {
 		if err != nil {
 			return []RogueDLCUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueDLCUnlockAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCUnlockAccessor) ByRogueUnlockID(identifier float64) (RogueDLCUnlock, error) {
 	if a._dataRogueUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}

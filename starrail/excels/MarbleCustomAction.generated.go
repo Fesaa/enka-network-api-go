@@ -39,7 +39,6 @@ func (a *MarbleCustomActionAccessor) Raw() ([]MarbleCustomAction, error) {
 		if err != nil {
 			return []MarbleCustomAction{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MarbleCustomActionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleCustomActionAccessor) ByID(identifier float64) (MarbleCustomAction, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleCustomAction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleCustomAction{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *MarbleCustomActionAccessor) ByID(identifier float64) (MarbleCustomActio
 // Error is only non-nil if the source errors out
 func (a *MarbleCustomActionAccessor) BySealInsID(identifier float64) (MarbleCustomAction, error) {
 	if a._dataSealInsID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleCustomAction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleCustomAction{}, err
+			}
 		}
 		a.GroupData()
 	}

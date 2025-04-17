@@ -37,7 +37,6 @@ func (a *RogueTournWorkbenchAccessor) Raw() ([]RogueTournWorkbench, error) {
 		if err != nil {
 			return []RogueTournWorkbench{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *RogueTournWorkbenchAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournWorkbenchAccessor) ByWorkbenchID(identifier float64) (RogueTournWorkbench, error) {
 	if a._dataWorkbenchID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournWorkbench{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournWorkbench{}, err
+			}
 		}
 		a.GroupData()
 	}

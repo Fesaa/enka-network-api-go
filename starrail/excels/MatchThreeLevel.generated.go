@@ -56,7 +56,6 @@ func (a *MatchThreeLevelAccessor) Raw() ([]MatchThreeLevel, error) {
 		if err != nil {
 			return []MatchThreeLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -74,9 +73,11 @@ func (a *MatchThreeLevelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeLevelAccessor) ByOpponentID(identifier float64) (MatchThreeLevel, error) {
 	if a._dataOpponentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeLevel{}, err
+			}
 		}
 		a.GroupData()
 	}

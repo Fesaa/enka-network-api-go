@@ -44,7 +44,6 @@ func (a *PlanetFesBusinessDayAccessor) Raw() ([]PlanetFesBusinessDay, error) {
 		if err != nil {
 			return []PlanetFesBusinessDay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *PlanetFesBusinessDayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesBusinessDayAccessor) ByBusinessDay(identifier float64) (PlanetFesBusinessDay, error) {
 	if a._dataBusinessDay == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesBusinessDay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesBusinessDay{}, err
+			}
 		}
 		a.GroupData()
 	}

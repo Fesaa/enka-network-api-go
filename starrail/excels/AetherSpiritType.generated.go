@@ -19,12 +19,12 @@ type AetherSpiritType struct {
 }
 type AetherSpiritTypeAccessor struct {
 	_data               []AetherSpiritType
-	_dataUnfullColor    map[string]AetherSpiritType
-	_dataName           map[string]AetherSpiritType
-	_dataSPInfoEffFront map[string]AetherSpiritType
 	_dataColor          map[string]AetherSpiritType
 	_dataIconPath       map[string]AetherSpiritType
+	_dataName           map[string]AetherSpiritType
+	_dataSPInfoEffFront map[string]AetherSpiritType
 	_dataSmallIconPath  map[string]AetherSpiritType
+	_dataUnfullColor    map[string]AetherSpiritType
 }
 
 // LoadData retrieves the data. Must be called before AetherSpiritType.GroupData
@@ -48,7 +48,6 @@ func (a *AetherSpiritTypeAccessor) Raw() ([]AetherSpiritType, error) {
 		if err != nil {
 			return []AetherSpiritType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,55 +56,13 @@ func (a *AetherSpiritTypeAccessor) Raw() ([]AetherSpiritType, error) {
 // Can be called manually in conjunction with AetherSpiritTypeAccessor.LoadData to preload everything
 func (a *AetherSpiritTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUnfullColor[d.UnfullColor] = d
-		a._dataName[d.Name] = d
-		a._dataSPInfoEffFront[d.SPInfoEffFront] = d
 		a._dataColor[d.Color] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataName[d.Name] = d
+		a._dataSPInfoEffFront[d.SPInfoEffFront] = d
 		a._dataSmallIconPath[d.SmallIconPath] = d
+		a._dataUnfullColor[d.UnfullColor] = d
 	}
-}
-
-// ByUnfullColor returns the AetherSpiritType uniquely identified by UnfullColor
-//
-// Error is only non-nil if the source errors out
-func (a *AetherSpiritTypeAccessor) ByUnfullColor(identifier string) (AetherSpiritType, error) {
-	if a._dataUnfullColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherSpiritType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnfullColor[identifier], nil
-}
-
-// ByName returns the AetherSpiritType uniquely identified by Name
-//
-// Error is only non-nil if the source errors out
-func (a *AetherSpiritTypeAccessor) ByName(identifier string) (AetherSpiritType, error) {
-	if a._dataName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherSpiritType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataName[identifier], nil
-}
-
-// BySPInfoEffFront returns the AetherSpiritType uniquely identified by SPInfoEffFront
-//
-// Error is only non-nil if the source errors out
-func (a *AetherSpiritTypeAccessor) BySPInfoEffFront(identifier string) (AetherSpiritType, error) {
-	if a._dataSPInfoEffFront == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherSpiritType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSPInfoEffFront[identifier], nil
 }
 
 // ByColor returns the AetherSpiritType uniquely identified by Color
@@ -113,9 +70,11 @@ func (a *AetherSpiritTypeAccessor) BySPInfoEffFront(identifier string) (AetherSp
 // Error is only non-nil if the source errors out
 func (a *AetherSpiritTypeAccessor) ByColor(identifier string) (AetherSpiritType, error) {
 	if a._dataColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherSpiritType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherSpiritType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -127,13 +86,47 @@ func (a *AetherSpiritTypeAccessor) ByColor(identifier string) (AetherSpiritType,
 // Error is only non-nil if the source errors out
 func (a *AetherSpiritTypeAccessor) ByIconPath(identifier string) (AetherSpiritType, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherSpiritType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherSpiritType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// ByName returns the AetherSpiritType uniquely identified by Name
+//
+// Error is only non-nil if the source errors out
+func (a *AetherSpiritTypeAccessor) ByName(identifier string) (AetherSpiritType, error) {
+	if a._dataName == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherSpiritType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataName[identifier], nil
+}
+
+// BySPInfoEffFront returns the AetherSpiritType uniquely identified by SPInfoEffFront
+//
+// Error is only non-nil if the source errors out
+func (a *AetherSpiritTypeAccessor) BySPInfoEffFront(identifier string) (AetherSpiritType, error) {
+	if a._dataSPInfoEffFront == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherSpiritType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSPInfoEffFront[identifier], nil
 }
 
 // BySmallIconPath returns the AetherSpiritType uniquely identified by SmallIconPath
@@ -141,11 +134,29 @@ func (a *AetherSpiritTypeAccessor) ByIconPath(identifier string) (AetherSpiritTy
 // Error is only non-nil if the source errors out
 func (a *AetherSpiritTypeAccessor) BySmallIconPath(identifier string) (AetherSpiritType, error) {
 	if a._dataSmallIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherSpiritType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherSpiritType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSmallIconPath[identifier], nil
+}
+
+// ByUnfullColor returns the AetherSpiritType uniquely identified by UnfullColor
+//
+// Error is only non-nil if the source errors out
+func (a *AetherSpiritTypeAccessor) ByUnfullColor(identifier string) (AetherSpiritType, error) {
+	if a._dataUnfullColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherSpiritType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnfullColor[identifier], nil
 }

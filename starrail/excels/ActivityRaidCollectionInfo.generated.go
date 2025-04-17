@@ -41,7 +41,6 @@ func (a *ActivityRaidCollectionInfoAccessor) Raw() ([]ActivityRaidCollectionInfo
 		if err != nil {
 			return []ActivityRaidCollectionInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *ActivityRaidCollectionInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityRaidCollectionInfoAccessor) ByActivityID(identifier float64) (ActivityRaidCollectionInfo, error) {
 	if a._dataActivityID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidCollectionInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidCollectionInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *ActivityRaidCollectionInfoAccessor) ByActivityID(identifier float64) (A
 // Error is only non-nil if the source errors out
 func (a *ActivityRaidCollectionInfoAccessor) ByRaidCollectionType(identifier string) (ActivityRaidCollectionInfo, error) {
 	if a._dataRaidCollectionType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidCollectionInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidCollectionInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

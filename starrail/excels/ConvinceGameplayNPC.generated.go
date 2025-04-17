@@ -40,7 +40,6 @@ func (a *ConvinceGameplayNPCAccessor) Raw() ([]ConvinceGameplayNPC, error) {
 		if err != nil {
 			return []ConvinceGameplayNPC{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ConvinceGameplayNPCAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ConvinceGameplayNPCAccessor) ByID(identifier float64) (ConvinceGameplayNPC, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ConvinceGameplayNPC{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ConvinceGameplayNPC{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -14,9 +14,9 @@ type ScheduleDataChallengeStory struct {
 }
 type ScheduleDataChallengeStoryAccessor struct {
 	_data          []ScheduleDataChallengeStory
+	_dataBeginTime map[string]ScheduleDataChallengeStory
 	_dataEndTime   map[string]ScheduleDataChallengeStory
 	_dataID        map[float64]ScheduleDataChallengeStory
-	_dataBeginTime map[string]ScheduleDataChallengeStory
 }
 
 // LoadData retrieves the data. Must be called before ScheduleDataChallengeStory.GroupData
@@ -40,7 +40,6 @@ func (a *ScheduleDataChallengeStoryAccessor) Raw() ([]ScheduleDataChallengeStory
 		if err != nil {
 			return []ScheduleDataChallengeStory{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,10 +48,26 @@ func (a *ScheduleDataChallengeStoryAccessor) Raw() ([]ScheduleDataChallengeStory
 // Can be called manually in conjunction with ScheduleDataChallengeStoryAccessor.LoadData to preload everything
 func (a *ScheduleDataChallengeStoryAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d
 		a._dataID[d.ID] = d
-		a._dataBeginTime[d.BeginTime] = d
 	}
+}
+
+// ByBeginTime returns the ScheduleDataChallengeStory uniquely identified by BeginTime
+//
+// Error is only non-nil if the source errors out
+func (a *ScheduleDataChallengeStoryAccessor) ByBeginTime(identifier string) (ScheduleDataChallengeStory, error) {
+	if a._dataBeginTime == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataChallengeStory{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBeginTime[identifier], nil
 }
 
 // ByEndTime returns the ScheduleDataChallengeStory uniquely identified by EndTime
@@ -60,9 +75,11 @@ func (a *ScheduleDataChallengeStoryAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataChallengeStoryAccessor) ByEndTime(identifier string) (ScheduleDataChallengeStory, error) {
 	if a._dataEndTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataChallengeStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataChallengeStory{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,25 +91,13 @@ func (a *ScheduleDataChallengeStoryAccessor) ByEndTime(identifier string) (Sched
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataChallengeStoryAccessor) ByID(identifier float64) (ScheduleDataChallengeStory, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataChallengeStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataChallengeStory{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
-}
-
-// ByBeginTime returns the ScheduleDataChallengeStory uniquely identified by BeginTime
-//
-// Error is only non-nil if the source errors out
-func (a *ScheduleDataChallengeStoryAccessor) ByBeginTime(identifier string) (ScheduleDataChallengeStory, error) {
-	if a._dataBeginTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataChallengeStory{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBeginTime[identifier], nil
 }

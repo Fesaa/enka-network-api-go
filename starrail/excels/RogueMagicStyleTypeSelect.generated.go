@@ -18,8 +18,8 @@ type RogueMagicStyleTypeSelect struct {
 type RogueMagicStyleTypeSelectAccessor struct {
 	_data          []RogueMagicStyleTypeSelect
 	_dataDisplayID map[float64]RogueMagicStyleTypeSelect
-	_dataIconPath  map[string]RogueMagicStyleTypeSelect
 	_dataEnumType  map[string]RogueMagicStyleTypeSelect
+	_dataIconPath  map[string]RogueMagicStyleTypeSelect
 }
 
 // LoadData retrieves the data. Must be called before RogueMagicStyleTypeSelect.GroupData
@@ -43,7 +43,6 @@ func (a *RogueMagicStyleTypeSelectAccessor) Raw() ([]RogueMagicStyleTypeSelect, 
 		if err != nil {
 			return []RogueMagicStyleTypeSelect{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,8 +52,8 @@ func (a *RogueMagicStyleTypeSelectAccessor) Raw() ([]RogueMagicStyleTypeSelect, 
 func (a *RogueMagicStyleTypeSelectAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataDisplayID[d.DisplayID] = d
-		a._dataIconPath[d.IconPath] = d
 		a._dataEnumType[d.EnumType] = d
+		a._dataIconPath[d.IconPath] = d
 	}
 }
 
@@ -63,27 +62,15 @@ func (a *RogueMagicStyleTypeSelectAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicStyleTypeSelectAccessor) ByDisplayID(identifier float64) (RogueMagicStyleTypeSelect, error) {
 	if a._dataDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicStyleTypeSelect{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicStyleTypeSelect{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDisplayID[identifier], nil
-}
-
-// ByIconPath returns the RogueMagicStyleTypeSelect uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *RogueMagicStyleTypeSelectAccessor) ByIconPath(identifier string) (RogueMagicStyleTypeSelect, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicStyleTypeSelect{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByEnumType returns the RogueMagicStyleTypeSelect uniquely identified by EnumType
@@ -91,11 +78,29 @@ func (a *RogueMagicStyleTypeSelectAccessor) ByIconPath(identifier string) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueMagicStyleTypeSelectAccessor) ByEnumType(identifier string) (RogueMagicStyleTypeSelect, error) {
 	if a._dataEnumType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicStyleTypeSelect{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicStyleTypeSelect{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEnumType[identifier], nil
+}
+
+// ByIconPath returns the RogueMagicStyleTypeSelect uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueMagicStyleTypeSelectAccessor) ByIconPath(identifier string) (RogueMagicStyleTypeSelect, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicStyleTypeSelect{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
 }

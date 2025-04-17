@@ -42,7 +42,6 @@ func (a *ItemComefromAccessor) Raw() ([]ItemComefrom, error) {
 		if err != nil {
 			return []ItemComefrom{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

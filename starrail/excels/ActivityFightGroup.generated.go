@@ -45,7 +45,6 @@ func (a *ActivityFightGroupAccessor) Raw() ([]ActivityFightGroup, error) {
 		if err != nil {
 			return []ActivityFightGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *ActivityFightGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityFightGroupAccessor) ByActivityFightGroupID(identifier float64) (ActivityFightGroup, error) {
 	if a._dataActivityFightGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityFightGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityFightGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

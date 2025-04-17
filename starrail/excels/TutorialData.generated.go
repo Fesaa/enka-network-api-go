@@ -50,7 +50,6 @@ func (a *TutorialDataAccessor) Raw() ([]TutorialData, error) {
 		if err != nil {
 			return []TutorialData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -68,9 +67,11 @@ func (a *TutorialDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TutorialDataAccessor) ByTutorialID(identifier float64) (TutorialData, error) {
 	if a._dataTutorialID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TutorialData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TutorialData{}, err
+			}
 		}
 		a.GroupData()
 	}

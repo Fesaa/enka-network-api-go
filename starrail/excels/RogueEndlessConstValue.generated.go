@@ -38,7 +38,6 @@ func (a *RogueEndlessConstValueAccessor) Raw() ([]RogueEndlessConstValue, error)
 		if err != nil {
 			return []RogueEndlessConstValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueEndlessConstValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueEndlessConstValueAccessor) ByConstValueName(identifier string) (RogueEndlessConstValue, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueEndlessConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueEndlessConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}

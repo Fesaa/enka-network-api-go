@@ -37,7 +37,6 @@ func (a *DrinkMakerMixTagAccessor) Raw() ([]DrinkMakerMixTag, error) {
 		if err != nil {
 			return []DrinkMakerMixTag{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *DrinkMakerMixTagAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerMixTagAccessor) ByTagID(identifier float64) (DrinkMakerMixTag, error) {
 	if a._dataTagID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerMixTag{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerMixTag{}, err
+			}
 		}
 		a.GroupData()
 	}

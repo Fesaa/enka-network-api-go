@@ -38,7 +38,6 @@ func (a *MonopolyConstValueAccessor) Raw() ([]MonopolyConstValue, error) {
 		if err != nil {
 			return []MonopolyConstValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MonopolyConstValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyConstValueAccessor) ByConstValueName(identifier string) (MonopolyConstValue, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}

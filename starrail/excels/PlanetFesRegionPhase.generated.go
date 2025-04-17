@@ -20,10 +20,10 @@ type PlanetFesRegionPhase struct {
 }
 type PlanetFesRegionPhaseAccessor struct {
 	_data              []PlanetFesRegionPhase
-	_dataProgressValue map[float64]PlanetFesRegionPhase
-	_dataPhaseID       map[float64]PlanetFesRegionPhase
 	_dataBuffID        map[float64]PlanetFesRegionPhase
+	_dataPhaseID       map[float64]PlanetFesRegionPhase
 	_dataPicPath       map[string]PlanetFesRegionPhase
+	_dataProgressValue map[float64]PlanetFesRegionPhase
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesRegionPhase.GroupData
@@ -47,7 +47,6 @@ func (a *PlanetFesRegionPhaseAccessor) Raw() ([]PlanetFesRegionPhase, error) {
 		if err != nil {
 			return []PlanetFesRegionPhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,39 +55,11 @@ func (a *PlanetFesRegionPhaseAccessor) Raw() ([]PlanetFesRegionPhase, error) {
 // Can be called manually in conjunction with PlanetFesRegionPhaseAccessor.LoadData to preload everything
 func (a *PlanetFesRegionPhaseAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataProgressValue[d.ProgressValue] = d
-		a._dataPhaseID[d.PhaseID] = d
 		a._dataBuffID[d.BuffID] = d
+		a._dataPhaseID[d.PhaseID] = d
 		a._dataPicPath[d.PicPath] = d
+		a._dataProgressValue[d.ProgressValue] = d
 	}
-}
-
-// ByProgressValue returns the PlanetFesRegionPhase uniquely identified by ProgressValue
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesRegionPhaseAccessor) ByProgressValue(identifier float64) (PlanetFesRegionPhase, error) {
-	if a._dataProgressValue == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesRegionPhase{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataProgressValue[identifier], nil
-}
-
-// ByPhaseID returns the PlanetFesRegionPhase uniquely identified by PhaseID
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesRegionPhaseAccessor) ByPhaseID(identifier float64) (PlanetFesRegionPhase, error) {
-	if a._dataPhaseID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesRegionPhase{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPhaseID[identifier], nil
 }
 
 // ByBuffID returns the PlanetFesRegionPhase uniquely identified by BuffID
@@ -96,13 +67,31 @@ func (a *PlanetFesRegionPhaseAccessor) ByPhaseID(identifier float64) (PlanetFesR
 // Error is only non-nil if the source errors out
 func (a *PlanetFesRegionPhaseAccessor) ByBuffID(identifier float64) (PlanetFesRegionPhase, error) {
 	if a._dataBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesRegionPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesRegionPhase{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBuffID[identifier], nil
+}
+
+// ByPhaseID returns the PlanetFesRegionPhase uniquely identified by PhaseID
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesRegionPhaseAccessor) ByPhaseID(identifier float64) (PlanetFesRegionPhase, error) {
+	if a._dataPhaseID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesRegionPhase{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPhaseID[identifier], nil
 }
 
 // ByPicPath returns the PlanetFesRegionPhase uniquely identified by PicPath
@@ -110,11 +99,29 @@ func (a *PlanetFesRegionPhaseAccessor) ByBuffID(identifier float64) (PlanetFesRe
 // Error is only non-nil if the source errors out
 func (a *PlanetFesRegionPhaseAccessor) ByPicPath(identifier string) (PlanetFesRegionPhase, error) {
 	if a._dataPicPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesRegionPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesRegionPhase{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPicPath[identifier], nil
+}
+
+// ByProgressValue returns the PlanetFesRegionPhase uniquely identified by ProgressValue
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesRegionPhaseAccessor) ByProgressValue(identifier float64) (PlanetFesRegionPhase, error) {
+	if a._dataProgressValue == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesRegionPhase{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataProgressValue[identifier], nil
 }

@@ -40,7 +40,6 @@ func (a *RogueMagicLayerEffectAccessor) Raw() ([]RogueMagicLayerEffect, error) {
 		if err != nil {
 			return []RogueMagicLayerEffect{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueMagicLayerEffectAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicLayerEffectAccessor) ByLayerEffectID(identifier float64) (RogueMagicLayerEffect, error) {
 	if a._dataLayerEffectID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicLayerEffect{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicLayerEffect{}, err
+			}
 		}
 		a.GroupData()
 	}

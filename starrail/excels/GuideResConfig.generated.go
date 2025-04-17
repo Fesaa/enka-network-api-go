@@ -38,7 +38,6 @@ func (a *GuideResConfigAccessor) Raw() ([]GuideResConfig, error) {
 		if err != nil {
 			return []GuideResConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *GuideResConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GuideResConfigAccessor) ByID(identifier float64) (GuideResConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideResConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideResConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *GuideResConfigAccessor) ByID(identifier float64) (GuideResConfig, error
 // Error is only non-nil if the source errors out
 func (a *GuideResConfigAccessor) ByPrefabPath(identifier string) (GuideResConfig, error) {
 	if a._dataPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideResConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideResConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

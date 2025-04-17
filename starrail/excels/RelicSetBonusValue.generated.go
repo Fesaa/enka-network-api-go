@@ -40,7 +40,6 @@ func (a *RelicSetBonusValueAccessor) Raw() ([]RelicSetBonusValue, error) {
 		if err != nil {
 			return []RelicSetBonusValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RelicSetBonusValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RelicSetBonusValueAccessor) BySetID(identifier float64) (RelicSetBonusValue, error) {
 	if a._dataSetID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicSetBonusValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicSetBonusValue{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -46,7 +46,6 @@ func (a *RelicConfigAccessor) Raw() ([]RelicConfig, error) {
 		if err != nil {
 			return []RelicConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *RelicConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RelicConfigAccessor) ByID(identifier float64) (RelicConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -13,8 +13,8 @@ type TarotBookCard struct {
 }
 type TarotBookCardAccessor struct {
 	_data            []TarotBookCard
-	_dataID          map[float64]TarotBookCard
 	_dataCharacterID map[float64]TarotBookCard
+	_dataID          map[float64]TarotBookCard
 }
 
 // LoadData retrieves the data. Must be called before TarotBookCard.GroupData
@@ -38,7 +38,6 @@ func (a *TarotBookCardAccessor) Raw() ([]TarotBookCard, error) {
 		if err != nil {
 			return []TarotBookCard{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *TarotBookCardAccessor) Raw() ([]TarotBookCard, error) {
 // Can be called manually in conjunction with TarotBookCardAccessor.LoadData to preload everything
 func (a *TarotBookCardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataCharacterID[d.CharacterID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the TarotBookCard uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *TarotBookCardAccessor) ByID(identifier float64) (TarotBookCard, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookCard{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByCharacterID returns the TarotBookCard uniquely identified by CharacterID
@@ -71,11 +56,29 @@ func (a *TarotBookCardAccessor) ByID(identifier float64) (TarotBookCard, error) 
 // Error is only non-nil if the source errors out
 func (a *TarotBookCardAccessor) ByCharacterID(identifier float64) (TarotBookCard, error) {
 	if a._dataCharacterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookCard{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookCard{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCharacterID[identifier], nil
+}
+
+// ByID returns the TarotBookCard uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *TarotBookCardAccessor) ByID(identifier float64) (TarotBookCard, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookCard{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

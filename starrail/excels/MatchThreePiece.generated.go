@@ -15,8 +15,8 @@ type MatchThreePiece struct {
 }
 type MatchThreePieceAccessor struct {
 	_data          []MatchThreePiece
-	_dataPieceID   map[float64]MatchThreePiece
 	_dataImagePath map[string]MatchThreePiece
+	_dataPieceID   map[float64]MatchThreePiece
 }
 
 // LoadData retrieves the data. Must be called before MatchThreePiece.GroupData
@@ -40,7 +40,6 @@ func (a *MatchThreePieceAccessor) Raw() ([]MatchThreePiece, error) {
 		if err != nil {
 			return []MatchThreePiece{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *MatchThreePieceAccessor) Raw() ([]MatchThreePiece, error) {
 // Can be called manually in conjunction with MatchThreePieceAccessor.LoadData to preload everything
 func (a *MatchThreePieceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataPieceID[d.PieceID] = d
 		a._dataImagePath[d.ImagePath] = d
+		a._dataPieceID[d.PieceID] = d
 	}
-}
-
-// ByPieceID returns the MatchThreePiece uniquely identified by PieceID
-//
-// Error is only non-nil if the source errors out
-func (a *MatchThreePieceAccessor) ByPieceID(identifier float64) (MatchThreePiece, error) {
-	if a._dataPieceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreePiece{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPieceID[identifier], nil
 }
 
 // ByImagePath returns the MatchThreePiece uniquely identified by ImagePath
@@ -73,11 +58,29 @@ func (a *MatchThreePieceAccessor) ByPieceID(identifier float64) (MatchThreePiece
 // Error is only non-nil if the source errors out
 func (a *MatchThreePieceAccessor) ByImagePath(identifier string) (MatchThreePiece, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreePiece{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreePiece{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataImagePath[identifier], nil
+}
+
+// ByPieceID returns the MatchThreePiece uniquely identified by PieceID
+//
+// Error is only non-nil if the source errors out
+func (a *MatchThreePieceAccessor) ByPieceID(identifier float64) (MatchThreePiece, error) {
+	if a._dataPieceID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreePiece{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPieceID[identifier], nil
 }

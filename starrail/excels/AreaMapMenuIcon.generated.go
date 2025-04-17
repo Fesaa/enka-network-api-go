@@ -38,7 +38,6 @@ func (a *AreaMapMenuIconAccessor) Raw() ([]AreaMapMenuIcon, error) {
 		if err != nil {
 			return []AreaMapMenuIcon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *AreaMapMenuIconAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AreaMapMenuIconAccessor) ByID(identifier float64) (AreaMapMenuIcon, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AreaMapMenuIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AreaMapMenuIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *AreaMapMenuIconAccessor) ByID(identifier float64) (AreaMapMenuIcon, err
 // Error is only non-nil if the source errors out
 func (a *AreaMapMenuIconAccessor) ByIconPath(identifier string) (AreaMapMenuIcon, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AreaMapMenuIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AreaMapMenuIcon{}, err
+			}
 		}
 		a.GroupData()
 	}

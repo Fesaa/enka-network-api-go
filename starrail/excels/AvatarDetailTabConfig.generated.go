@@ -40,7 +40,6 @@ func (a *AvatarDetailTabConfigAccessor) Raw() ([]AvatarDetailTabConfig, error) {
 		if err != nil {
 			return []AvatarDetailTabConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *AvatarDetailTabConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarDetailTabConfigAccessor) ByID(identifier float64) (AvatarDetailTabConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDetailTabConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDetailTabConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *AvatarDetailTabConfigAccessor) ByID(identifier float64) (AvatarDetailTa
 // Error is only non-nil if the source errors out
 func (a *AvatarDetailTabConfigAccessor) ByIconPath(identifier string) (AvatarDetailTabConfig, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDetailTabConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDetailTabConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,9 +91,11 @@ func (a *AvatarDetailTabConfigAccessor) ByIconPath(identifier string) (AvatarDet
 // Error is only non-nil if the source errors out
 func (a *AvatarDetailTabConfigAccessor) ByTabName(identifier string) (AvatarDetailTabConfig, error) {
 	if a._dataTabName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDetailTabConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDetailTabConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

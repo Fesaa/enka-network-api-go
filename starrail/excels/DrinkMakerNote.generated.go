@@ -38,7 +38,6 @@ func (a *DrinkMakerNoteAccessor) Raw() ([]DrinkMakerNote, error) {
 		if err != nil {
 			return []DrinkMakerNote{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

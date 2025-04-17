@@ -18,9 +18,9 @@ type PlayerReturnInviteDisplayRewardItems struct {
 }
 type PlayerReturnInviteAccessor struct {
 	_data                 []PlayerReturnInvite
-	_dataID               map[float64]PlayerReturnInvite
-	_dataActivityModuleID map[float64]PlayerReturnInvite
 	_dataAPILabel         map[string]PlayerReturnInvite
+	_dataActivityModuleID map[float64]PlayerReturnInvite
+	_dataID               map[float64]PlayerReturnInvite
 }
 
 // LoadData retrieves the data. Must be called before PlayerReturnInvite.GroupData
@@ -44,7 +44,6 @@ func (a *PlayerReturnInviteAccessor) Raw() ([]PlayerReturnInvite, error) {
 		if err != nil {
 			return []PlayerReturnInvite{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,38 +52,10 @@ func (a *PlayerReturnInviteAccessor) Raw() ([]PlayerReturnInvite, error) {
 // Can be called manually in conjunction with PlayerReturnInviteAccessor.LoadData to preload everything
 func (a *PlayerReturnInviteAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
-		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataAPILabel[d.APILabel] = d
+		a._dataActivityModuleID[d.ActivityModuleID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the PlayerReturnInvite uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *PlayerReturnInviteAccessor) ByID(identifier float64) (PlayerReturnInvite, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnInvite{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
-}
-
-// ByActivityModuleID returns the PlayerReturnInvite uniquely identified by ActivityModuleID
-//
-// Error is only non-nil if the source errors out
-func (a *PlayerReturnInviteAccessor) ByActivityModuleID(identifier float64) (PlayerReturnInvite, error) {
-	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnInvite{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataActivityModuleID[identifier], nil
 }
 
 // ByAPILabel returns the PlayerReturnInvite uniquely identified by APILabel
@@ -92,11 +63,45 @@ func (a *PlayerReturnInviteAccessor) ByActivityModuleID(identifier float64) (Pla
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnInviteAccessor) ByAPILabel(identifier string) (PlayerReturnInvite, error) {
 	if a._dataAPILabel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnInvite{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnInvite{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAPILabel[identifier], nil
+}
+
+// ByActivityModuleID returns the PlayerReturnInvite uniquely identified by ActivityModuleID
+//
+// Error is only non-nil if the source errors out
+func (a *PlayerReturnInviteAccessor) ByActivityModuleID(identifier float64) (PlayerReturnInvite, error) {
+	if a._dataActivityModuleID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnInvite{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataActivityModuleID[identifier], nil
+}
+
+// ByID returns the PlayerReturnInvite uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *PlayerReturnInviteAccessor) ByID(identifier float64) (PlayerReturnInvite, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnInvite{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

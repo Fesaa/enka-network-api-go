@@ -41,7 +41,6 @@ func (a *MaterialSubmitterReplyAccessor) Raw() ([]MaterialSubmitterReply, error)
 		if err != nil {
 			return []MaterialSubmitterReply{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *MaterialSubmitterReplyAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MaterialSubmitterReplyAccessor) ByID(identifier float64) (MaterialSubmitterReply, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MaterialSubmitterReply{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MaterialSubmitterReply{}, err
+			}
 		}
 		a.GroupData()
 	}

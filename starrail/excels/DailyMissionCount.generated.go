@@ -14,8 +14,8 @@ type DailyMissionCount struct {
 }
 type DailyMissionCountAccessor struct {
 	_data                 []DailyMissionCount
-	_dataDailyMissionType map[float64]DailyMissionCount
 	_dataDailyCount       map[float64]DailyMissionCount
+	_dataDailyMissionType map[float64]DailyMissionCount
 	_dataID               map[float64]DailyMissionCount
 }
 
@@ -40,7 +40,6 @@ func (a *DailyMissionCountAccessor) Raw() ([]DailyMissionCount, error) {
 		if err != nil {
 			return []DailyMissionCount{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,24 +48,10 @@ func (a *DailyMissionCountAccessor) Raw() ([]DailyMissionCount, error) {
 // Can be called manually in conjunction with DailyMissionCountAccessor.LoadData to preload everything
 func (a *DailyMissionCountAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataDailyMissionType[d.DailyMissionType] = d
 		a._dataDailyCount[d.DailyCount] = d
+		a._dataDailyMissionType[d.DailyMissionType] = d
 		a._dataID[d.ID] = d
 	}
-}
-
-// ByDailyMissionType returns the DailyMissionCount uniquely identified by DailyMissionType
-//
-// Error is only non-nil if the source errors out
-func (a *DailyMissionCountAccessor) ByDailyMissionType(identifier float64) (DailyMissionCount, error) {
-	if a._dataDailyMissionType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DailyMissionCount{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDailyMissionType[identifier], nil
 }
 
 // ByDailyCount returns the DailyMissionCount uniquely identified by DailyCount
@@ -74,13 +59,31 @@ func (a *DailyMissionCountAccessor) ByDailyMissionType(identifier float64) (Dail
 // Error is only non-nil if the source errors out
 func (a *DailyMissionCountAccessor) ByDailyCount(identifier float64) (DailyMissionCount, error) {
 	if a._dataDailyCount == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DailyMissionCount{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DailyMissionCount{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDailyCount[identifier], nil
+}
+
+// ByDailyMissionType returns the DailyMissionCount uniquely identified by DailyMissionType
+//
+// Error is only non-nil if the source errors out
+func (a *DailyMissionCountAccessor) ByDailyMissionType(identifier float64) (DailyMissionCount, error) {
+	if a._dataDailyMissionType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DailyMissionCount{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDailyMissionType[identifier], nil
 }
 
 // ByID returns the DailyMissionCount uniquely identified by ID
@@ -88,9 +91,11 @@ func (a *DailyMissionCountAccessor) ByDailyCount(identifier float64) (DailyMissi
 // Error is only non-nil if the source errors out
 func (a *DailyMissionCountAccessor) ByID(identifier float64) (DailyMissionCount, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DailyMissionCount{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DailyMissionCount{}, err
+			}
 		}
 		a.GroupData()
 	}

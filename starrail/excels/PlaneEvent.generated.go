@@ -41,7 +41,6 @@ func (a *PlaneEventAccessor) Raw() ([]PlaneEvent, error) {
 		if err != nil {
 			return []PlaneEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

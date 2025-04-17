@@ -22,11 +22,11 @@ type FightFestMainRace struct {
 }
 type FightFestMainRaceAccessor struct {
 	_data            []FightFestMainRace
-	_dataRewardID    map[float64]FightFestMainRace
-	_dataTutorialID  map[float64]FightFestMainRace
 	_dataEventID     map[float64]FightFestMainRace
 	_dataMainRaceID  map[float64]FightFestMainRace
 	_dataRedAvatarID map[float64]FightFestMainRace
+	_dataRewardID    map[float64]FightFestMainRace
+	_dataTutorialID  map[float64]FightFestMainRace
 }
 
 // LoadData retrieves the data. Must be called before FightFestMainRace.GroupData
@@ -50,7 +50,6 @@ func (a *FightFestMainRaceAccessor) Raw() ([]FightFestMainRace, error) {
 		if err != nil {
 			return []FightFestMainRace{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,40 +58,12 @@ func (a *FightFestMainRaceAccessor) Raw() ([]FightFestMainRace, error) {
 // Can be called manually in conjunction with FightFestMainRaceAccessor.LoadData to preload everything
 func (a *FightFestMainRaceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRewardID[d.RewardID] = d
-		a._dataTutorialID[d.TutorialID] = d
 		a._dataEventID[d.EventID] = d
 		a._dataMainRaceID[d.MainRaceID] = d
 		a._dataRedAvatarID[d.RedAvatarID] = d
+		a._dataRewardID[d.RewardID] = d
+		a._dataTutorialID[d.TutorialID] = d
 	}
-}
-
-// ByRewardID returns the FightFestMainRace uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestMainRaceAccessor) ByRewardID(identifier float64) (FightFestMainRace, error) {
-	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestMainRace{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
-}
-
-// ByTutorialID returns the FightFestMainRace uniquely identified by TutorialID
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestMainRaceAccessor) ByTutorialID(identifier float64) (FightFestMainRace, error) {
-	if a._dataTutorialID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestMainRace{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTutorialID[identifier], nil
 }
 
 // ByEventID returns the FightFestMainRace uniquely identified by EventID
@@ -100,9 +71,11 @@ func (a *FightFestMainRaceAccessor) ByTutorialID(identifier float64) (FightFestM
 // Error is only non-nil if the source errors out
 func (a *FightFestMainRaceAccessor) ByEventID(identifier float64) (FightFestMainRace, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestMainRace{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestMainRace{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -114,9 +87,11 @@ func (a *FightFestMainRaceAccessor) ByEventID(identifier float64) (FightFestMain
 // Error is only non-nil if the source errors out
 func (a *FightFestMainRaceAccessor) ByMainRaceID(identifier float64) (FightFestMainRace, error) {
 	if a._dataMainRaceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestMainRace{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestMainRace{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -128,11 +103,45 @@ func (a *FightFestMainRaceAccessor) ByMainRaceID(identifier float64) (FightFestM
 // Error is only non-nil if the source errors out
 func (a *FightFestMainRaceAccessor) ByRedAvatarID(identifier float64) (FightFestMainRace, error) {
 	if a._dataRedAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestMainRace{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestMainRace{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRedAvatarID[identifier], nil
+}
+
+// ByRewardID returns the FightFestMainRace uniquely identified by RewardID
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestMainRaceAccessor) ByRewardID(identifier float64) (FightFestMainRace, error) {
+	if a._dataRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestMainRace{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardID[identifier], nil
+}
+
+// ByTutorialID returns the FightFestMainRace uniquely identified by TutorialID
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestMainRaceAccessor) ByTutorialID(identifier float64) (FightFestMainRace, error) {
+	if a._dataTutorialID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestMainRace{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTutorialID[identifier], nil
 }

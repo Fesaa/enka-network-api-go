@@ -40,7 +40,6 @@ func (a *MarbleSealLevelAccessor) Raw() ([]MarbleSealLevel, error) {
 		if err != nil {
 			return []MarbleSealLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

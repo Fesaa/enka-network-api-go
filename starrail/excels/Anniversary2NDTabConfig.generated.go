@@ -17,9 +17,9 @@ type Anniversary2NDTabConfig struct {
 }
 type Anniversary2NDTabConfigAccessor struct {
 	_data          []Anniversary2NDTabConfig
-	_dataTabIcon   map[string]Anniversary2NDTabConfig
 	_dataPanelType map[string]Anniversary2NDTabConfig
 	_dataTabID     map[float64]Anniversary2NDTabConfig
+	_dataTabIcon   map[string]Anniversary2NDTabConfig
 }
 
 // LoadData retrieves the data. Must be called before Anniversary2NDTabConfig.GroupData
@@ -43,7 +43,6 @@ func (a *Anniversary2NDTabConfigAccessor) Raw() ([]Anniversary2NDTabConfig, erro
 		if err != nil {
 			return []Anniversary2NDTabConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,24 +51,10 @@ func (a *Anniversary2NDTabConfigAccessor) Raw() ([]Anniversary2NDTabConfig, erro
 // Can be called manually in conjunction with Anniversary2NDTabConfigAccessor.LoadData to preload everything
 func (a *Anniversary2NDTabConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTabIcon[d.TabIcon] = d
 		a._dataPanelType[d.PanelType] = d
 		a._dataTabID[d.TabID] = d
+		a._dataTabIcon[d.TabIcon] = d
 	}
-}
-
-// ByTabIcon returns the Anniversary2NDTabConfig uniquely identified by TabIcon
-//
-// Error is only non-nil if the source errors out
-func (a *Anniversary2NDTabConfigAccessor) ByTabIcon(identifier string) (Anniversary2NDTabConfig, error) {
-	if a._dataTabIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return Anniversary2NDTabConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTabIcon[identifier], nil
 }
 
 // ByPanelType returns the Anniversary2NDTabConfig uniquely identified by PanelType
@@ -77,9 +62,11 @@ func (a *Anniversary2NDTabConfigAccessor) ByTabIcon(identifier string) (Annivers
 // Error is only non-nil if the source errors out
 func (a *Anniversary2NDTabConfigAccessor) ByPanelType(identifier string) (Anniversary2NDTabConfig, error) {
 	if a._dataPanelType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return Anniversary2NDTabConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return Anniversary2NDTabConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -91,11 +78,29 @@ func (a *Anniversary2NDTabConfigAccessor) ByPanelType(identifier string) (Annive
 // Error is only non-nil if the source errors out
 func (a *Anniversary2NDTabConfigAccessor) ByTabID(identifier float64) (Anniversary2NDTabConfig, error) {
 	if a._dataTabID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return Anniversary2NDTabConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return Anniversary2NDTabConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTabID[identifier], nil
+}
+
+// ByTabIcon returns the Anniversary2NDTabConfig uniquely identified by TabIcon
+//
+// Error is only non-nil if the source errors out
+func (a *Anniversary2NDTabConfigAccessor) ByTabIcon(identifier string) (Anniversary2NDTabConfig, error) {
+	if a._dataTabIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return Anniversary2NDTabConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTabIcon[identifier], nil
 }

@@ -41,7 +41,6 @@ func (a *TutorialResConfigAccessor) Raw() ([]TutorialResConfig, error) {
 		if err != nil {
 			return []TutorialResConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *TutorialResConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TutorialResConfigAccessor) ByID(identifier float64) (TutorialResConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TutorialResConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TutorialResConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *TutorialResConfigAccessor) ByID(identifier float64) (TutorialResConfig,
 // Error is only non-nil if the source errors out
 func (a *TutorialResConfigAccessor) ByPrefabPath(identifier string) (TutorialResConfig, error) {
 	if a._dataPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TutorialResConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TutorialResConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

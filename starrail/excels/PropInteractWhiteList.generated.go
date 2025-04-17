@@ -36,7 +36,6 @@ func (a *PropInteractWhiteListAccessor) Raw() ([]PropInteractWhiteList, error) {
 		if err != nil {
 			return []PropInteractWhiteList{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,9 +53,11 @@ func (a *PropInteractWhiteListAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PropInteractWhiteListAccessor) ByPropID(identifier float64) (PropInteractWhiteList, error) {
 	if a._dataPropID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PropInteractWhiteList{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PropInteractWhiteList{}, err
+			}
 		}
 		a.GroupData()
 	}

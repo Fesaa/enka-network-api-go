@@ -37,7 +37,6 @@ func (a *TitanAtlasChangeInfoAccessor) Raw() ([]TitanAtlasChangeInfo, error) {
 		if err != nil {
 			return []TitanAtlasChangeInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *TitanAtlasChangeInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TitanAtlasChangeInfoAccessor) ByTitanID(identifier float64) (TitanAtlasChangeInfo, error) {
 	if a._dataTitanID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TitanAtlasChangeInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TitanAtlasChangeInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

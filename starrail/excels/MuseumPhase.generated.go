@@ -21,10 +21,10 @@ type MuseumPhase struct {
 }
 type MuseumPhaseAccessor struct {
 	_data               []MuseumPhase
-	_dataRenewPointCost map[float64]MuseumPhase
-	_dataPhaseQuestID   map[float64]MuseumPhase
-	_dataPhaseIconPath  map[string]MuseumPhase
 	_dataMuseumPhaseID  map[float64]MuseumPhase
+	_dataPhaseIconPath  map[string]MuseumPhase
+	_dataPhaseQuestID   map[float64]MuseumPhase
+	_dataRenewPointCost map[float64]MuseumPhase
 }
 
 // LoadData retrieves the data. Must be called before MuseumPhase.GroupData
@@ -48,7 +48,6 @@ func (a *MuseumPhaseAccessor) Raw() ([]MuseumPhase, error) {
 		if err != nil {
 			return []MuseumPhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,53 +56,11 @@ func (a *MuseumPhaseAccessor) Raw() ([]MuseumPhase, error) {
 // Can be called manually in conjunction with MuseumPhaseAccessor.LoadData to preload everything
 func (a *MuseumPhaseAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRenewPointCost[d.RenewPointCost] = d
-		a._dataPhaseQuestID[d.PhaseQuestID] = d
-		a._dataPhaseIconPath[d.PhaseIconPath] = d
 		a._dataMuseumPhaseID[d.MuseumPhaseID] = d
+		a._dataPhaseIconPath[d.PhaseIconPath] = d
+		a._dataPhaseQuestID[d.PhaseQuestID] = d
+		a._dataRenewPointCost[d.RenewPointCost] = d
 	}
-}
-
-// ByRenewPointCost returns the MuseumPhase uniquely identified by RenewPointCost
-//
-// Error is only non-nil if the source errors out
-func (a *MuseumPhaseAccessor) ByRenewPointCost(identifier float64) (MuseumPhase, error) {
-	if a._dataRenewPointCost == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumPhase{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRenewPointCost[identifier], nil
-}
-
-// ByPhaseQuestID returns the MuseumPhase uniquely identified by PhaseQuestID
-//
-// Error is only non-nil if the source errors out
-func (a *MuseumPhaseAccessor) ByPhaseQuestID(identifier float64) (MuseumPhase, error) {
-	if a._dataPhaseQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumPhase{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPhaseQuestID[identifier], nil
-}
-
-// ByPhaseIconPath returns the MuseumPhase uniquely identified by PhaseIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *MuseumPhaseAccessor) ByPhaseIconPath(identifier string) (MuseumPhase, error) {
-	if a._dataPhaseIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumPhase{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPhaseIconPath[identifier], nil
 }
 
 // ByMuseumPhaseID returns the MuseumPhase uniquely identified by MuseumPhaseID
@@ -111,11 +68,61 @@ func (a *MuseumPhaseAccessor) ByPhaseIconPath(identifier string) (MuseumPhase, e
 // Error is only non-nil if the source errors out
 func (a *MuseumPhaseAccessor) ByMuseumPhaseID(identifier float64) (MuseumPhase, error) {
 	if a._dataMuseumPhaseID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumPhase{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMuseumPhaseID[identifier], nil
+}
+
+// ByPhaseIconPath returns the MuseumPhase uniquely identified by PhaseIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *MuseumPhaseAccessor) ByPhaseIconPath(identifier string) (MuseumPhase, error) {
+	if a._dataPhaseIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumPhase{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPhaseIconPath[identifier], nil
+}
+
+// ByPhaseQuestID returns the MuseumPhase uniquely identified by PhaseQuestID
+//
+// Error is only non-nil if the source errors out
+func (a *MuseumPhaseAccessor) ByPhaseQuestID(identifier float64) (MuseumPhase, error) {
+	if a._dataPhaseQuestID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumPhase{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPhaseQuestID[identifier], nil
+}
+
+// ByRenewPointCost returns the MuseumPhase uniquely identified by RenewPointCost
+//
+// Error is only non-nil if the source errors out
+func (a *MuseumPhaseAccessor) ByRenewPointCost(identifier float64) (MuseumPhase, error) {
+	if a._dataRenewPointCost == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumPhase{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRenewPointCost[identifier], nil
 }

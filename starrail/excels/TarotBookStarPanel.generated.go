@@ -37,7 +37,6 @@ func (a *TarotBookStarPanelAccessor) Raw() ([]TarotBookStarPanel, error) {
 		if err != nil {
 			return []TarotBookStarPanel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *TarotBookStarPanelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TarotBookStarPanelAccessor) ByPosition(identifier float64) (TarotBookStarPanel, error) {
 	if a._dataPosition == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookStarPanel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookStarPanel{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -41,7 +41,6 @@ func (a *VideoConfigAccessor) Raw() ([]VideoConfig, error) {
 		if err != nil {
 			return []VideoConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *VideoConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *VideoConfigAccessor) ByVideoID(identifier float64) (VideoConfig, error) {
 	if a._dataVideoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return VideoConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return VideoConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *VideoConfigAccessor) ByVideoID(identifier float64) (VideoConfig, error)
 // Error is only non-nil if the source errors out
 func (a *VideoConfigAccessor) ByVideoPath(identifier string) (VideoConfig, error) {
 	if a._dataVideoPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return VideoConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return VideoConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

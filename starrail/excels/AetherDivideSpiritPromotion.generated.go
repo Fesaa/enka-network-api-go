@@ -44,7 +44,6 @@ func (a *AetherDivideSpiritPromotionAccessor) Raw() ([]AetherDivideSpiritPromoti
 		if err != nil {
 			return []AetherDivideSpiritPromotion{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -43,7 +43,6 @@ func (a *ProgramGroupConfigAccessor) Raw() ([]ProgramGroupConfig, error) {
 		if err != nil {
 			return []ProgramGroupConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *ProgramGroupConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ProgramGroupConfigAccessor) ByID(identifier float64) (ProgramGroupConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ProgramGroupConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ProgramGroupConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

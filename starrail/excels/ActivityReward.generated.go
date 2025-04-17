@@ -40,7 +40,6 @@ func (a *ActivityRewardAccessor) Raw() ([]ActivityReward, error) {
 		if err != nil {
 			return []ActivityReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ActivityRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityRewardAccessor) ByActivityRewardID(identifier float64) (ActivityReward, error) {
 	if a._dataActivityRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *ActivityRewardAccessor) ByActivityRewardID(identifier float64) (Activit
 // Error is only non-nil if the source errors out
 func (a *ActivityRewardAccessor) ByCount(identifier float64) (ActivityReward, error) {
 	if a._dataCount == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityReward{}, err
+			}
 		}
 		a.GroupData()
 	}

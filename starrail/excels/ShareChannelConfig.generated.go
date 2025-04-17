@@ -45,7 +45,6 @@ func (a *ShareChannelConfigAccessor) Raw() ([]ShareChannelConfig, error) {
 		if err != nil {
 			return []ShareChannelConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *ShareChannelConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ShareChannelConfigAccessor) ByShareChannelID(identifier float64) (ShareChannelConfig, error) {
 	if a._dataShareChannelID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ShareChannelConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ShareChannelConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

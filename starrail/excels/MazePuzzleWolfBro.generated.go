@@ -42,7 +42,6 @@ func (a *MazePuzzleWolfBroAccessor) Raw() ([]MazePuzzleWolfBro, error) {
 		if err != nil {
 			return []MazePuzzleWolfBro{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *MazePuzzleWolfBroAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MazePuzzleWolfBroAccessor) ByWolfBroID(identifier float64) (MazePuzzleWolfBro, error) {
 	if a._dataWolfBroID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazePuzzleWolfBro{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazePuzzleWolfBro{}, err
+			}
 		}
 		a.GroupData()
 	}

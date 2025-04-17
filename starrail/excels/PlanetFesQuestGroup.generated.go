@@ -38,7 +38,6 @@ func (a *PlanetFesQuestGroupAccessor) Raw() ([]PlanetFesQuestGroup, error) {
 		if err != nil {
 			return []PlanetFesQuestGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *PlanetFesQuestGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesQuestGroupAccessor) ByGroupID(identifier float64) (PlanetFesQuestGroup, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesQuestGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesQuestGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

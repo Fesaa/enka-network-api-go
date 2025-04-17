@@ -39,7 +39,6 @@ func (a *TeamLimitTypeEventAccessor) Raw() ([]TeamLimitTypeEvent, error) {
 		if err != nil {
 			return []TeamLimitTypeEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *TeamLimitTypeEventAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TeamLimitTypeEventAccessor) ByLimitType(identifier string) (TeamLimitTypeEvent, error) {
 	if a._dataLimitType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TeamLimitTypeEvent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TeamLimitTypeEvent{}, err
+			}
 		}
 		a.GroupData()
 	}

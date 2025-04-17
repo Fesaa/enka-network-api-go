@@ -38,7 +38,6 @@ func (a *RogueCommonDialogueAccessor) Raw() ([]RogueCommonDialogue, error) {
 		if err != nil {
 			return []RogueCommonDialogue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueCommonDialogueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueCommonDialogueAccessor) ByDialogueID(identifier float64) (RogueCommonDialogue, error) {
 	if a._dataDialogueID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueCommonDialogue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueCommonDialogue{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *RogueCommonDialogueAccessor) ByDialogueID(identifier float64) (RogueCom
 // Error is only non-nil if the source errors out
 func (a *RogueCommonDialogueAccessor) ByDialoguePath(identifier string) (RogueCommonDialogue, error) {
 	if a._dataDialoguePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueCommonDialogue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueCommonDialogue{}, err
+			}
 		}
 		a.GroupData()
 	}

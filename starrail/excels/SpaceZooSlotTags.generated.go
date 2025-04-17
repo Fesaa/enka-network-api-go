@@ -39,7 +39,6 @@ func (a *SpaceZooSlotTagsAccessor) Raw() ([]SpaceZooSlotTags, error) {
 		if err != nil {
 			return []SpaceZooSlotTags{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *SpaceZooSlotTagsAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooSlotTagsAccessor) ByFeatureID(identifier float64) (SpaceZooSlotTags, error) {
 	if a._dataFeatureID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooSlotTags{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooSlotTags{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *SpaceZooSlotTagsAccessor) ByFeatureID(identifier float64) (SpaceZooSlot
 // Error is only non-nil if the source errors out
 func (a *SpaceZooSlotTagsAccessor) ByImagePath(identifier string) (SpaceZooSlotTags, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooSlotTags{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooSlotTags{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -50,7 +50,6 @@ func (a *RogueBuffAccessor) Raw() ([]RogueBuff, error) {
 		if err != nil {
 			return []RogueBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -68,9 +67,11 @@ func (a *RogueBuffAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueBuffAccessor) ByRogueBuffTag(identifier float64) (RogueBuff, error) {
 	if a._dataRogueBuffTag == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueBuff{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueBuff{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -37,7 +37,6 @@ func (a *MusicRhythmSoundEffectAccessor) Raw() ([]MusicRhythmSoundEffect, error)
 		if err != nil {
 			return []MusicRhythmSoundEffect{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MusicRhythmSoundEffectAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmSoundEffectAccessor) ByID(identifier float64) (MusicRhythmSoundEffect, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmSoundEffect{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmSoundEffect{}, err
+			}
 		}
 		a.GroupData()
 	}

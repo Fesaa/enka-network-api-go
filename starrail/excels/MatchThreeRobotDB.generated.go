@@ -40,7 +40,6 @@ func (a *MatchThreeRobotDBAccessor) Raw() ([]MatchThreeRobotDB, error) {
 		if err != nil {
 			return []MatchThreeRobotDB{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MatchThreeRobotDBAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeRobotDBAccessor) ByRobotID(identifier float64) (MatchThreeRobotDB, error) {
 	if a._dataRobotID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeRobotDB{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeRobotDB{}, err
+			}
 		}
 		a.GroupData()
 	}

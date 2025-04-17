@@ -41,7 +41,6 @@ func (a *StoryAtlasAccessor) Raw() ([]StoryAtlas, error) {
 		if err != nil {
 			return []StoryAtlas{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

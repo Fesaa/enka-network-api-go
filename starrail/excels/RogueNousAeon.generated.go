@@ -21,12 +21,12 @@ type RogueNousAeon struct {
 }
 type RogueNousAeonAccessor struct {
 	_data                            []RogueNousAeon
-	_dataSort                        map[float64]RogueNousAeon
-	_dataBattleEventBuffGroup        map[float64]RogueNousAeon
 	_dataAeonID                      map[float64]RogueNousAeon
-	_dataRogueBuffType               map[float64]RogueNousAeon
+	_dataBattleEventBuffGroup        map[float64]RogueNousAeon
 	_dataBattleEventEnhanceBuffGroup map[float64]RogueNousAeon
 	_dataDisplayID                   map[float64]RogueNousAeon
+	_dataRogueBuffType               map[float64]RogueNousAeon
+	_dataSort                        map[float64]RogueNousAeon
 }
 
 // LoadData retrieves the data. Must be called before RogueNousAeon.GroupData
@@ -50,7 +50,6 @@ func (a *RogueNousAeonAccessor) Raw() ([]RogueNousAeon, error) {
 		if err != nil {
 			return []RogueNousAeon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,41 +58,13 @@ func (a *RogueNousAeonAccessor) Raw() ([]RogueNousAeon, error) {
 // Can be called manually in conjunction with RogueNousAeonAccessor.LoadData to preload everything
 func (a *RogueNousAeonAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSort[d.Sort] = d
-		a._dataBattleEventBuffGroup[d.BattleEventBuffGroup] = d
 		a._dataAeonID[d.AeonID] = d
-		a._dataRogueBuffType[d.RogueBuffType] = d
+		a._dataBattleEventBuffGroup[d.BattleEventBuffGroup] = d
 		a._dataBattleEventEnhanceBuffGroup[d.BattleEventEnhanceBuffGroup] = d
 		a._dataDisplayID[d.DisplayID] = d
+		a._dataRogueBuffType[d.RogueBuffType] = d
+		a._dataSort[d.Sort] = d
 	}
-}
-
-// BySort returns the RogueNousAeon uniquely identified by Sort
-//
-// Error is only non-nil if the source errors out
-func (a *RogueNousAeonAccessor) BySort(identifier float64) (RogueNousAeon, error) {
-	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousAeon{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSort[identifier], nil
-}
-
-// ByBattleEventBuffGroup returns the RogueNousAeon uniquely identified by BattleEventBuffGroup
-//
-// Error is only non-nil if the source errors out
-func (a *RogueNousAeonAccessor) ByBattleEventBuffGroup(identifier float64) (RogueNousAeon, error) {
-	if a._dataBattleEventBuffGroup == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousAeon{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBattleEventBuffGroup[identifier], nil
 }
 
 // ByAeonID returns the RogueNousAeon uniquely identified by AeonID
@@ -101,27 +72,31 @@ func (a *RogueNousAeonAccessor) ByBattleEventBuffGroup(identifier float64) (Rogu
 // Error is only non-nil if the source errors out
 func (a *RogueNousAeonAccessor) ByAeonID(identifier float64) (RogueNousAeon, error) {
 	if a._dataAeonID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousAeon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousAeon{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAeonID[identifier], nil
 }
 
-// ByRogueBuffType returns the RogueNousAeon uniquely identified by RogueBuffType
+// ByBattleEventBuffGroup returns the RogueNousAeon uniquely identified by BattleEventBuffGroup
 //
 // Error is only non-nil if the source errors out
-func (a *RogueNousAeonAccessor) ByRogueBuffType(identifier float64) (RogueNousAeon, error) {
-	if a._dataRogueBuffType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousAeon{}, err
+func (a *RogueNousAeonAccessor) ByBattleEventBuffGroup(identifier float64) (RogueNousAeon, error) {
+	if a._dataBattleEventBuffGroup == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousAeon{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataRogueBuffType[identifier], nil
+	return a._dataBattleEventBuffGroup[identifier], nil
 }
 
 // ByBattleEventEnhanceBuffGroup returns the RogueNousAeon uniquely identified by BattleEventEnhanceBuffGroup
@@ -129,9 +104,11 @@ func (a *RogueNousAeonAccessor) ByRogueBuffType(identifier float64) (RogueNousAe
 // Error is only non-nil if the source errors out
 func (a *RogueNousAeonAccessor) ByBattleEventEnhanceBuffGroup(identifier float64) (RogueNousAeon, error) {
 	if a._dataBattleEventEnhanceBuffGroup == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousAeon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousAeon{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -143,11 +120,45 @@ func (a *RogueNousAeonAccessor) ByBattleEventEnhanceBuffGroup(identifier float64
 // Error is only non-nil if the source errors out
 func (a *RogueNousAeonAccessor) ByDisplayID(identifier float64) (RogueNousAeon, error) {
 	if a._dataDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousAeon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousAeon{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDisplayID[identifier], nil
+}
+
+// ByRogueBuffType returns the RogueNousAeon uniquely identified by RogueBuffType
+//
+// Error is only non-nil if the source errors out
+func (a *RogueNousAeonAccessor) ByRogueBuffType(identifier float64) (RogueNousAeon, error) {
+	if a._dataRogueBuffType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousAeon{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueBuffType[identifier], nil
+}
+
+// BySort returns the RogueNousAeon uniquely identified by Sort
+//
+// Error is only non-nil if the source errors out
+func (a *RogueNousAeonAccessor) BySort(identifier float64) (RogueNousAeon, error) {
+	if a._dataSort == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousAeon{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSort[identifier], nil
 }

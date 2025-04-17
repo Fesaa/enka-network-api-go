@@ -44,7 +44,6 @@ func (a *MuseumDeskTalkAccessor) Raw() ([]MuseumDeskTalk, error) {
 		if err != nil {
 			return []MuseumDeskTalk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *MuseumDeskTalkAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MuseumDeskTalkAccessor) ByCustomString(identifier string) (MuseumDeskTalk, error) {
 	if a._dataCustomString == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumDeskTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumDeskTalk{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *MuseumDeskTalkAccessor) ByCustomString(identifier string) (MuseumDeskTa
 // Error is only non-nil if the source errors out
 func (a *MuseumDeskTalkAccessor) ByTalkID(identifier float64) (MuseumDeskTalk, error) {
 	if a._dataTalkID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumDeskTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumDeskTalk{}, err
+			}
 		}
 		a.GroupData()
 	}

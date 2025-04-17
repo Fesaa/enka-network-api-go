@@ -16,11 +16,11 @@ type GachaShowToastData struct {
 }
 type GachaShowToastDataAccessor struct {
 	_data                     []GachaShowToastData
+	_dataGachaID              map[float64]GachaShowToastData
 	_dataLoopBGMState         map[string]GachaShowToastData
 	_dataLoopBGMandUIOpenTime map[float64]GachaShowToastData
-	_dataGachaID              map[float64]GachaShowToastData
-	_dataShowVideoID          map[float64]GachaShowToastData
 	_dataLoopVideoID          map[float64]GachaShowToastData
+	_dataShowVideoID          map[float64]GachaShowToastData
 }
 
 // LoadData retrieves the data. Must be called before GachaShowToastData.GroupData
@@ -44,7 +44,6 @@ func (a *GachaShowToastDataAccessor) Raw() ([]GachaShowToastData, error) {
 		if err != nil {
 			return []GachaShowToastData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,12 +52,28 @@ func (a *GachaShowToastDataAccessor) Raw() ([]GachaShowToastData, error) {
 // Can be called manually in conjunction with GachaShowToastDataAccessor.LoadData to preload everything
 func (a *GachaShowToastDataAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataGachaID[d.GachaID] = d
 		a._dataLoopBGMState[d.LoopBGMState] = d
 		a._dataLoopBGMandUIOpenTime[d.LoopBGMandUIOpenTime] = d
-		a._dataGachaID[d.GachaID] = d
-		a._dataShowVideoID[d.ShowVideoID] = d
 		a._dataLoopVideoID[d.LoopVideoID] = d
+		a._dataShowVideoID[d.ShowVideoID] = d
 	}
+}
+
+// ByGachaID returns the GachaShowToastData uniquely identified by GachaID
+//
+// Error is only non-nil if the source errors out
+func (a *GachaShowToastDataAccessor) ByGachaID(identifier float64) (GachaShowToastData, error) {
+	if a._dataGachaID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaShowToastData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGachaID[identifier], nil
 }
 
 // ByLoopBGMState returns the GachaShowToastData uniquely identified by LoopBGMState
@@ -66,9 +81,11 @@ func (a *GachaShowToastDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GachaShowToastDataAccessor) ByLoopBGMState(identifier string) (GachaShowToastData, error) {
 	if a._dataLoopBGMState == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaShowToastData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaShowToastData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -80,41 +97,15 @@ func (a *GachaShowToastDataAccessor) ByLoopBGMState(identifier string) (GachaSho
 // Error is only non-nil if the source errors out
 func (a *GachaShowToastDataAccessor) ByLoopBGMandUIOpenTime(identifier float64) (GachaShowToastData, error) {
 	if a._dataLoopBGMandUIOpenTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaShowToastData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaShowToastData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLoopBGMandUIOpenTime[identifier], nil
-}
-
-// ByGachaID returns the GachaShowToastData uniquely identified by GachaID
-//
-// Error is only non-nil if the source errors out
-func (a *GachaShowToastDataAccessor) ByGachaID(identifier float64) (GachaShowToastData, error) {
-	if a._dataGachaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaShowToastData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGachaID[identifier], nil
-}
-
-// ByShowVideoID returns the GachaShowToastData uniquely identified by ShowVideoID
-//
-// Error is only non-nil if the source errors out
-func (a *GachaShowToastDataAccessor) ByShowVideoID(identifier float64) (GachaShowToastData, error) {
-	if a._dataShowVideoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaShowToastData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataShowVideoID[identifier], nil
 }
 
 // ByLoopVideoID returns the GachaShowToastData uniquely identified by LoopVideoID
@@ -122,11 +113,29 @@ func (a *GachaShowToastDataAccessor) ByShowVideoID(identifier float64) (GachaSho
 // Error is only non-nil if the source errors out
 func (a *GachaShowToastDataAccessor) ByLoopVideoID(identifier float64) (GachaShowToastData, error) {
 	if a._dataLoopVideoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaShowToastData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaShowToastData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLoopVideoID[identifier], nil
+}
+
+// ByShowVideoID returns the GachaShowToastData uniquely identified by ShowVideoID
+//
+// Error is only non-nil if the source errors out
+func (a *GachaShowToastDataAccessor) ByShowVideoID(identifier float64) (GachaShowToastData, error) {
+	if a._dataShowVideoID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaShowToastData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataShowVideoID[identifier], nil
 }

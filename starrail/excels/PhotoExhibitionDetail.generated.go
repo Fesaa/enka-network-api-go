@@ -49,7 +49,6 @@ func (a *PhotoExhibitionDetailAccessor) Raw() ([]PhotoExhibitionDetail, error) {
 		if err != nil {
 			return []PhotoExhibitionDetail{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *PhotoExhibitionDetailAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PhotoExhibitionDetailAccessor) ByID(identifier float64) (PhotoExhibitionDetail, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhotoExhibitionDetail{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhotoExhibitionDetail{}, err
+			}
 		}
 		a.GroupData()
 	}

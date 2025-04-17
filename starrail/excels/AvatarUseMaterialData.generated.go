@@ -44,7 +44,6 @@ func (a *AvatarUseMaterialDataAccessor) Raw() ([]AvatarUseMaterialData, error) {
 		if err != nil {
 			return []AvatarUseMaterialData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *AvatarUseMaterialDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarUseMaterialDataAccessor) ByAvatarID(identifier float64) (AvatarUseMaterialData, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarUseMaterialData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarUseMaterialData{}, err
+			}
 		}
 		a.GroupData()
 	}

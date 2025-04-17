@@ -17,8 +17,8 @@ type ActivityTheme struct {
 }
 type ActivityThemeAccessor struct {
 	_data         []ActivityTheme
-	_dataThemeID  map[float64]ActivityTheme
 	_dataIconPath map[string]ActivityTheme
+	_dataThemeID  map[float64]ActivityTheme
 }
 
 // LoadData retrieves the data. Must be called before ActivityTheme.GroupData
@@ -42,7 +42,6 @@ func (a *ActivityThemeAccessor) Raw() ([]ActivityTheme, error) {
 		if err != nil {
 			return []ActivityTheme{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,23 +50,9 @@ func (a *ActivityThemeAccessor) Raw() ([]ActivityTheme, error) {
 // Can be called manually in conjunction with ActivityThemeAccessor.LoadData to preload everything
 func (a *ActivityThemeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataThemeID[d.ThemeID] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataThemeID[d.ThemeID] = d
 	}
-}
-
-// ByThemeID returns the ActivityTheme uniquely identified by ThemeID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityThemeAccessor) ByThemeID(identifier float64) (ActivityTheme, error) {
-	if a._dataThemeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTheme{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataThemeID[identifier], nil
 }
 
 // ByIconPath returns the ActivityTheme uniquely identified by IconPath
@@ -75,11 +60,29 @@ func (a *ActivityThemeAccessor) ByThemeID(identifier float64) (ActivityTheme, er
 // Error is only non-nil if the source errors out
 func (a *ActivityThemeAccessor) ByIconPath(identifier string) (ActivityTheme, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTheme{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTheme{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// ByThemeID returns the ActivityTheme uniquely identified by ThemeID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityThemeAccessor) ByThemeID(identifier float64) (ActivityTheme, error) {
+	if a._dataThemeID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTheme{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataThemeID[identifier], nil
 }

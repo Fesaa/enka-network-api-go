@@ -46,7 +46,6 @@ func (a *MatchThreePVPScoreAccessor) Raw() ([]MatchThreePVPScore, error) {
 		if err != nil {
 			return []MatchThreePVPScore{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *MatchThreePVPScoreAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreePVPScoreAccessor) ByScoreID(identifier float64) (MatchThreePVPScore, error) {
 	if a._dataScoreID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreePVPScore{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreePVPScore{}, err
+			}
 		}
 		a.GroupData()
 	}

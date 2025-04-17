@@ -20,9 +20,9 @@ type ClockParkSpecialMission struct {
 }
 type ClockParkSpecialMissionAccessor struct {
 	_data                           []ClockParkSpecialMission
-	_dataSpecialMissionID           map[float64]ClockParkSpecialMission
 	_dataEventNum                   map[float64]ClockParkSpecialMission
 	_dataSpecialMissionGotoIDBefore map[float64]ClockParkSpecialMission
+	_dataSpecialMissionID           map[float64]ClockParkSpecialMission
 	_dataSpecialMissionUnlockItemID map[float64]ClockParkSpecialMission
 }
 
@@ -47,7 +47,6 @@ func (a *ClockParkSpecialMissionAccessor) Raw() ([]ClockParkSpecialMission, erro
 		if err != nil {
 			return []ClockParkSpecialMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,25 +55,11 @@ func (a *ClockParkSpecialMissionAccessor) Raw() ([]ClockParkSpecialMission, erro
 // Can be called manually in conjunction with ClockParkSpecialMissionAccessor.LoadData to preload everything
 func (a *ClockParkSpecialMissionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSpecialMissionID[d.SpecialMissionID] = d
 		a._dataEventNum[d.EventNum] = d
 		a._dataSpecialMissionGotoIDBefore[d.SpecialMissionGotoIDBefore] = d
+		a._dataSpecialMissionID[d.SpecialMissionID] = d
 		a._dataSpecialMissionUnlockItemID[d.SpecialMissionUnlockItemID] = d
 	}
-}
-
-// BySpecialMissionID returns the ClockParkSpecialMission uniquely identified by SpecialMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *ClockParkSpecialMissionAccessor) BySpecialMissionID(identifier float64) (ClockParkSpecialMission, error) {
-	if a._dataSpecialMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkSpecialMission{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSpecialMissionID[identifier], nil
 }
 
 // ByEventNum returns the ClockParkSpecialMission uniquely identified by EventNum
@@ -82,9 +67,11 @@ func (a *ClockParkSpecialMissionAccessor) BySpecialMissionID(identifier float64)
 // Error is only non-nil if the source errors out
 func (a *ClockParkSpecialMissionAccessor) ByEventNum(identifier float64) (ClockParkSpecialMission, error) {
 	if a._dataEventNum == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkSpecialMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkSpecialMission{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -96,13 +83,31 @@ func (a *ClockParkSpecialMissionAccessor) ByEventNum(identifier float64) (ClockP
 // Error is only non-nil if the source errors out
 func (a *ClockParkSpecialMissionAccessor) BySpecialMissionGotoIDBefore(identifier float64) (ClockParkSpecialMission, error) {
 	if a._dataSpecialMissionGotoIDBefore == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkSpecialMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkSpecialMission{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSpecialMissionGotoIDBefore[identifier], nil
+}
+
+// BySpecialMissionID returns the ClockParkSpecialMission uniquely identified by SpecialMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *ClockParkSpecialMissionAccessor) BySpecialMissionID(identifier float64) (ClockParkSpecialMission, error) {
+	if a._dataSpecialMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkSpecialMission{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSpecialMissionID[identifier], nil
 }
 
 // BySpecialMissionUnlockItemID returns the ClockParkSpecialMission uniquely identified by SpecialMissionUnlockItemID
@@ -110,9 +115,11 @@ func (a *ClockParkSpecialMissionAccessor) BySpecialMissionGotoIDBefore(identifie
 // Error is only non-nil if the source errors out
 func (a *ClockParkSpecialMissionAccessor) BySpecialMissionUnlockItemID(identifier float64) (ClockParkSpecialMission, error) {
 	if a._dataSpecialMissionUnlockItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkSpecialMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkSpecialMission{}, err
+			}
 		}
 		a.GroupData()
 	}

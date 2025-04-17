@@ -38,7 +38,6 @@ func (a *PlanetFesConstValueCommonAccessor) Raw() ([]PlanetFesConstValueCommon, 
 		if err != nil {
 			return []PlanetFesConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *PlanetFesConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesConstValueCommonAccessor) ByConstValueName(identifier string) (PlanetFesConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

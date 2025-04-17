@@ -40,7 +40,6 @@ func (a *SpaceZooQuestAccessor) Raw() ([]SpaceZooQuest, error) {
 		if err != nil {
 			return []SpaceZooQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *SpaceZooQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooQuestAccessor) ByID(identifier float64) (SpaceZooQuest, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

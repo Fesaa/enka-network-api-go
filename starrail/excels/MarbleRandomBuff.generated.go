@@ -24,8 +24,8 @@ type MarbleRandomBuff struct {
 }
 type MarbleRandomBuffAccessor struct {
 	_data            []MarbleRandomBuff
-	_dataID          map[float64]MarbleRandomBuff
 	_dataEffectParam map[float64]MarbleRandomBuff
+	_dataID          map[float64]MarbleRandomBuff
 }
 
 // LoadData retrieves the data. Must be called before MarbleRandomBuff.GroupData
@@ -49,7 +49,6 @@ func (a *MarbleRandomBuffAccessor) Raw() ([]MarbleRandomBuff, error) {
 		if err != nil {
 			return []MarbleRandomBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,23 +57,9 @@ func (a *MarbleRandomBuffAccessor) Raw() ([]MarbleRandomBuff, error) {
 // Can be called manually in conjunction with MarbleRandomBuffAccessor.LoadData to preload everything
 func (a *MarbleRandomBuffAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataEffectParam[d.EffectParam] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the MarbleRandomBuff uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *MarbleRandomBuffAccessor) ByID(identifier float64) (MarbleRandomBuff, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleRandomBuff{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByEffectParam returns the MarbleRandomBuff uniquely identified by EffectParam
@@ -82,11 +67,29 @@ func (a *MarbleRandomBuffAccessor) ByID(identifier float64) (MarbleRandomBuff, e
 // Error is only non-nil if the source errors out
 func (a *MarbleRandomBuffAccessor) ByEffectParam(identifier float64) (MarbleRandomBuff, error) {
 	if a._dataEffectParam == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleRandomBuff{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleRandomBuff{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEffectParam[identifier], nil
+}
+
+// ByID returns the MarbleRandomBuff uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *MarbleRandomBuffAccessor) ByID(identifier float64) (MarbleRandomBuff, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleRandomBuff{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

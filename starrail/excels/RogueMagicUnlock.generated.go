@@ -40,7 +40,6 @@ func (a *RogueMagicUnlockAccessor) Raw() ([]RogueMagicUnlock, error) {
 		if err != nil {
 			return []RogueMagicUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RogueMagicUnlockAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicUnlockAccessor) ByRogueUnlockID(identifier float64) (RogueMagicUnlock, error) {
 	if a._dataRogueUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *RogueMagicUnlockAccessor) ByRogueUnlockID(identifier float64) (RogueMag
 // Error is only non-nil if the source errors out
 func (a *RogueMagicUnlockAccessor) ByUnlockFinishWay(identifier float64) (RogueMagicUnlock, error) {
 	if a._dataUnlockFinishWay == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}

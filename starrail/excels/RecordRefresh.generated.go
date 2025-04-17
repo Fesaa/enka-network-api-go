@@ -38,7 +38,6 @@ func (a *RecordRefreshAccessor) Raw() ([]RecordRefresh, error) {
 		if err != nil {
 			return []RecordRefresh{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RecordRefreshAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RecordRefreshAccessor) ByRefreshID(identifier float64) (RecordRefresh, error) {
 	if a._dataRefreshID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RecordRefresh{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RecordRefresh{}, err
+			}
 		}
 		a.GroupData()
 	}

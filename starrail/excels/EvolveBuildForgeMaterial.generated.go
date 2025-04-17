@@ -38,7 +38,6 @@ func (a *EvolveBuildForgeMaterialAccessor) Raw() ([]EvolveBuildForgeMaterial, er
 		if err != nil {
 			return []EvolveBuildForgeMaterial{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *EvolveBuildForgeMaterialAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildForgeMaterialAccessor) ByForgeGearID(identifier float64) (EvolveBuildForgeMaterial, error) {
 	if a._dataForgeGearID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildForgeMaterial{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildForgeMaterial{}, err
+			}
 		}
 		a.GroupData()
 	}

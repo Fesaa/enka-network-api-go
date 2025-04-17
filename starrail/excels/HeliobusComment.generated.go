@@ -44,7 +44,6 @@ func (a *HeliobusCommentAccessor) Raw() ([]HeliobusComment, error) {
 		if err != nil {
 			return []HeliobusComment{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *HeliobusCommentAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusCommentAccessor) ByHeliobusCommentID(identifier float64) (HeliobusComment, error) {
 	if a._dataHeliobusCommentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusComment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusComment{}, err
+			}
 		}
 		a.GroupData()
 	}

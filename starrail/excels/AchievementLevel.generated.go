@@ -14,8 +14,8 @@ type AchievementLevel struct {
 }
 type AchievementLevelAccessor struct {
 	_data      []AchievementLevel
-	_dataLevel map[float64]AchievementLevel
 	_dataCount map[float64]AchievementLevel
+	_dataLevel map[float64]AchievementLevel
 }
 
 // LoadData retrieves the data. Must be called before AchievementLevel.GroupData
@@ -39,7 +39,6 @@ func (a *AchievementLevelAccessor) Raw() ([]AchievementLevel, error) {
 		if err != nil {
 			return []AchievementLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *AchievementLevelAccessor) Raw() ([]AchievementLevel, error) {
 // Can be called manually in conjunction with AchievementLevelAccessor.LoadData to preload everything
 func (a *AchievementLevelAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataLevel[d.Level] = d
 		a._dataCount[d.Count] = d
+		a._dataLevel[d.Level] = d
 	}
-}
-
-// ByLevel returns the AchievementLevel uniquely identified by Level
-//
-// Error is only non-nil if the source errors out
-func (a *AchievementLevelAccessor) ByLevel(identifier float64) (AchievementLevel, error) {
-	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementLevel{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataLevel[identifier], nil
 }
 
 // ByCount returns the AchievementLevel uniquely identified by Count
@@ -72,11 +57,29 @@ func (a *AchievementLevelAccessor) ByLevel(identifier float64) (AchievementLevel
 // Error is only non-nil if the source errors out
 func (a *AchievementLevelAccessor) ByCount(identifier float64) (AchievementLevel, error) {
 	if a._dataCount == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementLevel{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCount[identifier], nil
+}
+
+// ByLevel returns the AchievementLevel uniquely identified by Level
+//
+// Error is only non-nil if the source errors out
+func (a *AchievementLevelAccessor) ByLevel(identifier float64) (AchievementLevel, error) {
+	if a._dataLevel == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementLevel{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataLevel[identifier], nil
 }

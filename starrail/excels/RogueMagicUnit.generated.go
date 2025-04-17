@@ -51,7 +51,6 @@ func (a *RogueMagicUnitAccessor) Raw() ([]RogueMagicUnit, error) {
 		if err != nil {
 			return []RogueMagicUnit{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

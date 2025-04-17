@@ -42,7 +42,6 @@ func (a *SpecialChestFindDataAccessor) Raw() ([]SpecialChestFindData, error) {
 		if err != nil {
 			return []SpecialChestFindData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

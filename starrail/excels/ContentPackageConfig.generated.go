@@ -44,7 +44,6 @@ func (a *ContentPackageConfigAccessor) Raw() ([]ContentPackageConfig, error) {
 		if err != nil {
 			return []ContentPackageConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *ContentPackageConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ContentPackageConfigAccessor) ByContentID(identifier float64) (ContentPackageConfig, error) {
 	if a._dataContentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ContentPackageConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ContentPackageConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

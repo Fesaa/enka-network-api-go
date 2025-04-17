@@ -22,9 +22,9 @@ type RelicComposeConfigMaterialCost struct {
 }
 type RelicComposeConfigAccessor struct {
 	_data       []RelicComposeConfig
-	_dataOrder  map[float64]RelicComposeConfig
 	_dataID     map[float64]RelicComposeConfig
 	_dataItemID map[float64]RelicComposeConfig
+	_dataOrder  map[float64]RelicComposeConfig
 }
 
 // LoadData retrieves the data. Must be called before RelicComposeConfig.GroupData
@@ -48,7 +48,6 @@ func (a *RelicComposeConfigAccessor) Raw() ([]RelicComposeConfig, error) {
 		if err != nil {
 			return []RelicComposeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,24 +56,10 @@ func (a *RelicComposeConfigAccessor) Raw() ([]RelicComposeConfig, error) {
 // Can be called manually in conjunction with RelicComposeConfigAccessor.LoadData to preload everything
 func (a *RelicComposeConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataOrder[d.Order] = d
 		a._dataID[d.ID] = d
 		a._dataItemID[d.ItemID] = d
+		a._dataOrder[d.Order] = d
 	}
-}
-
-// ByOrder returns the RelicComposeConfig uniquely identified by Order
-//
-// Error is only non-nil if the source errors out
-func (a *RelicComposeConfigAccessor) ByOrder(identifier float64) (RelicComposeConfig, error) {
-	if a._dataOrder == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicComposeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOrder[identifier], nil
 }
 
 // ByID returns the RelicComposeConfig uniquely identified by ID
@@ -82,9 +67,11 @@ func (a *RelicComposeConfigAccessor) ByOrder(identifier float64) (RelicComposeCo
 // Error is only non-nil if the source errors out
 func (a *RelicComposeConfigAccessor) ByID(identifier float64) (RelicComposeConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicComposeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicComposeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -96,11 +83,29 @@ func (a *RelicComposeConfigAccessor) ByID(identifier float64) (RelicComposeConfi
 // Error is only non-nil if the source errors out
 func (a *RelicComposeConfigAccessor) ByItemID(identifier float64) (RelicComposeConfig, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicComposeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicComposeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataItemID[identifier], nil
+}
+
+// ByOrder returns the RelicComposeConfig uniquely identified by Order
+//
+// Error is only non-nil if the source errors out
+func (a *RelicComposeConfigAccessor) ByOrder(identifier float64) (RelicComposeConfig, error) {
+	if a._dataOrder == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicComposeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOrder[identifier], nil
 }

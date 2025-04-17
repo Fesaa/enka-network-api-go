@@ -26,8 +26,8 @@ type BattlePassConfig struct {
 }
 type BattlePassConfigAccessor struct {
 	_data               []BattlePassConfig
-	_dataScheduleDataID map[float64]BattlePassConfig
 	_dataID             map[float64]BattlePassConfig
+	_dataScheduleDataID map[float64]BattlePassConfig
 }
 
 // LoadData retrieves the data. Must be called before BattlePassConfig.GroupData
@@ -51,7 +51,6 @@ func (a *BattlePassConfigAccessor) Raw() ([]BattlePassConfig, error) {
 		if err != nil {
 			return []BattlePassConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,23 +59,9 @@ func (a *BattlePassConfigAccessor) Raw() ([]BattlePassConfig, error) {
 // Can be called manually in conjunction with BattlePassConfigAccessor.LoadData to preload everything
 func (a *BattlePassConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataScheduleDataID[d.ScheduleDataID] = d
 		a._dataID[d.ID] = d
+		a._dataScheduleDataID[d.ScheduleDataID] = d
 	}
-}
-
-// ByScheduleDataID returns the BattlePassConfig uniquely identified by ScheduleDataID
-//
-// Error is only non-nil if the source errors out
-func (a *BattlePassConfigAccessor) ByScheduleDataID(identifier float64) (BattlePassConfig, error) {
-	if a._dataScheduleDataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattlePassConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataScheduleDataID[identifier], nil
 }
 
 // ByID returns the BattlePassConfig uniquely identified by ID
@@ -84,11 +69,29 @@ func (a *BattlePassConfigAccessor) ByScheduleDataID(identifier float64) (BattleP
 // Error is only non-nil if the source errors out
 func (a *BattlePassConfigAccessor) ByID(identifier float64) (BattlePassConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattlePassConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattlePassConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByScheduleDataID returns the BattlePassConfig uniquely identified by ScheduleDataID
+//
+// Error is only non-nil if the source errors out
+func (a *BattlePassConfigAccessor) ByScheduleDataID(identifier float64) (BattlePassConfig, error) {
+	if a._dataScheduleDataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattlePassConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataScheduleDataID[identifier], nil
 }

@@ -25,9 +25,9 @@ type ChallengeGeneralConfigPreConditions struct {
 }
 type ChallengeGeneralConfigAccessor struct {
 	_data                   []ChallengeGeneralConfig
+	_dataChallengeGroupType map[string]ChallengeGeneralConfig
 	_dataGotoID             map[float64]ChallengeGeneralConfig
 	_dataTabImgPath         map[string]ChallengeGeneralConfig
-	_dataChallengeGroupType map[string]ChallengeGeneralConfig
 }
 
 // LoadData retrieves the data. Must be called before ChallengeGeneralConfig.GroupData
@@ -51,7 +51,6 @@ func (a *ChallengeGeneralConfigAccessor) Raw() ([]ChallengeGeneralConfig, error)
 		if err != nil {
 			return []ChallengeGeneralConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,10 +59,26 @@ func (a *ChallengeGeneralConfigAccessor) Raw() ([]ChallengeGeneralConfig, error)
 // Can be called manually in conjunction with ChallengeGeneralConfigAccessor.LoadData to preload everything
 func (a *ChallengeGeneralConfigAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataChallengeGroupType[d.ChallengeGroupType] = d
 		a._dataGotoID[d.GotoID] = d
 		a._dataTabImgPath[d.TabImgPath] = d
-		a._dataChallengeGroupType[d.ChallengeGroupType] = d
 	}
+}
+
+// ByChallengeGroupType returns the ChallengeGeneralConfig uniquely identified by ChallengeGroupType
+//
+// Error is only non-nil if the source errors out
+func (a *ChallengeGeneralConfigAccessor) ByChallengeGroupType(identifier string) (ChallengeGeneralConfig, error) {
+	if a._dataChallengeGroupType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeGeneralConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataChallengeGroupType[identifier], nil
 }
 
 // ByGotoID returns the ChallengeGeneralConfig uniquely identified by GotoID
@@ -71,9 +86,11 @@ func (a *ChallengeGeneralConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChallengeGeneralConfigAccessor) ByGotoID(identifier float64) (ChallengeGeneralConfig, error) {
 	if a._dataGotoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeGeneralConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeGeneralConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -85,25 +102,13 @@ func (a *ChallengeGeneralConfigAccessor) ByGotoID(identifier float64) (Challenge
 // Error is only non-nil if the source errors out
 func (a *ChallengeGeneralConfigAccessor) ByTabImgPath(identifier string) (ChallengeGeneralConfig, error) {
 	if a._dataTabImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeGeneralConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeGeneralConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTabImgPath[identifier], nil
-}
-
-// ByChallengeGroupType returns the ChallengeGeneralConfig uniquely identified by ChallengeGroupType
-//
-// Error is only non-nil if the source errors out
-func (a *ChallengeGeneralConfigAccessor) ByChallengeGroupType(identifier string) (ChallengeGeneralConfig, error) {
-	if a._dataChallengeGroupType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeGeneralConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataChallengeGroupType[identifier], nil
 }

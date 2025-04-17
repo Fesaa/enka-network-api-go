@@ -38,7 +38,6 @@ func (a *ConstValueClientAccessor) Raw() ([]ConstValueClient, error) {
 		if err != nil {
 			return []ConstValueClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ConstValueClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ConstValueClientAccessor) ByConstValueName(identifier string) (ConstValueClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ConstValueClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ConstValueClient{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *MuseumMissionAccessor) Raw() ([]MuseumMission, error) {
 		if err != nil {
 			return []MuseumMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MuseumMissionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MuseumMissionAccessor) ByMuseumMissionID(identifier float64) (MuseumMission, error) {
 	if a._dataMuseumMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumMission{}, err
+			}
 		}
 		a.GroupData()
 	}

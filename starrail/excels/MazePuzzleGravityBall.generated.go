@@ -14,8 +14,8 @@ type MazePuzzleGravityBall struct {
 }
 type MazePuzzleGravityBallAccessor struct {
 	_data           []MazePuzzleGravityBall
-	_dataWallPrefab map[string]MazePuzzleGravityBall
 	_dataPuzzleID   map[float64]MazePuzzleGravityBall
+	_dataWallPrefab map[string]MazePuzzleGravityBall
 }
 
 // LoadData retrieves the data. Must be called before MazePuzzleGravityBall.GroupData
@@ -39,7 +39,6 @@ func (a *MazePuzzleGravityBallAccessor) Raw() ([]MazePuzzleGravityBall, error) {
 		if err != nil {
 			return []MazePuzzleGravityBall{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *MazePuzzleGravityBallAccessor) Raw() ([]MazePuzzleGravityBall, error) {
 // Can be called manually in conjunction with MazePuzzleGravityBallAccessor.LoadData to preload everything
 func (a *MazePuzzleGravityBallAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataWallPrefab[d.WallPrefab] = d
 		a._dataPuzzleID[d.PuzzleID] = d
+		a._dataWallPrefab[d.WallPrefab] = d
 	}
-}
-
-// ByWallPrefab returns the MazePuzzleGravityBall uniquely identified by WallPrefab
-//
-// Error is only non-nil if the source errors out
-func (a *MazePuzzleGravityBallAccessor) ByWallPrefab(identifier string) (MazePuzzleGravityBall, error) {
-	if a._dataWallPrefab == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazePuzzleGravityBall{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataWallPrefab[identifier], nil
 }
 
 // ByPuzzleID returns the MazePuzzleGravityBall uniquely identified by PuzzleID
@@ -72,11 +57,29 @@ func (a *MazePuzzleGravityBallAccessor) ByWallPrefab(identifier string) (MazePuz
 // Error is only non-nil if the source errors out
 func (a *MazePuzzleGravityBallAccessor) ByPuzzleID(identifier float64) (MazePuzzleGravityBall, error) {
 	if a._dataPuzzleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazePuzzleGravityBall{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazePuzzleGravityBall{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPuzzleID[identifier], nil
+}
+
+// ByWallPrefab returns the MazePuzzleGravityBall uniquely identified by WallPrefab
+//
+// Error is only non-nil if the source errors out
+func (a *MazePuzzleGravityBallAccessor) ByWallPrefab(identifier string) (MazePuzzleGravityBall, error) {
+	if a._dataWallPrefab == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazePuzzleGravityBall{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataWallPrefab[identifier], nil
 }

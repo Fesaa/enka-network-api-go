@@ -38,7 +38,6 @@ func (a *RogueTournNPCAccessor) Raw() ([]RogueTournNPC, error) {
 		if err != nil {
 			return []RogueTournNPC{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueTournNPCAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournNPCAccessor) ByNPCJsonPath(identifier string) (RogueTournNPC, error) {
 	if a._dataNPCJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournNPC{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournNPC{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *RogueTournNPCAccessor) ByNPCJsonPath(identifier string) (RogueTournNPC,
 // Error is only non-nil if the source errors out
 func (a *RogueTournNPCAccessor) ByRogueNPCID(identifier float64) (RogueTournNPC, error) {
 	if a._dataRogueNPCID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournNPC{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournNPC{}, err
+			}
 		}
 		a.GroupData()
 	}

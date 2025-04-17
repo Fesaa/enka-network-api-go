@@ -38,7 +38,6 @@ func (a *StrongChallengeBossDetailAccessor) Raw() ([]StrongChallengeBossDetail, 
 		if err != nil {
 			return []StrongChallengeBossDetail{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *StrongChallengeBossDetailAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StrongChallengeBossDetailAccessor) ByBossDetailID(identifier float64) (StrongChallengeBossDetail, error) {
 	if a._dataBossDetailID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StrongChallengeBossDetail{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StrongChallengeBossDetail{}, err
+			}
 		}
 		a.GroupData()
 	}

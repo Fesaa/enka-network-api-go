@@ -41,7 +41,6 @@ func (a *RogueTalkNameConfigAccessor) Raw() ([]RogueTalkNameConfig, error) {
 		if err != nil {
 			return []RogueTalkNameConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RogueTalkNameConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTalkNameConfigAccessor) ByTalkNameID(identifier float64) (RogueTalkNameConfig, error) {
 	if a._dataTalkNameID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTalkNameConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTalkNameConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

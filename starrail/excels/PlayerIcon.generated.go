@@ -39,7 +39,6 @@ func (a *PlayerIconAccessor) Raw() ([]PlayerIcon, error) {
 		if err != nil {
 			return []PlayerIcon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *PlayerIconAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlayerIconAccessor) ByID(identifier float64) (PlayerIcon, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *PlayerIconAccessor) ByID(identifier float64) (PlayerIcon, error) {
 // Error is only non-nil if the source errors out
 func (a *PlayerIconAccessor) ByImagePath(identifier string) (PlayerIcon, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerIcon{}, err
+			}
 		}
 		a.GroupData()
 	}

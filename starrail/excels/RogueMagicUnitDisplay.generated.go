@@ -39,7 +39,6 @@ func (a *RogueMagicUnitDisplayAccessor) Raw() ([]RogueMagicUnitDisplay, error) {
 		if err != nil {
 			return []RogueMagicUnitDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueMagicUnitDisplayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicUnitDisplayAccessor) ByMagicUnitID(identifier float64) (RogueMagicUnitDisplay, error) {
 	if a._dataMagicUnitID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicUnitDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicUnitDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}

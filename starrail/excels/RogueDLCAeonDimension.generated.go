@@ -17,9 +17,9 @@ type RogueDLCAeonDimension struct {
 }
 type RogueDLCAeonDimensionAccessor struct {
 	_data                []RogueDLCAeonDimension
-	_dataDimensionIcon   map[string]RogueDLCAeonDimension
-	_dataAeonIcon        map[string]RogueDLCAeonDimension
 	_dataAeonDimensionID map[float64]RogueDLCAeonDimension
+	_dataAeonIcon        map[string]RogueDLCAeonDimension
+	_dataDimensionIcon   map[string]RogueDLCAeonDimension
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCAeonDimension.GroupData
@@ -43,7 +43,6 @@ func (a *RogueDLCAeonDimensionAccessor) Raw() ([]RogueDLCAeonDimension, error) {
 		if err != nil {
 			return []RogueDLCAeonDimension{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,38 +51,10 @@ func (a *RogueDLCAeonDimensionAccessor) Raw() ([]RogueDLCAeonDimension, error) {
 // Can be called manually in conjunction with RogueDLCAeonDimensionAccessor.LoadData to preload everything
 func (a *RogueDLCAeonDimensionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataDimensionIcon[d.DimensionIcon] = d
-		a._dataAeonIcon[d.AeonIcon] = d
 		a._dataAeonDimensionID[d.AeonDimensionID] = d
+		a._dataAeonIcon[d.AeonIcon] = d
+		a._dataDimensionIcon[d.DimensionIcon] = d
 	}
-}
-
-// ByDimensionIcon returns the RogueDLCAeonDimension uniquely identified by DimensionIcon
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonDimensionAccessor) ByDimensionIcon(identifier string) (RogueDLCAeonDimension, error) {
-	if a._dataDimensionIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDimension{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDimensionIcon[identifier], nil
-}
-
-// ByAeonIcon returns the RogueDLCAeonDimension uniquely identified by AeonIcon
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCAeonDimensionAccessor) ByAeonIcon(identifier string) (RogueDLCAeonDimension, error) {
-	if a._dataAeonIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDimension{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAeonIcon[identifier], nil
 }
 
 // ByAeonDimensionID returns the RogueDLCAeonDimension uniquely identified by AeonDimensionID
@@ -91,11 +62,45 @@ func (a *RogueDLCAeonDimensionAccessor) ByAeonIcon(identifier string) (RogueDLCA
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonDimensionAccessor) ByAeonDimensionID(identifier float64) (RogueDLCAeonDimension, error) {
 	if a._dataAeonDimensionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonDimension{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDimension{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAeonDimensionID[identifier], nil
+}
+
+// ByAeonIcon returns the RogueDLCAeonDimension uniquely identified by AeonIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonDimensionAccessor) ByAeonIcon(identifier string) (RogueDLCAeonDimension, error) {
+	if a._dataAeonIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDimension{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAeonIcon[identifier], nil
+}
+
+// ByDimensionIcon returns the RogueDLCAeonDimension uniquely identified by DimensionIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCAeonDimensionAccessor) ByDimensionIcon(identifier string) (RogueDLCAeonDimension, error) {
+	if a._dataDimensionIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonDimension{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDimensionIcon[identifier], nil
 }

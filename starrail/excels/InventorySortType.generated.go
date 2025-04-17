@@ -38,7 +38,6 @@ func (a *InventorySortTypeAccessor) Raw() ([]InventorySortType, error) {
 		if err != nil {
 			return []InventorySortType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *InventorySortTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *InventorySortTypeAccessor) BySortType(identifier string) (InventorySortType, error) {
 	if a._dataSortType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InventorySortType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InventorySortType{}, err
+			}
 		}
 		a.GroupData()
 	}

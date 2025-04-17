@@ -14,9 +14,9 @@ type ScheduleDataRogue struct {
 }
 type ScheduleDataRogueAccessor struct {
 	_data          []ScheduleDataRogue
-	_dataID        map[float64]ScheduleDataRogue
 	_dataBeginTime map[string]ScheduleDataRogue
 	_dataEndTime   map[string]ScheduleDataRogue
+	_dataID        map[float64]ScheduleDataRogue
 }
 
 // LoadData retrieves the data. Must be called before ScheduleDataRogue.GroupData
@@ -40,7 +40,6 @@ func (a *ScheduleDataRogueAccessor) Raw() ([]ScheduleDataRogue, error) {
 		if err != nil {
 			return []ScheduleDataRogue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,24 +48,10 @@ func (a *ScheduleDataRogueAccessor) Raw() ([]ScheduleDataRogue, error) {
 // Can be called manually in conjunction with ScheduleDataRogueAccessor.LoadData to preload everything
 func (a *ScheduleDataRogueAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the ScheduleDataRogue uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *ScheduleDataRogueAccessor) ByID(identifier float64) (ScheduleDataRogue, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataRogue{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByBeginTime returns the ScheduleDataRogue uniquely identified by BeginTime
@@ -74,9 +59,11 @@ func (a *ScheduleDataRogueAccessor) ByID(identifier float64) (ScheduleDataRogue,
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataRogueAccessor) ByBeginTime(identifier string) (ScheduleDataRogue, error) {
 	if a._dataBeginTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataRogue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataRogue{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,11 +75,29 @@ func (a *ScheduleDataRogueAccessor) ByBeginTime(identifier string) (ScheduleData
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataRogueAccessor) ByEndTime(identifier string) (ScheduleDataRogue, error) {
 	if a._dataEndTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataRogue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataRogue{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEndTime[identifier], nil
+}
+
+// ByID returns the ScheduleDataRogue uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ScheduleDataRogueAccessor) ByID(identifier float64) (ScheduleDataRogue, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataRogue{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

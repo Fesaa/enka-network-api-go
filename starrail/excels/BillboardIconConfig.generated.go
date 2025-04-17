@@ -38,7 +38,6 @@ func (a *BillboardIconConfigAccessor) Raw() ([]BillboardIconConfig, error) {
 		if err != nil {
 			return []BillboardIconConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *BillboardIconConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BillboardIconConfigAccessor) ByID(identifier float64) (BillboardIconConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BillboardIconConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BillboardIconConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

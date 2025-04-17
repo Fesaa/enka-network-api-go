@@ -38,7 +38,6 @@ func (a *ActivityConstantPunkLordAccessor) Raw() ([]ActivityConstantPunkLord, er
 		if err != nil {
 			return []ActivityConstantPunkLord{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ActivityConstantPunkLordAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityConstantPunkLordAccessor) ByConstValueName(identifier string) (ActivityConstantPunkLord, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityConstantPunkLord{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityConstantPunkLord{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -13,8 +13,8 @@ type OptionalRewardQuest struct {
 }
 type OptionalRewardQuestAccessor struct {
 	_data                   []OptionalRewardQuest
-	_dataQuestID            map[float64]OptionalRewardQuest
 	_dataOptionalGiftItemID map[float64]OptionalRewardQuest
+	_dataQuestID            map[float64]OptionalRewardQuest
 }
 
 // LoadData retrieves the data. Must be called before OptionalRewardQuest.GroupData
@@ -38,7 +38,6 @@ func (a *OptionalRewardQuestAccessor) Raw() ([]OptionalRewardQuest, error) {
 		if err != nil {
 			return []OptionalRewardQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *OptionalRewardQuestAccessor) Raw() ([]OptionalRewardQuest, error) {
 // Can be called manually in conjunction with OptionalRewardQuestAccessor.LoadData to preload everything
 func (a *OptionalRewardQuestAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataQuestID[d.QuestID] = d
 		a._dataOptionalGiftItemID[d.OptionalGiftItemID] = d
+		a._dataQuestID[d.QuestID] = d
 	}
-}
-
-// ByQuestID returns the OptionalRewardQuest uniquely identified by QuestID
-//
-// Error is only non-nil if the source errors out
-func (a *OptionalRewardQuestAccessor) ByQuestID(identifier float64) (OptionalRewardQuest, error) {
-	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return OptionalRewardQuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataQuestID[identifier], nil
 }
 
 // ByOptionalGiftItemID returns the OptionalRewardQuest uniquely identified by OptionalGiftItemID
@@ -71,11 +56,29 @@ func (a *OptionalRewardQuestAccessor) ByQuestID(identifier float64) (OptionalRew
 // Error is only non-nil if the source errors out
 func (a *OptionalRewardQuestAccessor) ByOptionalGiftItemID(identifier float64) (OptionalRewardQuest, error) {
 	if a._dataOptionalGiftItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return OptionalRewardQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return OptionalRewardQuest{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataOptionalGiftItemID[identifier], nil
+}
+
+// ByQuestID returns the OptionalRewardQuest uniquely identified by QuestID
+//
+// Error is only non-nil if the source errors out
+func (a *OptionalRewardQuestAccessor) ByQuestID(identifier float64) (OptionalRewardQuest, error) {
+	if a._dataQuestID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return OptionalRewardQuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataQuestID[identifier], nil
 }

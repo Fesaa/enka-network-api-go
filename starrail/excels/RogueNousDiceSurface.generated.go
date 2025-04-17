@@ -26,9 +26,9 @@ type RogueNousDiceSurface struct {
 }
 type RogueNousDiceSurfaceAccessor struct {
 	_data          []RogueNousDiceSurface
+	_dataItemID    map[float64]RogueNousDiceSurface
 	_dataSort      map[float64]RogueNousDiceSurface
 	_dataSurfaceID map[float64]RogueNousDiceSurface
-	_dataItemID    map[float64]RogueNousDiceSurface
 }
 
 // LoadData retrieves the data. Must be called before RogueNousDiceSurface.GroupData
@@ -52,7 +52,6 @@ func (a *RogueNousDiceSurfaceAccessor) Raw() ([]RogueNousDiceSurface, error) {
 		if err != nil {
 			return []RogueNousDiceSurface{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,10 +60,26 @@ func (a *RogueNousDiceSurfaceAccessor) Raw() ([]RogueNousDiceSurface, error) {
 // Can be called manually in conjunction with RogueNousDiceSurfaceAccessor.LoadData to preload everything
 func (a *RogueNousDiceSurfaceAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataItemID[d.ItemID] = d
 		a._dataSort[d.Sort] = d
 		a._dataSurfaceID[d.SurfaceID] = d
-		a._dataItemID[d.ItemID] = d
 	}
+}
+
+// ByItemID returns the RogueNousDiceSurface uniquely identified by ItemID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueNousDiceSurfaceAccessor) ByItemID(identifier float64) (RogueNousDiceSurface, error) {
+	if a._dataItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceSurface{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemID[identifier], nil
 }
 
 // BySort returns the RogueNousDiceSurface uniquely identified by Sort
@@ -72,9 +87,11 @@ func (a *RogueNousDiceSurfaceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousDiceSurfaceAccessor) BySort(identifier float64) (RogueNousDiceSurface, error) {
 	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceSurface{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceSurface{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -86,25 +103,13 @@ func (a *RogueNousDiceSurfaceAccessor) BySort(identifier float64) (RogueNousDice
 // Error is only non-nil if the source errors out
 func (a *RogueNousDiceSurfaceAccessor) BySurfaceID(identifier float64) (RogueNousDiceSurface, error) {
 	if a._dataSurfaceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceSurface{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceSurface{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSurfaceID[identifier], nil
-}
-
-// ByItemID returns the RogueNousDiceSurface uniquely identified by ItemID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueNousDiceSurfaceAccessor) ByItemID(identifier float64) (RogueNousDiceSurface, error) {
-	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceSurface{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemID[identifier], nil
 }

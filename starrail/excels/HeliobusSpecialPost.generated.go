@@ -45,7 +45,6 @@ func (a *HeliobusSpecialPostAccessor) Raw() ([]HeliobusSpecialPost, error) {
 		if err != nil {
 			return []HeliobusSpecialPost{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *HeliobusSpecialPostAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusSpecialPostAccessor) ByHeliobusSpecialPostID(identifier float64) (HeliobusSpecialPost, error) {
 	if a._dataHeliobusSpecialPostID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusSpecialPost{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusSpecialPost{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *HeliobusSpecialPostAccessor) ByHeliobusSpecialPostID(identifier float64
 // Error is only non-nil if the source errors out
 func (a *HeliobusSpecialPostAccessor) BySubMissionID(identifier float64) (HeliobusSpecialPost, error) {
 	if a._dataSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusSpecialPost{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusSpecialPost{}, err
+			}
 		}
 		a.GroupData()
 	}

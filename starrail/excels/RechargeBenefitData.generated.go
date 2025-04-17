@@ -41,7 +41,6 @@ func (a *RechargeBenefitDataAccessor) Raw() ([]RechargeBenefitData, error) {
 		if err != nil {
 			return []RechargeBenefitData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *RechargeBenefitDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RechargeBenefitDataAccessor) ByBenefitID(identifier float64) (RechargeBenefitData, error) {
 	if a._dataBenefitID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RechargeBenefitData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RechargeBenefitData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *RechargeBenefitDataAccessor) ByBenefitID(identifier float64) (RechargeB
 // Error is only non-nil if the source errors out
 func (a *RechargeBenefitDataAccessor) ByReward(identifier float64) (RechargeBenefitData, error) {
 	if a._dataReward == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RechargeBenefitData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RechargeBenefitData{}, err
+			}
 		}
 		a.GroupData()
 	}

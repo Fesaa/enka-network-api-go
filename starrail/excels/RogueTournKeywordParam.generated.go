@@ -38,7 +38,6 @@ func (a *RogueTournKeywordParamAccessor) Raw() ([]RogueTournKeywordParam, error)
 		if err != nil {
 			return []RogueTournKeywordParam{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueTournKeywordParamAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournKeywordParamAccessor) ByKeywordID(identifier float64) (RogueTournKeywordParam, error) {
 	if a._dataKeywordID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournKeywordParam{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournKeywordParam{}, err
+			}
 		}
 		a.GroupData()
 	}

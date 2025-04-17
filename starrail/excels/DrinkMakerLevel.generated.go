@@ -37,7 +37,6 @@ func (a *DrinkMakerLevelAccessor) Raw() ([]DrinkMakerLevel, error) {
 		if err != nil {
 			return []DrinkMakerLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *DrinkMakerLevelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerLevelAccessor) ByLevel(identifier float64) (DrinkMakerLevel, error) {
 	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerLevel{}, err
+			}
 		}
 		a.GroupData()
 	}

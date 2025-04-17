@@ -37,7 +37,6 @@ func (a *RogueNPCAccessor) Raw() ([]RogueNPC, error) {
 		if err != nil {
 			return []RogueNPC{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *RogueNPCAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNPCAccessor) ByRogueNPCID(identifier float64) (RogueNPC, error) {
 	if a._dataRogueNPCID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNPC{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNPC{}, err
+			}
 		}
 		a.GroupData()
 	}

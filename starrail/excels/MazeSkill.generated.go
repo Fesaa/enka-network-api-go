@@ -45,7 +45,6 @@ func (a *MazeSkillAccessor) Raw() ([]MazeSkill, error) {
 		if err != nil {
 			return []MazeSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *MazeSkillAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MazeSkillAccessor) ByMazeSkillId(identifier float64) (MazeSkill, error) {
 	if a._dataMazeSkillId == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazeSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazeSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *MazeSkillAccessor) ByMazeSkillId(identifier float64) (MazeSkill, error)
 // Error is only non-nil if the source errors out
 func (a *MazeSkillAccessor) ByRelatedAvatarSkill(identifier float64) (MazeSkill, error) {
 	if a._dataRelatedAvatarSkill == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazeSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazeSkill{}, err
+			}
 		}
 		a.GroupData()
 	}

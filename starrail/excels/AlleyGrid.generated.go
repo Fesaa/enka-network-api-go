@@ -44,7 +44,6 @@ func (a *AlleyGridAccessor) Raw() ([]AlleyGrid, error) {
 		if err != nil {
 			return []AlleyGrid{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *AlleyGridAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AlleyGridAccessor) ByGridID(identifier float64) (AlleyGrid, error) {
 	if a._dataGridID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyGrid{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyGrid{}, err
+			}
 		}
 		a.GroupData()
 	}

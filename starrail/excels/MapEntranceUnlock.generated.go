@@ -37,7 +37,6 @@ func (a *MapEntranceUnlockAccessor) Raw() ([]MapEntranceUnlock, error) {
 		if err != nil {
 			return []MapEntranceUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MapEntranceUnlockAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MapEntranceUnlockAccessor) ByEntranceID(identifier float64) (MapEntranceUnlock, error) {
 	if a._dataEntranceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapEntranceUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapEntranceUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}

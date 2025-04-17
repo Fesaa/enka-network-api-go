@@ -39,8 +39,8 @@ type MarbleSeal struct {
 }
 type MarbleSealAccessor struct {
 	_data     []MarbleSeal
-	_dataName map[string]MarbleSeal
 	_dataID   map[float64]MarbleSeal
+	_dataName map[string]MarbleSeal
 }
 
 // LoadData retrieves the data. Must be called before MarbleSeal.GroupData
@@ -64,7 +64,6 @@ func (a *MarbleSealAccessor) Raw() ([]MarbleSeal, error) {
 		if err != nil {
 			return []MarbleSeal{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -73,23 +72,9 @@ func (a *MarbleSealAccessor) Raw() ([]MarbleSeal, error) {
 // Can be called manually in conjunction with MarbleSealAccessor.LoadData to preload everything
 func (a *MarbleSealAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataName[d.Name] = d
 		a._dataID[d.ID] = d
+		a._dataName[d.Name] = d
 	}
-}
-
-// ByName returns the MarbleSeal uniquely identified by Name
-//
-// Error is only non-nil if the source errors out
-func (a *MarbleSealAccessor) ByName(identifier string) (MarbleSeal, error) {
-	if a._dataName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleSeal{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataName[identifier], nil
 }
 
 // ByID returns the MarbleSeal uniquely identified by ID
@@ -97,11 +82,29 @@ func (a *MarbleSealAccessor) ByName(identifier string) (MarbleSeal, error) {
 // Error is only non-nil if the source errors out
 func (a *MarbleSealAccessor) ByID(identifier float64) (MarbleSeal, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleSeal{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleSeal{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByName returns the MarbleSeal uniquely identified by Name
+//
+// Error is only non-nil if the source errors out
+func (a *MarbleSealAccessor) ByName(identifier string) (MarbleSeal, error) {
+	if a._dataName == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleSeal{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataName[identifier], nil
 }

@@ -41,7 +41,6 @@ func (a *TeleportConfigAccessor) Raw() ([]TeleportConfig, error) {
 		if err != nil {
 			return []TeleportConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *TeleportConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TeleportConfigAccessor) ByID(identifier float64) (TeleportConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TeleportConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TeleportConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

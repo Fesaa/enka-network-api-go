@@ -39,7 +39,6 @@ func (a *SFXConfigAccessor) Raw() ([]SFXConfig, error) {
 		if err != nil {
 			return []SFXConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *SFXConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SFXConfigAccessor) BySFXID(identifier float64) (SFXConfig, error) {
 	if a._dataSFXID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SFXConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SFXConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

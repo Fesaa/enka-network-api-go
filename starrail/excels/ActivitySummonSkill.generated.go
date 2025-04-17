@@ -45,7 +45,6 @@ func (a *ActivitySummonSkillAccessor) Raw() ([]ActivitySummonSkill, error) {
 		if err != nil {
 			return []ActivitySummonSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *ActivitySummonSkillAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivitySummonSkillAccessor) BySkillID(identifier float64) (ActivitySummonSkill, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivitySummonSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivitySummonSkill{}, err
+			}
 		}
 		a.GroupData()
 	}

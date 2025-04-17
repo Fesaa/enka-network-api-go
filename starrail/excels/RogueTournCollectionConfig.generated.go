@@ -39,7 +39,6 @@ func (a *RogueTournCollectionConfigAccessor) Raw() ([]RogueTournCollectionConfig
 		if err != nil {
 			return []RogueTournCollectionConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueTournCollectionConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournCollectionConfigAccessor) ByConfigID(identifier float64) (RogueTournCollectionConfig, error) {
 	if a._dataConfigID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournCollectionConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournCollectionConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *RogueTournCollectionConfigAccessor) ByConfigID(identifier float64) (Rog
 // Error is only non-nil if the source errors out
 func (a *RogueTournCollectionConfigAccessor) ByPillarID(identifier float64) (RogueTournCollectionConfig, error) {
 	if a._dataPillarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournCollectionConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournCollectionConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

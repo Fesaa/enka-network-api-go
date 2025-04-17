@@ -39,7 +39,6 @@ func (a *ClockParkCardTipsTypeAccessor) Raw() ([]ClockParkCardTipsType, error) {
 		if err != nil {
 			return []ClockParkCardTipsType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ClockParkCardTipsTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClockParkCardTipsTypeAccessor) ByCardTipsTypeID(identifier string) (ClockParkCardTipsType, error) {
 	if a._dataCardTipsTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkCardTipsType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkCardTipsType{}, err
+			}
 		}
 		a.GroupData()
 	}

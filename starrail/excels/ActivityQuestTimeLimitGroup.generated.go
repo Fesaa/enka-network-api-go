@@ -20,9 +20,9 @@ type ActivityQuestTimeLimitGroup struct {
 }
 type ActivityQuestTimeLimitGroupAccessor struct {
 	_data                      []ActivityQuestTimeLimitGroup
-	_dataUIPanelType           map[string]ActivityQuestTimeLimitGroup
-	_dataQuestTimeLimitGroupID map[float64]ActivityQuestTimeLimitGroup
 	_dataFigurePath            map[string]ActivityQuestTimeLimitGroup
+	_dataQuestTimeLimitGroupID map[float64]ActivityQuestTimeLimitGroup
+	_dataUIPanelType           map[string]ActivityQuestTimeLimitGroup
 }
 
 // LoadData retrieves the data. Must be called before ActivityQuestTimeLimitGroup.GroupData
@@ -46,7 +46,6 @@ func (a *ActivityQuestTimeLimitGroupAccessor) Raw() ([]ActivityQuestTimeLimitGro
 		if err != nil {
 			return []ActivityQuestTimeLimitGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,38 +54,10 @@ func (a *ActivityQuestTimeLimitGroupAccessor) Raw() ([]ActivityQuestTimeLimitGro
 // Can be called manually in conjunction with ActivityQuestTimeLimitGroupAccessor.LoadData to preload everything
 func (a *ActivityQuestTimeLimitGroupAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUIPanelType[d.UIPanelType] = d
-		a._dataQuestTimeLimitGroupID[d.QuestTimeLimitGroupID] = d
 		a._dataFigurePath[d.FigurePath] = d
+		a._dataQuestTimeLimitGroupID[d.QuestTimeLimitGroupID] = d
+		a._dataUIPanelType[d.UIPanelType] = d
 	}
-}
-
-// ByUIPanelType returns the ActivityQuestTimeLimitGroup uniquely identified by UIPanelType
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityQuestTimeLimitGroupAccessor) ByUIPanelType(identifier string) (ActivityQuestTimeLimitGroup, error) {
-	if a._dataUIPanelType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityQuestTimeLimitGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUIPanelType[identifier], nil
-}
-
-// ByQuestTimeLimitGroupID returns the ActivityQuestTimeLimitGroup uniquely identified by QuestTimeLimitGroupID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityQuestTimeLimitGroupAccessor) ByQuestTimeLimitGroupID(identifier float64) (ActivityQuestTimeLimitGroup, error) {
-	if a._dataQuestTimeLimitGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityQuestTimeLimitGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataQuestTimeLimitGroupID[identifier], nil
 }
 
 // ByFigurePath returns the ActivityQuestTimeLimitGroup uniquely identified by FigurePath
@@ -94,11 +65,45 @@ func (a *ActivityQuestTimeLimitGroupAccessor) ByQuestTimeLimitGroupID(identifier
 // Error is only non-nil if the source errors out
 func (a *ActivityQuestTimeLimitGroupAccessor) ByFigurePath(identifier string) (ActivityQuestTimeLimitGroup, error) {
 	if a._dataFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityQuestTimeLimitGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityQuestTimeLimitGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFigurePath[identifier], nil
+}
+
+// ByQuestTimeLimitGroupID returns the ActivityQuestTimeLimitGroup uniquely identified by QuestTimeLimitGroupID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityQuestTimeLimitGroupAccessor) ByQuestTimeLimitGroupID(identifier float64) (ActivityQuestTimeLimitGroup, error) {
+	if a._dataQuestTimeLimitGroupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityQuestTimeLimitGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataQuestTimeLimitGroupID[identifier], nil
+}
+
+// ByUIPanelType returns the ActivityQuestTimeLimitGroup uniquely identified by UIPanelType
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityQuestTimeLimitGroupAccessor) ByUIPanelType(identifier string) (ActivityQuestTimeLimitGroup, error) {
+	if a._dataUIPanelType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityQuestTimeLimitGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUIPanelType[identifier], nil
 }

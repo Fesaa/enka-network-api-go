@@ -46,7 +46,6 @@ func (a *MonopolyReportResultAccessor) Raw() ([]MonopolyReportResult, error) {
 		if err != nil {
 			return []MonopolyReportResult{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -65,9 +64,11 @@ func (a *MonopolyReportResultAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyReportResultAccessor) ByFigurePrefabPath(identifier string) (MonopolyReportResult, error) {
 	if a._dataFigurePrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyReportResult{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyReportResult{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -79,9 +80,11 @@ func (a *MonopolyReportResultAccessor) ByFigurePrefabPath(identifier string) (Mo
 // Error is only non-nil if the source errors out
 func (a *MonopolyReportResultAccessor) ByID(identifier float64) (MonopolyReportResult, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyReportResult{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyReportResult{}, err
+			}
 		}
 		a.GroupData()
 	}

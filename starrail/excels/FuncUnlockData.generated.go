@@ -42,7 +42,6 @@ func (a *FuncUnlockDataAccessor) Raw() ([]FuncUnlockData, error) {
 		if err != nil {
 			return []FuncUnlockData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *FuncUnlockDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FuncUnlockDataAccessor) ByUnlockID(identifier float64) (FuncUnlockData, error) {
 	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FuncUnlockData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FuncUnlockData{}, err
+			}
 		}
 		a.GroupData()
 	}

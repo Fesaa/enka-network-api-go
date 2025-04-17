@@ -48,7 +48,6 @@ func (a *AvatarStatusConfigAccessor) Raw() ([]AvatarStatusConfig, error) {
 		if err != nil {
 			return []AvatarStatusConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *AvatarStatusConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarStatusConfigAccessor) ByModifierName(identifier string) (AvatarStatusConfig, error) {
 	if a._dataModifierName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarStatusConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarStatusConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,9 +82,11 @@ func (a *AvatarStatusConfigAccessor) ByModifierName(identifier string) (AvatarSt
 // Error is only non-nil if the source errors out
 func (a *AvatarStatusConfigAccessor) ByStatusID(identifier float64) (AvatarStatusConfig, error) {
 	if a._dataStatusID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarStatusConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarStatusConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

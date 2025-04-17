@@ -45,7 +45,6 @@ func (a *ChimeraWorkRoundAccessor) Raw() ([]ChimeraWorkRound, error) {
 		if err != nil {
 			return []ChimeraWorkRound{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *ChimeraWorkRoundAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraWorkRoundAccessor) ByRoundID(identifier float64) (ChimeraWorkRound, error) {
 	if a._dataRoundID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraWorkRound{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraWorkRound{}, err
+			}
 		}
 		a.GroupData()
 	}

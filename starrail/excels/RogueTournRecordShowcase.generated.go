@@ -41,7 +41,6 @@ func (a *RogueTournRecordShowcaseAccessor) Raw() ([]RogueTournRecordShowcase, er
 		if err != nil {
 			return []RogueTournRecordShowcase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -45,7 +45,6 @@ func (a *RogueDLCAeonTalentAccessor) Raw() ([]RogueDLCAeonTalent, error) {
 		if err != nil {
 			return []RogueDLCAeonTalent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *RogueDLCAeonTalentAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCAeonTalentAccessor) ByAeonTalentID(identifier float64) (RogueDLCAeonTalent, error) {
 	if a._dataAeonTalentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCAeonTalent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCAeonTalent{}, err
+			}
 		}
 		a.GroupData()
 	}

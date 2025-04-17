@@ -19,8 +19,8 @@ type DrinkMakerIceData struct {
 }
 type DrinkMakerIceDataAccessor struct {
 	_data           []DrinkMakerIceData
-	_dataIconPath   map[string]DrinkMakerIceData
 	_dataAudioEvent map[string]DrinkMakerIceData
+	_dataIconPath   map[string]DrinkMakerIceData
 }
 
 // LoadData retrieves the data. Must be called before DrinkMakerIceData.GroupData
@@ -44,7 +44,6 @@ func (a *DrinkMakerIceDataAccessor) Raw() ([]DrinkMakerIceData, error) {
 		if err != nil {
 			return []DrinkMakerIceData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,23 +52,9 @@ func (a *DrinkMakerIceDataAccessor) Raw() ([]DrinkMakerIceData, error) {
 // Can be called manually in conjunction with DrinkMakerIceDataAccessor.LoadData to preload everything
 func (a *DrinkMakerIceDataAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIconPath[d.IconPath] = d
 		a._dataAudioEvent[d.AudioEvent] = d
+		a._dataIconPath[d.IconPath] = d
 	}
-}
-
-// ByIconPath returns the DrinkMakerIceData uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerIceDataAccessor) ByIconPath(identifier string) (DrinkMakerIceData, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerIceData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByAudioEvent returns the DrinkMakerIceData uniquely identified by AudioEvent
@@ -77,11 +62,29 @@ func (a *DrinkMakerIceDataAccessor) ByIconPath(identifier string) (DrinkMakerIce
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerIceDataAccessor) ByAudioEvent(identifier string) (DrinkMakerIceData, error) {
 	if a._dataAudioEvent == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerIceData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerIceData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAudioEvent[identifier], nil
+}
+
+// ByIconPath returns the DrinkMakerIceData uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerIceDataAccessor) ByIconPath(identifier string) (DrinkMakerIceData, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerIceData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
 }

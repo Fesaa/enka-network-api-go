@@ -19,11 +19,11 @@ type EvolveGearTypeConfig struct {
 }
 type EvolveGearTypeConfigAccessor struct {
 	_data                     []EvolveGearTypeConfig
-	_dataWeaponToastEffectBg  map[string]EvolveGearTypeConfig
+	_dataFontColor            map[string]EvolveGearTypeConfig
 	_dataMixDetailPropsInfoBg map[string]EvolveGearTypeConfig
 	_dataName                 map[string]EvolveGearTypeConfig
-	_dataFontColor            map[string]EvolveGearTypeConfig
 	_dataTypeImgColor         map[string]EvolveGearTypeConfig
+	_dataWeaponToastEffectBg  map[string]EvolveGearTypeConfig
 }
 
 // LoadData retrieves the data. Must be called before EvolveGearTypeConfig.GroupData
@@ -47,7 +47,6 @@ func (a *EvolveGearTypeConfigAccessor) Raw() ([]EvolveGearTypeConfig, error) {
 		if err != nil {
 			return []EvolveGearTypeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,26 +55,28 @@ func (a *EvolveGearTypeConfigAccessor) Raw() ([]EvolveGearTypeConfig, error) {
 // Can be called manually in conjunction with EvolveGearTypeConfigAccessor.LoadData to preload everything
 func (a *EvolveGearTypeConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataWeaponToastEffectBg[d.WeaponToastEffectBg] = d
+		a._dataFontColor[d.FontColor] = d
 		a._dataMixDetailPropsInfoBg[d.MixDetailPropsInfoBg] = d
 		a._dataName[d.Name] = d
-		a._dataFontColor[d.FontColor] = d
 		a._dataTypeImgColor[d.TypeImgColor] = d
+		a._dataWeaponToastEffectBg[d.WeaponToastEffectBg] = d
 	}
 }
 
-// ByWeaponToastEffectBg returns the EvolveGearTypeConfig uniquely identified by WeaponToastEffectBg
+// ByFontColor returns the EvolveGearTypeConfig uniquely identified by FontColor
 //
 // Error is only non-nil if the source errors out
-func (a *EvolveGearTypeConfigAccessor) ByWeaponToastEffectBg(identifier string) (EvolveGearTypeConfig, error) {
-	if a._dataWeaponToastEffectBg == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveGearTypeConfig{}, err
+func (a *EvolveGearTypeConfigAccessor) ByFontColor(identifier string) (EvolveGearTypeConfig, error) {
+	if a._dataFontColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveGearTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataWeaponToastEffectBg[identifier], nil
+	return a._dataFontColor[identifier], nil
 }
 
 // ByMixDetailPropsInfoBg returns the EvolveGearTypeConfig uniquely identified by MixDetailPropsInfoBg
@@ -83,9 +84,11 @@ func (a *EvolveGearTypeConfigAccessor) ByWeaponToastEffectBg(identifier string) 
 // Error is only non-nil if the source errors out
 func (a *EvolveGearTypeConfigAccessor) ByMixDetailPropsInfoBg(identifier string) (EvolveGearTypeConfig, error) {
 	if a._dataMixDetailPropsInfoBg == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveGearTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveGearTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -97,27 +100,15 @@ func (a *EvolveGearTypeConfigAccessor) ByMixDetailPropsInfoBg(identifier string)
 // Error is only non-nil if the source errors out
 func (a *EvolveGearTypeConfigAccessor) ByName(identifier string) (EvolveGearTypeConfig, error) {
 	if a._dataName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveGearTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveGearTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataName[identifier], nil
-}
-
-// ByFontColor returns the EvolveGearTypeConfig uniquely identified by FontColor
-//
-// Error is only non-nil if the source errors out
-func (a *EvolveGearTypeConfigAccessor) ByFontColor(identifier string) (EvolveGearTypeConfig, error) {
-	if a._dataFontColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveGearTypeConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFontColor[identifier], nil
 }
 
 // ByTypeImgColor returns the EvolveGearTypeConfig uniquely identified by TypeImgColor
@@ -125,11 +116,29 @@ func (a *EvolveGearTypeConfigAccessor) ByFontColor(identifier string) (EvolveGea
 // Error is only non-nil if the source errors out
 func (a *EvolveGearTypeConfigAccessor) ByTypeImgColor(identifier string) (EvolveGearTypeConfig, error) {
 	if a._dataTypeImgColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveGearTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveGearTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTypeImgColor[identifier], nil
+}
+
+// ByWeaponToastEffectBg returns the EvolveGearTypeConfig uniquely identified by WeaponToastEffectBg
+//
+// Error is only non-nil if the source errors out
+func (a *EvolveGearTypeConfigAccessor) ByWeaponToastEffectBg(identifier string) (EvolveGearTypeConfig, error) {
+	if a._dataWeaponToastEffectBg == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveGearTypeConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataWeaponToastEffectBg[identifier], nil
 }

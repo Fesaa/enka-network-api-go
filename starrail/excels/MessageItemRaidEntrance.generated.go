@@ -40,7 +40,6 @@ func (a *MessageItemRaidEntranceAccessor) Raw() ([]MessageItemRaidEntrance, erro
 		if err != nil {
 			return []MessageItemRaidEntrance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *MessageItemRaidEntranceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MessageItemRaidEntranceAccessor) ByID(identifier float64) (MessageItemRaidEntrance, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageItemRaidEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageItemRaidEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *MessageItemRaidEntranceAccessor) ByID(identifier float64) (MessageItemR
 // Error is only non-nil if the source errors out
 func (a *MessageItemRaidEntranceAccessor) ByRaidID(identifier float64) (MessageItemRaidEntrance, error) {
 	if a._dataRaidID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MessageItemRaidEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MessageItemRaidEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}

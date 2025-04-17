@@ -38,7 +38,6 @@ func (a *ActivityExpeditionConstAccessor) Raw() ([]ActivityExpeditionConst, erro
 		if err != nil {
 			return []ActivityExpeditionConst{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ActivityExpeditionConstAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityExpeditionConstAccessor) ByConstValueName(identifier string) (ActivityExpeditionConst, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityExpeditionConst{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityExpeditionConst{}, err
+			}
 		}
 		a.GroupData()
 	}

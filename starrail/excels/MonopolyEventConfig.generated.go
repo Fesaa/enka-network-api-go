@@ -46,7 +46,6 @@ func (a *MonopolyEventConfigAccessor) Raw() ([]MonopolyEventConfig, error) {
 		if err != nil {
 			return []MonopolyEventConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *MonopolyEventConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyEventConfigAccessor) ByEventID(identifier float64) (MonopolyEventConfig, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyEventConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyEventConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

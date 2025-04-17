@@ -14,9 +14,9 @@ type NpcMonsterTrackQuest struct {
 }
 type NpcMonsterTrackQuestAccessor struct {
 	_data                  []NpcMonsterTrackQuest
-	_dataQuestID           map[float64]NpcMonsterTrackQuest
-	_dataNpcMonsterTrackID map[float64]NpcMonsterTrackQuest
 	_dataMapInfoID         map[float64]NpcMonsterTrackQuest
+	_dataNpcMonsterTrackID map[float64]NpcMonsterTrackQuest
+	_dataQuestID           map[float64]NpcMonsterTrackQuest
 }
 
 // LoadData retrieves the data. Must be called before NpcMonsterTrackQuest.GroupData
@@ -40,7 +40,6 @@ func (a *NpcMonsterTrackQuestAccessor) Raw() ([]NpcMonsterTrackQuest, error) {
 		if err != nil {
 			return []NpcMonsterTrackQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,38 +48,10 @@ func (a *NpcMonsterTrackQuestAccessor) Raw() ([]NpcMonsterTrackQuest, error) {
 // Can be called manually in conjunction with NpcMonsterTrackQuestAccessor.LoadData to preload everything
 func (a *NpcMonsterTrackQuestAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataQuestID[d.QuestID] = d
-		a._dataNpcMonsterTrackID[d.NpcMonsterTrackID] = d
 		a._dataMapInfoID[d.MapInfoID] = d
+		a._dataNpcMonsterTrackID[d.NpcMonsterTrackID] = d
+		a._dataQuestID[d.QuestID] = d
 	}
-}
-
-// ByQuestID returns the NpcMonsterTrackQuest uniquely identified by QuestID
-//
-// Error is only non-nil if the source errors out
-func (a *NpcMonsterTrackQuestAccessor) ByQuestID(identifier float64) (NpcMonsterTrackQuest, error) {
-	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NpcMonsterTrackQuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataQuestID[identifier], nil
-}
-
-// ByNpcMonsterTrackID returns the NpcMonsterTrackQuest uniquely identified by NpcMonsterTrackID
-//
-// Error is only non-nil if the source errors out
-func (a *NpcMonsterTrackQuestAccessor) ByNpcMonsterTrackID(identifier float64) (NpcMonsterTrackQuest, error) {
-	if a._dataNpcMonsterTrackID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NpcMonsterTrackQuest{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataNpcMonsterTrackID[identifier], nil
 }
 
 // ByMapInfoID returns the NpcMonsterTrackQuest uniquely identified by MapInfoID
@@ -88,11 +59,45 @@ func (a *NpcMonsterTrackQuestAccessor) ByNpcMonsterTrackID(identifier float64) (
 // Error is only non-nil if the source errors out
 func (a *NpcMonsterTrackQuestAccessor) ByMapInfoID(identifier float64) (NpcMonsterTrackQuest, error) {
 	if a._dataMapInfoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NpcMonsterTrackQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NpcMonsterTrackQuest{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMapInfoID[identifier], nil
+}
+
+// ByNpcMonsterTrackID returns the NpcMonsterTrackQuest uniquely identified by NpcMonsterTrackID
+//
+// Error is only non-nil if the source errors out
+func (a *NpcMonsterTrackQuestAccessor) ByNpcMonsterTrackID(identifier float64) (NpcMonsterTrackQuest, error) {
+	if a._dataNpcMonsterTrackID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NpcMonsterTrackQuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataNpcMonsterTrackID[identifier], nil
+}
+
+// ByQuestID returns the NpcMonsterTrackQuest uniquely identified by QuestID
+//
+// Error is only non-nil if the source errors out
+func (a *NpcMonsterTrackQuestAccessor) ByQuestID(identifier float64) (NpcMonsterTrackQuest, error) {
+	if a._dataQuestID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NpcMonsterTrackQuest{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataQuestID[identifier], nil
 }

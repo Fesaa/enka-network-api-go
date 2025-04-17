@@ -20,11 +20,11 @@ type AchievementSeries struct {
 }
 type AchievementSeriesAccessor struct {
 	_data               []AchievementSeries
-	_dataIconPath       map[string]AchievementSeries
 	_dataCopperIconPath map[string]AchievementSeries
-	_dataSeriesID       map[float64]AchievementSeries
-	_dataMainIconPath   map[string]AchievementSeries
 	_dataGoldIconPath   map[string]AchievementSeries
+	_dataIconPath       map[string]AchievementSeries
+	_dataMainIconPath   map[string]AchievementSeries
+	_dataSeriesID       map[float64]AchievementSeries
 	_dataSilverIconPath map[string]AchievementSeries
 }
 
@@ -49,7 +49,6 @@ func (a *AchievementSeriesAccessor) Raw() ([]AchievementSeries, error) {
 		if err != nil {
 			return []AchievementSeries{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,27 +57,13 @@ func (a *AchievementSeriesAccessor) Raw() ([]AchievementSeries, error) {
 // Can be called manually in conjunction with AchievementSeriesAccessor.LoadData to preload everything
 func (a *AchievementSeriesAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIconPath[d.IconPath] = d
 		a._dataCopperIconPath[d.CopperIconPath] = d
-		a._dataSeriesID[d.SeriesID] = d
-		a._dataMainIconPath[d.MainIconPath] = d
 		a._dataGoldIconPath[d.GoldIconPath] = d
+		a._dataIconPath[d.IconPath] = d
+		a._dataMainIconPath[d.MainIconPath] = d
+		a._dataSeriesID[d.SeriesID] = d
 		a._dataSilverIconPath[d.SilverIconPath] = d
 	}
-}
-
-// ByIconPath returns the AchievementSeries uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AchievementSeriesAccessor) ByIconPath(identifier string) (AchievementSeries, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementSeries{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByCopperIconPath returns the AchievementSeries uniquely identified by CopperIconPath
@@ -86,41 +71,15 @@ func (a *AchievementSeriesAccessor) ByIconPath(identifier string) (AchievementSe
 // Error is only non-nil if the source errors out
 func (a *AchievementSeriesAccessor) ByCopperIconPath(identifier string) (AchievementSeries, error) {
 	if a._dataCopperIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementSeries{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementSeries{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCopperIconPath[identifier], nil
-}
-
-// BySeriesID returns the AchievementSeries uniquely identified by SeriesID
-//
-// Error is only non-nil if the source errors out
-func (a *AchievementSeriesAccessor) BySeriesID(identifier float64) (AchievementSeries, error) {
-	if a._dataSeriesID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementSeries{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSeriesID[identifier], nil
-}
-
-// ByMainIconPath returns the AchievementSeries uniquely identified by MainIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AchievementSeriesAccessor) ByMainIconPath(identifier string) (AchievementSeries, error) {
-	if a._dataMainIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementSeries{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMainIconPath[identifier], nil
 }
 
 // ByGoldIconPath returns the AchievementSeries uniquely identified by GoldIconPath
@@ -128,13 +87,63 @@ func (a *AchievementSeriesAccessor) ByMainIconPath(identifier string) (Achieveme
 // Error is only non-nil if the source errors out
 func (a *AchievementSeriesAccessor) ByGoldIconPath(identifier string) (AchievementSeries, error) {
 	if a._dataGoldIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementSeries{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementSeries{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGoldIconPath[identifier], nil
+}
+
+// ByIconPath returns the AchievementSeries uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AchievementSeriesAccessor) ByIconPath(identifier string) (AchievementSeries, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementSeries{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
+}
+
+// ByMainIconPath returns the AchievementSeries uniquely identified by MainIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AchievementSeriesAccessor) ByMainIconPath(identifier string) (AchievementSeries, error) {
+	if a._dataMainIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementSeries{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMainIconPath[identifier], nil
+}
+
+// BySeriesID returns the AchievementSeries uniquely identified by SeriesID
+//
+// Error is only non-nil if the source errors out
+func (a *AchievementSeriesAccessor) BySeriesID(identifier float64) (AchievementSeries, error) {
+	if a._dataSeriesID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementSeries{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSeriesID[identifier], nil
 }
 
 // BySilverIconPath returns the AchievementSeries uniquely identified by SilverIconPath
@@ -142,9 +151,11 @@ func (a *AchievementSeriesAccessor) ByGoldIconPath(identifier string) (Achieveme
 // Error is only non-nil if the source errors out
 func (a *AchievementSeriesAccessor) BySilverIconPath(identifier string) (AchievementSeries, error) {
 	if a._dataSilverIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementSeries{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementSeries{}, err
+			}
 		}
 		a.GroupData()
 	}

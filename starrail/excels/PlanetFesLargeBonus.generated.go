@@ -24,8 +24,8 @@ type PlanetFesLargeBonusTapIncome struct {
 }
 type PlanetFesLargeBonusAccessor struct {
 	_data                 []PlanetFesLargeBonus
-	_dataID               map[float64]PlanetFesLargeBonus
 	_dataActivityRewardID map[float64]PlanetFesLargeBonus
+	_dataID               map[float64]PlanetFesLargeBonus
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesLargeBonus.GroupData
@@ -49,7 +49,6 @@ func (a *PlanetFesLargeBonusAccessor) Raw() ([]PlanetFesLargeBonus, error) {
 		if err != nil {
 			return []PlanetFesLargeBonus{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,23 +57,9 @@ func (a *PlanetFesLargeBonusAccessor) Raw() ([]PlanetFesLargeBonus, error) {
 // Can be called manually in conjunction with PlanetFesLargeBonusAccessor.LoadData to preload everything
 func (a *PlanetFesLargeBonusAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataActivityRewardID[d.ActivityRewardID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the PlanetFesLargeBonus uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesLargeBonusAccessor) ByID(identifier float64) (PlanetFesLargeBonus, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesLargeBonus{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByActivityRewardID returns the PlanetFesLargeBonus uniquely identified by ActivityRewardID
@@ -82,11 +67,29 @@ func (a *PlanetFesLargeBonusAccessor) ByID(identifier float64) (PlanetFesLargeBo
 // Error is only non-nil if the source errors out
 func (a *PlanetFesLargeBonusAccessor) ByActivityRewardID(identifier float64) (PlanetFesLargeBonus, error) {
 	if a._dataActivityRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesLargeBonus{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesLargeBonus{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityRewardID[identifier], nil
+}
+
+// ByID returns the PlanetFesLargeBonus uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesLargeBonusAccessor) ByID(identifier float64) (PlanetFesLargeBonus, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesLargeBonus{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

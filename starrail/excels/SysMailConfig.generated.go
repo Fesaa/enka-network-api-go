@@ -42,7 +42,6 @@ func (a *SysMailConfigAccessor) Raw() ([]SysMailConfig, error) {
 		if err != nil {
 			return []SysMailConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *SysMailConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SysMailConfigAccessor) ByMailID(identifier float64) (SysMailConfig, error) {
 	if a._dataMailID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SysMailConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SysMailConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

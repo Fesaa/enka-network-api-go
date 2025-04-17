@@ -48,7 +48,6 @@ func (a *FinishWayAccessor) Raw() ([]FinishWay, error) {
 		if err != nil {
 			return []FinishWay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,9 +65,11 @@ func (a *FinishWayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FinishWayAccessor) ByID(identifier float64) (FinishWay, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FinishWay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FinishWay{}, err
+			}
 		}
 		a.GroupData()
 	}

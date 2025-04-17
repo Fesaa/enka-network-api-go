@@ -25,8 +25,8 @@ type DrinkMakerIngredientData struct {
 type DrinkMakerIngredientDataAccessor struct {
 	_data              []DrinkMakerIngredientData
 	_dataID            map[float64]DrinkMakerIngredientData
-	_dataSmallIconPath map[string]DrinkMakerIngredientData
 	_dataIconPath      map[string]DrinkMakerIngredientData
+	_dataSmallIconPath map[string]DrinkMakerIngredientData
 }
 
 // LoadData retrieves the data. Must be called before DrinkMakerIngredientData.GroupData
@@ -50,7 +50,6 @@ func (a *DrinkMakerIngredientDataAccessor) Raw() ([]DrinkMakerIngredientData, er
 		if err != nil {
 			return []DrinkMakerIngredientData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,8 +59,8 @@ func (a *DrinkMakerIngredientDataAccessor) Raw() ([]DrinkMakerIngredientData, er
 func (a *DrinkMakerIngredientDataAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
-		a._dataSmallIconPath[d.SmallIconPath] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataSmallIconPath[d.SmallIconPath] = d
 	}
 }
 
@@ -70,27 +69,15 @@ func (a *DrinkMakerIngredientDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerIngredientDataAccessor) ByID(identifier float64) (DrinkMakerIngredientData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerIngredientData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerIngredientData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
-}
-
-// BySmallIconPath returns the DrinkMakerIngredientData uniquely identified by SmallIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerIngredientDataAccessor) BySmallIconPath(identifier string) (DrinkMakerIngredientData, error) {
-	if a._dataSmallIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerIngredientData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSmallIconPath[identifier], nil
 }
 
 // ByIconPath returns the DrinkMakerIngredientData uniquely identified by IconPath
@@ -98,11 +85,29 @@ func (a *DrinkMakerIngredientDataAccessor) BySmallIconPath(identifier string) (D
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerIngredientDataAccessor) ByIconPath(identifier string) (DrinkMakerIngredientData, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerIngredientData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerIngredientData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// BySmallIconPath returns the DrinkMakerIngredientData uniquely identified by SmallIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerIngredientDataAccessor) BySmallIconPath(identifier string) (DrinkMakerIngredientData, error) {
+	if a._dataSmallIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerIngredientData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSmallIconPath[identifier], nil
 }

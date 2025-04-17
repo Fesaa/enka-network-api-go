@@ -36,7 +36,6 @@ func (a *InclinationTypeAccessor) Raw() ([]InclinationType, error) {
 		if err != nil {
 			return []InclinationType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,9 +53,11 @@ func (a *InclinationTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *InclinationTypeAccessor) ByInclinationTypeID(identifier float64) (InclinationType, error) {
 	if a._dataInclinationTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InclinationType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InclinationType{}, err
+			}
 		}
 		a.GroupData()
 	}

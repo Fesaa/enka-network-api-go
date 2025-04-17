@@ -17,8 +17,8 @@ type ChimeraEvaluation struct {
 }
 type ChimeraEvaluationAccessor struct {
 	_data              []ChimeraEvaluation
-	_dataEvaluationID  map[float64]ChimeraEvaluation
 	_dataConditionJson map[string]ChimeraEvaluation
+	_dataEvaluationID  map[float64]ChimeraEvaluation
 }
 
 // LoadData retrieves the data. Must be called before ChimeraEvaluation.GroupData
@@ -42,7 +42,6 @@ func (a *ChimeraEvaluationAccessor) Raw() ([]ChimeraEvaluation, error) {
 		if err != nil {
 			return []ChimeraEvaluation{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,23 +50,9 @@ func (a *ChimeraEvaluationAccessor) Raw() ([]ChimeraEvaluation, error) {
 // Can be called manually in conjunction with ChimeraEvaluationAccessor.LoadData to preload everything
 func (a *ChimeraEvaluationAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataEvaluationID[d.EvaluationID] = d
 		a._dataConditionJson[d.ConditionJson] = d
+		a._dataEvaluationID[d.EvaluationID] = d
 	}
-}
-
-// ByEvaluationID returns the ChimeraEvaluation uniquely identified by EvaluationID
-//
-// Error is only non-nil if the source errors out
-func (a *ChimeraEvaluationAccessor) ByEvaluationID(identifier float64) (ChimeraEvaluation, error) {
-	if a._dataEvaluationID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraEvaluation{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEvaluationID[identifier], nil
 }
 
 // ByConditionJson returns the ChimeraEvaluation uniquely identified by ConditionJson
@@ -75,11 +60,29 @@ func (a *ChimeraEvaluationAccessor) ByEvaluationID(identifier float64) (ChimeraE
 // Error is only non-nil if the source errors out
 func (a *ChimeraEvaluationAccessor) ByConditionJson(identifier string) (ChimeraEvaluation, error) {
 	if a._dataConditionJson == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraEvaluation{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraEvaluation{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataConditionJson[identifier], nil
+}
+
+// ByEvaluationID returns the ChimeraEvaluation uniquely identified by EvaluationID
+//
+// Error is only non-nil if the source errors out
+func (a *ChimeraEvaluationAccessor) ByEvaluationID(identifier float64) (ChimeraEvaluation, error) {
+	if a._dataEvaluationID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraEvaluation{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEvaluationID[identifier], nil
 }

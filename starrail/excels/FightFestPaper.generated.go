@@ -25,11 +25,11 @@ type FightFestPaper struct {
 }
 type FightFestPaperAccessor struct {
 	_data                   []FightFestPaper
-	_dataInterviewFgPath    map[string]FightFestPaper
 	_dataCollectionBgPath   map[string]FightFestPaper
-	_dataUnlockSubMissionID map[float64]FightFestPaper
 	_dataCollectionFgPath   map[string]FightFestPaper
+	_dataInterviewFgPath    map[string]FightFestPaper
 	_dataPaperID            map[float64]FightFestPaper
+	_dataUnlockSubMissionID map[float64]FightFestPaper
 }
 
 // LoadData retrieves the data. Must be called before FightFestPaper.GroupData
@@ -53,7 +53,6 @@ func (a *FightFestPaperAccessor) Raw() ([]FightFestPaper, error) {
 		if err != nil {
 			return []FightFestPaper{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,26 +61,12 @@ func (a *FightFestPaperAccessor) Raw() ([]FightFestPaper, error) {
 // Can be called manually in conjunction with FightFestPaperAccessor.LoadData to preload everything
 func (a *FightFestPaperAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataInterviewFgPath[d.InterviewFgPath] = d
 		a._dataCollectionBgPath[d.CollectionBgPath] = d
-		a._dataUnlockSubMissionID[d.UnlockSubMissionID] = d
 		a._dataCollectionFgPath[d.CollectionFgPath] = d
+		a._dataInterviewFgPath[d.InterviewFgPath] = d
 		a._dataPaperID[d.PaperID] = d
+		a._dataUnlockSubMissionID[d.UnlockSubMissionID] = d
 	}
-}
-
-// ByInterviewFgPath returns the FightFestPaper uniquely identified by InterviewFgPath
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestPaperAccessor) ByInterviewFgPath(identifier string) (FightFestPaper, error) {
-	if a._dataInterviewFgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestPaper{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataInterviewFgPath[identifier], nil
 }
 
 // ByCollectionBgPath returns the FightFestPaper uniquely identified by CollectionBgPath
@@ -89,27 +74,15 @@ func (a *FightFestPaperAccessor) ByInterviewFgPath(identifier string) (FightFest
 // Error is only non-nil if the source errors out
 func (a *FightFestPaperAccessor) ByCollectionBgPath(identifier string) (FightFestPaper, error) {
 	if a._dataCollectionBgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestPaper{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestPaper{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCollectionBgPath[identifier], nil
-}
-
-// ByUnlockSubMissionID returns the FightFestPaper uniquely identified by UnlockSubMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestPaperAccessor) ByUnlockSubMissionID(identifier float64) (FightFestPaper, error) {
-	if a._dataUnlockSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestPaper{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockSubMissionID[identifier], nil
 }
 
 // ByCollectionFgPath returns the FightFestPaper uniquely identified by CollectionFgPath
@@ -117,13 +90,31 @@ func (a *FightFestPaperAccessor) ByUnlockSubMissionID(identifier float64) (Fight
 // Error is only non-nil if the source errors out
 func (a *FightFestPaperAccessor) ByCollectionFgPath(identifier string) (FightFestPaper, error) {
 	if a._dataCollectionFgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestPaper{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestPaper{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCollectionFgPath[identifier], nil
+}
+
+// ByInterviewFgPath returns the FightFestPaper uniquely identified by InterviewFgPath
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestPaperAccessor) ByInterviewFgPath(identifier string) (FightFestPaper, error) {
+	if a._dataInterviewFgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestPaper{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataInterviewFgPath[identifier], nil
 }
 
 // ByPaperID returns the FightFestPaper uniquely identified by PaperID
@@ -131,11 +122,29 @@ func (a *FightFestPaperAccessor) ByCollectionFgPath(identifier string) (FightFes
 // Error is only non-nil if the source errors out
 func (a *FightFestPaperAccessor) ByPaperID(identifier float64) (FightFestPaper, error) {
 	if a._dataPaperID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestPaper{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestPaper{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPaperID[identifier], nil
+}
+
+// ByUnlockSubMissionID returns the FightFestPaper uniquely identified by UnlockSubMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestPaperAccessor) ByUnlockSubMissionID(identifier float64) (FightFestPaper, error) {
+	if a._dataUnlockSubMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestPaper{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockSubMissionID[identifier], nil
 }

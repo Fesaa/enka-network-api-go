@@ -36,7 +36,6 @@ func (a *AvatarLinkConfigAccessor) Raw() ([]AvatarLinkConfig, error) {
 		if err != nil {
 			return []AvatarLinkConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -49,7 +49,6 @@ func (a *PamActionAccessor) Raw() ([]PamAction, error) {
 		if err != nil {
 			return []PamAction{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,9 +68,11 @@ func (a *PamActionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PamActionAccessor) ByAnimGroupName(identifier string) (PamAction, error) {
 	if a._dataAnimGroupName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamAction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamAction{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -83,9 +84,11 @@ func (a *PamActionAccessor) ByAnimGroupName(identifier string) (PamAction, error
 // Error is only non-nil if the source errors out
 func (a *PamActionAccessor) ByPamAction(identifier string) (PamAction, error) {
 	if a._dataPamAction == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamAction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamAction{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -97,9 +100,11 @@ func (a *PamActionAccessor) ByPamAction(identifier string) (PamAction, error) {
 // Error is only non-nil if the source errors out
 func (a *PamActionAccessor) ByPerformanceID(identifier float64) (PamAction, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamAction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamAction{}, err
+			}
 		}
 		a.GroupData()
 	}

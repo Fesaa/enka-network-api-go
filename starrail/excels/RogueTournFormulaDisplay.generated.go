@@ -40,7 +40,6 @@ func (a *RogueTournFormulaDisplayAccessor) Raw() ([]RogueTournFormulaDisplay, er
 		if err != nil {
 			return []RogueTournFormulaDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueTournFormulaDisplayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournFormulaDisplayAccessor) ByFormulaDisplayID(identifier float64) (RogueTournFormulaDisplay, error) {
 	if a._dataFormulaDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournFormulaDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournFormulaDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}

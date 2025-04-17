@@ -15,8 +15,8 @@ type ChallengeRaid struct {
 }
 type ChallengeRaidAccessor struct {
 	_data               []ChallengeRaid
-	_dataScoringGroupID map[float64]ChallengeRaid
 	_dataChallengeID    map[float64]ChallengeRaid
+	_dataScoringGroupID map[float64]ChallengeRaid
 }
 
 // LoadData retrieves the data. Must be called before ChallengeRaid.GroupData
@@ -40,7 +40,6 @@ func (a *ChallengeRaidAccessor) Raw() ([]ChallengeRaid, error) {
 		if err != nil {
 			return []ChallengeRaid{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *ChallengeRaidAccessor) Raw() ([]ChallengeRaid, error) {
 // Can be called manually in conjunction with ChallengeRaidAccessor.LoadData to preload everything
 func (a *ChallengeRaidAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataScoringGroupID[d.ScoringGroupID] = d
 		a._dataChallengeID[d.ChallengeID] = d
+		a._dataScoringGroupID[d.ScoringGroupID] = d
 	}
-}
-
-// ByScoringGroupID returns the ChallengeRaid uniquely identified by ScoringGroupID
-//
-// Error is only non-nil if the source errors out
-func (a *ChallengeRaidAccessor) ByScoringGroupID(identifier float64) (ChallengeRaid, error) {
-	if a._dataScoringGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeRaid{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataScoringGroupID[identifier], nil
 }
 
 // ByChallengeID returns the ChallengeRaid uniquely identified by ChallengeID
@@ -73,11 +58,29 @@ func (a *ChallengeRaidAccessor) ByScoringGroupID(identifier float64) (ChallengeR
 // Error is only non-nil if the source errors out
 func (a *ChallengeRaidAccessor) ByChallengeID(identifier float64) (ChallengeRaid, error) {
 	if a._dataChallengeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeRaid{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeRaid{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataChallengeID[identifier], nil
+}
+
+// ByScoringGroupID returns the ChallengeRaid uniquely identified by ScoringGroupID
+//
+// Error is only non-nil if the source errors out
+func (a *ChallengeRaidAccessor) ByScoringGroupID(identifier float64) (ChallengeRaid, error) {
+	if a._dataScoringGroupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeRaid{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataScoringGroupID[identifier], nil
 }

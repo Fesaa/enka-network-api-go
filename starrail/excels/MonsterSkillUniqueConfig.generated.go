@@ -54,7 +54,6 @@ func (a *MonsterSkillUniqueConfigAccessor) Raw() ([]MonsterSkillUniqueConfig, er
 		if err != nil {
 			return []MonsterSkillUniqueConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -72,9 +71,11 @@ func (a *MonsterSkillUniqueConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonsterSkillUniqueConfigAccessor) BySkillID(identifier float64) (MonsterSkillUniqueConfig, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterSkillUniqueConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterSkillUniqueConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

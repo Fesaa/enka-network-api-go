@@ -37,7 +37,6 @@ func (a *ActivityWorldUnlockAccessor) Raw() ([]ActivityWorldUnlock, error) {
 		if err != nil {
 			return []ActivityWorldUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ActivityWorldUnlockAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityWorldUnlockAccessor) ByActivityID(identifier float64) (ActivityWorldUnlock, error) {
 	if a._dataActivityID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityWorldUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityWorldUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}

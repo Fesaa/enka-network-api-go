@@ -37,7 +37,6 @@ func (a *ActivityConstantSilverWolfAccessor) Raw() ([]ActivityConstantSilverWolf
 		if err != nil {
 			return []ActivityConstantSilverWolf{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ActivityConstantSilverWolfAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityConstantSilverWolfAccessor) ByConstValueName(identifier string) (ActivityConstantSilverWolf, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityConstantSilverWolf{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityConstantSilverWolf{}, err
+			}
 		}
 		a.GroupData()
 	}

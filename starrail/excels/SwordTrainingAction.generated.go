@@ -50,7 +50,6 @@ func (a *SwordTrainingActionAccessor) Raw() ([]SwordTrainingAction, error) {
 		if err != nil {
 			return []SwordTrainingAction{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

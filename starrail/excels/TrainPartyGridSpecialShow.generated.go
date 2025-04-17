@@ -13,8 +13,8 @@ type TrainPartyGridSpecialShow struct {
 }
 type TrainPartyGridSpecialShowAccessor struct {
 	_data                         []TrainPartyGridSpecialShow
-	_dataGridSpecialShowImagePath map[string]TrainPartyGridSpecialShow
 	_dataGridID                   map[float64]TrainPartyGridSpecialShow
+	_dataGridSpecialShowImagePath map[string]TrainPartyGridSpecialShow
 }
 
 // LoadData retrieves the data. Must be called before TrainPartyGridSpecialShow.GroupData
@@ -38,7 +38,6 @@ func (a *TrainPartyGridSpecialShowAccessor) Raw() ([]TrainPartyGridSpecialShow, 
 		if err != nil {
 			return []TrainPartyGridSpecialShow{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *TrainPartyGridSpecialShowAccessor) Raw() ([]TrainPartyGridSpecialShow, 
 // Can be called manually in conjunction with TrainPartyGridSpecialShowAccessor.LoadData to preload everything
 func (a *TrainPartyGridSpecialShowAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataGridSpecialShowImagePath[d.GridSpecialShowImagePath] = d
 		a._dataGridID[d.GridID] = d
+		a._dataGridSpecialShowImagePath[d.GridSpecialShowImagePath] = d
 	}
-}
-
-// ByGridSpecialShowImagePath returns the TrainPartyGridSpecialShow uniquely identified by GridSpecialShowImagePath
-//
-// Error is only non-nil if the source errors out
-func (a *TrainPartyGridSpecialShowAccessor) ByGridSpecialShowImagePath(identifier string) (TrainPartyGridSpecialShow, error) {
-	if a._dataGridSpecialShowImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyGridSpecialShow{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGridSpecialShowImagePath[identifier], nil
 }
 
 // ByGridID returns the TrainPartyGridSpecialShow uniquely identified by GridID
@@ -71,11 +56,29 @@ func (a *TrainPartyGridSpecialShowAccessor) ByGridSpecialShowImagePath(identifie
 // Error is only non-nil if the source errors out
 func (a *TrainPartyGridSpecialShowAccessor) ByGridID(identifier float64) (TrainPartyGridSpecialShow, error) {
 	if a._dataGridID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyGridSpecialShow{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyGridSpecialShow{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGridID[identifier], nil
+}
+
+// ByGridSpecialShowImagePath returns the TrainPartyGridSpecialShow uniquely identified by GridSpecialShowImagePath
+//
+// Error is only non-nil if the source errors out
+func (a *TrainPartyGridSpecialShowAccessor) ByGridSpecialShowImagePath(identifier string) (TrainPartyGridSpecialShow, error) {
+	if a._dataGridSpecialShowImagePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyGridSpecialShow{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGridSpecialShowImagePath[identifier], nil
 }

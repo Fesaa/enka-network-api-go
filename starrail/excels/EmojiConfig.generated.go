@@ -44,7 +44,6 @@ func (a *EmojiConfigAccessor) Raw() ([]EmojiConfig, error) {
 		if err != nil {
 			return []EmojiConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *EmojiConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EmojiConfigAccessor) ByEmojiID(identifier float64) (EmojiConfig, error) {
 	if a._dataEmojiID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EmojiConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EmojiConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

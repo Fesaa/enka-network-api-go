@@ -41,7 +41,6 @@ func (a *GotoConfigAccessor) Raw() ([]GotoConfig, error) {
 		if err != nil {
 			return []GotoConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *GotoConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GotoConfigAccessor) ByID(identifier float64) (GotoConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GotoConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GotoConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

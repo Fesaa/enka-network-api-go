@@ -51,7 +51,6 @@ func (a *TreasureDungeonGroupConfigAccessor) Raw() ([]TreasureDungeonGroupConfig
 		if err != nil {
 			return []TreasureDungeonGroupConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -70,9 +69,11 @@ func (a *TreasureDungeonGroupConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TreasureDungeonGroupConfigAccessor) ByActivityModuleID(identifier float64) (TreasureDungeonGroupConfig, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TreasureDungeonGroupConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TreasureDungeonGroupConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -84,9 +85,11 @@ func (a *TreasureDungeonGroupConfigAccessor) ByActivityModuleID(identifier float
 // Error is only non-nil if the source errors out
 func (a *TreasureDungeonGroupConfigAccessor) ByGroupID(identifier float64) (TreasureDungeonGroupConfig, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TreasureDungeonGroupConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TreasureDungeonGroupConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

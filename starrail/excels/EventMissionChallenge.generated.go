@@ -40,7 +40,6 @@ func (a *EventMissionChallengeAccessor) Raw() ([]EventMissionChallenge, error) {
 		if err != nil {
 			return []EventMissionChallenge{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *EventMissionChallengeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EventMissionChallengeAccessor) ByID(identifier float64) (EventMissionChallenge, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventMissionChallenge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventMissionChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}

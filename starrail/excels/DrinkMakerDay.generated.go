@@ -40,7 +40,6 @@ func (a *DrinkMakerDayAccessor) Raw() ([]DrinkMakerDay, error) {
 		if err != nil {
 			return []DrinkMakerDay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *DrinkMakerDayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerDayAccessor) ByCanStartSubMissionID(identifier float64) (DrinkMakerDay, error) {
 	if a._dataCanStartSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerDay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerDay{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *DrinkMakerDayAccessor) ByCanStartSubMissionID(identifier float64) (Drin
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerDayAccessor) ByDayID(identifier float64) (DrinkMakerDay, error) {
 	if a._dataDayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerDay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerDay{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -41,7 +41,6 @@ func (a *RogueNousDiceSlotAccessor) Raw() ([]RogueNousDiceSlot, error) {
 		if err != nil {
 			return []RogueNousDiceSlot{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RogueNousDiceSlotAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousDiceSlotAccessor) BySlotID(identifier float64) (RogueNousDiceSlot, error) {
 	if a._dataSlotID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousDiceSlot{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousDiceSlot{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -44,7 +44,6 @@ func (a *LittleWheelSelectConfigAccessor) Raw() ([]LittleWheelSelectConfig, erro
 		if err != nil {
 			return []LittleWheelSelectConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *LittleWheelSelectConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *LittleWheelSelectConfigAccessor) ByGameMode(identifier string) (LittleWheelSelectConfig, error) {
 	if a._dataGameMode == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LittleWheelSelectConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LittleWheelSelectConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

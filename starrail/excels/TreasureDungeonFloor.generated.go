@@ -42,7 +42,6 @@ func (a *TreasureDungeonFloorAccessor) Raw() ([]TreasureDungeonFloor, error) {
 		if err != nil {
 			return []TreasureDungeonFloor{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

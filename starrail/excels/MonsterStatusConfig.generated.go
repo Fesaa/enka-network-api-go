@@ -48,7 +48,6 @@ func (a *MonsterStatusConfigAccessor) Raw() ([]MonsterStatusConfig, error) {
 		if err != nil {
 			return []MonsterStatusConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *MonsterStatusConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonsterStatusConfigAccessor) ByModifierName(identifier string) (MonsterStatusConfig, error) {
 	if a._dataModifierName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterStatusConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterStatusConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,9 +82,11 @@ func (a *MonsterStatusConfigAccessor) ByModifierName(identifier string) (Monster
 // Error is only non-nil if the source errors out
 func (a *MonsterStatusConfigAccessor) ByStatusID(identifier float64) (MonsterStatusConfig, error) {
 	if a._dataStatusID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterStatusConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterStatusConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

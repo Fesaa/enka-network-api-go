@@ -44,7 +44,6 @@ func (a *DrinkMakerGuestCommentAccessor) Raw() ([]DrinkMakerGuestComment, error)
 		if err != nil {
 			return []DrinkMakerGuestComment{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *DrinkMakerGuestCommentAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerGuestCommentAccessor) ByCommentID(identifier float64) (DrinkMakerGuestComment, error) {
 	if a._dataCommentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerGuestComment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerGuestComment{}, err
+			}
 		}
 		a.GroupData()
 	}

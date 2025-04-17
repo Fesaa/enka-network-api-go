@@ -13,8 +13,8 @@ type ActivityModuleFight struct {
 }
 type ActivityModuleFightAccessor struct {
 	_data                     []ActivityModuleFight
-	_dataActivityModuleID     map[float64]ActivityModuleFight
 	_dataActivityFightGroupID map[float64]ActivityModuleFight
+	_dataActivityModuleID     map[float64]ActivityModuleFight
 }
 
 // LoadData retrieves the data. Must be called before ActivityModuleFight.GroupData
@@ -38,7 +38,6 @@ func (a *ActivityModuleFightAccessor) Raw() ([]ActivityModuleFight, error) {
 		if err != nil {
 			return []ActivityModuleFight{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *ActivityModuleFightAccessor) Raw() ([]ActivityModuleFight, error) {
 // Can be called manually in conjunction with ActivityModuleFightAccessor.LoadData to preload everything
 func (a *ActivityModuleFightAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataActivityFightGroupID[d.ActivityFightGroupID] = d
+		a._dataActivityModuleID[d.ActivityModuleID] = d
 	}
-}
-
-// ByActivityModuleID returns the ActivityModuleFight uniquely identified by ActivityModuleID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityModuleFightAccessor) ByActivityModuleID(identifier float64) (ActivityModuleFight, error) {
-	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModuleFight{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataActivityModuleID[identifier], nil
 }
 
 // ByActivityFightGroupID returns the ActivityModuleFight uniquely identified by ActivityFightGroupID
@@ -71,11 +56,29 @@ func (a *ActivityModuleFightAccessor) ByActivityModuleID(identifier float64) (Ac
 // Error is only non-nil if the source errors out
 func (a *ActivityModuleFightAccessor) ByActivityFightGroupID(identifier float64) (ActivityModuleFight, error) {
 	if a._dataActivityFightGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModuleFight{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModuleFight{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityFightGroupID[identifier], nil
+}
+
+// ByActivityModuleID returns the ActivityModuleFight uniquely identified by ActivityModuleID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityModuleFightAccessor) ByActivityModuleID(identifier float64) (ActivityModuleFight, error) {
+	if a._dataActivityModuleID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModuleFight{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataActivityModuleID[identifier], nil
 }

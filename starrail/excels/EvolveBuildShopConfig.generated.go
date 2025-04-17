@@ -29,8 +29,8 @@ type EvolveBuildShopConfigPriceList struct {
 }
 type EvolveBuildShopConfigAccessor struct {
 	_data         []EvolveBuildShopConfig
-	_dataItemIcon map[string]EvolveBuildShopConfig
 	_dataID       map[float64]EvolveBuildShopConfig
+	_dataItemIcon map[string]EvolveBuildShopConfig
 }
 
 // LoadData retrieves the data. Must be called before EvolveBuildShopConfig.GroupData
@@ -54,7 +54,6 @@ func (a *EvolveBuildShopConfigAccessor) Raw() ([]EvolveBuildShopConfig, error) {
 		if err != nil {
 			return []EvolveBuildShopConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,23 +62,9 @@ func (a *EvolveBuildShopConfigAccessor) Raw() ([]EvolveBuildShopConfig, error) {
 // Can be called manually in conjunction with EvolveBuildShopConfigAccessor.LoadData to preload everything
 func (a *EvolveBuildShopConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataItemIcon[d.ItemIcon] = d
 		a._dataID[d.ID] = d
+		a._dataItemIcon[d.ItemIcon] = d
 	}
-}
-
-// ByItemIcon returns the EvolveBuildShopConfig uniquely identified by ItemIcon
-//
-// Error is only non-nil if the source errors out
-func (a *EvolveBuildShopConfigAccessor) ByItemIcon(identifier string) (EvolveBuildShopConfig, error) {
-	if a._dataItemIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildShopConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemIcon[identifier], nil
 }
 
 // ByID returns the EvolveBuildShopConfig uniquely identified by ID
@@ -87,11 +72,29 @@ func (a *EvolveBuildShopConfigAccessor) ByItemIcon(identifier string) (EvolveBui
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildShopConfigAccessor) ByID(identifier float64) (EvolveBuildShopConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildShopConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildShopConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByItemIcon returns the EvolveBuildShopConfig uniquely identified by ItemIcon
+//
+// Error is only non-nil if the source errors out
+func (a *EvolveBuildShopConfigAccessor) ByItemIcon(identifier string) (EvolveBuildShopConfig, error) {
+	if a._dataItemIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildShopConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemIcon[identifier], nil
 }

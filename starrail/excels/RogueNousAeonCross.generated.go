@@ -40,7 +40,6 @@ func (a *RogueNousAeonCrossAccessor) Raw() ([]RogueNousAeonCross, error) {
 		if err != nil {
 			return []RogueNousAeonCross{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueNousAeonCrossAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousAeonCrossAccessor) ByBuffGroup(identifier float64) (RogueNousAeonCross, error) {
 	if a._dataBuffGroup == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousAeonCross{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousAeonCross{}, err
+			}
 		}
 		a.GroupData()
 	}

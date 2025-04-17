@@ -39,7 +39,6 @@ func (a *MapSpaceTypeConfigAccessor) Raw() ([]MapSpaceTypeConfig, error) {
 		if err != nil {
 			return []MapSpaceTypeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *MapSpaceTypeConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MapSpaceTypeConfigAccessor) ByIcon(identifier string) (MapSpaceTypeConfig, error) {
 	if a._dataIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapSpaceTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapSpaceTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -22,11 +22,11 @@ type RelicSetConfig struct {
 }
 type RelicSetConfigAccessor struct {
 	_data                     []RelicSetConfig
-	_dataSetIconPath          map[string]RelicSetConfig
-	_dataSetIconFigurePath    map[string]RelicSetConfig
-	_dataSetID                map[float64]RelicSetConfig
 	_dataDisplayItemID        map[float64]RelicSetConfig
 	_dataDisplayItemIDRarity4 map[float64]RelicSetConfig
+	_dataSetID                map[float64]RelicSetConfig
+	_dataSetIconFigurePath    map[string]RelicSetConfig
+	_dataSetIconPath          map[string]RelicSetConfig
 }
 
 // LoadData retrieves the data. Must be called before RelicSetConfig.GroupData
@@ -50,7 +50,6 @@ func (a *RelicSetConfigAccessor) Raw() ([]RelicSetConfig, error) {
 		if err != nil {
 			return []RelicSetConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,54 +58,12 @@ func (a *RelicSetConfigAccessor) Raw() ([]RelicSetConfig, error) {
 // Can be called manually in conjunction with RelicSetConfigAccessor.LoadData to preload everything
 func (a *RelicSetConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSetIconPath[d.SetIconPath] = d
-		a._dataSetIconFigurePath[d.SetIconFigurePath] = d
-		a._dataSetID[d.SetID] = d
 		a._dataDisplayItemID[d.DisplayItemID] = d
 		a._dataDisplayItemIDRarity4[d.DisplayItemIDRarity4] = d
+		a._dataSetID[d.SetID] = d
+		a._dataSetIconFigurePath[d.SetIconFigurePath] = d
+		a._dataSetIconPath[d.SetIconPath] = d
 	}
-}
-
-// BySetIconPath returns the RelicSetConfig uniquely identified by SetIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *RelicSetConfigAccessor) BySetIconPath(identifier string) (RelicSetConfig, error) {
-	if a._dataSetIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicSetConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSetIconPath[identifier], nil
-}
-
-// BySetIconFigurePath returns the RelicSetConfig uniquely identified by SetIconFigurePath
-//
-// Error is only non-nil if the source errors out
-func (a *RelicSetConfigAccessor) BySetIconFigurePath(identifier string) (RelicSetConfig, error) {
-	if a._dataSetIconFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicSetConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSetIconFigurePath[identifier], nil
-}
-
-// BySetID returns the RelicSetConfig uniquely identified by SetID
-//
-// Error is only non-nil if the source errors out
-func (a *RelicSetConfigAccessor) BySetID(identifier float64) (RelicSetConfig, error) {
-	if a._dataSetID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicSetConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSetID[identifier], nil
 }
 
 // ByDisplayItemID returns the RelicSetConfig uniquely identified by DisplayItemID
@@ -114,9 +71,11 @@ func (a *RelicSetConfigAccessor) BySetID(identifier float64) (RelicSetConfig, er
 // Error is only non-nil if the source errors out
 func (a *RelicSetConfigAccessor) ByDisplayItemID(identifier float64) (RelicSetConfig, error) {
 	if a._dataDisplayItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicSetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicSetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -128,11 +87,61 @@ func (a *RelicSetConfigAccessor) ByDisplayItemID(identifier float64) (RelicSetCo
 // Error is only non-nil if the source errors out
 func (a *RelicSetConfigAccessor) ByDisplayItemIDRarity4(identifier float64) (RelicSetConfig, error) {
 	if a._dataDisplayItemIDRarity4 == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicSetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicSetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDisplayItemIDRarity4[identifier], nil
+}
+
+// BySetID returns the RelicSetConfig uniquely identified by SetID
+//
+// Error is only non-nil if the source errors out
+func (a *RelicSetConfigAccessor) BySetID(identifier float64) (RelicSetConfig, error) {
+	if a._dataSetID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicSetConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSetID[identifier], nil
+}
+
+// BySetIconFigurePath returns the RelicSetConfig uniquely identified by SetIconFigurePath
+//
+// Error is only non-nil if the source errors out
+func (a *RelicSetConfigAccessor) BySetIconFigurePath(identifier string) (RelicSetConfig, error) {
+	if a._dataSetIconFigurePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicSetConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSetIconFigurePath[identifier], nil
+}
+
+// BySetIconPath returns the RelicSetConfig uniquely identified by SetIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *RelicSetConfigAccessor) BySetIconPath(identifier string) (RelicSetConfig, error) {
+	if a._dataSetIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicSetConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSetIconPath[identifier], nil
 }

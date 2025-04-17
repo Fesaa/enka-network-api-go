@@ -40,7 +40,6 @@ func (a *MuseumItemSkillConfigAccessor) Raw() ([]MuseumItemSkillConfig, error) {
 		if err != nil {
 			return []MuseumItemSkillConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MuseumItemSkillConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MuseumItemSkillConfigAccessor) ByItemSkillID(identifier float64) (MuseumItemSkillConfig, error) {
 	if a._dataItemSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumItemSkillConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumItemSkillConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

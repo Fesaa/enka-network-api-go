@@ -38,7 +38,6 @@ func (a *PermanentRecordDataAccessor) Raw() ([]PermanentRecordData, error) {
 		if err != nil {
 			return []PermanentRecordData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *PermanentRecordDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PermanentRecordDataAccessor) ByRecordID(identifier float64) (PermanentRecordData, error) {
 	if a._dataRecordID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PermanentRecordData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PermanentRecordData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *PermanentRecordDataAccessor) ByRecordID(identifier float64) (PermanentR
 // Error is only non-nil if the source errors out
 func (a *PermanentRecordDataAccessor) ByRefreshID(identifier float64) (PermanentRecordData, error) {
 	if a._dataRefreshID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PermanentRecordData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PermanentRecordData{}, err
+			}
 		}
 		a.GroupData()
 	}

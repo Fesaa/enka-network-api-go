@@ -35,25 +35,25 @@ type AvatarSkin struct {
 }
 type AvatarSkinAccessor struct {
 	_data                                   []AvatarSkin
-	_dataAvatarMiniIconPath                 map[string]AvatarSkin
-	_dataDefaultAvatarModelPath             map[string]AvatarSkin
-	_dataWaitingAvatarHeadIconPath          map[string]AvatarSkin
-	_dataUIAvatarModelPath                  map[string]AvatarSkin
 	_dataActionAvatarHeadIconPath           map[string]AvatarSkin
-	_dataDefaultAvatarHeadIconPath          map[string]AvatarSkin
-	_dataAvatarID                           map[float64]AvatarSkin
-	_dataPlayerCardID                       map[float64]AvatarSkin
-	_dataAvatarCutinImgPath                 map[string]AvatarSkin
-	_dataAvatarSideIconPath                 map[string]AvatarSkin
-	_dataShowType                           map[string]AvatarSkin
-	_dataFreeStyleCharacterID               map[string]AvatarSkin
-	_dataUltraSkillCutInPrefabPath          map[string]AvatarSkin
-	_dataAvatarCutinFrontImgPath            map[string]AvatarSkin
 	_dataAdventureDefaultAvatarHeadIconPath map[string]AvatarSkin
-	_dataSideAvatarHeadIconPath             map[string]AvatarSkin
-	_dataID                                 map[float64]AvatarSkin
-	_dataPlayerPrefabPath                   map[string]AvatarSkin
 	_dataAvatarCutinBgImgPath               map[string]AvatarSkin
+	_dataAvatarCutinFrontImgPath            map[string]AvatarSkin
+	_dataAvatarCutinImgPath                 map[string]AvatarSkin
+	_dataAvatarID                           map[float64]AvatarSkin
+	_dataAvatarMiniIconPath                 map[string]AvatarSkin
+	_dataAvatarSideIconPath                 map[string]AvatarSkin
+	_dataDefaultAvatarHeadIconPath          map[string]AvatarSkin
+	_dataDefaultAvatarModelPath             map[string]AvatarSkin
+	_dataFreeStyleCharacterID               map[string]AvatarSkin
+	_dataID                                 map[float64]AvatarSkin
+	_dataPlayerCardID                       map[float64]AvatarSkin
+	_dataPlayerPrefabPath                   map[string]AvatarSkin
+	_dataShowType                           map[string]AvatarSkin
+	_dataSideAvatarHeadIconPath             map[string]AvatarSkin
+	_dataUIAvatarModelPath                  map[string]AvatarSkin
+	_dataUltraSkillCutInPrefabPath          map[string]AvatarSkin
+	_dataWaitingAvatarHeadIconPath          map[string]AvatarSkin
 }
 
 // LoadData retrieves the data. Must be called before AvatarSkin.GroupData
@@ -77,7 +77,6 @@ func (a *AvatarSkinAccessor) Raw() ([]AvatarSkin, error) {
 		if err != nil {
 			return []AvatarSkin{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -86,82 +85,26 @@ func (a *AvatarSkinAccessor) Raw() ([]AvatarSkin, error) {
 // Can be called manually in conjunction with AvatarSkinAccessor.LoadData to preload everything
 func (a *AvatarSkinAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataAvatarMiniIconPath[d.AvatarMiniIconPath] = d
-		a._dataDefaultAvatarModelPath[d.DefaultAvatarModelPath] = d
-		a._dataWaitingAvatarHeadIconPath[d.WaitingAvatarHeadIconPath] = d
-		a._dataUIAvatarModelPath[d.UIAvatarModelPath] = d
 		a._dataActionAvatarHeadIconPath[d.ActionAvatarHeadIconPath] = d
-		a._dataDefaultAvatarHeadIconPath[d.DefaultAvatarHeadIconPath] = d
-		a._dataAvatarID[d.AvatarID] = d
-		a._dataPlayerCardID[d.PlayerCardID] = d
-		a._dataAvatarCutinImgPath[d.AvatarCutinImgPath] = d
-		a._dataAvatarSideIconPath[d.AvatarSideIconPath] = d
-		a._dataShowType[d.ShowType] = d
-		a._dataFreeStyleCharacterID[d.FreeStyleCharacterID] = d
-		a._dataUltraSkillCutInPrefabPath[d.UltraSkillCutInPrefabPath] = d
-		a._dataAvatarCutinFrontImgPath[d.AvatarCutinFrontImgPath] = d
 		a._dataAdventureDefaultAvatarHeadIconPath[d.AdventureDefaultAvatarHeadIconPath] = d
-		a._dataSideAvatarHeadIconPath[d.SideAvatarHeadIconPath] = d
-		a._dataID[d.ID] = d
-		a._dataPlayerPrefabPath[d.PlayerPrefabPath] = d
 		a._dataAvatarCutinBgImgPath[d.AvatarCutinBgImgPath] = d
+		a._dataAvatarCutinFrontImgPath[d.AvatarCutinFrontImgPath] = d
+		a._dataAvatarCutinImgPath[d.AvatarCutinImgPath] = d
+		a._dataAvatarID[d.AvatarID] = d
+		a._dataAvatarMiniIconPath[d.AvatarMiniIconPath] = d
+		a._dataAvatarSideIconPath[d.AvatarSideIconPath] = d
+		a._dataDefaultAvatarHeadIconPath[d.DefaultAvatarHeadIconPath] = d
+		a._dataDefaultAvatarModelPath[d.DefaultAvatarModelPath] = d
+		a._dataFreeStyleCharacterID[d.FreeStyleCharacterID] = d
+		a._dataID[d.ID] = d
+		a._dataPlayerCardID[d.PlayerCardID] = d
+		a._dataPlayerPrefabPath[d.PlayerPrefabPath] = d
+		a._dataShowType[d.ShowType] = d
+		a._dataSideAvatarHeadIconPath[d.SideAvatarHeadIconPath] = d
+		a._dataUIAvatarModelPath[d.UIAvatarModelPath] = d
+		a._dataUltraSkillCutInPrefabPath[d.UltraSkillCutInPrefabPath] = d
+		a._dataWaitingAvatarHeadIconPath[d.WaitingAvatarHeadIconPath] = d
 	}
-}
-
-// ByAvatarMiniIconPath returns the AvatarSkin uniquely identified by AvatarMiniIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByAvatarMiniIconPath(identifier string) (AvatarSkin, error) {
-	if a._dataAvatarMiniIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarMiniIconPath[identifier], nil
-}
-
-// ByDefaultAvatarModelPath returns the AvatarSkin uniquely identified by DefaultAvatarModelPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByDefaultAvatarModelPath(identifier string) (AvatarSkin, error) {
-	if a._dataDefaultAvatarModelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDefaultAvatarModelPath[identifier], nil
-}
-
-// ByWaitingAvatarHeadIconPath returns the AvatarSkin uniquely identified by WaitingAvatarHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByWaitingAvatarHeadIconPath(identifier string) (AvatarSkin, error) {
-	if a._dataWaitingAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataWaitingAvatarHeadIconPath[identifier], nil
-}
-
-// ByUIAvatarModelPath returns the AvatarSkin uniquely identified by UIAvatarModelPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByUIAvatarModelPath(identifier string) (AvatarSkin, error) {
-	if a._dataUIAvatarModelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUIAvatarModelPath[identifier], nil
 }
 
 // ByActionAvatarHeadIconPath returns the AvatarSkin uniquely identified by ActionAvatarHeadIconPath
@@ -169,139 +112,15 @@ func (a *AvatarSkinAccessor) ByUIAvatarModelPath(identifier string) (AvatarSkin,
 // Error is only non-nil if the source errors out
 func (a *AvatarSkinAccessor) ByActionAvatarHeadIconPath(identifier string) (AvatarSkin, error) {
 	if a._dataActionAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActionAvatarHeadIconPath[identifier], nil
-}
-
-// ByDefaultAvatarHeadIconPath returns the AvatarSkin uniquely identified by DefaultAvatarHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByDefaultAvatarHeadIconPath(identifier string) (AvatarSkin, error) {
-	if a._dataDefaultAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDefaultAvatarHeadIconPath[identifier], nil
-}
-
-// ByAvatarID returns the AvatarSkin uniquely identified by AvatarID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByAvatarID(identifier float64) (AvatarSkin, error) {
-	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarID[identifier], nil
-}
-
-// ByPlayerCardID returns the AvatarSkin uniquely identified by PlayerCardID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByPlayerCardID(identifier float64) (AvatarSkin, error) {
-	if a._dataPlayerCardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPlayerCardID[identifier], nil
-}
-
-// ByAvatarCutinImgPath returns the AvatarSkin uniquely identified by AvatarCutinImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByAvatarCutinImgPath(identifier string) (AvatarSkin, error) {
-	if a._dataAvatarCutinImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarCutinImgPath[identifier], nil
-}
-
-// ByAvatarSideIconPath returns the AvatarSkin uniquely identified by AvatarSideIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByAvatarSideIconPath(identifier string) (AvatarSkin, error) {
-	if a._dataAvatarSideIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarSideIconPath[identifier], nil
-}
-
-// ByShowType returns the AvatarSkin uniquely identified by ShowType
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByShowType(identifier string) (AvatarSkin, error) {
-	if a._dataShowType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataShowType[identifier], nil
-}
-
-// ByFreeStyleCharacterID returns the AvatarSkin uniquely identified by FreeStyleCharacterID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByFreeStyleCharacterID(identifier string) (AvatarSkin, error) {
-	if a._dataFreeStyleCharacterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFreeStyleCharacterID[identifier], nil
-}
-
-// ByUltraSkillCutInPrefabPath returns the AvatarSkin uniquely identified by UltraSkillCutInPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByUltraSkillCutInPrefabPath(identifier string) (AvatarSkin, error) {
-	if a._dataUltraSkillCutInPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUltraSkillCutInPrefabPath[identifier], nil
-}
-
-// ByAvatarCutinFrontImgPath returns the AvatarSkin uniquely identified by AvatarCutinFrontImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByAvatarCutinFrontImgPath(identifier string) (AvatarSkin, error) {
-	if a._dataAvatarCutinFrontImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarCutinFrontImgPath[identifier], nil
 }
 
 // ByAdventureDefaultAvatarHeadIconPath returns the AvatarSkin uniquely identified by AdventureDefaultAvatarHeadIconPath
@@ -309,55 +128,15 @@ func (a *AvatarSkinAccessor) ByAvatarCutinFrontImgPath(identifier string) (Avata
 // Error is only non-nil if the source errors out
 func (a *AvatarSkinAccessor) ByAdventureDefaultAvatarHeadIconPath(identifier string) (AvatarSkin, error) {
 	if a._dataAdventureDefaultAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAdventureDefaultAvatarHeadIconPath[identifier], nil
-}
-
-// BySideAvatarHeadIconPath returns the AvatarSkin uniquely identified by SideAvatarHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) BySideAvatarHeadIconPath(identifier string) (AvatarSkin, error) {
-	if a._dataSideAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSideAvatarHeadIconPath[identifier], nil
-}
-
-// ByID returns the AvatarSkin uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByID(identifier float64) (AvatarSkin, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
-}
-
-// ByPlayerPrefabPath returns the AvatarSkin uniquely identified by PlayerPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByPlayerPrefabPath(identifier string) (AvatarSkin, error) {
-	if a._dataPlayerPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPlayerPrefabPath[identifier], nil
 }
 
 // ByAvatarCutinBgImgPath returns the AvatarSkin uniquely identified by AvatarCutinBgImgPath
@@ -365,11 +144,269 @@ func (a *AvatarSkinAccessor) ByPlayerPrefabPath(identifier string) (AvatarSkin, 
 // Error is only non-nil if the source errors out
 func (a *AvatarSkinAccessor) ByAvatarCutinBgImgPath(identifier string) (AvatarSkin, error) {
 	if a._dataAvatarCutinBgImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkin{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarCutinBgImgPath[identifier], nil
+}
+
+// ByAvatarCutinFrontImgPath returns the AvatarSkin uniquely identified by AvatarCutinFrontImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByAvatarCutinFrontImgPath(identifier string) (AvatarSkin, error) {
+	if a._dataAvatarCutinFrontImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarCutinFrontImgPath[identifier], nil
+}
+
+// ByAvatarCutinImgPath returns the AvatarSkin uniquely identified by AvatarCutinImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByAvatarCutinImgPath(identifier string) (AvatarSkin, error) {
+	if a._dataAvatarCutinImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarCutinImgPath[identifier], nil
+}
+
+// ByAvatarID returns the AvatarSkin uniquely identified by AvatarID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByAvatarID(identifier float64) (AvatarSkin, error) {
+	if a._dataAvatarID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarID[identifier], nil
+}
+
+// ByAvatarMiniIconPath returns the AvatarSkin uniquely identified by AvatarMiniIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByAvatarMiniIconPath(identifier string) (AvatarSkin, error) {
+	if a._dataAvatarMiniIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarMiniIconPath[identifier], nil
+}
+
+// ByAvatarSideIconPath returns the AvatarSkin uniquely identified by AvatarSideIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByAvatarSideIconPath(identifier string) (AvatarSkin, error) {
+	if a._dataAvatarSideIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarSideIconPath[identifier], nil
+}
+
+// ByDefaultAvatarHeadIconPath returns the AvatarSkin uniquely identified by DefaultAvatarHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByDefaultAvatarHeadIconPath(identifier string) (AvatarSkin, error) {
+	if a._dataDefaultAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDefaultAvatarHeadIconPath[identifier], nil
+}
+
+// ByDefaultAvatarModelPath returns the AvatarSkin uniquely identified by DefaultAvatarModelPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByDefaultAvatarModelPath(identifier string) (AvatarSkin, error) {
+	if a._dataDefaultAvatarModelPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDefaultAvatarModelPath[identifier], nil
+}
+
+// ByFreeStyleCharacterID returns the AvatarSkin uniquely identified by FreeStyleCharacterID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByFreeStyleCharacterID(identifier string) (AvatarSkin, error) {
+	if a._dataFreeStyleCharacterID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFreeStyleCharacterID[identifier], nil
+}
+
+// ByID returns the AvatarSkin uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByID(identifier float64) (AvatarSkin, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByPlayerCardID returns the AvatarSkin uniquely identified by PlayerCardID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByPlayerCardID(identifier float64) (AvatarSkin, error) {
+	if a._dataPlayerCardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPlayerCardID[identifier], nil
+}
+
+// ByPlayerPrefabPath returns the AvatarSkin uniquely identified by PlayerPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByPlayerPrefabPath(identifier string) (AvatarSkin, error) {
+	if a._dataPlayerPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPlayerPrefabPath[identifier], nil
+}
+
+// ByShowType returns the AvatarSkin uniquely identified by ShowType
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByShowType(identifier string) (AvatarSkin, error) {
+	if a._dataShowType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataShowType[identifier], nil
+}
+
+// BySideAvatarHeadIconPath returns the AvatarSkin uniquely identified by SideAvatarHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) BySideAvatarHeadIconPath(identifier string) (AvatarSkin, error) {
+	if a._dataSideAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSideAvatarHeadIconPath[identifier], nil
+}
+
+// ByUIAvatarModelPath returns the AvatarSkin uniquely identified by UIAvatarModelPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByUIAvatarModelPath(identifier string) (AvatarSkin, error) {
+	if a._dataUIAvatarModelPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUIAvatarModelPath[identifier], nil
+}
+
+// ByUltraSkillCutInPrefabPath returns the AvatarSkin uniquely identified by UltraSkillCutInPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByUltraSkillCutInPrefabPath(identifier string) (AvatarSkin, error) {
+	if a._dataUltraSkillCutInPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUltraSkillCutInPrefabPath[identifier], nil
+}
+
+// ByWaitingAvatarHeadIconPath returns the AvatarSkin uniquely identified by WaitingAvatarHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByWaitingAvatarHeadIconPath(identifier string) (AvatarSkin, error) {
+	if a._dataWaitingAvatarHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataWaitingAvatarHeadIconPath[identifier], nil
 }

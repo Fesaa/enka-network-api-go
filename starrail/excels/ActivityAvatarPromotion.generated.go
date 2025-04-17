@@ -53,7 +53,6 @@ func (a *ActivityAvatarPromotionAccessor) Raw() ([]ActivityAvatarPromotion, erro
 		if err != nil {
 			return []ActivityAvatarPromotion{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

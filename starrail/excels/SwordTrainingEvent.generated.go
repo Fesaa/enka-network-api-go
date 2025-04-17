@@ -42,7 +42,6 @@ func (a *SwordTrainingEventAccessor) Raw() ([]SwordTrainingEvent, error) {
 		if err != nil {
 			return []SwordTrainingEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *SwordTrainingEventAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingEventAccessor) ByEventID(identifier float64) (SwordTrainingEvent, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingEvent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingEvent{}, err
+			}
 		}
 		a.GroupData()
 	}

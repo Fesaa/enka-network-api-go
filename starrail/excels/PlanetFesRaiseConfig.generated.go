@@ -37,7 +37,6 @@ func (a *PlanetFesRaiseConfigAccessor) Raw() ([]PlanetFesRaiseConfig, error) {
 		if err != nil {
 			return []PlanetFesRaiseConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

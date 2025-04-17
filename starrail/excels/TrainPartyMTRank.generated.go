@@ -41,7 +41,6 @@ func (a *TrainPartyMTRankAccessor) Raw() ([]TrainPartyMTRank, error) {
 		if err != nil {
 			return []TrainPartyMTRank{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *TrainPartyMTRankAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyMTRankAccessor) ByRank(identifier float64) (TrainPartyMTRank, error) {
 	if a._dataRank == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyMTRank{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyMTRank{}, err
+			}
 		}
 		a.GroupData()
 	}

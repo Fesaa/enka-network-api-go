@@ -43,7 +43,6 @@ func (a *PerformanceCAccessor) Raw() ([]PerformanceC, error) {
 		if err != nil {
 			return []PerformanceC{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *PerformanceCAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PerformanceCAccessor) ByPerformanceID(identifier float64) (PerformanceC, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceC{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceC{}, err
+			}
 		}
 		a.GroupData()
 	}

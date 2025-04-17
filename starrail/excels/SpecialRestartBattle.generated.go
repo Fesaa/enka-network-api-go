@@ -38,7 +38,6 @@ func (a *SpecialRestartBattleAccessor) Raw() ([]SpecialRestartBattle, error) {
 		if err != nil {
 			return []SpecialRestartBattle{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *SpecialRestartBattleAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpecialRestartBattleAccessor) ByEventID(identifier float64) (SpecialRestartBattle, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialRestartBattle{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialRestartBattle{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *SpecialRestartBattleAccessor) ByEventID(identifier float64) (SpecialRes
 // Error is only non-nil if the source errors out
 func (a *SpecialRestartBattleAccessor) ByTowardEventID(identifier float64) (SpecialRestartBattle, error) {
 	if a._dataTowardEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialRestartBattle{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialRestartBattle{}, err
+			}
 		}
 		a.GroupData()
 	}

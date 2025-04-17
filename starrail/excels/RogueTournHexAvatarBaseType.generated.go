@@ -38,7 +38,6 @@ func (a *RogueTournHexAvatarBaseTypeAccessor) Raw() ([]RogueTournHexAvatarBaseTy
 		if err != nil {
 			return []RogueTournHexAvatarBaseType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueTournHexAvatarBaseTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournHexAvatarBaseTypeAccessor) ByMiracleID(identifier float64) (RogueTournHexAvatarBaseType, error) {
 	if a._dataMiracleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournHexAvatarBaseType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournHexAvatarBaseType{}, err
+			}
 		}
 		a.GroupData()
 	}

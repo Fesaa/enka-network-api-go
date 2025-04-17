@@ -13,8 +13,8 @@ type ActivityModulePunkLord struct {
 }
 type ActivityModulePunkLordAccessor struct {
 	_data                 []ActivityModulePunkLord
-	_dataID               map[float64]ActivityModulePunkLord
 	_dataActivityModuleID map[float64]ActivityModulePunkLord
+	_dataID               map[float64]ActivityModulePunkLord
 }
 
 // LoadData retrieves the data. Must be called before ActivityModulePunkLord.GroupData
@@ -38,7 +38,6 @@ func (a *ActivityModulePunkLordAccessor) Raw() ([]ActivityModulePunkLord, error)
 		if err != nil {
 			return []ActivityModulePunkLord{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *ActivityModulePunkLordAccessor) Raw() ([]ActivityModulePunkLord, error)
 // Can be called manually in conjunction with ActivityModulePunkLordAccessor.LoadData to preload everything
 func (a *ActivityModulePunkLordAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataActivityModuleID[d.ActivityModuleID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the ActivityModulePunkLord uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityModulePunkLordAccessor) ByID(identifier float64) (ActivityModulePunkLord, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModulePunkLord{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByActivityModuleID returns the ActivityModulePunkLord uniquely identified by ActivityModuleID
@@ -71,11 +56,29 @@ func (a *ActivityModulePunkLordAccessor) ByID(identifier float64) (ActivityModul
 // Error is only non-nil if the source errors out
 func (a *ActivityModulePunkLordAccessor) ByActivityModuleID(identifier float64) (ActivityModulePunkLord, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModulePunkLord{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModulePunkLord{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityModuleID[identifier], nil
+}
+
+// ByID returns the ActivityModulePunkLord uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityModulePunkLordAccessor) ByID(identifier float64) (ActivityModulePunkLord, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModulePunkLord{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

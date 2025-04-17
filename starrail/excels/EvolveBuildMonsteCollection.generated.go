@@ -38,7 +38,6 @@ func (a *EvolveBuildMonsteCollectionAccessor) Raw() ([]EvolveBuildMonsteCollecti
 		if err != nil {
 			return []EvolveBuildMonsteCollection{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *EvolveBuildMonsteCollectionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildMonsteCollectionAccessor) ByID(identifier float64) (EvolveBuildMonsteCollection, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildMonsteCollection{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildMonsteCollection{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *EvolveBuildMonsteCollectionAccessor) ByID(identifier float64) (EvolveBu
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildMonsteCollectionAccessor) ByUnlockQuest(identifier float64) (EvolveBuildMonsteCollection, error) {
 	if a._dataUnlockQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildMonsteCollection{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildMonsteCollection{}, err
+			}
 		}
 		a.GroupData()
 	}

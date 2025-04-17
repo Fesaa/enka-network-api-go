@@ -32,20 +32,20 @@ type AvatarServantConfig struct {
 }
 type AvatarServantConfigAccessor struct {
 	_data                           []AvatarServantConfig
-	_dataUnCreateHeadIconPath       map[string]AvatarServantConfig
-	_dataServantSideIconPath        map[string]AvatarServantConfig
-	_dataManikinJsonPath            map[string]AvatarServantConfig
-	_dataSpeedSkill                 map[float64]AvatarServantConfig
-	_dataHPBase                     map[string]AvatarServantConfig
 	_dataActionServantHeadIconPath  map[string]AvatarServantConfig
-	_dataHPInherit                  map[string]AvatarServantConfig
-	_dataServantID                  map[float64]AvatarServantConfig
-	_dataWaitingServantHeadIconPath map[string]AvatarServantConfig
-	_dataUIServantModelPath         map[string]AvatarServantConfig
-	_dataHeadIcon                   map[string]AvatarServantConfig
-	_dataServantMiniIconPath        map[string]AvatarServantConfig
-	_dataPrefab                     map[string]AvatarServantConfig
 	_dataConfig                     map[string]AvatarServantConfig
+	_dataHPBase                     map[string]AvatarServantConfig
+	_dataHPInherit                  map[string]AvatarServantConfig
+	_dataHeadIcon                   map[string]AvatarServantConfig
+	_dataManikinJsonPath            map[string]AvatarServantConfig
+	_dataPrefab                     map[string]AvatarServantConfig
+	_dataServantID                  map[float64]AvatarServantConfig
+	_dataServantMiniIconPath        map[string]AvatarServantConfig
+	_dataServantSideIconPath        map[string]AvatarServantConfig
+	_dataSpeedSkill                 map[float64]AvatarServantConfig
+	_dataUIServantModelPath         map[string]AvatarServantConfig
+	_dataUnCreateHeadIconPath       map[string]AvatarServantConfig
+	_dataWaitingServantHeadIconPath map[string]AvatarServantConfig
 }
 
 // LoadData retrieves the data. Must be called before AvatarServantConfig.GroupData
@@ -69,7 +69,6 @@ func (a *AvatarServantConfigAccessor) Raw() ([]AvatarServantConfig, error) {
 		if err != nil {
 			return []AvatarServantConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -78,91 +77,21 @@ func (a *AvatarServantConfigAccessor) Raw() ([]AvatarServantConfig, error) {
 // Can be called manually in conjunction with AvatarServantConfigAccessor.LoadData to preload everything
 func (a *AvatarServantConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUnCreateHeadIconPath[d.UnCreateHeadIconPath] = d
-		a._dataServantSideIconPath[d.ServantSideIconPath] = d
-		a._dataManikinJsonPath[d.ManikinJsonPath] = d
-		a._dataSpeedSkill[d.SpeedSkill] = d
-		a._dataHPBase[d.HPBase] = d
 		a._dataActionServantHeadIconPath[d.ActionServantHeadIconPath] = d
-		a._dataHPInherit[d.HPInherit] = d
-		a._dataServantID[d.ServantID] = d
-		a._dataWaitingServantHeadIconPath[d.WaitingServantHeadIconPath] = d
-		a._dataUIServantModelPath[d.UIServantModelPath] = d
-		a._dataHeadIcon[d.HeadIcon] = d
-		a._dataServantMiniIconPath[d.ServantMiniIconPath] = d
-		a._dataPrefab[d.Prefab] = d
 		a._dataConfig[d.Config] = d
+		a._dataHPBase[d.HPBase] = d
+		a._dataHPInherit[d.HPInherit] = d
+		a._dataHeadIcon[d.HeadIcon] = d
+		a._dataManikinJsonPath[d.ManikinJsonPath] = d
+		a._dataPrefab[d.Prefab] = d
+		a._dataServantID[d.ServantID] = d
+		a._dataServantMiniIconPath[d.ServantMiniIconPath] = d
+		a._dataServantSideIconPath[d.ServantSideIconPath] = d
+		a._dataSpeedSkill[d.SpeedSkill] = d
+		a._dataUIServantModelPath[d.UIServantModelPath] = d
+		a._dataUnCreateHeadIconPath[d.UnCreateHeadIconPath] = d
+		a._dataWaitingServantHeadIconPath[d.WaitingServantHeadIconPath] = d
 	}
-}
-
-// ByUnCreateHeadIconPath returns the AvatarServantConfig uniquely identified by UnCreateHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByUnCreateHeadIconPath(identifier string) (AvatarServantConfig, error) {
-	if a._dataUnCreateHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnCreateHeadIconPath[identifier], nil
-}
-
-// ByServantSideIconPath returns the AvatarServantConfig uniquely identified by ServantSideIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByServantSideIconPath(identifier string) (AvatarServantConfig, error) {
-	if a._dataServantSideIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataServantSideIconPath[identifier], nil
-}
-
-// ByManikinJsonPath returns the AvatarServantConfig uniquely identified by ManikinJsonPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByManikinJsonPath(identifier string) (AvatarServantConfig, error) {
-	if a._dataManikinJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataManikinJsonPath[identifier], nil
-}
-
-// BySpeedSkill returns the AvatarServantConfig uniquely identified by SpeedSkill
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) BySpeedSkill(identifier float64) (AvatarServantConfig, error) {
-	if a._dataSpeedSkill == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSpeedSkill[identifier], nil
-}
-
-// ByHPBase returns the AvatarServantConfig uniquely identified by HPBase
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByHPBase(identifier string) (AvatarServantConfig, error) {
-	if a._dataHPBase == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataHPBase[identifier], nil
 }
 
 // ByActionServantHeadIconPath returns the AvatarServantConfig uniquely identified by ActionServantHeadIconPath
@@ -170,111 +99,15 @@ func (a *AvatarServantConfigAccessor) ByHPBase(identifier string) (AvatarServant
 // Error is only non-nil if the source errors out
 func (a *AvatarServantConfigAccessor) ByActionServantHeadIconPath(identifier string) (AvatarServantConfig, error) {
 	if a._dataActionServantHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActionServantHeadIconPath[identifier], nil
-}
-
-// ByHPInherit returns the AvatarServantConfig uniquely identified by HPInherit
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByHPInherit(identifier string) (AvatarServantConfig, error) {
-	if a._dataHPInherit == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataHPInherit[identifier], nil
-}
-
-// ByServantID returns the AvatarServantConfig uniquely identified by ServantID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByServantID(identifier float64) (AvatarServantConfig, error) {
-	if a._dataServantID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataServantID[identifier], nil
-}
-
-// ByWaitingServantHeadIconPath returns the AvatarServantConfig uniquely identified by WaitingServantHeadIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByWaitingServantHeadIconPath(identifier string) (AvatarServantConfig, error) {
-	if a._dataWaitingServantHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataWaitingServantHeadIconPath[identifier], nil
-}
-
-// ByUIServantModelPath returns the AvatarServantConfig uniquely identified by UIServantModelPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByUIServantModelPath(identifier string) (AvatarServantConfig, error) {
-	if a._dataUIServantModelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUIServantModelPath[identifier], nil
-}
-
-// ByHeadIcon returns the AvatarServantConfig uniquely identified by HeadIcon
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByHeadIcon(identifier string) (AvatarServantConfig, error) {
-	if a._dataHeadIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataHeadIcon[identifier], nil
-}
-
-// ByServantMiniIconPath returns the AvatarServantConfig uniquely identified by ServantMiniIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByServantMiniIconPath(identifier string) (AvatarServantConfig, error) {
-	if a._dataServantMiniIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataServantMiniIconPath[identifier], nil
-}
-
-// ByPrefab returns the AvatarServantConfig uniquely identified by Prefab
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByPrefab(identifier string) (AvatarServantConfig, error) {
-	if a._dataPrefab == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPrefab[identifier], nil
 }
 
 // ByConfig returns the AvatarServantConfig uniquely identified by Config
@@ -282,11 +115,205 @@ func (a *AvatarServantConfigAccessor) ByPrefab(identifier string) (AvatarServant
 // Error is only non-nil if the source errors out
 func (a *AvatarServantConfigAccessor) ByConfig(identifier string) (AvatarServantConfig, error) {
 	if a._dataConfig == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarServantConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataConfig[identifier], nil
+}
+
+// ByHPBase returns the AvatarServantConfig uniquely identified by HPBase
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByHPBase(identifier string) (AvatarServantConfig, error) {
+	if a._dataHPBase == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataHPBase[identifier], nil
+}
+
+// ByHPInherit returns the AvatarServantConfig uniquely identified by HPInherit
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByHPInherit(identifier string) (AvatarServantConfig, error) {
+	if a._dataHPInherit == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataHPInherit[identifier], nil
+}
+
+// ByHeadIcon returns the AvatarServantConfig uniquely identified by HeadIcon
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByHeadIcon(identifier string) (AvatarServantConfig, error) {
+	if a._dataHeadIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataHeadIcon[identifier], nil
+}
+
+// ByManikinJsonPath returns the AvatarServantConfig uniquely identified by ManikinJsonPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByManikinJsonPath(identifier string) (AvatarServantConfig, error) {
+	if a._dataManikinJsonPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataManikinJsonPath[identifier], nil
+}
+
+// ByPrefab returns the AvatarServantConfig uniquely identified by Prefab
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByPrefab(identifier string) (AvatarServantConfig, error) {
+	if a._dataPrefab == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPrefab[identifier], nil
+}
+
+// ByServantID returns the AvatarServantConfig uniquely identified by ServantID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByServantID(identifier float64) (AvatarServantConfig, error) {
+	if a._dataServantID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataServantID[identifier], nil
+}
+
+// ByServantMiniIconPath returns the AvatarServantConfig uniquely identified by ServantMiniIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByServantMiniIconPath(identifier string) (AvatarServantConfig, error) {
+	if a._dataServantMiniIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataServantMiniIconPath[identifier], nil
+}
+
+// ByServantSideIconPath returns the AvatarServantConfig uniquely identified by ServantSideIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByServantSideIconPath(identifier string) (AvatarServantConfig, error) {
+	if a._dataServantSideIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataServantSideIconPath[identifier], nil
+}
+
+// BySpeedSkill returns the AvatarServantConfig uniquely identified by SpeedSkill
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) BySpeedSkill(identifier float64) (AvatarServantConfig, error) {
+	if a._dataSpeedSkill == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSpeedSkill[identifier], nil
+}
+
+// ByUIServantModelPath returns the AvatarServantConfig uniquely identified by UIServantModelPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByUIServantModelPath(identifier string) (AvatarServantConfig, error) {
+	if a._dataUIServantModelPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUIServantModelPath[identifier], nil
+}
+
+// ByUnCreateHeadIconPath returns the AvatarServantConfig uniquely identified by UnCreateHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByUnCreateHeadIconPath(identifier string) (AvatarServantConfig, error) {
+	if a._dataUnCreateHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnCreateHeadIconPath[identifier], nil
+}
+
+// ByWaitingServantHeadIconPath returns the AvatarServantConfig uniquely identified by WaitingServantHeadIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarServantConfigAccessor) ByWaitingServantHeadIconPath(identifier string) (AvatarServantConfig, error) {
+	if a._dataWaitingServantHeadIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarServantConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataWaitingServantHeadIconPath[identifier], nil
 }

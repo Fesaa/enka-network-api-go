@@ -37,7 +37,6 @@ func (a *MarbleSealBuffAccessor) Raw() ([]MarbleSealBuff, error) {
 		if err != nil {
 			return []MarbleSealBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MarbleSealBuffAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleSealBuffAccessor) ByID(identifier float64) (MarbleSealBuff, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleSealBuff{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleSealBuff{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *RogueTournModuleAccessor) Raw() ([]RogueTournModule, error) {
 		if err != nil {
 			return []RogueTournModule{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueTournModuleAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournModuleAccessor) ByActivityModuleID(identifier float64) (RogueTournModule, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournModule{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournModule{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -22,8 +22,8 @@ type MapPropConditionConfigUnlockConditions struct {
 }
 type MapPropConditionConfigAccessor struct {
 	_data                 []MapPropConditionConfig
-	_dataID               map[float64]MapPropConditionConfig
 	_dataActivityModuleID map[float64]MapPropConditionConfig
+	_dataID               map[float64]MapPropConditionConfig
 	_dataMappingInfoID    map[float64]MapPropConditionConfig
 }
 
@@ -48,7 +48,6 @@ func (a *MapPropConditionConfigAccessor) Raw() ([]MapPropConditionConfig, error)
 		if err != nil {
 			return []MapPropConditionConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,24 +56,10 @@ func (a *MapPropConditionConfigAccessor) Raw() ([]MapPropConditionConfig, error)
 // Can be called manually in conjunction with MapPropConditionConfigAccessor.LoadData to preload everything
 func (a *MapPropConditionConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataActivityModuleID[d.ActivityModuleID] = d
+		a._dataID[d.ID] = d
 		a._dataMappingInfoID[d.MappingInfoID] = d
 	}
-}
-
-// ByID returns the MapPropConditionConfig uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *MapPropConditionConfigAccessor) ByID(identifier float64) (MapPropConditionConfig, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapPropConditionConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByActivityModuleID returns the MapPropConditionConfig uniquely identified by ActivityModuleID
@@ -82,13 +67,31 @@ func (a *MapPropConditionConfigAccessor) ByID(identifier float64) (MapPropCondit
 // Error is only non-nil if the source errors out
 func (a *MapPropConditionConfigAccessor) ByActivityModuleID(identifier float64) (MapPropConditionConfig, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapPropConditionConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapPropConditionConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityModuleID[identifier], nil
+}
+
+// ByID returns the MapPropConditionConfig uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *MapPropConditionConfigAccessor) ByID(identifier float64) (MapPropConditionConfig, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapPropConditionConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }
 
 // ByMappingInfoID returns the MapPropConditionConfig uniquely identified by MappingInfoID
@@ -96,9 +99,11 @@ func (a *MapPropConditionConfigAccessor) ByActivityModuleID(identifier float64) 
 // Error is only non-nil if the source errors out
 func (a *MapPropConditionConfigAccessor) ByMappingInfoID(identifier float64) (MapPropConditionConfig, error) {
 	if a._dataMappingInfoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapPropConditionConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapPropConditionConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

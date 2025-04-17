@@ -31,15 +31,15 @@ type FightFestChallenge struct {
 }
 type FightFestChallengeAccessor struct {
 	_data                   []FightFestChallenge
-	_dataFigurePath         map[string]FightFestChallenge
+	_dataAvatarInfoID       map[float64]FightFestChallenge
 	_dataChallengeID        map[float64]FightFestChallenge
+	_dataEventID            map[float64]FightFestChallenge
+	_dataFigurePath         map[string]FightFestChallenge
 	_dataGroupID            map[float64]FightFestChallenge
-	_dataUnlockSubMussionID map[float64]FightFestChallenge
 	_dataTabIconPath        map[string]FightFestChallenge
 	_dataTutorialID         map[float64]FightFestChallenge
 	_dataUnlockSubMissionID map[float64]FightFestChallenge
-	_dataAvatarInfoID       map[float64]FightFestChallenge
-	_dataEventID            map[float64]FightFestChallenge
+	_dataUnlockSubMussionID map[float64]FightFestChallenge
 }
 
 // LoadData retrieves the data. Must be called before FightFestChallenge.GroupData
@@ -63,7 +63,6 @@ func (a *FightFestChallengeAccessor) Raw() ([]FightFestChallenge, error) {
 		if err != nil {
 			return []FightFestChallenge{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -72,30 +71,32 @@ func (a *FightFestChallengeAccessor) Raw() ([]FightFestChallenge, error) {
 // Can be called manually in conjunction with FightFestChallengeAccessor.LoadData to preload everything
 func (a *FightFestChallengeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataFigurePath[d.FigurePath] = d
+		a._dataAvatarInfoID[d.AvatarInfoID] = d
 		a._dataChallengeID[d.ChallengeID] = d
+		a._dataEventID[d.EventID] = d
+		a._dataFigurePath[d.FigurePath] = d
 		a._dataGroupID[d.GroupID] = d
-		a._dataUnlockSubMussionID[d.UnlockSubMussionID] = d
 		a._dataTabIconPath[d.TabIconPath] = d
 		a._dataTutorialID[d.TutorialID] = d
 		a._dataUnlockSubMissionID[d.UnlockSubMissionID] = d
-		a._dataAvatarInfoID[d.AvatarInfoID] = d
-		a._dataEventID[d.EventID] = d
+		a._dataUnlockSubMussionID[d.UnlockSubMussionID] = d
 	}
 }
 
-// ByFigurePath returns the FightFestChallenge uniquely identified by FigurePath
+// ByAvatarInfoID returns the FightFestChallenge uniquely identified by AvatarInfoID
 //
 // Error is only non-nil if the source errors out
-func (a *FightFestChallengeAccessor) ByFigurePath(identifier string) (FightFestChallenge, error) {
-	if a._dataFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestChallenge{}, err
+func (a *FightFestChallengeAccessor) ByAvatarInfoID(identifier float64) (FightFestChallenge, error) {
+	if a._dataAvatarInfoID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataFigurePath[identifier], nil
+	return a._dataAvatarInfoID[identifier], nil
 }
 
 // ByChallengeID returns the FightFestChallenge uniquely identified by ChallengeID
@@ -103,13 +104,47 @@ func (a *FightFestChallengeAccessor) ByFigurePath(identifier string) (FightFestC
 // Error is only non-nil if the source errors out
 func (a *FightFestChallengeAccessor) ByChallengeID(identifier float64) (FightFestChallenge, error) {
 	if a._dataChallengeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestChallenge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataChallengeID[identifier], nil
+}
+
+// ByEventID returns the FightFestChallenge uniquely identified by EventID
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestChallengeAccessor) ByEventID(identifier float64) (FightFestChallenge, error) {
+	if a._dataEventID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestChallenge{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEventID[identifier], nil
+}
+
+// ByFigurePath returns the FightFestChallenge uniquely identified by FigurePath
+//
+// Error is only non-nil if the source errors out
+func (a *FightFestChallengeAccessor) ByFigurePath(identifier string) (FightFestChallenge, error) {
+	if a._dataFigurePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestChallenge{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFigurePath[identifier], nil
 }
 
 // ByGroupID returns the FightFestChallenge uniquely identified by GroupID
@@ -117,27 +152,15 @@ func (a *FightFestChallengeAccessor) ByChallengeID(identifier float64) (FightFes
 // Error is only non-nil if the source errors out
 func (a *FightFestChallengeAccessor) ByGroupID(identifier float64) (FightFestChallenge, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestChallenge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGroupID[identifier], nil
-}
-
-// ByUnlockSubMussionID returns the FightFestChallenge uniquely identified by UnlockSubMussionID
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestChallengeAccessor) ByUnlockSubMussionID(identifier float64) (FightFestChallenge, error) {
-	if a._dataUnlockSubMussionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestChallenge{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockSubMussionID[identifier], nil
 }
 
 // ByTabIconPath returns the FightFestChallenge uniquely identified by TabIconPath
@@ -145,9 +168,11 @@ func (a *FightFestChallengeAccessor) ByUnlockSubMussionID(identifier float64) (F
 // Error is only non-nil if the source errors out
 func (a *FightFestChallengeAccessor) ByTabIconPath(identifier string) (FightFestChallenge, error) {
 	if a._dataTabIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestChallenge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -159,9 +184,11 @@ func (a *FightFestChallengeAccessor) ByTabIconPath(identifier string) (FightFest
 // Error is only non-nil if the source errors out
 func (a *FightFestChallengeAccessor) ByTutorialID(identifier float64) (FightFestChallenge, error) {
 	if a._dataTutorialID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestChallenge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -173,39 +200,29 @@ func (a *FightFestChallengeAccessor) ByTutorialID(identifier float64) (FightFest
 // Error is only non-nil if the source errors out
 func (a *FightFestChallengeAccessor) ByUnlockSubMissionID(identifier float64) (FightFestChallenge, error) {
 	if a._dataUnlockSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestChallenge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataUnlockSubMissionID[identifier], nil
 }
 
-// ByAvatarInfoID returns the FightFestChallenge uniquely identified by AvatarInfoID
+// ByUnlockSubMussionID returns the FightFestChallenge uniquely identified by UnlockSubMussionID
 //
 // Error is only non-nil if the source errors out
-func (a *FightFestChallengeAccessor) ByAvatarInfoID(identifier float64) (FightFestChallenge, error) {
-	if a._dataAvatarInfoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestChallenge{}, err
+func (a *FightFestChallengeAccessor) ByUnlockSubMussionID(identifier float64) (FightFestChallenge, error) {
+	if a._dataUnlockSubMussionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataAvatarInfoID[identifier], nil
-}
-
-// ByEventID returns the FightFestChallenge uniquely identified by EventID
-//
-// Error is only non-nil if the source errors out
-func (a *FightFestChallengeAccessor) ByEventID(identifier float64) (FightFestChallenge, error) {
-	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestChallenge{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEventID[identifier], nil
+	return a._dataUnlockSubMussionID[identifier], nil
 }

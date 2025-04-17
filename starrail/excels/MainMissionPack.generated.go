@@ -37,7 +37,6 @@ func (a *MainMissionPackAccessor) Raw() ([]MainMissionPack, error) {
 		if err != nil {
 			return []MainMissionPack{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MainMissionPackAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MainMissionPackAccessor) ByMissionPack(identifier float64) (MainMissionPack, error) {
 	if a._dataMissionPack == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MainMissionPack{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MainMissionPack{}, err
+			}
 		}
 		a.GroupData()
 	}

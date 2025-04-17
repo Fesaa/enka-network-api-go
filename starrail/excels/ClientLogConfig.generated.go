@@ -40,7 +40,6 @@ func (a *ClientLogConfigAccessor) Raw() ([]ClientLogConfig, error) {
 		if err != nil {
 			return []ClientLogConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ClientLogConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClientLogConfigAccessor) ByID(identifier float64) (ClientLogConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClientLogConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClientLogConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -44,7 +44,6 @@ func (a *StroyLineUIDataAccessor) Raw() ([]StroyLineUIData, error) {
 		if err != nil {
 			return []StroyLineUIData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -36,7 +36,6 @@ func (a *RestartBattleBlackListAccessor) Raw() ([]RestartBattleBlackList, error)
 		if err != nil {
 			return []RestartBattleBlackList{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,9 +53,11 @@ func (a *RestartBattleBlackListAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RestartBattleBlackListAccessor) ByEventID(identifier float64) (RestartBattleBlackList, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RestartBattleBlackList{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RestartBattleBlackList{}, err
+			}
 		}
 		a.GroupData()
 	}

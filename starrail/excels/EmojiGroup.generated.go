@@ -16,8 +16,8 @@ type EmojiGroup struct {
 }
 type EmojiGroupAccessor struct {
 	_data             []EmojiGroup
-	_dataImgPath      map[string]EmojiGroup
 	_dataEmojiGroupID map[float64]EmojiGroup
+	_dataImgPath      map[string]EmojiGroup
 }
 
 // LoadData retrieves the data. Must be called before EmojiGroup.GroupData
@@ -41,7 +41,6 @@ func (a *EmojiGroupAccessor) Raw() ([]EmojiGroup, error) {
 		if err != nil {
 			return []EmojiGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,23 +49,9 @@ func (a *EmojiGroupAccessor) Raw() ([]EmojiGroup, error) {
 // Can be called manually in conjunction with EmojiGroupAccessor.LoadData to preload everything
 func (a *EmojiGroupAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataImgPath[d.ImgPath] = d
 		a._dataEmojiGroupID[d.EmojiGroupID] = d
+		a._dataImgPath[d.ImgPath] = d
 	}
-}
-
-// ByImgPath returns the EmojiGroup uniquely identified by ImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *EmojiGroupAccessor) ByImgPath(identifier string) (EmojiGroup, error) {
-	if a._dataImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EmojiGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataImgPath[identifier], nil
 }
 
 // ByEmojiGroupID returns the EmojiGroup uniquely identified by EmojiGroupID
@@ -74,11 +59,29 @@ func (a *EmojiGroupAccessor) ByImgPath(identifier string) (EmojiGroup, error) {
 // Error is only non-nil if the source errors out
 func (a *EmojiGroupAccessor) ByEmojiGroupID(identifier float64) (EmojiGroup, error) {
 	if a._dataEmojiGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EmojiGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EmojiGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEmojiGroupID[identifier], nil
+}
+
+// ByImgPath returns the EmojiGroup uniquely identified by ImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *EmojiGroupAccessor) ByImgPath(identifier string) (EmojiGroup, error) {
+	if a._dataImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EmojiGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataImgPath[identifier], nil
 }

@@ -13,8 +13,8 @@ type ChimeraEvaluationGroup struct {
 }
 type ChimeraEvaluationGroupAccessor struct {
 	_data                  []ChimeraEvaluationGroup
-	_dataSort              map[float64]ChimeraEvaluationGroup
 	_dataEvaluationGroupID map[float64]ChimeraEvaluationGroup
+	_dataSort              map[float64]ChimeraEvaluationGroup
 }
 
 // LoadData retrieves the data. Must be called before ChimeraEvaluationGroup.GroupData
@@ -38,7 +38,6 @@ func (a *ChimeraEvaluationGroupAccessor) Raw() ([]ChimeraEvaluationGroup, error)
 		if err != nil {
 			return []ChimeraEvaluationGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *ChimeraEvaluationGroupAccessor) Raw() ([]ChimeraEvaluationGroup, error)
 // Can be called manually in conjunction with ChimeraEvaluationGroupAccessor.LoadData to preload everything
 func (a *ChimeraEvaluationGroupAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSort[d.Sort] = d
 		a._dataEvaluationGroupID[d.EvaluationGroupID] = d
+		a._dataSort[d.Sort] = d
 	}
-}
-
-// BySort returns the ChimeraEvaluationGroup uniquely identified by Sort
-//
-// Error is only non-nil if the source errors out
-func (a *ChimeraEvaluationGroupAccessor) BySort(identifier float64) (ChimeraEvaluationGroup, error) {
-	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraEvaluationGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSort[identifier], nil
 }
 
 // ByEvaluationGroupID returns the ChimeraEvaluationGroup uniquely identified by EvaluationGroupID
@@ -71,11 +56,29 @@ func (a *ChimeraEvaluationGroupAccessor) BySort(identifier float64) (ChimeraEval
 // Error is only non-nil if the source errors out
 func (a *ChimeraEvaluationGroupAccessor) ByEvaluationGroupID(identifier float64) (ChimeraEvaluationGroup, error) {
 	if a._dataEvaluationGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraEvaluationGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraEvaluationGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEvaluationGroupID[identifier], nil
+}
+
+// BySort returns the ChimeraEvaluationGroup uniquely identified by Sort
+//
+// Error is only non-nil if the source errors out
+func (a *ChimeraEvaluationGroupAccessor) BySort(identifier float64) (ChimeraEvaluationGroup, error) {
+	if a._dataSort == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraEvaluationGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSort[identifier], nil
 }

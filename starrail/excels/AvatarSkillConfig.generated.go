@@ -71,7 +71,6 @@ func (a *AvatarSkillConfigAccessor) Raw() ([]AvatarSkillConfig, error) {
 		if err != nil {
 			return []AvatarSkillConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

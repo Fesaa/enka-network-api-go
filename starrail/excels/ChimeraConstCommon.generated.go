@@ -38,7 +38,6 @@ func (a *ChimeraConstCommonAccessor) Raw() ([]ChimeraConstCommon, error) {
 		if err != nil {
 			return []ChimeraConstCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ChimeraConstCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraConstCommonAccessor) ByConstValueName(identifier string) (ChimeraConstCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraConstCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraConstCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

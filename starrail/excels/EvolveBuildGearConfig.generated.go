@@ -41,7 +41,6 @@ func (a *EvolveBuildGearConfigAccessor) Raw() ([]EvolveBuildGearConfig, error) {
 		if err != nil {
 			return []EvolveBuildGearConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

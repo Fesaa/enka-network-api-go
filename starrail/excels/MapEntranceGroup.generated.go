@@ -40,7 +40,6 @@ func (a *MapEntranceGroupAccessor) Raw() ([]MapEntranceGroup, error) {
 		if err != nil {
 			return []MapEntranceGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MapEntranceGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MapEntranceGroupAccessor) ByID(identifier float64) (MapEntranceGroup, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapEntranceGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapEntranceGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

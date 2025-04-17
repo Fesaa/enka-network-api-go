@@ -39,7 +39,6 @@ func (a *RogueDLCMarkTypeAccessor) Raw() ([]RogueDLCMarkType, error) {
 		if err != nil {
 			return []RogueDLCMarkType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -53,7 +53,6 @@ func (a *SpaceZooSpecialCatAccessor) Raw() ([]SpaceZooSpecialCat, error) {
 		if err != nil {
 			return []SpaceZooSpecialCat{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -75,9 +74,11 @@ func (a *SpaceZooSpecialCatAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooSpecialCatAccessor) ByImagePath(identifier string) (SpaceZooSpecialCat, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooSpecialCat{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooSpecialCat{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -89,9 +90,11 @@ func (a *SpaceZooSpecialCatAccessor) ByImagePath(identifier string) (SpaceZooSpe
 // Error is only non-nil if the source errors out
 func (a *SpaceZooSpecialCatAccessor) ByLargeImagePath(identifier string) (SpaceZooSpecialCat, error) {
 	if a._dataLargeImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooSpecialCat{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooSpecialCat{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -103,9 +106,11 @@ func (a *SpaceZooSpecialCatAccessor) ByLargeImagePath(identifier string) (SpaceZ
 // Error is only non-nil if the source errors out
 func (a *SpaceZooSpecialCatAccessor) ByMatPath(identifier string) (SpaceZooSpecialCat, error) {
 	if a._dataMatPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooSpecialCat{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooSpecialCat{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -117,9 +122,11 @@ func (a *SpaceZooSpecialCatAccessor) ByMatPath(identifier string) (SpaceZooSpeci
 // Error is only non-nil if the source errors out
 func (a *SpaceZooSpecialCatAccessor) BySpecialCatID(identifier float64) (SpaceZooSpecialCat, error) {
 	if a._dataSpecialCatID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooSpecialCat{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooSpecialCat{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -131,9 +138,11 @@ func (a *SpaceZooSpecialCatAccessor) BySpecialCatID(identifier float64) (SpaceZo
 // Error is only non-nil if the source errors out
 func (a *SpaceZooSpecialCatAccessor) BySpecialItem(identifier float64) (SpaceZooSpecialCat, error) {
 	if a._dataSpecialItem == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooSpecialCat{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooSpecialCat{}, err
+			}
 		}
 		a.GroupData()
 	}

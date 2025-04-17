@@ -16,8 +16,8 @@ type RogueAeonListConfig struct {
 type RogueAeonListConfigAccessor struct {
 	_data            []RogueAeonListConfig
 	_dataDisplayID   map[float64]RogueAeonListConfig
-	_dataSort        map[float64]RogueAeonListConfig
 	_dataRogueAeonID map[float64]RogueAeonListConfig
+	_dataSort        map[float64]RogueAeonListConfig
 }
 
 // LoadData retrieves the data. Must be called before RogueAeonListConfig.GroupData
@@ -41,7 +41,6 @@ func (a *RogueAeonListConfigAccessor) Raw() ([]RogueAeonListConfig, error) {
 		if err != nil {
 			return []RogueAeonListConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,8 +50,8 @@ func (a *RogueAeonListConfigAccessor) Raw() ([]RogueAeonListConfig, error) {
 func (a *RogueAeonListConfigAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataDisplayID[d.DisplayID] = d
-		a._dataSort[d.Sort] = d
 		a._dataRogueAeonID[d.RogueAeonID] = d
+		a._dataSort[d.Sort] = d
 	}
 }
 
@@ -61,27 +60,15 @@ func (a *RogueAeonListConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueAeonListConfigAccessor) ByDisplayID(identifier float64) (RogueAeonListConfig, error) {
 	if a._dataDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAeonListConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAeonListConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDisplayID[identifier], nil
-}
-
-// BySort returns the RogueAeonListConfig uniquely identified by Sort
-//
-// Error is only non-nil if the source errors out
-func (a *RogueAeonListConfigAccessor) BySort(identifier float64) (RogueAeonListConfig, error) {
-	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAeonListConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSort[identifier], nil
 }
 
 // ByRogueAeonID returns the RogueAeonListConfig uniquely identified by RogueAeonID
@@ -89,11 +76,29 @@ func (a *RogueAeonListConfigAccessor) BySort(identifier float64) (RogueAeonListC
 // Error is only non-nil if the source errors out
 func (a *RogueAeonListConfigAccessor) ByRogueAeonID(identifier float64) (RogueAeonListConfig, error) {
 	if a._dataRogueAeonID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueAeonListConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAeonListConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRogueAeonID[identifier], nil
+}
+
+// BySort returns the RogueAeonListConfig uniquely identified by Sort
+//
+// Error is only non-nil if the source errors out
+func (a *RogueAeonListConfigAccessor) BySort(identifier float64) (RogueAeonListConfig, error) {
+	if a._dataSort == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueAeonListConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSort[identifier], nil
 }

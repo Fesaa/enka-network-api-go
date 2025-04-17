@@ -28,8 +28,8 @@ type AvatarGlobalBuffConfig struct {
 }
 type AvatarGlobalBuffConfigAccessor struct {
 	_data           []AvatarGlobalBuffConfig
-	_dataMazeBuffID map[float64]AvatarGlobalBuffConfig
 	_dataAvatarID   map[float64]AvatarGlobalBuffConfig
+	_dataMazeBuffID map[float64]AvatarGlobalBuffConfig
 	_dataSkillID    map[float64]AvatarGlobalBuffConfig
 }
 
@@ -54,7 +54,6 @@ func (a *AvatarGlobalBuffConfigAccessor) Raw() ([]AvatarGlobalBuffConfig, error)
 		if err != nil {
 			return []AvatarGlobalBuffConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,24 +62,10 @@ func (a *AvatarGlobalBuffConfigAccessor) Raw() ([]AvatarGlobalBuffConfig, error)
 // Can be called manually in conjunction with AvatarGlobalBuffConfigAccessor.LoadData to preload everything
 func (a *AvatarGlobalBuffConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataMazeBuffID[d.MazeBuffID] = d
 		a._dataAvatarID[d.AvatarID] = d
+		a._dataMazeBuffID[d.MazeBuffID] = d
 		a._dataSkillID[d.SkillID] = d
 	}
-}
-
-// ByMazeBuffID returns the AvatarGlobalBuffConfig uniquely identified by MazeBuffID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarGlobalBuffConfigAccessor) ByMazeBuffID(identifier float64) (AvatarGlobalBuffConfig, error) {
-	if a._dataMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarGlobalBuffConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMazeBuffID[identifier], nil
 }
 
 // ByAvatarID returns the AvatarGlobalBuffConfig uniquely identified by AvatarID
@@ -88,13 +73,31 @@ func (a *AvatarGlobalBuffConfigAccessor) ByMazeBuffID(identifier float64) (Avata
 // Error is only non-nil if the source errors out
 func (a *AvatarGlobalBuffConfigAccessor) ByAvatarID(identifier float64) (AvatarGlobalBuffConfig, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarGlobalBuffConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarGlobalBuffConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarID[identifier], nil
+}
+
+// ByMazeBuffID returns the AvatarGlobalBuffConfig uniquely identified by MazeBuffID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarGlobalBuffConfigAccessor) ByMazeBuffID(identifier float64) (AvatarGlobalBuffConfig, error) {
+	if a._dataMazeBuffID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarGlobalBuffConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMazeBuffID[identifier], nil
 }
 
 // BySkillID returns the AvatarGlobalBuffConfig uniquely identified by SkillID
@@ -102,9 +105,11 @@ func (a *AvatarGlobalBuffConfigAccessor) ByAvatarID(identifier float64) (AvatarG
 // Error is only non-nil if the source errors out
 func (a *AvatarGlobalBuffConfigAccessor) BySkillID(identifier float64) (AvatarGlobalBuffConfig, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarGlobalBuffConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarGlobalBuffConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

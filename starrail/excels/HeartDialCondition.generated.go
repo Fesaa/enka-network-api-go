@@ -40,7 +40,6 @@ func (a *HeartDialConditionAccessor) Raw() ([]HeartDialCondition, error) {
 		if err != nil {
 			return []HeartDialCondition{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *HeartDialConditionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeartDialConditionAccessor) ByID(identifier float64) (HeartDialCondition, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeartDialCondition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeartDialCondition{}, err
+			}
 		}
 		a.GroupData()
 	}

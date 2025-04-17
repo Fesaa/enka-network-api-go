@@ -44,7 +44,6 @@ func (a *MonopolyBuffConfigAccessor) Raw() ([]MonopolyBuffConfig, error) {
 		if err != nil {
 			return []MonopolyBuffConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *MonopolyBuffConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyBuffConfigAccessor) ByBuffID(identifier float64) (MonopolyBuffConfig, error) {
 	if a._dataBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyBuffConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyBuffConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -20,10 +20,10 @@ type RogueTournBuffType struct {
 }
 type RogueTournBuffTypeAccessor struct {
 	_data                       []RogueTournBuffType
-	_dataRogueBuffTypeLargeIcon map[string]RogueTournBuffType
-	_dataRogueBuffTypeDecoName  map[string]RogueTournBuffType
 	_dataRogueBuffType          map[float64]RogueTournBuffType
+	_dataRogueBuffTypeDecoName  map[string]RogueTournBuffType
 	_dataRogueBuffTypeIcon      map[string]RogueTournBuffType
+	_dataRogueBuffTypeLargeIcon map[string]RogueTournBuffType
 	_dataRogueBuffTypeSmallIcon map[string]RogueTournBuffType
 }
 
@@ -48,7 +48,6 @@ func (a *RogueTournBuffTypeAccessor) Raw() ([]RogueTournBuffType, error) {
 		if err != nil {
 			return []RogueTournBuffType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,40 +56,12 @@ func (a *RogueTournBuffTypeAccessor) Raw() ([]RogueTournBuffType, error) {
 // Can be called manually in conjunction with RogueTournBuffTypeAccessor.LoadData to preload everything
 func (a *RogueTournBuffTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRogueBuffTypeLargeIcon[d.RogueBuffTypeLargeIcon] = d
-		a._dataRogueBuffTypeDecoName[d.RogueBuffTypeDecoName] = d
 		a._dataRogueBuffType[d.RogueBuffType] = d
+		a._dataRogueBuffTypeDecoName[d.RogueBuffTypeDecoName] = d
 		a._dataRogueBuffTypeIcon[d.RogueBuffTypeIcon] = d
+		a._dataRogueBuffTypeLargeIcon[d.RogueBuffTypeLargeIcon] = d
 		a._dataRogueBuffTypeSmallIcon[d.RogueBuffTypeSmallIcon] = d
 	}
-}
-
-// ByRogueBuffTypeLargeIcon returns the RogueTournBuffType uniquely identified by RogueBuffTypeLargeIcon
-//
-// Error is only non-nil if the source errors out
-func (a *RogueTournBuffTypeAccessor) ByRogueBuffTypeLargeIcon(identifier string) (RogueTournBuffType, error) {
-	if a._dataRogueBuffTypeLargeIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournBuffType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRogueBuffTypeLargeIcon[identifier], nil
-}
-
-// ByRogueBuffTypeDecoName returns the RogueTournBuffType uniquely identified by RogueBuffTypeDecoName
-//
-// Error is only non-nil if the source errors out
-func (a *RogueTournBuffTypeAccessor) ByRogueBuffTypeDecoName(identifier string) (RogueTournBuffType, error) {
-	if a._dataRogueBuffTypeDecoName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournBuffType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRogueBuffTypeDecoName[identifier], nil
 }
 
 // ByRogueBuffType returns the RogueTournBuffType uniquely identified by RogueBuffType
@@ -98,13 +69,31 @@ func (a *RogueTournBuffTypeAccessor) ByRogueBuffTypeDecoName(identifier string) 
 // Error is only non-nil if the source errors out
 func (a *RogueTournBuffTypeAccessor) ByRogueBuffType(identifier float64) (RogueTournBuffType, error) {
 	if a._dataRogueBuffType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournBuffType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournBuffType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRogueBuffType[identifier], nil
+}
+
+// ByRogueBuffTypeDecoName returns the RogueTournBuffType uniquely identified by RogueBuffTypeDecoName
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournBuffTypeAccessor) ByRogueBuffTypeDecoName(identifier string) (RogueTournBuffType, error) {
+	if a._dataRogueBuffTypeDecoName == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournBuffType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueBuffTypeDecoName[identifier], nil
 }
 
 // ByRogueBuffTypeIcon returns the RogueTournBuffType uniquely identified by RogueBuffTypeIcon
@@ -112,13 +101,31 @@ func (a *RogueTournBuffTypeAccessor) ByRogueBuffType(identifier float64) (RogueT
 // Error is only non-nil if the source errors out
 func (a *RogueTournBuffTypeAccessor) ByRogueBuffTypeIcon(identifier string) (RogueTournBuffType, error) {
 	if a._dataRogueBuffTypeIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournBuffType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournBuffType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRogueBuffTypeIcon[identifier], nil
+}
+
+// ByRogueBuffTypeLargeIcon returns the RogueTournBuffType uniquely identified by RogueBuffTypeLargeIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournBuffTypeAccessor) ByRogueBuffTypeLargeIcon(identifier string) (RogueTournBuffType, error) {
+	if a._dataRogueBuffTypeLargeIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournBuffType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueBuffTypeLargeIcon[identifier], nil
 }
 
 // ByRogueBuffTypeSmallIcon returns the RogueTournBuffType uniquely identified by RogueBuffTypeSmallIcon
@@ -126,9 +133,11 @@ func (a *RogueTournBuffTypeAccessor) ByRogueBuffTypeIcon(identifier string) (Rog
 // Error is only non-nil if the source errors out
 func (a *RogueTournBuffTypeAccessor) ByRogueBuffTypeSmallIcon(identifier string) (RogueTournBuffType, error) {
 	if a._dataRogueBuffTypeSmallIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournBuffType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournBuffType{}, err
+			}
 		}
 		a.GroupData()
 	}

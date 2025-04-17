@@ -37,7 +37,6 @@ func (a *RollShopRewardAccessor) Raw() ([]RollShopReward, error) {
 		if err != nil {
 			return []RollShopReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *RollShopRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RollShopRewardAccessor) ByRewardID(identifier float64) (RollShopReward, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RollShopReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RollShopReward{}, err
+			}
 		}
 		a.GroupData()
 	}

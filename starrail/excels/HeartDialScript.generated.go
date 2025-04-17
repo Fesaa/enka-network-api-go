@@ -50,7 +50,6 @@ func (a *HeartDialScriptAccessor) Raw() ([]HeartDialScript, error) {
 		if err != nil {
 			return []HeartDialScript{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -68,9 +67,11 @@ func (a *HeartDialScriptAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeartDialScriptAccessor) ByScriptID(identifier float64) (HeartDialScript, error) {
 	if a._dataScriptID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeartDialScript{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeartDialScript{}, err
+			}
 		}
 		a.GroupData()
 	}

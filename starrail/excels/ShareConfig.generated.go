@@ -37,7 +37,6 @@ func (a *ShareConfigAccessor) Raw() ([]ShareConfig, error) {
 		if err != nil {
 			return []ShareConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

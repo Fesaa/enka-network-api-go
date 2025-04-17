@@ -38,7 +38,6 @@ func (a *ClockParkProgressRewardAccessor) Raw() ([]ClockParkProgressReward, erro
 		if err != nil {
 			return []ClockParkProgressReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ClockParkProgressRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClockParkProgressRewardAccessor) ByQuestID(identifier float64) (ClockParkProgressReward, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkProgressReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkProgressReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *ClockParkProgressRewardAccessor) ByQuestID(identifier float64) (ClockPa
 // Error is only non-nil if the source errors out
 func (a *ClockParkProgressRewardAccessor) ByQuestProgress(identifier float64) (ClockParkProgressReward, error) {
 	if a._dataQuestProgress == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkProgressReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkProgressReward{}, err
+			}
 		}
 		a.GroupData()
 	}

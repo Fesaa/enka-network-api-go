@@ -18,9 +18,9 @@ type GuideRogueTab struct {
 }
 type GuideRogueTabAccessor struct {
 	_data          []GuideRogueTab
+	_dataGuideType map[string]GuideRogueTab
 	_dataID        map[float64]GuideRogueTab
 	_dataPriority  map[float64]GuideRogueTab
-	_dataGuideType map[string]GuideRogueTab
 }
 
 // LoadData retrieves the data. Must be called before GuideRogueTab.GroupData
@@ -44,7 +44,6 @@ func (a *GuideRogueTabAccessor) Raw() ([]GuideRogueTab, error) {
 		if err != nil {
 			return []GuideRogueTab{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,10 +52,26 @@ func (a *GuideRogueTabAccessor) Raw() ([]GuideRogueTab, error) {
 // Can be called manually in conjunction with GuideRogueTabAccessor.LoadData to preload everything
 func (a *GuideRogueTabAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataGuideType[d.GuideType] = d
 		a._dataID[d.ID] = d
 		a._dataPriority[d.Priority] = d
-		a._dataGuideType[d.GuideType] = d
 	}
+}
+
+// ByGuideType returns the GuideRogueTab uniquely identified by GuideType
+//
+// Error is only non-nil if the source errors out
+func (a *GuideRogueTabAccessor) ByGuideType(identifier string) (GuideRogueTab, error) {
+	if a._dataGuideType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideRogueTab{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGuideType[identifier], nil
 }
 
 // ByID returns the GuideRogueTab uniquely identified by ID
@@ -64,9 +79,11 @@ func (a *GuideRogueTabAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GuideRogueTabAccessor) ByID(identifier float64) (GuideRogueTab, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideRogueTab{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideRogueTab{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,25 +95,13 @@ func (a *GuideRogueTabAccessor) ByID(identifier float64) (GuideRogueTab, error) 
 // Error is only non-nil if the source errors out
 func (a *GuideRogueTabAccessor) ByPriority(identifier float64) (GuideRogueTab, error) {
 	if a._dataPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideRogueTab{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideRogueTab{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPriority[identifier], nil
-}
-
-// ByGuideType returns the GuideRogueTab uniquely identified by GuideType
-//
-// Error is only non-nil if the source errors out
-func (a *GuideRogueTabAccessor) ByGuideType(identifier string) (GuideRogueTab, error) {
-	if a._dataGuideType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideRogueTab{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGuideType[identifier], nil
 }

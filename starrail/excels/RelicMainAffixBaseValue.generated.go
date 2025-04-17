@@ -39,7 +39,6 @@ func (a *RelicMainAffixBaseValueAccessor) Raw() ([]RelicMainAffixBaseValue, erro
 		if err != nil {
 			return []RelicMainAffixBaseValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RelicMainAffixBaseValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RelicMainAffixBaseValueAccessor) ByRelicMainAffix(identifier string) (RelicMainAffixBaseValue, error) {
 	if a._dataRelicMainAffix == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicMainAffixBaseValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicMainAffixBaseValue{}, err
+			}
 		}
 		a.GroupData()
 	}

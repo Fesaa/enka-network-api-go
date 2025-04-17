@@ -45,7 +45,6 @@ func (a *MazePuzzleWolfGunPlayLevelAccessor) Raw() ([]MazePuzzleWolfGunPlayLevel
 		if err != nil {
 			return []MazePuzzleWolfGunPlayLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *MazePuzzleWolfGunPlayLevelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MazePuzzleWolfGunPlayLevelAccessor) ByTriggerCustomString(identifier string) (MazePuzzleWolfGunPlayLevel, error) {
 	if a._dataTriggerCustomString == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazePuzzleWolfGunPlayLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazePuzzleWolfGunPlayLevel{}, err
+			}
 		}
 		a.GroupData()
 	}

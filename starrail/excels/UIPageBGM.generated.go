@@ -37,7 +37,6 @@ func (a *UIPageBGMAccessor) Raw() ([]UIPageBGM, error) {
 		if err != nil {
 			return []UIPageBGM{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *UIPageBGMAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *UIPageBGMAccessor) ByPagePrefab(identifier string) (UIPageBGM, error) {
 	if a._dataPagePrefab == nil {
-		err := a.LoadData()
-		if err != nil {
-			return UIPageBGM{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return UIPageBGM{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *MatchThreeDmgLimitAccessor) Raw() ([]MatchThreeDmgLimit, error) {
 		if err != nil {
 			return []MatchThreeDmgLimit{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MatchThreeDmgLimitAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeDmgLimitAccessor) ByRound(identifier float64) (MatchThreeDmgLimit, error) {
 	if a._dataRound == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeDmgLimit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeDmgLimit{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -45,7 +45,6 @@ func (a *PerformanceDSAccessor) Raw() ([]PerformanceDS, error) {
 		if err != nil {
 			return []PerformanceDS{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *PerformanceDSAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PerformanceDSAccessor) ByPerformanceID(identifier float64) (PerformanceDS, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceDS{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceDS{}, err
+			}
 		}
 		a.GroupData()
 	}

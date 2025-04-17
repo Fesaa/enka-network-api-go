@@ -38,7 +38,6 @@ func (a *ChimeraMotionAccessor) Raw() ([]ChimeraMotion, error) {
 		if err != nil {
 			return []ChimeraMotion{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ChimeraMotionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraMotionAccessor) ByMotionID(identifier float64) (ChimeraMotion, error) {
 	if a._dataMotionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraMotion{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraMotion{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *ChimeraMotionAccessor) ByMotionID(identifier float64) (ChimeraMotion, e
 // Error is only non-nil if the source errors out
 func (a *ChimeraMotionAccessor) ByMotionKey(identifier string) (ChimeraMotion, error) {
 	if a._dataMotionKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraMotion{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraMotion{}, err
+			}
 		}
 		a.GroupData()
 	}

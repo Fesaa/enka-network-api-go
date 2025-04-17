@@ -41,8 +41,8 @@ type SpecialNPCSkillConfig struct {
 }
 type SpecialNPCSkillConfigAccessor struct {
 	_data          []SpecialNPCSkillConfig
-	_dataSkillIcon map[string]SpecialNPCSkillConfig
 	_dataSkillID   map[float64]SpecialNPCSkillConfig
+	_dataSkillIcon map[string]SpecialNPCSkillConfig
 }
 
 // LoadData retrieves the data. Must be called before SpecialNPCSkillConfig.GroupData
@@ -66,7 +66,6 @@ func (a *SpecialNPCSkillConfigAccessor) Raw() ([]SpecialNPCSkillConfig, error) {
 		if err != nil {
 			return []SpecialNPCSkillConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -75,23 +74,9 @@ func (a *SpecialNPCSkillConfigAccessor) Raw() ([]SpecialNPCSkillConfig, error) {
 // Can be called manually in conjunction with SpecialNPCSkillConfigAccessor.LoadData to preload everything
 func (a *SpecialNPCSkillConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSkillIcon[d.SkillIcon] = d
 		a._dataSkillID[d.SkillID] = d
+		a._dataSkillIcon[d.SkillIcon] = d
 	}
-}
-
-// BySkillIcon returns the SpecialNPCSkillConfig uniquely identified by SkillIcon
-//
-// Error is only non-nil if the source errors out
-func (a *SpecialNPCSkillConfigAccessor) BySkillIcon(identifier string) (SpecialNPCSkillConfig, error) {
-	if a._dataSkillIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialNPCSkillConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSkillIcon[identifier], nil
 }
 
 // BySkillID returns the SpecialNPCSkillConfig uniquely identified by SkillID
@@ -99,11 +84,29 @@ func (a *SpecialNPCSkillConfigAccessor) BySkillIcon(identifier string) (SpecialN
 // Error is only non-nil if the source errors out
 func (a *SpecialNPCSkillConfigAccessor) BySkillID(identifier float64) (SpecialNPCSkillConfig, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialNPCSkillConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialNPCSkillConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSkillID[identifier], nil
+}
+
+// BySkillIcon returns the SpecialNPCSkillConfig uniquely identified by SkillIcon
+//
+// Error is only non-nil if the source errors out
+func (a *SpecialNPCSkillConfigAccessor) BySkillIcon(identifier string) (SpecialNPCSkillConfig, error) {
+	if a._dataSkillIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialNPCSkillConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSkillIcon[identifier], nil
 }

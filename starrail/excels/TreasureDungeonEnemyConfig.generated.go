@@ -39,7 +39,6 @@ func (a *TreasureDungeonEnemyConfigAccessor) Raw() ([]TreasureDungeonEnemyConfig
 		if err != nil {
 			return []TreasureDungeonEnemyConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *TreasureDungeonEnemyConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TreasureDungeonEnemyConfigAccessor) ByEnemyID(identifier float64) (TreasureDungeonEnemyConfig, error) {
 	if a._dataEnemyID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TreasureDungeonEnemyConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TreasureDungeonEnemyConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

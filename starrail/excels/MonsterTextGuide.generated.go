@@ -39,7 +39,6 @@ func (a *MonsterTextGuideAccessor) Raw() ([]MonsterTextGuide, error) {
 		if err != nil {
 			return []MonsterTextGuide{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *MonsterTextGuideAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonsterTextGuideAccessor) ByTextGuideID(identifier float64) (MonsterTextGuide, error) {
 	if a._dataTextGuideID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterTextGuide{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterTextGuide{}, err
+			}
 		}
 		a.GroupData()
 	}

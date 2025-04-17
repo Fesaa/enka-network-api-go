@@ -40,7 +40,6 @@ func (a *MonopolyPhaseRewardAccessor) Raw() ([]MonopolyPhaseReward, error) {
 		if err != nil {
 			return []MonopolyPhaseReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *MonopolyPhaseRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyPhaseRewardAccessor) ByPhaseRewardID(identifier float64) (MonopolyPhaseReward, error) {
 	if a._dataPhaseRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyPhaseReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyPhaseReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *MonopolyPhaseRewardAccessor) ByPhaseRewardID(identifier float64) (Monop
 // Error is only non-nil if the source errors out
 func (a *MonopolyPhaseRewardAccessor) ByProgressValue(identifier float64) (MonopolyPhaseReward, error) {
 	if a._dataProgressValue == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyPhaseReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyPhaseReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,9 +91,11 @@ func (a *MonopolyPhaseRewardAccessor) ByProgressValue(identifier float64) (Monop
 // Error is only non-nil if the source errors out
 func (a *MonopolyPhaseRewardAccessor) ByRewardID(identifier float64) (MonopolyPhaseReward, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyPhaseReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyPhaseReward{}, err
+			}
 		}
 		a.GroupData()
 	}

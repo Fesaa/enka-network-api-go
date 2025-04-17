@@ -16,9 +16,9 @@ type SwordTrainingSkillType struct {
 }
 type SwordTrainingSkillTypeAccessor struct {
 	_data              []SwordTrainingSkillType
+	_dataSkillTypeID   map[float64]SwordTrainingSkillType
 	_dataSkillTypeIcon map[string]SwordTrainingSkillType
 	_dataStatusID      map[float64]SwordTrainingSkillType
-	_dataSkillTypeID   map[float64]SwordTrainingSkillType
 }
 
 // LoadData retrieves the data. Must be called before SwordTrainingSkillType.GroupData
@@ -42,7 +42,6 @@ func (a *SwordTrainingSkillTypeAccessor) Raw() ([]SwordTrainingSkillType, error)
 		if err != nil {
 			return []SwordTrainingSkillType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,10 +50,26 @@ func (a *SwordTrainingSkillTypeAccessor) Raw() ([]SwordTrainingSkillType, error)
 // Can be called manually in conjunction with SwordTrainingSkillTypeAccessor.LoadData to preload everything
 func (a *SwordTrainingSkillTypeAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataSkillTypeID[d.SkillTypeID] = d
 		a._dataSkillTypeIcon[d.SkillTypeIcon] = d
 		a._dataStatusID[d.StatusID] = d
-		a._dataSkillTypeID[d.SkillTypeID] = d
 	}
+}
+
+// BySkillTypeID returns the SwordTrainingSkillType uniquely identified by SkillTypeID
+//
+// Error is only non-nil if the source errors out
+func (a *SwordTrainingSkillTypeAccessor) BySkillTypeID(identifier float64) (SwordTrainingSkillType, error) {
+	if a._dataSkillTypeID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingSkillType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSkillTypeID[identifier], nil
 }
 
 // BySkillTypeIcon returns the SwordTrainingSkillType uniquely identified by SkillTypeIcon
@@ -62,9 +77,11 @@ func (a *SwordTrainingSkillTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingSkillTypeAccessor) BySkillTypeIcon(identifier string) (SwordTrainingSkillType, error) {
 	if a._dataSkillTypeIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingSkillType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingSkillType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,25 +93,13 @@ func (a *SwordTrainingSkillTypeAccessor) BySkillTypeIcon(identifier string) (Swo
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingSkillTypeAccessor) ByStatusID(identifier float64) (SwordTrainingSkillType, error) {
 	if a._dataStatusID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingSkillType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingSkillType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataStatusID[identifier], nil
-}
-
-// BySkillTypeID returns the SwordTrainingSkillType uniquely identified by SkillTypeID
-//
-// Error is only non-nil if the source errors out
-func (a *SwordTrainingSkillTypeAccessor) BySkillTypeID(identifier float64) (SwordTrainingSkillType, error) {
-	if a._dataSkillTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingSkillType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSkillTypeID[identifier], nil
 }

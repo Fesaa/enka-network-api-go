@@ -40,7 +40,6 @@ func (a *AvatarSkillPropertyOverrideAccessor) Raw() ([]AvatarSkillPropertyOverri
 		if err != nil {
 			return []AvatarSkillPropertyOverride{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *AvatarSkillPropertyOverrideAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarSkillPropertyOverrideAccessor) ByReplacePointIconPrefab(identifier string) (AvatarSkillPropertyOverride, error) {
 	if a._dataReplacePointIconPrefab == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkillPropertyOverride{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkillPropertyOverride{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *AvatarSkillPropertyOverrideAccessor) ByReplacePointIconPrefab(identifie
 // Error is only non-nil if the source errors out
 func (a *AvatarSkillPropertyOverrideAccessor) BySkillID(identifier float64) (AvatarSkillPropertyOverride, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkillPropertyOverride{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkillPropertyOverride{}, err
+			}
 		}
 		a.GroupData()
 	}

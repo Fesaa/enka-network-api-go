@@ -37,7 +37,6 @@ func (a *UniqueActorAccessor) Raw() ([]UniqueActor, error) {
 		if err != nil {
 			return []UniqueActor{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *UniqueActorAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *UniqueActorAccessor) ByUniqueName(identifier string) (UniqueActor, error) {
 	if a._dataUniqueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return UniqueActor{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return UniqueActor{}, err
+			}
 		}
 		a.GroupData()
 	}

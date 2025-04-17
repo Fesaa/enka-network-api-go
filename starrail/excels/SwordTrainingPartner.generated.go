@@ -42,7 +42,6 @@ func (a *SwordTrainingPartnerAccessor) Raw() ([]SwordTrainingPartner, error) {
 		if err != nil {
 			return []SwordTrainingPartner{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *SwordTrainingPartnerAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingPartnerAccessor) ByPartnerID(identifier float64) (SwordTrainingPartner, error) {
 	if a._dataPartnerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingPartner{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingPartner{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -75,9 +76,11 @@ func (a *SwordTrainingPartnerAccessor) ByPartnerID(identifier float64) (SwordTra
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingPartnerAccessor) ByPartnerImage(identifier string) (SwordTrainingPartner, error) {
 	if a._dataPartnerImage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingPartner{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingPartner{}, err
+			}
 		}
 		a.GroupData()
 	}

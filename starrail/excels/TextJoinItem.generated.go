@@ -38,7 +38,6 @@ func (a *TextJoinItemAccessor) Raw() ([]TextJoinItem, error) {
 		if err != nil {
 			return []TextJoinItem{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *TextJoinItemAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TextJoinItemAccessor) ByTextJoinItemID(identifier float64) (TextJoinItem, error) {
 	if a._dataTextJoinItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TextJoinItem{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TextJoinItem{}, err
+			}
 		}
 		a.GroupData()
 	}

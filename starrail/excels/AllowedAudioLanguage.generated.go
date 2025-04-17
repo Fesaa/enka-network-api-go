@@ -43,7 +43,6 @@ func (a *AllowedAudioLanguageAccessor) Raw() ([]AllowedAudioLanguage, error) {
 		if err != nil {
 			return []AllowedAudioLanguage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *AllowedAudioLanguageAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AllowedAudioLanguageAccessor) ByAudioLanguageKey(identifier string) (AllowedAudioLanguage, error) {
 	if a._dataAudioLanguageKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AllowedAudioLanguage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AllowedAudioLanguage{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *AllowedAudioLanguageAccessor) ByAudioLanguageKey(identifier string) (Al
 // Error is only non-nil if the source errors out
 func (a *AllowedAudioLanguageAccessor) ByWwiseLanguageKey(identifier string) (AllowedAudioLanguage, error) {
 	if a._dataWwiseLanguageKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AllowedAudioLanguage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AllowedAudioLanguage{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -91,9 +94,11 @@ func (a *AllowedAudioLanguageAccessor) ByWwiseLanguageKey(identifier string) (Al
 // Error is only non-nil if the source errors out
 func (a *AllowedAudioLanguageAccessor) ByWwiseLanguageState(identifier string) (AllowedAudioLanguage, error) {
 	if a._dataWwiseLanguageState == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AllowedAudioLanguage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AllowedAudioLanguage{}, err
+			}
 		}
 		a.GroupData()
 	}

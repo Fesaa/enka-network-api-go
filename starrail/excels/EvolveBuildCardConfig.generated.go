@@ -18,9 +18,9 @@ type EvolveBuildCardConfig struct {
 }
 type EvolveBuildCardConfigAccessor struct {
 	_data         []EvolveBuildCardConfig
-	_dataLvID     map[float64]EvolveBuildCardConfig
 	_dataID       map[float64]EvolveBuildCardConfig
 	_dataItemIcon map[string]EvolveBuildCardConfig
+	_dataLvID     map[float64]EvolveBuildCardConfig
 }
 
 // LoadData retrieves the data. Must be called before EvolveBuildCardConfig.GroupData
@@ -44,7 +44,6 @@ func (a *EvolveBuildCardConfigAccessor) Raw() ([]EvolveBuildCardConfig, error) {
 		if err != nil {
 			return []EvolveBuildCardConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,24 +52,10 @@ func (a *EvolveBuildCardConfigAccessor) Raw() ([]EvolveBuildCardConfig, error) {
 // Can be called manually in conjunction with EvolveBuildCardConfigAccessor.LoadData to preload everything
 func (a *EvolveBuildCardConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataLvID[d.LvID] = d
 		a._dataID[d.ID] = d
 		a._dataItemIcon[d.ItemIcon] = d
+		a._dataLvID[d.LvID] = d
 	}
-}
-
-// ByLvID returns the EvolveBuildCardConfig uniquely identified by LvID
-//
-// Error is only non-nil if the source errors out
-func (a *EvolveBuildCardConfigAccessor) ByLvID(identifier float64) (EvolveBuildCardConfig, error) {
-	if a._dataLvID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildCardConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataLvID[identifier], nil
 }
 
 // ByID returns the EvolveBuildCardConfig uniquely identified by ID
@@ -78,9 +63,11 @@ func (a *EvolveBuildCardConfigAccessor) ByLvID(identifier float64) (EvolveBuildC
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildCardConfigAccessor) ByID(identifier float64) (EvolveBuildCardConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildCardConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildCardConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -92,11 +79,29 @@ func (a *EvolveBuildCardConfigAccessor) ByID(identifier float64) (EvolveBuildCar
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildCardConfigAccessor) ByItemIcon(identifier string) (EvolveBuildCardConfig, error) {
 	if a._dataItemIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildCardConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildCardConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataItemIcon[identifier], nil
+}
+
+// ByLvID returns the EvolveBuildCardConfig uniquely identified by LvID
+//
+// Error is only non-nil if the source errors out
+func (a *EvolveBuildCardConfigAccessor) ByLvID(identifier float64) (EvolveBuildCardConfig, error) {
+	if a._dataLvID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildCardConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataLvID[identifier], nil
 }

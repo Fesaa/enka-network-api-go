@@ -19,11 +19,11 @@ type SwordTrainingEnding struct {
 }
 type SwordTrainingEndingAccessor struct {
 	_data                 []SwordTrainingEnding
+	_dataEndingID         map[float64]SwordTrainingEnding
 	_dataQuestID          map[float64]SwordTrainingEnding
+	_dataStoryID          map[float64]SwordTrainingEnding
 	_dataStoryImage       map[string]SwordTrainingEnding
 	_dataStoryUnlockImage map[string]SwordTrainingEnding
-	_dataEndingID         map[float64]SwordTrainingEnding
-	_dataStoryID          map[float64]SwordTrainingEnding
 }
 
 // LoadData retrieves the data. Must be called before SwordTrainingEnding.GroupData
@@ -47,7 +47,6 @@ func (a *SwordTrainingEndingAccessor) Raw() ([]SwordTrainingEnding, error) {
 		if err != nil {
 			return []SwordTrainingEnding{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,12 +55,28 @@ func (a *SwordTrainingEndingAccessor) Raw() ([]SwordTrainingEnding, error) {
 // Can be called manually in conjunction with SwordTrainingEndingAccessor.LoadData to preload everything
 func (a *SwordTrainingEndingAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataEndingID[d.EndingID] = d
 		a._dataQuestID[d.QuestID] = d
+		a._dataStoryID[d.StoryID] = d
 		a._dataStoryImage[d.StoryImage] = d
 		a._dataStoryUnlockImage[d.StoryUnlockImage] = d
-		a._dataEndingID[d.EndingID] = d
-		a._dataStoryID[d.StoryID] = d
 	}
+}
+
+// ByEndingID returns the SwordTrainingEnding uniquely identified by EndingID
+//
+// Error is only non-nil if the source errors out
+func (a *SwordTrainingEndingAccessor) ByEndingID(identifier float64) (SwordTrainingEnding, error) {
+	if a._dataEndingID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingEnding{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEndingID[identifier], nil
 }
 
 // ByQuestID returns the SwordTrainingEnding uniquely identified by QuestID
@@ -69,13 +84,31 @@ func (a *SwordTrainingEndingAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingEndingAccessor) ByQuestID(identifier float64) (SwordTrainingEnding, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingEnding{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingEnding{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataQuestID[identifier], nil
+}
+
+// ByStoryID returns the SwordTrainingEnding uniquely identified by StoryID
+//
+// Error is only non-nil if the source errors out
+func (a *SwordTrainingEndingAccessor) ByStoryID(identifier float64) (SwordTrainingEnding, error) {
+	if a._dataStoryID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingEnding{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStoryID[identifier], nil
 }
 
 // ByStoryImage returns the SwordTrainingEnding uniquely identified by StoryImage
@@ -83,9 +116,11 @@ func (a *SwordTrainingEndingAccessor) ByQuestID(identifier float64) (SwordTraini
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingEndingAccessor) ByStoryImage(identifier string) (SwordTrainingEnding, error) {
 	if a._dataStoryImage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingEnding{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingEnding{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -97,39 +132,13 @@ func (a *SwordTrainingEndingAccessor) ByStoryImage(identifier string) (SwordTrai
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingEndingAccessor) ByStoryUnlockImage(identifier string) (SwordTrainingEnding, error) {
 	if a._dataStoryUnlockImage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingEnding{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingEnding{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataStoryUnlockImage[identifier], nil
-}
-
-// ByEndingID returns the SwordTrainingEnding uniquely identified by EndingID
-//
-// Error is only non-nil if the source errors out
-func (a *SwordTrainingEndingAccessor) ByEndingID(identifier float64) (SwordTrainingEnding, error) {
-	if a._dataEndingID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingEnding{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEndingID[identifier], nil
-}
-
-// ByStoryID returns the SwordTrainingEnding uniquely identified by StoryID
-//
-// Error is only non-nil if the source errors out
-func (a *SwordTrainingEndingAccessor) ByStoryID(identifier float64) (SwordTrainingEnding, error) {
-	if a._dataStoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingEnding{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStoryID[identifier], nil
 }

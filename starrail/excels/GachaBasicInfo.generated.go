@@ -47,7 +47,6 @@ func (a *GachaBasicInfoAccessor) Raw() ([]GachaBasicInfo, error) {
 		if err != nil {
 			return []GachaBasicInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -65,9 +64,11 @@ func (a *GachaBasicInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GachaBasicInfoAccessor) ByGachaID(identifier float64) (GachaBasicInfo, error) {
 	if a._dataGachaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaBasicInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaBasicInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

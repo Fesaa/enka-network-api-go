@@ -37,7 +37,6 @@ func (a *FantasticStoryBuffSlotIDAccessor) Raw() ([]FantasticStoryBuffSlotID, er
 		if err != nil {
 			return []FantasticStoryBuffSlotID{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *FantasticStoryBuffSlotIDAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryBuffSlotIDAccessor) ByBuffSlotID(identifier float64) (FantasticStoryBuffSlotID, error) {
 	if a._dataBuffSlotID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryBuffSlotID{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryBuffSlotID{}, err
+			}
 		}
 		a.GroupData()
 	}

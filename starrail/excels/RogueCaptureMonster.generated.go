@@ -40,7 +40,6 @@ func (a *RogueCaptureMonsterAccessor) Raw() ([]RogueCaptureMonster, error) {
 		if err != nil {
 			return []RogueCaptureMonster{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueCaptureMonsterAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueCaptureMonsterAccessor) ByParamGroupID(identifier float64) (RogueCaptureMonster, error) {
 	if a._dataParamGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueCaptureMonster{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueCaptureMonster{}, err
+			}
 		}
 		a.GroupData()
 	}

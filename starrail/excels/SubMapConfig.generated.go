@@ -43,7 +43,6 @@ func (a *SubMapConfigAccessor) Raw() ([]SubMapConfig, error) {
 		if err != nil {
 			return []SubMapConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *SubMapConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SubMapConfigAccessor) ByID(identifier float64) (SubMapConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SubMapConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SubMapConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

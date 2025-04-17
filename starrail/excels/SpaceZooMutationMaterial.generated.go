@@ -41,7 +41,6 @@ func (a *SpaceZooMutationMaterialAccessor) Raw() ([]SpaceZooMutationMaterial, er
 		if err != nil {
 			return []SpaceZooMutationMaterial{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *SpaceZooMutationMaterialAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooMutationMaterialAccessor) ByItemID(identifier float64) (SpaceZooMutationMaterial, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooMutationMaterial{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooMutationMaterial{}, err
+			}
 		}
 		a.GroupData()
 	}

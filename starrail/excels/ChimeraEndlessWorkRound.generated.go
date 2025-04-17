@@ -37,7 +37,6 @@ func (a *ChimeraEndlessWorkRoundAccessor) Raw() ([]ChimeraEndlessWorkRound, erro
 		if err != nil {
 			return []ChimeraEndlessWorkRound{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ChimeraEndlessWorkRoundAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraEndlessWorkRoundAccessor) ByEndlessRoundID(identifier float64) (ChimeraEndlessWorkRound, error) {
 	if a._dataEndlessRoundID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraEndlessWorkRound{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraEndlessWorkRound{}, err
+			}
 		}
 		a.GroupData()
 	}

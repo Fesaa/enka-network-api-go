@@ -24,12 +24,12 @@ type ActivityModuleFindTrotter struct {
 }
 type ActivityModuleFindTrotterAccessor struct {
 	_data                   []ActivityModuleFindTrotter
-	_dataOrder              map[float64]ActivityModuleFindTrotter
-	_dataStartSubMissionID  map[float64]ActivityModuleFindTrotter
-	_dataFinishSubMissionID map[float64]ActivityModuleFindTrotter
 	_dataActivityModuleID   map[float64]ActivityModuleFindTrotter
+	_dataFinishSubMissionID map[float64]ActivityModuleFindTrotter
 	_dataMissionID          map[float64]ActivityModuleFindTrotter
+	_dataOrder              map[float64]ActivityModuleFindTrotter
 	_dataRewardQuestID      map[float64]ActivityModuleFindTrotter
+	_dataStartSubMissionID  map[float64]ActivityModuleFindTrotter
 }
 
 // LoadData retrieves the data. Must be called before ActivityModuleFindTrotter.GroupData
@@ -53,7 +53,6 @@ func (a *ActivityModuleFindTrotterAccessor) Raw() ([]ActivityModuleFindTrotter, 
 		if err != nil {
 			return []ActivityModuleFindTrotter{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,55 +61,13 @@ func (a *ActivityModuleFindTrotterAccessor) Raw() ([]ActivityModuleFindTrotter, 
 // Can be called manually in conjunction with ActivityModuleFindTrotterAccessor.LoadData to preload everything
 func (a *ActivityModuleFindTrotterAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataOrder[d.Order] = d
-		a._dataStartSubMissionID[d.StartSubMissionID] = d
-		a._dataFinishSubMissionID[d.FinishSubMissionID] = d
 		a._dataActivityModuleID[d.ActivityModuleID] = d
+		a._dataFinishSubMissionID[d.FinishSubMissionID] = d
 		a._dataMissionID[d.MissionID] = d
+		a._dataOrder[d.Order] = d
 		a._dataRewardQuestID[d.RewardQuestID] = d
+		a._dataStartSubMissionID[d.StartSubMissionID] = d
 	}
-}
-
-// ByOrder returns the ActivityModuleFindTrotter uniquely identified by Order
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityModuleFindTrotterAccessor) ByOrder(identifier float64) (ActivityModuleFindTrotter, error) {
-	if a._dataOrder == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModuleFindTrotter{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOrder[identifier], nil
-}
-
-// ByStartSubMissionID returns the ActivityModuleFindTrotter uniquely identified by StartSubMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityModuleFindTrotterAccessor) ByStartSubMissionID(identifier float64) (ActivityModuleFindTrotter, error) {
-	if a._dataStartSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModuleFindTrotter{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStartSubMissionID[identifier], nil
-}
-
-// ByFinishSubMissionID returns the ActivityModuleFindTrotter uniquely identified by FinishSubMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityModuleFindTrotterAccessor) ByFinishSubMissionID(identifier float64) (ActivityModuleFindTrotter, error) {
-	if a._dataFinishSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModuleFindTrotter{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFinishSubMissionID[identifier], nil
 }
 
 // ByActivityModuleID returns the ActivityModuleFindTrotter uniquely identified by ActivityModuleID
@@ -118,13 +75,31 @@ func (a *ActivityModuleFindTrotterAccessor) ByFinishSubMissionID(identifier floa
 // Error is only non-nil if the source errors out
 func (a *ActivityModuleFindTrotterAccessor) ByActivityModuleID(identifier float64) (ActivityModuleFindTrotter, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModuleFindTrotter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModuleFindTrotter{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityModuleID[identifier], nil
+}
+
+// ByFinishSubMissionID returns the ActivityModuleFindTrotter uniquely identified by FinishSubMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityModuleFindTrotterAccessor) ByFinishSubMissionID(identifier float64) (ActivityModuleFindTrotter, error) {
+	if a._dataFinishSubMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModuleFindTrotter{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFinishSubMissionID[identifier], nil
 }
 
 // ByMissionID returns the ActivityModuleFindTrotter uniquely identified by MissionID
@@ -132,13 +107,31 @@ func (a *ActivityModuleFindTrotterAccessor) ByActivityModuleID(identifier float6
 // Error is only non-nil if the source errors out
 func (a *ActivityModuleFindTrotterAccessor) ByMissionID(identifier float64) (ActivityModuleFindTrotter, error) {
 	if a._dataMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModuleFindTrotter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModuleFindTrotter{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMissionID[identifier], nil
+}
+
+// ByOrder returns the ActivityModuleFindTrotter uniquely identified by Order
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityModuleFindTrotterAccessor) ByOrder(identifier float64) (ActivityModuleFindTrotter, error) {
+	if a._dataOrder == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModuleFindTrotter{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOrder[identifier], nil
 }
 
 // ByRewardQuestID returns the ActivityModuleFindTrotter uniquely identified by RewardQuestID
@@ -146,11 +139,29 @@ func (a *ActivityModuleFindTrotterAccessor) ByMissionID(identifier float64) (Act
 // Error is only non-nil if the source errors out
 func (a *ActivityModuleFindTrotterAccessor) ByRewardQuestID(identifier float64) (ActivityModuleFindTrotter, error) {
 	if a._dataRewardQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModuleFindTrotter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModuleFindTrotter{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRewardQuestID[identifier], nil
+}
+
+// ByStartSubMissionID returns the ActivityModuleFindTrotter uniquely identified by StartSubMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityModuleFindTrotterAccessor) ByStartSubMissionID(identifier float64) (ActivityModuleFindTrotter, error) {
+	if a._dataStartSubMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModuleFindTrotter{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStartSubMissionID[identifier], nil
 }

@@ -33,9 +33,9 @@ type ItemConfigEquipmentReturnItemIDList struct {
 }
 type ItemConfigEquipmentAccessor struct {
 	_data                   []ItemConfigEquipment
-	_dataItemIconPath       map[string]ItemConfigEquipment
 	_dataID                 map[float64]ItemConfigEquipment
 	_dataItemFigureIconPath map[string]ItemConfigEquipment
+	_dataItemIconPath       map[string]ItemConfigEquipment
 }
 
 // LoadData retrieves the data. Must be called before ItemConfigEquipment.GroupData
@@ -59,7 +59,6 @@ func (a *ItemConfigEquipmentAccessor) Raw() ([]ItemConfigEquipment, error) {
 		if err != nil {
 			return []ItemConfigEquipment{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -68,24 +67,10 @@ func (a *ItemConfigEquipmentAccessor) Raw() ([]ItemConfigEquipment, error) {
 // Can be called manually in conjunction with ItemConfigEquipmentAccessor.LoadData to preload everything
 func (a *ItemConfigEquipmentAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataItemIconPath[d.ItemIconPath] = d
 		a._dataID[d.ID] = d
 		a._dataItemFigureIconPath[d.ItemFigureIconPath] = d
+		a._dataItemIconPath[d.ItemIconPath] = d
 	}
-}
-
-// ByItemIconPath returns the ItemConfigEquipment uniquely identified by ItemIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *ItemConfigEquipmentAccessor) ByItemIconPath(identifier string) (ItemConfigEquipment, error) {
-	if a._dataItemIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigEquipment{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemIconPath[identifier], nil
 }
 
 // ByID returns the ItemConfigEquipment uniquely identified by ID
@@ -93,9 +78,11 @@ func (a *ItemConfigEquipmentAccessor) ByItemIconPath(identifier string) (ItemCon
 // Error is only non-nil if the source errors out
 func (a *ItemConfigEquipmentAccessor) ByID(identifier float64) (ItemConfigEquipment, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigEquipment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigEquipment{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -107,11 +94,29 @@ func (a *ItemConfigEquipmentAccessor) ByID(identifier float64) (ItemConfigEquipm
 // Error is only non-nil if the source errors out
 func (a *ItemConfigEquipmentAccessor) ByItemFigureIconPath(identifier string) (ItemConfigEquipment, error) {
 	if a._dataItemFigureIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigEquipment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigEquipment{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataItemFigureIconPath[identifier], nil
+}
+
+// ByItemIconPath returns the ItemConfigEquipment uniquely identified by ItemIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *ItemConfigEquipmentAccessor) ByItemIconPath(identifier string) (ItemConfigEquipment, error) {
+	if a._dataItemIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigEquipment{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemIconPath[identifier], nil
 }

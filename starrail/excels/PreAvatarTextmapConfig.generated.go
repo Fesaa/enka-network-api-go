@@ -38,7 +38,6 @@ func (a *PreAvatarTextmapConfigAccessor) Raw() ([]PreAvatarTextmapConfig, error)
 		if err != nil {
 			return []PreAvatarTextmapConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *PreAvatarTextmapConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PreAvatarTextmapConfigAccessor) ByPreAvatarID(identifier float64) (PreAvatarTextmapConfig, error) {
 	if a._dataPreAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PreAvatarTextmapConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PreAvatarTextmapConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

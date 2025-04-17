@@ -21,8 +21,8 @@ type SwordTrainingMood struct {
 type SwordTrainingMoodAccessor struct {
 	_data             []SwordTrainingMood
 	_dataMaximumValue map[float64]SwordTrainingMood
-	_dataMoodStatus   map[string]SwordTrainingMood
 	_dataMoodLevel    map[float64]SwordTrainingMood
+	_dataMoodStatus   map[string]SwordTrainingMood
 }
 
 // LoadData retrieves the data. Must be called before SwordTrainingMood.GroupData
@@ -46,7 +46,6 @@ func (a *SwordTrainingMoodAccessor) Raw() ([]SwordTrainingMood, error) {
 		if err != nil {
 			return []SwordTrainingMood{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,8 +55,8 @@ func (a *SwordTrainingMoodAccessor) Raw() ([]SwordTrainingMood, error) {
 func (a *SwordTrainingMoodAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataMaximumValue[d.MaximumValue] = d
-		a._dataMoodStatus[d.MoodStatus] = d
 		a._dataMoodLevel[d.MoodLevel] = d
+		a._dataMoodStatus[d.MoodStatus] = d
 	}
 }
 
@@ -66,27 +65,15 @@ func (a *SwordTrainingMoodAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingMoodAccessor) ByMaximumValue(identifier float64) (SwordTrainingMood, error) {
 	if a._dataMaximumValue == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingMood{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingMood{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMaximumValue[identifier], nil
-}
-
-// ByMoodStatus returns the SwordTrainingMood uniquely identified by MoodStatus
-//
-// Error is only non-nil if the source errors out
-func (a *SwordTrainingMoodAccessor) ByMoodStatus(identifier string) (SwordTrainingMood, error) {
-	if a._dataMoodStatus == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingMood{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMoodStatus[identifier], nil
 }
 
 // ByMoodLevel returns the SwordTrainingMood uniquely identified by MoodLevel
@@ -94,11 +81,29 @@ func (a *SwordTrainingMoodAccessor) ByMoodStatus(identifier string) (SwordTraini
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingMoodAccessor) ByMoodLevel(identifier float64) (SwordTrainingMood, error) {
 	if a._dataMoodLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingMood{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingMood{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMoodLevel[identifier], nil
+}
+
+// ByMoodStatus returns the SwordTrainingMood uniquely identified by MoodStatus
+//
+// Error is only non-nil if the source errors out
+func (a *SwordTrainingMoodAccessor) ByMoodStatus(identifier string) (SwordTrainingMood, error) {
+	if a._dataMoodStatus == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingMood{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMoodStatus[identifier], nil
 }

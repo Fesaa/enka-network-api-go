@@ -44,7 +44,6 @@ func (a *BelobogShopUIConfigAccessor) Raw() ([]BelobogShopUIConfig, error) {
 		if err != nil {
 			return []BelobogShopUIConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *BelobogShopUIConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BelobogShopUIConfigAccessor) ByID(identifier float64) (BelobogShopUIConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BelobogShopUIConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BelobogShopUIConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *BelobogShopUIConfigAccessor) ByID(identifier float64) (BelobogShopUICon
 // Error is only non-nil if the source errors out
 func (a *BelobogShopUIConfigAccessor) ByIconPath(identifier string) (BelobogShopUIConfig, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BelobogShopUIConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BelobogShopUIConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -92,9 +95,11 @@ func (a *BelobogShopUIConfigAccessor) ByIconPath(identifier string) (BelobogShop
 // Error is only non-nil if the source errors out
 func (a *BelobogShopUIConfigAccessor) ByImgPath(identifier string) (BelobogShopUIConfig, error) {
 	if a._dataImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BelobogShopUIConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BelobogShopUIConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

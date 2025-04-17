@@ -37,7 +37,6 @@ func (a *PSObjectMissionMapAccessor) Raw() ([]PSObjectMissionMap, error) {
 		if err != nil {
 			return []PSObjectMissionMap{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *PSObjectMissionMapAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PSObjectMissionMapAccessor) ByObjectID(identifier float64) (PSObjectMissionMap, error) {
 	if a._dataObjectID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PSObjectMissionMap{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PSObjectMissionMap{}, err
+			}
 		}
 		a.GroupData()
 	}

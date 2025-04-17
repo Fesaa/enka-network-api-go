@@ -38,7 +38,6 @@ func (a *PlayerReturnConstValueAccessor) Raw() ([]PlayerReturnConstValue, error)
 		if err != nil {
 			return []PlayerReturnConstValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *PlayerReturnConstValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnConstValueAccessor) ByPlayerReturnConstValueName(identifier string) (PlayerReturnConstValue, error) {
 	if a._dataPlayerReturnConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *PlayerReturnConstValueAccessor) ByPlayerReturnConstValueName(identifier
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnConstValueAccessor) ByValue(identifier string) (PlayerReturnConstValue, error) {
 	if a._dataValue == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}

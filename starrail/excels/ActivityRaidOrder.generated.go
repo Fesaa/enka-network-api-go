@@ -21,8 +21,8 @@ type ActivityRaidOrderOrderContent struct {
 }
 type ActivityRaidOrderAccessor struct {
 	_data          []ActivityRaidOrder
-	_dataOrderTips map[string]ActivityRaidOrder
 	_dataOrderID   map[float64]ActivityRaidOrder
+	_dataOrderTips map[string]ActivityRaidOrder
 }
 
 // LoadData retrieves the data. Must be called before ActivityRaidOrder.GroupData
@@ -46,7 +46,6 @@ func (a *ActivityRaidOrderAccessor) Raw() ([]ActivityRaidOrder, error) {
 		if err != nil {
 			return []ActivityRaidOrder{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,23 +54,9 @@ func (a *ActivityRaidOrderAccessor) Raw() ([]ActivityRaidOrder, error) {
 // Can be called manually in conjunction with ActivityRaidOrderAccessor.LoadData to preload everything
 func (a *ActivityRaidOrderAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataOrderTips[d.OrderTips] = d
 		a._dataOrderID[d.OrderID] = d
+		a._dataOrderTips[d.OrderTips] = d
 	}
-}
-
-// ByOrderTips returns the ActivityRaidOrder uniquely identified by OrderTips
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityRaidOrderAccessor) ByOrderTips(identifier string) (ActivityRaidOrder, error) {
-	if a._dataOrderTips == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidOrder{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOrderTips[identifier], nil
 }
 
 // ByOrderID returns the ActivityRaidOrder uniquely identified by OrderID
@@ -79,11 +64,29 @@ func (a *ActivityRaidOrderAccessor) ByOrderTips(identifier string) (ActivityRaid
 // Error is only non-nil if the source errors out
 func (a *ActivityRaidOrderAccessor) ByOrderID(identifier float64) (ActivityRaidOrder, error) {
 	if a._dataOrderID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidOrder{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidOrder{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataOrderID[identifier], nil
+}
+
+// ByOrderTips returns the ActivityRaidOrder uniquely identified by OrderTips
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityRaidOrderAccessor) ByOrderTips(identifier string) (ActivityRaidOrder, error) {
+	if a._dataOrderTips == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidOrder{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOrderTips[identifier], nil
 }

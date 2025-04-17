@@ -41,7 +41,6 @@ func (a *StaminaSaleConfigAccessor) Raw() ([]StaminaSaleConfig, error) {
 		if err != nil {
 			return []StaminaSaleConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *StaminaSaleConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StaminaSaleConfigAccessor) ByTimes(identifier float64) (StaminaSaleConfig, error) {
 	if a._dataTimes == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StaminaSaleConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StaminaSaleConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

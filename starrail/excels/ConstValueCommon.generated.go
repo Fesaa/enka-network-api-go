@@ -38,7 +38,6 @@ func (a *ConstValueCommonAccessor) Raw() ([]ConstValueCommon, error) {
 		if err != nil {
 			return []ConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ConstValueCommonAccessor) ByConstValueName(identifier string) (ConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

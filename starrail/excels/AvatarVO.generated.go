@@ -44,7 +44,6 @@ func (a *AvatarVOAccessor) Raw() ([]AvatarVO, error) {
 		if err != nil {
 			return []AvatarVO{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *AvatarVOAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarVOAccessor) ByVOTag(identifier string) (AvatarVO, error) {
 	if a._dataVOTag == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarVO{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarVO{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -14,9 +14,9 @@ type TarotBookReadReward struct {
 }
 type TarotBookReadRewardAccessor struct {
 	_data       []TarotBookReadReward
-	_dataQuest  map[float64]TarotBookReadReward
 	_dataID     map[float64]TarotBookReadReward
 	_dataNumber map[float64]TarotBookReadReward
+	_dataQuest  map[float64]TarotBookReadReward
 }
 
 // LoadData retrieves the data. Must be called before TarotBookReadReward.GroupData
@@ -40,7 +40,6 @@ func (a *TarotBookReadRewardAccessor) Raw() ([]TarotBookReadReward, error) {
 		if err != nil {
 			return []TarotBookReadReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,24 +48,10 @@ func (a *TarotBookReadRewardAccessor) Raw() ([]TarotBookReadReward, error) {
 // Can be called manually in conjunction with TarotBookReadRewardAccessor.LoadData to preload everything
 func (a *TarotBookReadRewardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataQuest[d.Quest] = d
 		a._dataID[d.ID] = d
 		a._dataNumber[d.Number] = d
+		a._dataQuest[d.Quest] = d
 	}
-}
-
-// ByQuest returns the TarotBookReadReward uniquely identified by Quest
-//
-// Error is only non-nil if the source errors out
-func (a *TarotBookReadRewardAccessor) ByQuest(identifier float64) (TarotBookReadReward, error) {
-	if a._dataQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookReadReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataQuest[identifier], nil
 }
 
 // ByID returns the TarotBookReadReward uniquely identified by ID
@@ -74,9 +59,11 @@ func (a *TarotBookReadRewardAccessor) ByQuest(identifier float64) (TarotBookRead
 // Error is only non-nil if the source errors out
 func (a *TarotBookReadRewardAccessor) ByID(identifier float64) (TarotBookReadReward, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookReadReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookReadReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,11 +75,29 @@ func (a *TarotBookReadRewardAccessor) ByID(identifier float64) (TarotBookReadRew
 // Error is only non-nil if the source errors out
 func (a *TarotBookReadRewardAccessor) ByNumber(identifier float64) (TarotBookReadReward, error) {
 	if a._dataNumber == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookReadReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookReadReward{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataNumber[identifier], nil
+}
+
+// ByQuest returns the TarotBookReadReward uniquely identified by Quest
+//
+// Error is only non-nil if the source errors out
+func (a *TarotBookReadRewardAccessor) ByQuest(identifier float64) (TarotBookReadReward, error) {
+	if a._dataQuest == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookReadReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataQuest[identifier], nil
 }

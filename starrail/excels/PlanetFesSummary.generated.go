@@ -40,7 +40,6 @@ func (a *PlanetFesSummaryAccessor) Raw() ([]PlanetFesSummary, error) {
 		if err != nil {
 			return []PlanetFesSummary{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *PlanetFesSummaryAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesSummaryAccessor) ByID(identifier string) (PlanetFesSummary, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesSummary{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesSummary{}, err
+			}
 		}
 		a.GroupData()
 	}

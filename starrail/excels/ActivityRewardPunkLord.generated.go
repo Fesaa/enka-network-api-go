@@ -16,9 +16,9 @@ type ActivityRewardPunkLord struct {
 }
 type ActivityRewardPunkLordAccessor struct {
 	_data            []ActivityRewardPunkLord
+	_dataRewardID    map[float64]ActivityRewardPunkLord
 	_dataRewardLevel map[float64]ActivityRewardPunkLord
 	_dataRewardPoint map[float64]ActivityRewardPunkLord
-	_dataRewardID    map[float64]ActivityRewardPunkLord
 }
 
 // LoadData retrieves the data. Must be called before ActivityRewardPunkLord.GroupData
@@ -42,7 +42,6 @@ func (a *ActivityRewardPunkLordAccessor) Raw() ([]ActivityRewardPunkLord, error)
 		if err != nil {
 			return []ActivityRewardPunkLord{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,10 +50,26 @@ func (a *ActivityRewardPunkLordAccessor) Raw() ([]ActivityRewardPunkLord, error)
 // Can be called manually in conjunction with ActivityRewardPunkLordAccessor.LoadData to preload everything
 func (a *ActivityRewardPunkLordAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataRewardID[d.RewardID] = d
 		a._dataRewardLevel[d.RewardLevel] = d
 		a._dataRewardPoint[d.RewardPoint] = d
-		a._dataRewardID[d.RewardID] = d
 	}
+}
+
+// ByRewardID returns the ActivityRewardPunkLord uniquely identified by RewardID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityRewardPunkLordAccessor) ByRewardID(identifier float64) (ActivityRewardPunkLord, error) {
+	if a._dataRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRewardPunkLord{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardID[identifier], nil
 }
 
 // ByRewardLevel returns the ActivityRewardPunkLord uniquely identified by RewardLevel
@@ -62,9 +77,11 @@ func (a *ActivityRewardPunkLordAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityRewardPunkLordAccessor) ByRewardLevel(identifier float64) (ActivityRewardPunkLord, error) {
 	if a._dataRewardLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRewardPunkLord{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRewardPunkLord{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,25 +93,13 @@ func (a *ActivityRewardPunkLordAccessor) ByRewardLevel(identifier float64) (Acti
 // Error is only non-nil if the source errors out
 func (a *ActivityRewardPunkLordAccessor) ByRewardPoint(identifier float64) (ActivityRewardPunkLord, error) {
 	if a._dataRewardPoint == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRewardPunkLord{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRewardPunkLord{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRewardPoint[identifier], nil
-}
-
-// ByRewardID returns the ActivityRewardPunkLord uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityRewardPunkLordAccessor) ByRewardID(identifier float64) (ActivityRewardPunkLord, error) {
-	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRewardPunkLord{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
 }

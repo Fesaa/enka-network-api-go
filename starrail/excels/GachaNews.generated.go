@@ -42,7 +42,6 @@ func (a *GachaNewsAccessor) Raw() ([]GachaNews, error) {
 		if err != nil {
 			return []GachaNews{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *GachaNewsAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GachaNewsAccessor) ByDecideID(identifier float64) (GachaNews, error) {
 	if a._dataDecideID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaNews{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaNews{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -75,9 +76,11 @@ func (a *GachaNewsAccessor) ByDecideID(identifier float64) (GachaNews, error) {
 // Error is only non-nil if the source errors out
 func (a *GachaNewsAccessor) ByNewsID(identifier float64) (GachaNews, error) {
 	if a._dataNewsID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaNews{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaNews{}, err
+			}
 		}
 		a.GroupData()
 	}

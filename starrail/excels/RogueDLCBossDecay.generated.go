@@ -46,7 +46,6 @@ func (a *RogueDLCBossDecayAccessor) Raw() ([]RogueDLCBossDecay, error) {
 		if err != nil {
 			return []RogueDLCBossDecay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *RogueDLCBossDecayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCBossDecayAccessor) ByBossDecayID(identifier float64) (RogueDLCBossDecay, error) {
 	if a._dataBossDecayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCBossDecay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCBossDecay{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -40,7 +40,6 @@ func (a *RogueWolfGunMiracleTargetAccessor) Raw() ([]RogueWolfGunMiracleTarget, 
 		if err != nil {
 			return []RogueWolfGunMiracleTarget{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueWolfGunMiracleTargetAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueWolfGunMiracleTargetAccessor) ByMiracleID(identifier float64) (RogueWolfGunMiracleTarget, error) {
 	if a._dataMiracleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueWolfGunMiracleTarget{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueWolfGunMiracleTarget{}, err
+			}
 		}
 		a.GroupData()
 	}

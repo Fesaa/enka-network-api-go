@@ -13,8 +13,8 @@ type MonsterDamageResistanceType struct {
 }
 type MonsterDamageResistanceTypeAccessor struct {
 	_data     []MonsterDamageResistanceType
-	_dataType map[string]MonsterDamageResistanceType
 	_dataIcon map[string]MonsterDamageResistanceType
+	_dataType map[string]MonsterDamageResistanceType
 }
 
 // LoadData retrieves the data. Must be called before MonsterDamageResistanceType.GroupData
@@ -38,7 +38,6 @@ func (a *MonsterDamageResistanceTypeAccessor) Raw() ([]MonsterDamageResistanceTy
 		if err != nil {
 			return []MonsterDamageResistanceType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *MonsterDamageResistanceTypeAccessor) Raw() ([]MonsterDamageResistanceTy
 // Can be called manually in conjunction with MonsterDamageResistanceTypeAccessor.LoadData to preload everything
 func (a *MonsterDamageResistanceTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataType[d.Type] = d
 		a._dataIcon[d.Icon] = d
+		a._dataType[d.Type] = d
 	}
-}
-
-// ByType returns the MonsterDamageResistanceType uniquely identified by Type
-//
-// Error is only non-nil if the source errors out
-func (a *MonsterDamageResistanceTypeAccessor) ByType(identifier string) (MonsterDamageResistanceType, error) {
-	if a._dataType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterDamageResistanceType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataType[identifier], nil
 }
 
 // ByIcon returns the MonsterDamageResistanceType uniquely identified by Icon
@@ -71,11 +56,29 @@ func (a *MonsterDamageResistanceTypeAccessor) ByType(identifier string) (Monster
 // Error is only non-nil if the source errors out
 func (a *MonsterDamageResistanceTypeAccessor) ByIcon(identifier string) (MonsterDamageResistanceType, error) {
 	if a._dataIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterDamageResistanceType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterDamageResistanceType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIcon[identifier], nil
+}
+
+// ByType returns the MonsterDamageResistanceType uniquely identified by Type
+//
+// Error is only non-nil if the source errors out
+func (a *MonsterDamageResistanceTypeAccessor) ByType(identifier string) (MonsterDamageResistanceType, error) {
+	if a._dataType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterDamageResistanceType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataType[identifier], nil
 }

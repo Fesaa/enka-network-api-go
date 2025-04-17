@@ -37,7 +37,6 @@ func (a *RogueTournLayerAccessor) Raw() ([]RogueTournLayer, error) {
 		if err != nil {
 			return []RogueTournLayer{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *RogueTournLayerAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournLayerAccessor) ByLayerID(identifier float64) (RogueTournLayer, error) {
 	if a._dataLayerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournLayer{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournLayer{}, err
+			}
 		}
 		a.GroupData()
 	}

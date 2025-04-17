@@ -22,8 +22,8 @@ type DecalConfig struct {
 type DecalConfigAccessor struct {
 	_data               []DecalConfig
 	_dataComment        map[string]DecalConfig
-	_dataTextureMapPath map[string]DecalConfig
 	_dataDecalID        map[float64]DecalConfig
+	_dataTextureMapPath map[string]DecalConfig
 }
 
 // LoadData retrieves the data. Must be called before DecalConfig.GroupData
@@ -47,7 +47,6 @@ func (a *DecalConfigAccessor) Raw() ([]DecalConfig, error) {
 		if err != nil {
 			return []DecalConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,8 +56,8 @@ func (a *DecalConfigAccessor) Raw() ([]DecalConfig, error) {
 func (a *DecalConfigAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataComment[d.Comment] = d
-		a._dataTextureMapPath[d.TextureMapPath] = d
 		a._dataDecalID[d.DecalID] = d
+		a._dataTextureMapPath[d.TextureMapPath] = d
 	}
 }
 
@@ -67,27 +66,15 @@ func (a *DecalConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DecalConfigAccessor) ByComment(identifier string) (DecalConfig, error) {
 	if a._dataComment == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DecalConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DecalConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataComment[identifier], nil
-}
-
-// ByTextureMapPath returns the DecalConfig uniquely identified by TextureMapPath
-//
-// Error is only non-nil if the source errors out
-func (a *DecalConfigAccessor) ByTextureMapPath(identifier string) (DecalConfig, error) {
-	if a._dataTextureMapPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DecalConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTextureMapPath[identifier], nil
 }
 
 // ByDecalID returns the DecalConfig uniquely identified by DecalID
@@ -95,11 +82,29 @@ func (a *DecalConfigAccessor) ByTextureMapPath(identifier string) (DecalConfig, 
 // Error is only non-nil if the source errors out
 func (a *DecalConfigAccessor) ByDecalID(identifier float64) (DecalConfig, error) {
 	if a._dataDecalID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DecalConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DecalConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDecalID[identifier], nil
+}
+
+// ByTextureMapPath returns the DecalConfig uniquely identified by TextureMapPath
+//
+// Error is only non-nil if the source errors out
+func (a *DecalConfigAccessor) ByTextureMapPath(identifier string) (DecalConfig, error) {
+	if a._dataTextureMapPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DecalConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTextureMapPath[identifier], nil
 }

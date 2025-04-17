@@ -65,7 +65,6 @@ func (a *AvatarSkillTreeConfigTrialAccessor) Raw() ([]AvatarSkillTreeConfigTrial
 		if err != nil {
 			return []AvatarSkillTreeConfigTrial{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

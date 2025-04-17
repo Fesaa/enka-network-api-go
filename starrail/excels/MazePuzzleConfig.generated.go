@@ -39,7 +39,6 @@ func (a *MazePuzzleConfigAccessor) Raw() ([]MazePuzzleConfig, error) {
 		if err != nil {
 			return []MazePuzzleConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

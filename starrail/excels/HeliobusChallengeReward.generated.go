@@ -17,8 +17,8 @@ type HeliobusChallengeReward struct {
 }
 type HeliobusChallengeRewardAccessor struct {
 	_data                     []HeliobusChallengeReward
-	_dataUnlockQuest          map[float64]HeliobusChallengeReward
 	_dataChallengeRewardTabID map[float64]HeliobusChallengeReward
+	_dataUnlockQuest          map[float64]HeliobusChallengeReward
 }
 
 // LoadData retrieves the data. Must be called before HeliobusChallengeReward.GroupData
@@ -42,7 +42,6 @@ func (a *HeliobusChallengeRewardAccessor) Raw() ([]HeliobusChallengeReward, erro
 		if err != nil {
 			return []HeliobusChallengeReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,23 +50,9 @@ func (a *HeliobusChallengeRewardAccessor) Raw() ([]HeliobusChallengeReward, erro
 // Can be called manually in conjunction with HeliobusChallengeRewardAccessor.LoadData to preload everything
 func (a *HeliobusChallengeRewardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUnlockQuest[d.UnlockQuest] = d
 		a._dataChallengeRewardTabID[d.ChallengeRewardTabID] = d
+		a._dataUnlockQuest[d.UnlockQuest] = d
 	}
-}
-
-// ByUnlockQuest returns the HeliobusChallengeReward uniquely identified by UnlockQuest
-//
-// Error is only non-nil if the source errors out
-func (a *HeliobusChallengeRewardAccessor) ByUnlockQuest(identifier float64) (HeliobusChallengeReward, error) {
-	if a._dataUnlockQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengeReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockQuest[identifier], nil
 }
 
 // ByChallengeRewardTabID returns the HeliobusChallengeReward uniquely identified by ChallengeRewardTabID
@@ -75,11 +60,29 @@ func (a *HeliobusChallengeRewardAccessor) ByUnlockQuest(identifier float64) (Hel
 // Error is only non-nil if the source errors out
 func (a *HeliobusChallengeRewardAccessor) ByChallengeRewardTabID(identifier float64) (HeliobusChallengeReward, error) {
 	if a._dataChallengeRewardTabID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengeReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengeReward{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataChallengeRewardTabID[identifier], nil
+}
+
+// ByUnlockQuest returns the HeliobusChallengeReward uniquely identified by UnlockQuest
+//
+// Error is only non-nil if the source errors out
+func (a *HeliobusChallengeRewardAccessor) ByUnlockQuest(identifier float64) (HeliobusChallengeReward, error) {
+	if a._dataUnlockQuest == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengeReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockQuest[identifier], nil
 }

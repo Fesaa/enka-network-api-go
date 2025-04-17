@@ -38,7 +38,6 @@ func (a *PlayerReturnQuestAccessor) Raw() ([]PlayerReturnQuest, error) {
 		if err != nil {
 			return []PlayerReturnQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *PlayerReturnQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnQuestAccessor) ByID(identifier float64) (PlayerReturnQuest, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

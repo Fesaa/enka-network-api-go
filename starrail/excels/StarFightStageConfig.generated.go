@@ -41,7 +41,6 @@ func (a *StarFightStageConfigAccessor) Raw() ([]StarFightStageConfig, error) {
 		if err != nil {
 			return []StarFightStageConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *StarFightStageConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StarFightStageConfigAccessor) ByEventID(identifier float64) (StarFightStageConfig, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StarFightStageConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StarFightStageConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

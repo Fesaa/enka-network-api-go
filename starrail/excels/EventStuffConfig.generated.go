@@ -17,10 +17,10 @@ type EventStuffConfig struct {
 }
 type EventStuffConfigAccessor struct {
 	_data                   []EventStuffConfig
-	_dataMissionStartString map[string]EventStuffConfig
 	_dataEventStuffID       map[float64]EventStuffConfig
-	_dataStuffID            map[float64]EventStuffConfig
 	_dataMissionID          map[float64]EventStuffConfig
+	_dataMissionStartString map[string]EventStuffConfig
+	_dataStuffID            map[float64]EventStuffConfig
 }
 
 // LoadData retrieves the data. Must be called before EventStuffConfig.GroupData
@@ -44,7 +44,6 @@ func (a *EventStuffConfigAccessor) Raw() ([]EventStuffConfig, error) {
 		if err != nil {
 			return []EventStuffConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,25 +52,11 @@ func (a *EventStuffConfigAccessor) Raw() ([]EventStuffConfig, error) {
 // Can be called manually in conjunction with EventStuffConfigAccessor.LoadData to preload everything
 func (a *EventStuffConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataMissionStartString[d.MissionStartString] = d
 		a._dataEventStuffID[d.EventStuffID] = d
-		a._dataStuffID[d.StuffID] = d
 		a._dataMissionID[d.MissionID] = d
+		a._dataMissionStartString[d.MissionStartString] = d
+		a._dataStuffID[d.StuffID] = d
 	}
-}
-
-// ByMissionStartString returns the EventStuffConfig uniquely identified by MissionStartString
-//
-// Error is only non-nil if the source errors out
-func (a *EventStuffConfigAccessor) ByMissionStartString(identifier string) (EventStuffConfig, error) {
-	if a._dataMissionStartString == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventStuffConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMissionStartString[identifier], nil
 }
 
 // ByEventStuffID returns the EventStuffConfig uniquely identified by EventStuffID
@@ -79,27 +64,15 @@ func (a *EventStuffConfigAccessor) ByMissionStartString(identifier string) (Even
 // Error is only non-nil if the source errors out
 func (a *EventStuffConfigAccessor) ByEventStuffID(identifier float64) (EventStuffConfig, error) {
 	if a._dataEventStuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventStuffConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventStuffConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventStuffID[identifier], nil
-}
-
-// ByStuffID returns the EventStuffConfig uniquely identified by StuffID
-//
-// Error is only non-nil if the source errors out
-func (a *EventStuffConfigAccessor) ByStuffID(identifier float64) (EventStuffConfig, error) {
-	if a._dataStuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventStuffConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStuffID[identifier], nil
 }
 
 // ByMissionID returns the EventStuffConfig uniquely identified by MissionID
@@ -107,11 +80,45 @@ func (a *EventStuffConfigAccessor) ByStuffID(identifier float64) (EventStuffConf
 // Error is only non-nil if the source errors out
 func (a *EventStuffConfigAccessor) ByMissionID(identifier float64) (EventStuffConfig, error) {
 	if a._dataMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EventStuffConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventStuffConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMissionID[identifier], nil
+}
+
+// ByMissionStartString returns the EventStuffConfig uniquely identified by MissionStartString
+//
+// Error is only non-nil if the source errors out
+func (a *EventStuffConfigAccessor) ByMissionStartString(identifier string) (EventStuffConfig, error) {
+	if a._dataMissionStartString == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventStuffConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMissionStartString[identifier], nil
+}
+
+// ByStuffID returns the EventStuffConfig uniquely identified by StuffID
+//
+// Error is only non-nil if the source errors out
+func (a *EventStuffConfigAccessor) ByStuffID(identifier float64) (EventStuffConfig, error) {
+	if a._dataStuffID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EventStuffConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStuffID[identifier], nil
 }

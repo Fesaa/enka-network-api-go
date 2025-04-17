@@ -38,7 +38,6 @@ func (a *StageInfiniteMonsterGroupAccessor) Raw() ([]StageInfiniteMonsterGroup, 
 		if err != nil {
 			return []StageInfiniteMonsterGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *StageInfiniteMonsterGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StageInfiniteMonsterGroupAccessor) ByInfiniteMonsterGroupID(identifier float64) (StageInfiniteMonsterGroup, error) {
 	if a._dataInfiniteMonsterGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StageInfiniteMonsterGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StageInfiniteMonsterGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

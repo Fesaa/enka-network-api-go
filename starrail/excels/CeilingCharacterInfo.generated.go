@@ -38,7 +38,6 @@ func (a *CeilingCharacterInfoAccessor) Raw() ([]CeilingCharacterInfo, error) {
 		if err != nil {
 			return []CeilingCharacterInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *CeilingCharacterInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *CeilingCharacterInfoAccessor) ByCharacterID(identifier float64) (CeilingCharacterInfo, error) {
 	if a._dataCharacterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CeilingCharacterInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CeilingCharacterInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

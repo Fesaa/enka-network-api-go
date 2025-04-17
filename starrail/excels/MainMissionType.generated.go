@@ -27,11 +27,11 @@ type MainMissionType struct {
 }
 type MainMissionTypeAccessor struct {
 	_data                 []MainMissionType
-	_dataTypePriority     map[float64]MainMissionType
+	_dataTypeChapterColor map[string]MainMissionType
+	_dataTypeColor        map[string]MainMissionType
 	_dataTypeIcon         map[string]MainMissionType
 	_dataTypeIconMini     map[string]MainMissionType
-	_dataTypeColor        map[string]MainMissionType
-	_dataTypeChapterColor map[string]MainMissionType
+	_dataTypePriority     map[float64]MainMissionType
 }
 
 // LoadData retrieves the data. Must be called before MainMissionType.GroupData
@@ -55,7 +55,6 @@ func (a *MainMissionTypeAccessor) Raw() ([]MainMissionType, error) {
 		if err != nil {
 			return []MainMissionType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,26 +63,44 @@ func (a *MainMissionTypeAccessor) Raw() ([]MainMissionType, error) {
 // Can be called manually in conjunction with MainMissionTypeAccessor.LoadData to preload everything
 func (a *MainMissionTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTypePriority[d.TypePriority] = d
+		a._dataTypeChapterColor[d.TypeChapterColor] = d
+		a._dataTypeColor[d.TypeColor] = d
 		a._dataTypeIcon[d.TypeIcon] = d
 		a._dataTypeIconMini[d.TypeIconMini] = d
-		a._dataTypeColor[d.TypeColor] = d
-		a._dataTypeChapterColor[d.TypeChapterColor] = d
+		a._dataTypePriority[d.TypePriority] = d
 	}
 }
 
-// ByTypePriority returns the MainMissionType uniquely identified by TypePriority
+// ByTypeChapterColor returns the MainMissionType uniquely identified by TypeChapterColor
 //
 // Error is only non-nil if the source errors out
-func (a *MainMissionTypeAccessor) ByTypePriority(identifier float64) (MainMissionType, error) {
-	if a._dataTypePriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MainMissionType{}, err
+func (a *MainMissionTypeAccessor) ByTypeChapterColor(identifier string) (MainMissionType, error) {
+	if a._dataTypeChapterColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MainMissionType{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataTypePriority[identifier], nil
+	return a._dataTypeChapterColor[identifier], nil
+}
+
+// ByTypeColor returns the MainMissionType uniquely identified by TypeColor
+//
+// Error is only non-nil if the source errors out
+func (a *MainMissionTypeAccessor) ByTypeColor(identifier string) (MainMissionType, error) {
+	if a._dataTypeColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MainMissionType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTypeColor[identifier], nil
 }
 
 // ByTypeIcon returns the MainMissionType uniquely identified by TypeIcon
@@ -91,9 +108,11 @@ func (a *MainMissionTypeAccessor) ByTypePriority(identifier float64) (MainMissio
 // Error is only non-nil if the source errors out
 func (a *MainMissionTypeAccessor) ByTypeIcon(identifier string) (MainMissionType, error) {
 	if a._dataTypeIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MainMissionType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MainMissionType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -105,39 +124,29 @@ func (a *MainMissionTypeAccessor) ByTypeIcon(identifier string) (MainMissionType
 // Error is only non-nil if the source errors out
 func (a *MainMissionTypeAccessor) ByTypeIconMini(identifier string) (MainMissionType, error) {
 	if a._dataTypeIconMini == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MainMissionType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MainMissionType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTypeIconMini[identifier], nil
 }
 
-// ByTypeColor returns the MainMissionType uniquely identified by TypeColor
+// ByTypePriority returns the MainMissionType uniquely identified by TypePriority
 //
 // Error is only non-nil if the source errors out
-func (a *MainMissionTypeAccessor) ByTypeColor(identifier string) (MainMissionType, error) {
-	if a._dataTypeColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MainMissionType{}, err
+func (a *MainMissionTypeAccessor) ByTypePriority(identifier float64) (MainMissionType, error) {
+	if a._dataTypePriority == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MainMissionType{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataTypeColor[identifier], nil
-}
-
-// ByTypeChapterColor returns the MainMissionType uniquely identified by TypeChapterColor
-//
-// Error is only non-nil if the source errors out
-func (a *MainMissionTypeAccessor) ByTypeChapterColor(identifier string) (MainMissionType, error) {
-	if a._dataTypeChapterColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MainMissionType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTypeChapterColor[identifier], nil
+	return a._dataTypePriority[identifier], nil
 }

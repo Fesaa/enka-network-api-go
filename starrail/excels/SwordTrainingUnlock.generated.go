@@ -15,8 +15,8 @@ type SwordTrainingUnlock struct {
 }
 type SwordTrainingUnlockAccessor struct {
 	_data            []SwordTrainingUnlock
-	_dataUnlockID    map[float64]SwordTrainingUnlock
 	_dataFinishWayID map[float64]SwordTrainingUnlock
+	_dataUnlockID    map[float64]SwordTrainingUnlock
 }
 
 // LoadData retrieves the data. Must be called before SwordTrainingUnlock.GroupData
@@ -40,7 +40,6 @@ func (a *SwordTrainingUnlockAccessor) Raw() ([]SwordTrainingUnlock, error) {
 		if err != nil {
 			return []SwordTrainingUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *SwordTrainingUnlockAccessor) Raw() ([]SwordTrainingUnlock, error) {
 // Can be called manually in conjunction with SwordTrainingUnlockAccessor.LoadData to preload everything
 func (a *SwordTrainingUnlockAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUnlockID[d.UnlockID] = d
 		a._dataFinishWayID[d.FinishWayID] = d
+		a._dataUnlockID[d.UnlockID] = d
 	}
-}
-
-// ByUnlockID returns the SwordTrainingUnlock uniquely identified by UnlockID
-//
-// Error is only non-nil if the source errors out
-func (a *SwordTrainingUnlockAccessor) ByUnlockID(identifier float64) (SwordTrainingUnlock, error) {
-	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingUnlock{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockID[identifier], nil
 }
 
 // ByFinishWayID returns the SwordTrainingUnlock uniquely identified by FinishWayID
@@ -73,11 +58,29 @@ func (a *SwordTrainingUnlockAccessor) ByUnlockID(identifier float64) (SwordTrain
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingUnlockAccessor) ByFinishWayID(identifier float64) (SwordTrainingUnlock, error) {
 	if a._dataFinishWayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFinishWayID[identifier], nil
+}
+
+// ByUnlockID returns the SwordTrainingUnlock uniquely identified by UnlockID
+//
+// Error is only non-nil if the source errors out
+func (a *SwordTrainingUnlockAccessor) ByUnlockID(identifier float64) (SwordTrainingUnlock, error) {
+	if a._dataUnlockID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingUnlock{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockID[identifier], nil
 }

@@ -42,7 +42,6 @@ func (a *StoryPropAccessor) Raw() ([]StoryProp, error) {
 		if err != nil {
 			return []StoryProp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *StoryPropAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StoryPropAccessor) ByStoryCharacterID(identifier string) (StoryProp, error) {
 	if a._dataStoryCharacterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StoryProp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StoryProp{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -75,9 +76,11 @@ func (a *StoryPropAccessor) ByStoryCharacterID(identifier string) (StoryProp, er
 // Error is only non-nil if the source errors out
 func (a *StoryPropAccessor) ByStoryCharacterUniqueName(identifier string) (StoryProp, error) {
 	if a._dataStoryCharacterUniqueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StoryProp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StoryProp{}, err
+			}
 		}
 		a.GroupData()
 	}

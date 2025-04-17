@@ -29,9 +29,9 @@ type TravelBrochureConfigConditions struct {
 }
 type TravelBrochureConfigAccessor struct {
 	_data             []TravelBrochureConfig
-	_dataSort         map[float64]TravelBrochureConfig
-	_dataID           map[float64]TravelBrochureConfig
 	_dataDiaryGroupID map[float64]TravelBrochureConfig
+	_dataID           map[float64]TravelBrochureConfig
+	_dataSort         map[float64]TravelBrochureConfig
 }
 
 // LoadData retrieves the data. Must be called before TravelBrochureConfig.GroupData
@@ -55,7 +55,6 @@ func (a *TravelBrochureConfigAccessor) Raw() ([]TravelBrochureConfig, error) {
 		if err != nil {
 			return []TravelBrochureConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,38 +63,10 @@ func (a *TravelBrochureConfigAccessor) Raw() ([]TravelBrochureConfig, error) {
 // Can be called manually in conjunction with TravelBrochureConfigAccessor.LoadData to preload everything
 func (a *TravelBrochureConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSort[d.Sort] = d
-		a._dataID[d.ID] = d
 		a._dataDiaryGroupID[d.DiaryGroupID] = d
+		a._dataID[d.ID] = d
+		a._dataSort[d.Sort] = d
 	}
-}
-
-// BySort returns the TravelBrochureConfig uniquely identified by Sort
-//
-// Error is only non-nil if the source errors out
-func (a *TravelBrochureConfigAccessor) BySort(identifier float64) (TravelBrochureConfig, error) {
-	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TravelBrochureConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSort[identifier], nil
-}
-
-// ByID returns the TravelBrochureConfig uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *TravelBrochureConfigAccessor) ByID(identifier float64) (TravelBrochureConfig, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TravelBrochureConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByDiaryGroupID returns the TravelBrochureConfig uniquely identified by DiaryGroupID
@@ -103,11 +74,45 @@ func (a *TravelBrochureConfigAccessor) ByID(identifier float64) (TravelBrochureC
 // Error is only non-nil if the source errors out
 func (a *TravelBrochureConfigAccessor) ByDiaryGroupID(identifier float64) (TravelBrochureConfig, error) {
 	if a._dataDiaryGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TravelBrochureConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TravelBrochureConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDiaryGroupID[identifier], nil
+}
+
+// ByID returns the TravelBrochureConfig uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *TravelBrochureConfigAccessor) ByID(identifier float64) (TravelBrochureConfig, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TravelBrochureConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// BySort returns the TravelBrochureConfig uniquely identified by Sort
+//
+// Error is only non-nil if the source errors out
+func (a *TravelBrochureConfigAccessor) BySort(identifier float64) (TravelBrochureConfig, error) {
+	if a._dataSort == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TravelBrochureConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSort[identifier], nil
 }

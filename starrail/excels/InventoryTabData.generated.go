@@ -28,8 +28,8 @@ type InventoryTabDataUnlockCondition struct {
 }
 type InventoryTabDataAccessor struct {
 	_data              []InventoryTabData
-	_dataTabSortWeight map[float64]InventoryTabData
 	_dataID            map[float64]InventoryTabData
+	_dataTabSortWeight map[float64]InventoryTabData
 }
 
 // LoadData retrieves the data. Must be called before InventoryTabData.GroupData
@@ -53,7 +53,6 @@ func (a *InventoryTabDataAccessor) Raw() ([]InventoryTabData, error) {
 		if err != nil {
 			return []InventoryTabData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,23 +61,9 @@ func (a *InventoryTabDataAccessor) Raw() ([]InventoryTabData, error) {
 // Can be called manually in conjunction with InventoryTabDataAccessor.LoadData to preload everything
 func (a *InventoryTabDataAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTabSortWeight[d.TabSortWeight] = d
 		a._dataID[d.ID] = d
+		a._dataTabSortWeight[d.TabSortWeight] = d
 	}
-}
-
-// ByTabSortWeight returns the InventoryTabData uniquely identified by TabSortWeight
-//
-// Error is only non-nil if the source errors out
-func (a *InventoryTabDataAccessor) ByTabSortWeight(identifier float64) (InventoryTabData, error) {
-	if a._dataTabSortWeight == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InventoryTabData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTabSortWeight[identifier], nil
 }
 
 // ByID returns the InventoryTabData uniquely identified by ID
@@ -86,11 +71,29 @@ func (a *InventoryTabDataAccessor) ByTabSortWeight(identifier float64) (Inventor
 // Error is only non-nil if the source errors out
 func (a *InventoryTabDataAccessor) ByID(identifier float64) (InventoryTabData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InventoryTabData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InventoryTabData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByTabSortWeight returns the InventoryTabData uniquely identified by TabSortWeight
+//
+// Error is only non-nil if the source errors out
+func (a *InventoryTabDataAccessor) ByTabSortWeight(identifier float64) (InventoryTabData, error) {
+	if a._dataTabSortWeight == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InventoryTabData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTabSortWeight[identifier], nil
 }

@@ -53,7 +53,6 @@ func (a *ItemConfigTrainDynamicAccessor) Raw() ([]ItemConfigTrainDynamic, error)
 		if err != nil {
 			return []ItemConfigTrainDynamic{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -73,9 +72,11 @@ func (a *ItemConfigTrainDynamicAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemConfigTrainDynamicAccessor) ByID(identifier float64) (ItemConfigTrainDynamic, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigTrainDynamic{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigTrainDynamic{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -87,9 +88,11 @@ func (a *ItemConfigTrainDynamicAccessor) ByID(identifier float64) (ItemConfigTra
 // Error is only non-nil if the source errors out
 func (a *ItemConfigTrainDynamicAccessor) ByItemFigureIconPath(identifier string) (ItemConfigTrainDynamic, error) {
 	if a._dataItemFigureIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigTrainDynamic{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigTrainDynamic{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -101,9 +104,11 @@ func (a *ItemConfigTrainDynamicAccessor) ByItemFigureIconPath(identifier string)
 // Error is only non-nil if the source errors out
 func (a *ItemConfigTrainDynamicAccessor) ByItemIconPath(identifier string) (ItemConfigTrainDynamic, error) {
 	if a._dataItemIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigTrainDynamic{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigTrainDynamic{}, err
+			}
 		}
 		a.GroupData()
 	}

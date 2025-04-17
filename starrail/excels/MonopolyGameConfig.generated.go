@@ -22,8 +22,8 @@ type MonopolyGameConfig struct {
 }
 type MonopolyGameConfigAccessor struct {
 	_data          []MonopolyGameConfig
-	_dataGameType  map[string]MonopolyGameConfig
 	_dataGameID    map[float64]MonopolyGameConfig
+	_dataGameType  map[string]MonopolyGameConfig
 	_dataParamStr1 map[string]MonopolyGameConfig
 }
 
@@ -48,7 +48,6 @@ func (a *MonopolyGameConfigAccessor) Raw() ([]MonopolyGameConfig, error) {
 		if err != nil {
 			return []MonopolyGameConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,24 +56,10 @@ func (a *MonopolyGameConfigAccessor) Raw() ([]MonopolyGameConfig, error) {
 // Can be called manually in conjunction with MonopolyGameConfigAccessor.LoadData to preload everything
 func (a *MonopolyGameConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataGameType[d.GameType] = d
 		a._dataGameID[d.GameID] = d
+		a._dataGameType[d.GameType] = d
 		a._dataParamStr1[d.ParamStr1] = d
 	}
-}
-
-// ByGameType returns the MonopolyGameConfig uniquely identified by GameType
-//
-// Error is only non-nil if the source errors out
-func (a *MonopolyGameConfigAccessor) ByGameType(identifier string) (MonopolyGameConfig, error) {
-	if a._dataGameType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyGameConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGameType[identifier], nil
 }
 
 // ByGameID returns the MonopolyGameConfig uniquely identified by GameID
@@ -82,13 +67,31 @@ func (a *MonopolyGameConfigAccessor) ByGameType(identifier string) (MonopolyGame
 // Error is only non-nil if the source errors out
 func (a *MonopolyGameConfigAccessor) ByGameID(identifier float64) (MonopolyGameConfig, error) {
 	if a._dataGameID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyGameConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyGameConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGameID[identifier], nil
+}
+
+// ByGameType returns the MonopolyGameConfig uniquely identified by GameType
+//
+// Error is only non-nil if the source errors out
+func (a *MonopolyGameConfigAccessor) ByGameType(identifier string) (MonopolyGameConfig, error) {
+	if a._dataGameType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyGameConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGameType[identifier], nil
 }
 
 // ByParamStr1 returns the MonopolyGameConfig uniquely identified by ParamStr1
@@ -96,9 +99,11 @@ func (a *MonopolyGameConfigAccessor) ByGameID(identifier float64) (MonopolyGameC
 // Error is only non-nil if the source errors out
 func (a *MonopolyGameConfigAccessor) ByParamStr1(identifier string) (MonopolyGameConfig, error) {
 	if a._dataParamStr1 == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyGameConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyGameConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

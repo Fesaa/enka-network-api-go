@@ -37,7 +37,6 @@ func (a *BattlePassQuestAccessor) Raw() ([]BattlePassQuest, error) {
 		if err != nil {
 			return []BattlePassQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *BattlePassQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BattlePassQuestAccessor) ByID(identifier float64) (BattlePassQuest, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattlePassQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattlePassQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -40,7 +40,6 @@ func (a *ItemCureInfoDataAccessor) Raw() ([]ItemCureInfoData, error) {
 		if err != nil {
 			return []ItemCureInfoData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ItemCureInfoDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemCureInfoDataAccessor) ByID(identifier float64) (ItemCureInfoData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemCureInfoData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemCureInfoData{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -24,12 +24,12 @@ type ChimeraData struct {
 }
 type ChimeraDataAccessor struct {
 	_data            []ChimeraData
-	_dataSort        map[float64]ChimeraData
-	_dataChimeraIcon map[string]ChimeraData
 	_dataBody        map[string]ChimeraData
-	_dataDisplayID   map[float64]ChimeraData
-	_dataDataJson    map[string]ChimeraData
 	_dataChimeraID   map[float64]ChimeraData
+	_dataChimeraIcon map[string]ChimeraData
+	_dataDataJson    map[string]ChimeraData
+	_dataDisplayID   map[float64]ChimeraData
+	_dataSort        map[float64]ChimeraData
 }
 
 // LoadData retrieves the data. Must be called before ChimeraData.GroupData
@@ -53,7 +53,6 @@ func (a *ChimeraDataAccessor) Raw() ([]ChimeraData, error) {
 		if err != nil {
 			return []ChimeraData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,41 +61,13 @@ func (a *ChimeraDataAccessor) Raw() ([]ChimeraData, error) {
 // Can be called manually in conjunction with ChimeraDataAccessor.LoadData to preload everything
 func (a *ChimeraDataAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSort[d.Sort] = d
-		a._dataChimeraIcon[d.ChimeraIcon] = d
 		a._dataBody[d.Body] = d
-		a._dataDisplayID[d.DisplayID] = d
-		a._dataDataJson[d.DataJson] = d
 		a._dataChimeraID[d.ChimeraID] = d
+		a._dataChimeraIcon[d.ChimeraIcon] = d
+		a._dataDataJson[d.DataJson] = d
+		a._dataDisplayID[d.DisplayID] = d
+		a._dataSort[d.Sort] = d
 	}
-}
-
-// BySort returns the ChimeraData uniquely identified by Sort
-//
-// Error is only non-nil if the source errors out
-func (a *ChimeraDataAccessor) BySort(identifier float64) (ChimeraData, error) {
-	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSort[identifier], nil
-}
-
-// ByChimeraIcon returns the ChimeraData uniquely identified by ChimeraIcon
-//
-// Error is only non-nil if the source errors out
-func (a *ChimeraDataAccessor) ByChimeraIcon(identifier string) (ChimeraData, error) {
-	if a._dataChimeraIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataChimeraIcon[identifier], nil
 }
 
 // ByBody returns the ChimeraData uniquely identified by Body
@@ -104,41 +75,15 @@ func (a *ChimeraDataAccessor) ByChimeraIcon(identifier string) (ChimeraData, err
 // Error is only non-nil if the source errors out
 func (a *ChimeraDataAccessor) ByBody(identifier string) (ChimeraData, error) {
 	if a._dataBody == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBody[identifier], nil
-}
-
-// ByDisplayID returns the ChimeraData uniquely identified by DisplayID
-//
-// Error is only non-nil if the source errors out
-func (a *ChimeraDataAccessor) ByDisplayID(identifier float64) (ChimeraData, error) {
-	if a._dataDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDisplayID[identifier], nil
-}
-
-// ByDataJson returns the ChimeraData uniquely identified by DataJson
-//
-// Error is only non-nil if the source errors out
-func (a *ChimeraDataAccessor) ByDataJson(identifier string) (ChimeraData, error) {
-	if a._dataDataJson == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDataJson[identifier], nil
 }
 
 // ByChimeraID returns the ChimeraData uniquely identified by ChimeraID
@@ -146,11 +91,77 @@ func (a *ChimeraDataAccessor) ByDataJson(identifier string) (ChimeraData, error)
 // Error is only non-nil if the source errors out
 func (a *ChimeraDataAccessor) ByChimeraID(identifier float64) (ChimeraData, error) {
 	if a._dataChimeraID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataChimeraID[identifier], nil
+}
+
+// ByChimeraIcon returns the ChimeraData uniquely identified by ChimeraIcon
+//
+// Error is only non-nil if the source errors out
+func (a *ChimeraDataAccessor) ByChimeraIcon(identifier string) (ChimeraData, error) {
+	if a._dataChimeraIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataChimeraIcon[identifier], nil
+}
+
+// ByDataJson returns the ChimeraData uniquely identified by DataJson
+//
+// Error is only non-nil if the source errors out
+func (a *ChimeraDataAccessor) ByDataJson(identifier string) (ChimeraData, error) {
+	if a._dataDataJson == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDataJson[identifier], nil
+}
+
+// ByDisplayID returns the ChimeraData uniquely identified by DisplayID
+//
+// Error is only non-nil if the source errors out
+func (a *ChimeraDataAccessor) ByDisplayID(identifier float64) (ChimeraData, error) {
+	if a._dataDisplayID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDisplayID[identifier], nil
+}
+
+// BySort returns the ChimeraData uniquely identified by Sort
+//
+// Error is only non-nil if the source errors out
+func (a *ChimeraDataAccessor) BySort(identifier float64) (ChimeraData, error) {
+	if a._dataSort == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSort[identifier], nil
 }

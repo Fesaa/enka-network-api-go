@@ -53,7 +53,6 @@ func (a *MarbleMatchInfoAccessor) Raw() ([]MarbleMatchInfo, error) {
 		if err != nil {
 			return []MarbleMatchInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -73,9 +72,11 @@ func (a *MarbleMatchInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleMatchInfoAccessor) ByID(identifier float64) (MarbleMatchInfo, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleMatchInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleMatchInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -87,9 +88,11 @@ func (a *MarbleMatchInfoAccessor) ByID(identifier float64) (MarbleMatchInfo, err
 // Error is only non-nil if the source errors out
 func (a *MarbleMatchInfoAccessor) ByLevelID(identifier float64) (MarbleMatchInfo, error) {
 	if a._dataLevelID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleMatchInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleMatchInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -101,9 +104,11 @@ func (a *MarbleMatchInfoAccessor) ByLevelID(identifier float64) (MarbleMatchInfo
 // Error is only non-nil if the source errors out
 func (a *MarbleMatchInfoAccessor) ByPlayerID(identifier float64) (MarbleMatchInfo, error) {
 	if a._dataPlayerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleMatchInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleMatchInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

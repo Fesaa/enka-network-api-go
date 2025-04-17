@@ -39,7 +39,6 @@ func (a *PlayerLevelConfigAccessor) Raw() ([]PlayerLevelConfig, error) {
 		if err != nil {
 			return []PlayerLevelConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *PlayerLevelConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlayerLevelConfigAccessor) ByLevel(identifier float64) (PlayerLevelConfig, error) {
 	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerLevelConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerLevelConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

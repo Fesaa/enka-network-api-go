@@ -13,8 +13,8 @@ type ActivityConstantFindTrotter struct {
 }
 type ActivityConstantFindTrotterAccessor struct {
 	_data               []ActivityConstantFindTrotter
-	_dataValue          map[string]ActivityConstantFindTrotter
 	_dataConstValueName map[string]ActivityConstantFindTrotter
+	_dataValue          map[string]ActivityConstantFindTrotter
 }
 
 // LoadData retrieves the data. Must be called before ActivityConstantFindTrotter.GroupData
@@ -38,7 +38,6 @@ func (a *ActivityConstantFindTrotterAccessor) Raw() ([]ActivityConstantFindTrott
 		if err != nil {
 			return []ActivityConstantFindTrotter{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *ActivityConstantFindTrotterAccessor) Raw() ([]ActivityConstantFindTrott
 // Can be called manually in conjunction with ActivityConstantFindTrotterAccessor.LoadData to preload everything
 func (a *ActivityConstantFindTrotterAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataValue[d.Value] = d
 		a._dataConstValueName[d.ConstValueName] = d
+		a._dataValue[d.Value] = d
 	}
-}
-
-// ByValue returns the ActivityConstantFindTrotter uniquely identified by Value
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityConstantFindTrotterAccessor) ByValue(identifier string) (ActivityConstantFindTrotter, error) {
-	if a._dataValue == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityConstantFindTrotter{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataValue[identifier], nil
 }
 
 // ByConstValueName returns the ActivityConstantFindTrotter uniquely identified by ConstValueName
@@ -71,11 +56,29 @@ func (a *ActivityConstantFindTrotterAccessor) ByValue(identifier string) (Activi
 // Error is only non-nil if the source errors out
 func (a *ActivityConstantFindTrotterAccessor) ByConstValueName(identifier string) (ActivityConstantFindTrotter, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityConstantFindTrotter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityConstantFindTrotter{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataConstValueName[identifier], nil
+}
+
+// ByValue returns the ActivityConstantFindTrotter uniquely identified by Value
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityConstantFindTrotterAccessor) ByValue(identifier string) (ActivityConstantFindTrotter, error) {
+	if a._dataValue == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityConstantFindTrotter{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataValue[identifier], nil
 }

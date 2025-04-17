@@ -18,8 +18,8 @@ type SpecialNPCMazeSkill struct {
 }
 type SpecialNPCMazeSkillAccessor struct {
 	_data                   []SpecialNPCMazeSkill
-	_dataRelatedAvatarSkill map[float64]SpecialNPCMazeSkill
 	_dataMazeSkillId        map[float64]SpecialNPCMazeSkill
+	_dataRelatedAvatarSkill map[float64]SpecialNPCMazeSkill
 }
 
 // LoadData retrieves the data. Must be called before SpecialNPCMazeSkill.GroupData
@@ -43,7 +43,6 @@ func (a *SpecialNPCMazeSkillAccessor) Raw() ([]SpecialNPCMazeSkill, error) {
 		if err != nil {
 			return []SpecialNPCMazeSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,23 +51,9 @@ func (a *SpecialNPCMazeSkillAccessor) Raw() ([]SpecialNPCMazeSkill, error) {
 // Can be called manually in conjunction with SpecialNPCMazeSkillAccessor.LoadData to preload everything
 func (a *SpecialNPCMazeSkillAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRelatedAvatarSkill[d.RelatedAvatarSkill] = d
 		a._dataMazeSkillId[d.MazeSkillId] = d
+		a._dataRelatedAvatarSkill[d.RelatedAvatarSkill] = d
 	}
-}
-
-// ByRelatedAvatarSkill returns the SpecialNPCMazeSkill uniquely identified by RelatedAvatarSkill
-//
-// Error is only non-nil if the source errors out
-func (a *SpecialNPCMazeSkillAccessor) ByRelatedAvatarSkill(identifier float64) (SpecialNPCMazeSkill, error) {
-	if a._dataRelatedAvatarSkill == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialNPCMazeSkill{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRelatedAvatarSkill[identifier], nil
 }
 
 // ByMazeSkillId returns the SpecialNPCMazeSkill uniquely identified by MazeSkillId
@@ -76,11 +61,29 @@ func (a *SpecialNPCMazeSkillAccessor) ByRelatedAvatarSkill(identifier float64) (
 // Error is only non-nil if the source errors out
 func (a *SpecialNPCMazeSkillAccessor) ByMazeSkillId(identifier float64) (SpecialNPCMazeSkill, error) {
 	if a._dataMazeSkillId == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialNPCMazeSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialNPCMazeSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMazeSkillId[identifier], nil
+}
+
+// ByRelatedAvatarSkill returns the SpecialNPCMazeSkill uniquely identified by RelatedAvatarSkill
+//
+// Error is only non-nil if the source errors out
+func (a *SpecialNPCMazeSkillAccessor) ByRelatedAvatarSkill(identifier float64) (SpecialNPCMazeSkill, error) {
+	if a._dataRelatedAvatarSkill == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialNPCMazeSkill{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRelatedAvatarSkill[identifier], nil
 }

@@ -13,8 +13,8 @@ type MapDefaultEntrance struct {
 }
 type MapDefaultEntranceAccessor struct {
 	_data           []MapDefaultEntrance
-	_dataFloorID    map[float64]MapDefaultEntrance
 	_dataEntranceID map[float64]MapDefaultEntrance
+	_dataFloorID    map[float64]MapDefaultEntrance
 }
 
 // LoadData retrieves the data. Must be called before MapDefaultEntrance.GroupData
@@ -38,7 +38,6 @@ func (a *MapDefaultEntranceAccessor) Raw() ([]MapDefaultEntrance, error) {
 		if err != nil {
 			return []MapDefaultEntrance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *MapDefaultEntranceAccessor) Raw() ([]MapDefaultEntrance, error) {
 // Can be called manually in conjunction with MapDefaultEntranceAccessor.LoadData to preload everything
 func (a *MapDefaultEntranceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataFloorID[d.FloorID] = d
 		a._dataEntranceID[d.EntranceID] = d
+		a._dataFloorID[d.FloorID] = d
 	}
-}
-
-// ByFloorID returns the MapDefaultEntrance uniquely identified by FloorID
-//
-// Error is only non-nil if the source errors out
-func (a *MapDefaultEntranceAccessor) ByFloorID(identifier float64) (MapDefaultEntrance, error) {
-	if a._dataFloorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapDefaultEntrance{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFloorID[identifier], nil
 }
 
 // ByEntranceID returns the MapDefaultEntrance uniquely identified by EntranceID
@@ -71,11 +56,29 @@ func (a *MapDefaultEntranceAccessor) ByFloorID(identifier float64) (MapDefaultEn
 // Error is only non-nil if the source errors out
 func (a *MapDefaultEntranceAccessor) ByEntranceID(identifier float64) (MapDefaultEntrance, error) {
 	if a._dataEntranceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MapDefaultEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapDefaultEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEntranceID[identifier], nil
+}
+
+// ByFloorID returns the MapDefaultEntrance uniquely identified by FloorID
+//
+// Error is only non-nil if the source errors out
+func (a *MapDefaultEntranceAccessor) ByFloorID(identifier float64) (MapDefaultEntrance, error) {
+	if a._dataFloorID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MapDefaultEntrance{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFloorID[identifier], nil
 }

@@ -38,7 +38,6 @@ func (a *ScheduleDataShopAccessor) Raw() ([]ScheduleDataShop, error) {
 		if err != nil {
 			return []ScheduleDataShop{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ScheduleDataShopAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataShopAccessor) ByID(identifier float64) (ScheduleDataShop, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataShop{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataShop{}, err
+			}
 		}
 		a.GroupData()
 	}

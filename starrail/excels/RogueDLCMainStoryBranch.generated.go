@@ -38,7 +38,6 @@ func (a *RogueDLCMainStoryBranchAccessor) Raw() ([]RogueDLCMainStoryBranch, erro
 		if err != nil {
 			return []RogueDLCMainStoryBranch{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueDLCMainStoryBranchAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCMainStoryBranchAccessor) ByMainStoryBranchID(identifier float64) (RogueDLCMainStoryBranch, error) {
 	if a._dataMainStoryBranchID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCMainStoryBranch{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCMainStoryBranch{}, err
+			}
 		}
 		a.GroupData()
 	}

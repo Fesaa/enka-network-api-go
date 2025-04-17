@@ -41,7 +41,6 @@ func (a *RelicSubAffixConfigAccessor) Raw() ([]RelicSubAffixConfig, error) {
 		if err != nil {
 			return []RelicSubAffixConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

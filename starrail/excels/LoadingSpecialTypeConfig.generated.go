@@ -39,7 +39,6 @@ func (a *LoadingSpecialTypeConfigAccessor) Raw() ([]LoadingSpecialTypeConfig, er
 		if err != nil {
 			return []LoadingSpecialTypeConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *LoadingSpecialTypeConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *LoadingSpecialTypeConfigAccessor) BySubMissionID(identifier float64) (LoadingSpecialTypeConfig, error) {
 	if a._dataSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LoadingSpecialTypeConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LoadingSpecialTypeConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *TarotBookCardPackAccessor) Raw() ([]TarotBookCardPack, error) {
 		if err != nil {
 			return []TarotBookCardPack{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *TarotBookCardPackAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TarotBookCardPackAccessor) ByID(identifier float64) (TarotBookCardPack, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookCardPack{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookCardPack{}, err
+			}
 		}
 		a.GroupData()
 	}

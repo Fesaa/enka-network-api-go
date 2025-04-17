@@ -53,7 +53,6 @@ func (a *ShopConfigAccessor) Raw() ([]ShopConfig, error) {
 		if err != nil {
 			return []ShopConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -71,9 +70,11 @@ func (a *ShopConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ShopConfigAccessor) ByShopID(identifier float64) (ShopConfig, error) {
 	if a._dataShopID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ShopConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ShopConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

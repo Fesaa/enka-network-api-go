@@ -39,7 +39,6 @@ func (a *StanceLevelEffectAccessor) Raw() ([]StanceLevelEffect, error) {
 		if err != nil {
 			return []StanceLevelEffect{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *StanceLevelEffectAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StanceLevelEffectAccessor) ByID(identifier float64) (StanceLevelEffect, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StanceLevelEffect{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StanceLevelEffect{}, err
+			}
 		}
 		a.GroupData()
 	}

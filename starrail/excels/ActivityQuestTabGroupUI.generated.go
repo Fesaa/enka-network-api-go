@@ -14,8 +14,8 @@ type ActivityQuestTabGroupUI struct {
 }
 type ActivityQuestTabGroupUIAccessor struct {
 	_data                []ActivityQuestTabGroupUI
-	_dataQuestTabGroupID map[float64]ActivityQuestTabGroupUI
 	_dataBgPrefabPath    map[string]ActivityQuestTabGroupUI
+	_dataQuestTabGroupID map[float64]ActivityQuestTabGroupUI
 }
 
 // LoadData retrieves the data. Must be called before ActivityQuestTabGroupUI.GroupData
@@ -39,7 +39,6 @@ func (a *ActivityQuestTabGroupUIAccessor) Raw() ([]ActivityQuestTabGroupUI, erro
 		if err != nil {
 			return []ActivityQuestTabGroupUI{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *ActivityQuestTabGroupUIAccessor) Raw() ([]ActivityQuestTabGroupUI, erro
 // Can be called manually in conjunction with ActivityQuestTabGroupUIAccessor.LoadData to preload everything
 func (a *ActivityQuestTabGroupUIAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataQuestTabGroupID[d.QuestTabGroupID] = d
 		a._dataBgPrefabPath[d.BgPrefabPath] = d
+		a._dataQuestTabGroupID[d.QuestTabGroupID] = d
 	}
-}
-
-// ByQuestTabGroupID returns the ActivityQuestTabGroupUI uniquely identified by QuestTabGroupID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityQuestTabGroupUIAccessor) ByQuestTabGroupID(identifier float64) (ActivityQuestTabGroupUI, error) {
-	if a._dataQuestTabGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityQuestTabGroupUI{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataQuestTabGroupID[identifier], nil
 }
 
 // ByBgPrefabPath returns the ActivityQuestTabGroupUI uniquely identified by BgPrefabPath
@@ -72,11 +57,29 @@ func (a *ActivityQuestTabGroupUIAccessor) ByQuestTabGroupID(identifier float64) 
 // Error is only non-nil if the source errors out
 func (a *ActivityQuestTabGroupUIAccessor) ByBgPrefabPath(identifier string) (ActivityQuestTabGroupUI, error) {
 	if a._dataBgPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityQuestTabGroupUI{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityQuestTabGroupUI{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBgPrefabPath[identifier], nil
+}
+
+// ByQuestTabGroupID returns the ActivityQuestTabGroupUI uniquely identified by QuestTabGroupID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityQuestTabGroupUIAccessor) ByQuestTabGroupID(identifier float64) (ActivityQuestTabGroupUI, error) {
+	if a._dataQuestTabGroupID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityQuestTabGroupUI{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataQuestTabGroupID[identifier], nil
 }

@@ -38,7 +38,6 @@ func (a *NPCMonsterMarkAccessor) Raw() ([]NPCMonsterMark, error) {
 		if err != nil {
 			return []NPCMonsterMark{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *NPCMonsterMarkAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *NPCMonsterMarkAccessor) ByID(identifier float64) (NPCMonsterMark, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NPCMonsterMark{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NPCMonsterMark{}, err
+			}
 		}
 		a.GroupData()
 	}

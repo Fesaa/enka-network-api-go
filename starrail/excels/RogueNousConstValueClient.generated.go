@@ -38,7 +38,6 @@ func (a *RogueNousConstValueClientAccessor) Raw() ([]RogueNousConstValueClient, 
 		if err != nil {
 			return []RogueNousConstValueClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueNousConstValueClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousConstValueClientAccessor) ByConstValueName(identifier string) (RogueNousConstValueClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousConstValueClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousConstValueClient{}, err
+			}
 		}
 		a.GroupData()
 	}

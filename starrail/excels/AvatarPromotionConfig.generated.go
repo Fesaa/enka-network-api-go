@@ -55,7 +55,6 @@ func (a *AvatarPromotionConfigAccessor) Raw() ([]AvatarPromotionConfig, error) {
 		if err != nil {
 			return []AvatarPromotionConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

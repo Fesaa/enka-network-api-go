@@ -38,7 +38,6 @@ func (a *MonsterRandomPoolAccessor) Raw() ([]MonsterRandomPool, error) {
 		if err != nil {
 			return []MonsterRandomPool{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MonsterRandomPoolAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonsterRandomPoolAccessor) ByRandomPoolID(identifier float64) (MonsterRandomPool, error) {
 	if a._dataRandomPoolID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterRandomPool{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterRandomPool{}, err
+			}
 		}
 		a.GroupData()
 	}

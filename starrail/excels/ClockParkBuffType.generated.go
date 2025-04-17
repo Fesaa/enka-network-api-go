@@ -40,7 +40,6 @@ func (a *ClockParkBuffTypeAccessor) Raw() ([]ClockParkBuffType, error) {
 		if err != nil {
 			return []ClockParkBuffType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ClockParkBuffTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClockParkBuffTypeAccessor) ByBuffType(identifier string) (ClockParkBuffType, error) {
 	if a._dataBuffType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkBuffType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkBuffType{}, err
+			}
 		}
 		a.GroupData()
 	}

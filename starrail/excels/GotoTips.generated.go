@@ -38,7 +38,6 @@ func (a *GotoTipsAccessor) Raw() ([]GotoTips, error) {
 		if err != nil {
 			return []GotoTips{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *GotoTipsAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GotoTipsAccessor) ByID(identifier string) (GotoTips, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GotoTips{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GotoTips{}, err
+			}
 		}
 		a.GroupData()
 	}

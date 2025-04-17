@@ -38,7 +38,6 @@ func (a *BattleCollegeConstantValueAccessor) Raw() ([]BattleCollegeConstantValue
 		if err != nil {
 			return []BattleCollegeConstantValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *BattleCollegeConstantValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BattleCollegeConstantValueAccessor) ByConstValueName(identifier string) (BattleCollegeConstantValue, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeConstantValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeConstantValue{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -37,7 +37,6 @@ func (a *PhotoGraphAvatarConfigAccessor) Raw() ([]PhotoGraphAvatarConfig, error)
 		if err != nil {
 			return []PhotoGraphAvatarConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *PhotoGraphAvatarConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PhotoGraphAvatarConfigAccessor) ByAvatarID(identifier float64) (PhotoGraphAvatarConfig, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PhotoGraphAvatarConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PhotoGraphAvatarConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

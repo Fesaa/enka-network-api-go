@@ -48,7 +48,6 @@ func (a *ActivityBannerComMissionAccessor) Raw() ([]ActivityBannerComMission, er
 		if err != nil {
 			return []ActivityBannerComMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *ActivityBannerComMissionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityBannerComMissionAccessor) ByBannerID(identifier float64) (ActivityBannerComMission, error) {
 	if a._dataBannerID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityBannerComMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityBannerComMission{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,9 +82,11 @@ func (a *ActivityBannerComMissionAccessor) ByBannerID(identifier float64) (Activ
 // Error is only non-nil if the source errors out
 func (a *ActivityBannerComMissionAccessor) ByMainImagePath(identifier string) (ActivityBannerComMission, error) {
 	if a._dataMainImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityBannerComMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityBannerComMission{}, err
+			}
 		}
 		a.GroupData()
 	}

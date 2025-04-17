@@ -37,7 +37,6 @@ func (a *DailyActiveQuestPoolAccessor) Raw() ([]DailyActiveQuestPool, error) {
 		if err != nil {
 			return []DailyActiveQuestPool{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *DailyActiveQuestPoolAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DailyActiveQuestPoolAccessor) ByQuestID(identifier float64) (DailyActiveQuestPool, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DailyActiveQuestPool{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DailyActiveQuestPool{}, err
+			}
 		}
 		a.GroupData()
 	}

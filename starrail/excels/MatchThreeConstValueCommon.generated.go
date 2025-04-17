@@ -43,7 +43,6 @@ func (a *MatchThreeConstValueCommonAccessor) Raw() ([]MatchThreeConstValueCommon
 		if err != nil {
 			return []MatchThreeConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *MatchThreeConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeConstValueCommonAccessor) ByConstValueName(identifier string) (MatchThreeConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

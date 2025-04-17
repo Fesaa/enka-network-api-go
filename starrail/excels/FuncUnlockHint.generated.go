@@ -42,7 +42,6 @@ func (a *FuncUnlockHintAccessor) Raw() ([]FuncUnlockHint, error) {
 		if err != nil {
 			return []FuncUnlockHint{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *FuncUnlockHintAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FuncUnlockHintAccessor) ByUnlockID(identifier float64) (FuncUnlockHint, error) {
 	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FuncUnlockHint{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FuncUnlockHint{}, err
+			}
 		}
 		a.GroupData()
 	}

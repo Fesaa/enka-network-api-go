@@ -40,7 +40,6 @@ func (a *ShareRewardDataAccessor) Raw() ([]ShareRewardData, error) {
 		if err != nil {
 			return []ShareRewardData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *ShareRewardDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ShareRewardDataAccessor) ByID(identifier float64) (ShareRewardData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ShareRewardData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ShareRewardData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *ShareRewardDataAccessor) ByID(identifier float64) (ShareRewardData, err
 // Error is only non-nil if the source errors out
 func (a *ShareRewardDataAccessor) ByRewardID(identifier float64) (ShareRewardData, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ShareRewardData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ShareRewardData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,9 +91,11 @@ func (a *ShareRewardDataAccessor) ByRewardID(identifier float64) (ShareRewardDat
 // Error is only non-nil if the source errors out
 func (a *ShareRewardDataAccessor) ByRewardNum(identifier float64) (ShareRewardData, error) {
 	if a._dataRewardNum == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ShareRewardData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ShareRewardData{}, err
+			}
 		}
 		a.GroupData()
 	}

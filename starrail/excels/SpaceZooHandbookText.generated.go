@@ -37,7 +37,6 @@ func (a *SpaceZooHandbookTextAccessor) Raw() ([]SpaceZooHandbookText, error) {
 		if err != nil {
 			return []SpaceZooHandbookText{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *SpaceZooHandbookTextAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooHandbookTextAccessor) BySpecialCatID(identifier float64) (SpaceZooHandbookText, error) {
 	if a._dataSpecialCatID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooHandbookText{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooHandbookText{}, err
+			}
 		}
 		a.GroupData()
 	}

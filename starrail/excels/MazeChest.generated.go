@@ -38,7 +38,6 @@ func (a *MazeChestAccessor) Raw() ([]MazeChest, error) {
 		if err != nil {
 			return []MazeChest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MazeChestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MazeChestAccessor) ByID(identifier float64) (MazeChest, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazeChest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazeChest{}, err
+			}
 		}
 		a.GroupData()
 	}

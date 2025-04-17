@@ -38,7 +38,6 @@ func (a *RogueMagicScoreAccessor) Raw() ([]RogueMagicScore, error) {
 		if err != nil {
 			return []RogueMagicScore{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

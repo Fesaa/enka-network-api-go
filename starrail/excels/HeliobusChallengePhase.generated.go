@@ -19,9 +19,9 @@ type HeliobusChallengePhase struct {
 }
 type HeliobusChallengePhaseAccessor struct {
 	_data                 []HeliobusChallengePhase
-	_dataUnlockMissionID  map[float64]HeliobusChallengePhase
-	_dataMappingInfoID    map[float64]HeliobusChallengePhase
 	_dataChallengePhaseID map[float64]HeliobusChallengePhase
+	_dataMappingInfoID    map[float64]HeliobusChallengePhase
+	_dataUnlockMissionID  map[float64]HeliobusChallengePhase
 }
 
 // LoadData retrieves the data. Must be called before HeliobusChallengePhase.GroupData
@@ -45,7 +45,6 @@ func (a *HeliobusChallengePhaseAccessor) Raw() ([]HeliobusChallengePhase, error)
 		if err != nil {
 			return []HeliobusChallengePhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,38 +53,10 @@ func (a *HeliobusChallengePhaseAccessor) Raw() ([]HeliobusChallengePhase, error)
 // Can be called manually in conjunction with HeliobusChallengePhaseAccessor.LoadData to preload everything
 func (a *HeliobusChallengePhaseAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUnlockMissionID[d.UnlockMissionID] = d
-		a._dataMappingInfoID[d.MappingInfoID] = d
 		a._dataChallengePhaseID[d.ChallengePhaseID] = d
+		a._dataMappingInfoID[d.MappingInfoID] = d
+		a._dataUnlockMissionID[d.UnlockMissionID] = d
 	}
-}
-
-// ByUnlockMissionID returns the HeliobusChallengePhase uniquely identified by UnlockMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *HeliobusChallengePhaseAccessor) ByUnlockMissionID(identifier float64) (HeliobusChallengePhase, error) {
-	if a._dataUnlockMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengePhase{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockMissionID[identifier], nil
-}
-
-// ByMappingInfoID returns the HeliobusChallengePhase uniquely identified by MappingInfoID
-//
-// Error is only non-nil if the source errors out
-func (a *HeliobusChallengePhaseAccessor) ByMappingInfoID(identifier float64) (HeliobusChallengePhase, error) {
-	if a._dataMappingInfoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengePhase{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMappingInfoID[identifier], nil
 }
 
 // ByChallengePhaseID returns the HeliobusChallengePhase uniquely identified by ChallengePhaseID
@@ -93,11 +64,45 @@ func (a *HeliobusChallengePhaseAccessor) ByMappingInfoID(identifier float64) (He
 // Error is only non-nil if the source errors out
 func (a *HeliobusChallengePhaseAccessor) ByChallengePhaseID(identifier float64) (HeliobusChallengePhase, error) {
 	if a._dataChallengePhaseID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengePhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengePhase{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataChallengePhaseID[identifier], nil
+}
+
+// ByMappingInfoID returns the HeliobusChallengePhase uniquely identified by MappingInfoID
+//
+// Error is only non-nil if the source errors out
+func (a *HeliobusChallengePhaseAccessor) ByMappingInfoID(identifier float64) (HeliobusChallengePhase, error) {
+	if a._dataMappingInfoID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengePhase{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMappingInfoID[identifier], nil
+}
+
+// ByUnlockMissionID returns the HeliobusChallengePhase uniquely identified by UnlockMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *HeliobusChallengePhaseAccessor) ByUnlockMissionID(identifier float64) (HeliobusChallengePhase, error) {
+	if a._dataUnlockMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengePhase{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockMissionID[identifier], nil
 }

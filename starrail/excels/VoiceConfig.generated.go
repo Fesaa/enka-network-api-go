@@ -39,7 +39,6 @@ func (a *VoiceConfigAccessor) Raw() ([]VoiceConfig, error) {
 		if err != nil {
 			return []VoiceConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *VoiceConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *VoiceConfigAccessor) ByVoiceID(identifier float64) (VoiceConfig, error) {
 	if a._dataVoiceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return VoiceConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return VoiceConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

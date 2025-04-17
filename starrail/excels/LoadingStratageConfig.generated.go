@@ -45,7 +45,6 @@ func (a *LoadingStratageConfigAccessor) Raw() ([]LoadingStratageConfig, error) {
 		if err != nil {
 			return []LoadingStratageConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *LoadingStratageConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *LoadingStratageConfigAccessor) ByLoadingID(identifier float64) (LoadingStratageConfig, error) {
 	if a._dataLoadingID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LoadingStratageConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LoadingStratageConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

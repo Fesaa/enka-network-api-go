@@ -46,7 +46,6 @@ func (a *SwordTrainingProgressAccessor) Raw() ([]SwordTrainingProgress, error) {
 		if err != nil {
 			return []SwordTrainingProgress{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *SwordTrainingProgressAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingProgressAccessor) ByTurnID(identifier float64) (SwordTrainingProgress, error) {
 	if a._dataTurnID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingProgress{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingProgress{}, err
+			}
 		}
 		a.GroupData()
 	}

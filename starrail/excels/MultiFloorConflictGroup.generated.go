@@ -39,7 +39,6 @@ func (a *MultiFloorConflictGroupAccessor) Raw() ([]MultiFloorConflictGroup, erro
 		if err != nil {
 			return []MultiFloorConflictGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MultiFloorConflictGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MultiFloorConflictGroupAccessor) ByGroupID(identifier float64) (MultiFloorConflictGroup, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MultiFloorConflictGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MultiFloorConflictGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *MultiFloorConflictGroupAccessor) ByGroupID(identifier float64) (MultiFl
 // Error is only non-nil if the source errors out
 func (a *MultiFloorConflictGroupAccessor) ByPlaneID(identifier float64) (MultiFloorConflictGroup, error) {
 	if a._dataPlaneID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MultiFloorConflictGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MultiFloorConflictGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

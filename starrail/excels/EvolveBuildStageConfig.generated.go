@@ -66,7 +66,6 @@ func (a *EvolveBuildStageConfigAccessor) Raw() ([]EvolveBuildStageConfig, error)
 		if err != nil {
 			return []EvolveBuildStageConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -85,9 +84,11 @@ func (a *EvolveBuildStageConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildStageConfigAccessor) ByStageMergedID(identifier float64) (EvolveBuildStageConfig, error) {
 	if a._dataStageMergedID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildStageConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildStageConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -99,9 +100,11 @@ func (a *EvolveBuildStageConfigAccessor) ByStageMergedID(identifier float64) (Ev
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildStageConfigAccessor) ByTeamBonusMazeBuffID(identifier float64) (EvolveBuildStageConfig, error) {
 	if a._dataTeamBonusMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildStageConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildStageConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

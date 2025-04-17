@@ -56,7 +56,6 @@ func (a *MazePropAccessor) Raw() ([]MazeProp, error) {
 		if err != nil {
 			return []MazeProp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -74,9 +73,11 @@ func (a *MazePropAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MazePropAccessor) ByID(identifier float64) (MazeProp, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazeProp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazeProp{}, err
+			}
 		}
 		a.GroupData()
 	}

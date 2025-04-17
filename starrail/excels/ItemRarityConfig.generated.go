@@ -20,15 +20,15 @@ type ItemRarityConfig struct {
 }
 type ItemRarityConfigAccessor struct {
 	_data                      []ItemRarityConfig
-	_dataRarity                map[string]ItemRarityConfig
-	_dataItemShowBgPath        map[string]ItemRarityConfig
-	_dataFrameIconRarityPath   map[string]ItemRarityConfig
-	_dataItemRarityStarImgPath map[string]ItemRarityConfig
 	_dataAvatarShowBgPath      map[string]ItemRarityConfig
-	_dataFrameItemRarityPath   map[string]ItemRarityConfig
+	_dataFrameIconRarityPath   map[string]ItemRarityConfig
 	_dataFrameItemRarityBgPath map[string]ItemRarityConfig
 	_dataFrameItemRarityColor  map[string]ItemRarityConfig
+	_dataFrameItemRarityPath   map[string]ItemRarityConfig
+	_dataItemRarityStarImgPath map[string]ItemRarityConfig
+	_dataItemShowBgPath        map[string]ItemRarityConfig
 	_dataLineItemRarityColor   map[string]ItemRarityConfig
+	_dataRarity                map[string]ItemRarityConfig
 }
 
 // LoadData retrieves the data. Must be called before ItemRarityConfig.GroupData
@@ -52,7 +52,6 @@ func (a *ItemRarityConfigAccessor) Raw() ([]ItemRarityConfig, error) {
 		if err != nil {
 			return []ItemRarityConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,72 +60,16 @@ func (a *ItemRarityConfigAccessor) Raw() ([]ItemRarityConfig, error) {
 // Can be called manually in conjunction with ItemRarityConfigAccessor.LoadData to preload everything
 func (a *ItemRarityConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRarity[d.Rarity] = d
-		a._dataItemShowBgPath[d.ItemShowBgPath] = d
-		a._dataFrameIconRarityPath[d.FrameIconRarityPath] = d
-		a._dataItemRarityStarImgPath[d.ItemRarityStarImgPath] = d
 		a._dataAvatarShowBgPath[d.AvatarShowBgPath] = d
-		a._dataFrameItemRarityPath[d.FrameItemRarityPath] = d
+		a._dataFrameIconRarityPath[d.FrameIconRarityPath] = d
 		a._dataFrameItemRarityBgPath[d.FrameItemRarityBgPath] = d
 		a._dataFrameItemRarityColor[d.FrameItemRarityColor] = d
+		a._dataFrameItemRarityPath[d.FrameItemRarityPath] = d
+		a._dataItemRarityStarImgPath[d.ItemRarityStarImgPath] = d
+		a._dataItemShowBgPath[d.ItemShowBgPath] = d
 		a._dataLineItemRarityColor[d.LineItemRarityColor] = d
+		a._dataRarity[d.Rarity] = d
 	}
-}
-
-// ByRarity returns the ItemRarityConfig uniquely identified by Rarity
-//
-// Error is only non-nil if the source errors out
-func (a *ItemRarityConfigAccessor) ByRarity(identifier string) (ItemRarityConfig, error) {
-	if a._dataRarity == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRarityConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRarity[identifier], nil
-}
-
-// ByItemShowBgPath returns the ItemRarityConfig uniquely identified by ItemShowBgPath
-//
-// Error is only non-nil if the source errors out
-func (a *ItemRarityConfigAccessor) ByItemShowBgPath(identifier string) (ItemRarityConfig, error) {
-	if a._dataItemShowBgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRarityConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemShowBgPath[identifier], nil
-}
-
-// ByFrameIconRarityPath returns the ItemRarityConfig uniquely identified by FrameIconRarityPath
-//
-// Error is only non-nil if the source errors out
-func (a *ItemRarityConfigAccessor) ByFrameIconRarityPath(identifier string) (ItemRarityConfig, error) {
-	if a._dataFrameIconRarityPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRarityConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFrameIconRarityPath[identifier], nil
-}
-
-// ByItemRarityStarImgPath returns the ItemRarityConfig uniquely identified by ItemRarityStarImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *ItemRarityConfigAccessor) ByItemRarityStarImgPath(identifier string) (ItemRarityConfig, error) {
-	if a._dataItemRarityStarImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRarityConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemRarityStarImgPath[identifier], nil
 }
 
 // ByAvatarShowBgPath returns the ItemRarityConfig uniquely identified by AvatarShowBgPath
@@ -134,27 +77,31 @@ func (a *ItemRarityConfigAccessor) ByItemRarityStarImgPath(identifier string) (I
 // Error is only non-nil if the source errors out
 func (a *ItemRarityConfigAccessor) ByAvatarShowBgPath(identifier string) (ItemRarityConfig, error) {
 	if a._dataAvatarShowBgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRarityConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRarityConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarShowBgPath[identifier], nil
 }
 
-// ByFrameItemRarityPath returns the ItemRarityConfig uniquely identified by FrameItemRarityPath
+// ByFrameIconRarityPath returns the ItemRarityConfig uniquely identified by FrameIconRarityPath
 //
 // Error is only non-nil if the source errors out
-func (a *ItemRarityConfigAccessor) ByFrameItemRarityPath(identifier string) (ItemRarityConfig, error) {
-	if a._dataFrameItemRarityPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRarityConfig{}, err
+func (a *ItemRarityConfigAccessor) ByFrameIconRarityPath(identifier string) (ItemRarityConfig, error) {
+	if a._dataFrameIconRarityPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRarityConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataFrameItemRarityPath[identifier], nil
+	return a._dataFrameIconRarityPath[identifier], nil
 }
 
 // ByFrameItemRarityBgPath returns the ItemRarityConfig uniquely identified by FrameItemRarityBgPath
@@ -162,9 +109,11 @@ func (a *ItemRarityConfigAccessor) ByFrameItemRarityPath(identifier string) (Ite
 // Error is only non-nil if the source errors out
 func (a *ItemRarityConfigAccessor) ByFrameItemRarityBgPath(identifier string) (ItemRarityConfig, error) {
 	if a._dataFrameItemRarityBgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRarityConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRarityConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -176,13 +125,63 @@ func (a *ItemRarityConfigAccessor) ByFrameItemRarityBgPath(identifier string) (I
 // Error is only non-nil if the source errors out
 func (a *ItemRarityConfigAccessor) ByFrameItemRarityColor(identifier string) (ItemRarityConfig, error) {
 	if a._dataFrameItemRarityColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRarityConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRarityConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFrameItemRarityColor[identifier], nil
+}
+
+// ByFrameItemRarityPath returns the ItemRarityConfig uniquely identified by FrameItemRarityPath
+//
+// Error is only non-nil if the source errors out
+func (a *ItemRarityConfigAccessor) ByFrameItemRarityPath(identifier string) (ItemRarityConfig, error) {
+	if a._dataFrameItemRarityPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRarityConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFrameItemRarityPath[identifier], nil
+}
+
+// ByItemRarityStarImgPath returns the ItemRarityConfig uniquely identified by ItemRarityStarImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *ItemRarityConfigAccessor) ByItemRarityStarImgPath(identifier string) (ItemRarityConfig, error) {
+	if a._dataItemRarityStarImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRarityConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemRarityStarImgPath[identifier], nil
+}
+
+// ByItemShowBgPath returns the ItemRarityConfig uniquely identified by ItemShowBgPath
+//
+// Error is only non-nil if the source errors out
+func (a *ItemRarityConfigAccessor) ByItemShowBgPath(identifier string) (ItemRarityConfig, error) {
+	if a._dataItemShowBgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRarityConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemShowBgPath[identifier], nil
 }
 
 // ByLineItemRarityColor returns the ItemRarityConfig uniquely identified by LineItemRarityColor
@@ -190,11 +189,29 @@ func (a *ItemRarityConfigAccessor) ByFrameItemRarityColor(identifier string) (It
 // Error is only non-nil if the source errors out
 func (a *ItemRarityConfigAccessor) ByLineItemRarityColor(identifier string) (ItemRarityConfig, error) {
 	if a._dataLineItemRarityColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemRarityConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRarityConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLineItemRarityColor[identifier], nil
+}
+
+// ByRarity returns the ItemRarityConfig uniquely identified by Rarity
+//
+// Error is only non-nil if the source errors out
+func (a *ItemRarityConfigAccessor) ByRarity(identifier string) (ItemRarityConfig, error) {
+	if a._dataRarity == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemRarityConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRarity[identifier], nil
 }

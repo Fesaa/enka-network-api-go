@@ -40,7 +40,6 @@ func (a *SKillNavigationConfigAccessor) Raw() ([]SKillNavigationConfig, error) {
 		if err != nil {
 			return []SKillNavigationConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

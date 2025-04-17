@@ -17,12 +17,12 @@ type ActivityPanelSevenDayReward struct {
 }
 type ActivityPanelSevenDayRewardAccessor struct {
 	_data                   []ActivityPanelSevenDayReward
-	_dataCardWidget2ImgPath map[string]ActivityPanelSevenDayReward
-	_dataID                 map[float64]ActivityPanelSevenDayReward
 	_dataBGImgPath          map[string]ActivityPanelSevenDayReward
-	_dataPicImgPath         map[string]ActivityPanelSevenDayReward
 	_dataCardWidget0ImgPath map[string]ActivityPanelSevenDayReward
 	_dataCardWidget1ImgPath map[string]ActivityPanelSevenDayReward
+	_dataCardWidget2ImgPath map[string]ActivityPanelSevenDayReward
+	_dataID                 map[float64]ActivityPanelSevenDayReward
+	_dataPicImgPath         map[string]ActivityPanelSevenDayReward
 }
 
 // LoadData retrieves the data. Must be called before ActivityPanelSevenDayReward.GroupData
@@ -46,7 +46,6 @@ func (a *ActivityPanelSevenDayRewardAccessor) Raw() ([]ActivityPanelSevenDayRewa
 		if err != nil {
 			return []ActivityPanelSevenDayReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,41 +54,13 @@ func (a *ActivityPanelSevenDayRewardAccessor) Raw() ([]ActivityPanelSevenDayRewa
 // Can be called manually in conjunction with ActivityPanelSevenDayRewardAccessor.LoadData to preload everything
 func (a *ActivityPanelSevenDayRewardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataCardWidget2ImgPath[d.CardWidget2ImgPath] = d
-		a._dataID[d.ID] = d
 		a._dataBGImgPath[d.BGImgPath] = d
-		a._dataPicImgPath[d.PicImgPath] = d
 		a._dataCardWidget0ImgPath[d.CardWidget0ImgPath] = d
 		a._dataCardWidget1ImgPath[d.CardWidget1ImgPath] = d
+		a._dataCardWidget2ImgPath[d.CardWidget2ImgPath] = d
+		a._dataID[d.ID] = d
+		a._dataPicImgPath[d.PicImgPath] = d
 	}
-}
-
-// ByCardWidget2ImgPath returns the ActivityPanelSevenDayReward uniquely identified by CardWidget2ImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityPanelSevenDayRewardAccessor) ByCardWidget2ImgPath(identifier string) (ActivityPanelSevenDayReward, error) {
-	if a._dataCardWidget2ImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSevenDayReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataCardWidget2ImgPath[identifier], nil
-}
-
-// ByID returns the ActivityPanelSevenDayReward uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityPanelSevenDayRewardAccessor) ByID(identifier float64) (ActivityPanelSevenDayReward, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSevenDayReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByBGImgPath returns the ActivityPanelSevenDayReward uniquely identified by BGImgPath
@@ -97,27 +68,15 @@ func (a *ActivityPanelSevenDayRewardAccessor) ByID(identifier float64) (Activity
 // Error is only non-nil if the source errors out
 func (a *ActivityPanelSevenDayRewardAccessor) ByBGImgPath(identifier string) (ActivityPanelSevenDayReward, error) {
 	if a._dataBGImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSevenDayReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSevenDayReward{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBGImgPath[identifier], nil
-}
-
-// ByPicImgPath returns the ActivityPanelSevenDayReward uniquely identified by PicImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityPanelSevenDayRewardAccessor) ByPicImgPath(identifier string) (ActivityPanelSevenDayReward, error) {
-	if a._dataPicImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSevenDayReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPicImgPath[identifier], nil
 }
 
 // ByCardWidget0ImgPath returns the ActivityPanelSevenDayReward uniquely identified by CardWidget0ImgPath
@@ -125,9 +84,11 @@ func (a *ActivityPanelSevenDayRewardAccessor) ByPicImgPath(identifier string) (A
 // Error is only non-nil if the source errors out
 func (a *ActivityPanelSevenDayRewardAccessor) ByCardWidget0ImgPath(identifier string) (ActivityPanelSevenDayReward, error) {
 	if a._dataCardWidget0ImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSevenDayReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSevenDayReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -139,11 +100,61 @@ func (a *ActivityPanelSevenDayRewardAccessor) ByCardWidget0ImgPath(identifier st
 // Error is only non-nil if the source errors out
 func (a *ActivityPanelSevenDayRewardAccessor) ByCardWidget1ImgPath(identifier string) (ActivityPanelSevenDayReward, error) {
 	if a._dataCardWidget1ImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSevenDayReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSevenDayReward{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCardWidget1ImgPath[identifier], nil
+}
+
+// ByCardWidget2ImgPath returns the ActivityPanelSevenDayReward uniquely identified by CardWidget2ImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityPanelSevenDayRewardAccessor) ByCardWidget2ImgPath(identifier string) (ActivityPanelSevenDayReward, error) {
+	if a._dataCardWidget2ImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSevenDayReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataCardWidget2ImgPath[identifier], nil
+}
+
+// ByID returns the ActivityPanelSevenDayReward uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityPanelSevenDayRewardAccessor) ByID(identifier float64) (ActivityPanelSevenDayReward, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSevenDayReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByPicImgPath returns the ActivityPanelSevenDayReward uniquely identified by PicImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityPanelSevenDayRewardAccessor) ByPicImgPath(identifier string) (ActivityPanelSevenDayReward, error) {
+	if a._dataPicImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSevenDayReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPicImgPath[identifier], nil
 }

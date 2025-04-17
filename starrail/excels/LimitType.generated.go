@@ -39,7 +39,6 @@ func (a *LimitTypeAccessor) Raw() ([]LimitType, error) {
 		if err != nil {
 			return []LimitType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *LimitTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *LimitTypeAccessor) ByLimitType(identifier string) (LimitType, error) {
 	if a._dataLimitType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LimitType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LimitType{}, err
+			}
 		}
 		a.GroupData()
 	}

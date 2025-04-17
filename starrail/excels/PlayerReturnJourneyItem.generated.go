@@ -48,7 +48,6 @@ func (a *PlayerReturnJourneyItemAccessor) Raw() ([]PlayerReturnJourneyItem, erro
 		if err != nil {
 			return []PlayerReturnJourneyItem{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,9 +68,11 @@ func (a *PlayerReturnJourneyItemAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnJourneyItemAccessor) ByBgPath(identifier string) (PlayerReturnJourneyItem, error) {
 	if a._dataBgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnJourneyItem{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnJourneyItem{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -83,9 +84,11 @@ func (a *PlayerReturnJourneyItemAccessor) ByBgPath(identifier string) (PlayerRet
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnJourneyItemAccessor) ByID(identifier float64) (PlayerReturnJourneyItem, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnJourneyItem{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnJourneyItem{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -97,9 +100,11 @@ func (a *PlayerReturnJourneyItemAccessor) ByID(identifier float64) (PlayerReturn
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnJourneyItemAccessor) BySort(identifier float64) (PlayerReturnJourneyItem, error) {
 	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnJourneyItem{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnJourneyItem{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -111,9 +116,11 @@ func (a *PlayerReturnJourneyItemAccessor) BySort(identifier float64) (PlayerRetu
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnJourneyItemAccessor) ByType(identifier string) (PlayerReturnJourneyItem, error) {
 	if a._dataType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnJourneyItem{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnJourneyItem{}, err
+			}
 		}
 		a.GroupData()
 	}

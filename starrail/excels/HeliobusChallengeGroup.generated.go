@@ -37,7 +37,6 @@ func (a *HeliobusChallengeGroupAccessor) Raw() ([]HeliobusChallengeGroup, error)
 		if err != nil {
 			return []HeliobusChallengeGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *HeliobusChallengeGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusChallengeGroupAccessor) ByChallengeGroupID(identifier float64) (HeliobusChallengeGroup, error) {
 	if a._dataChallengeGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusChallengeGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusChallengeGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

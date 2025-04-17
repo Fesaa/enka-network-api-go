@@ -16,9 +16,9 @@ type ActivityRaidCollection struct {
 }
 type ActivityRaidCollectionAccessor struct {
 	_data                 []ActivityRaidCollection
-	_dataSubMissionID     map[float64]ActivityRaidCollection
 	_dataRaidCollectionID map[float64]ActivityRaidCollection
 	_dataRaidID           map[float64]ActivityRaidCollection
+	_dataSubMissionID     map[float64]ActivityRaidCollection
 }
 
 // LoadData retrieves the data. Must be called before ActivityRaidCollection.GroupData
@@ -42,7 +42,6 @@ func (a *ActivityRaidCollectionAccessor) Raw() ([]ActivityRaidCollection, error)
 		if err != nil {
 			return []ActivityRaidCollection{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,24 +50,10 @@ func (a *ActivityRaidCollectionAccessor) Raw() ([]ActivityRaidCollection, error)
 // Can be called manually in conjunction with ActivityRaidCollectionAccessor.LoadData to preload everything
 func (a *ActivityRaidCollectionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSubMissionID[d.SubMissionID] = d
 		a._dataRaidCollectionID[d.RaidCollectionID] = d
 		a._dataRaidID[d.RaidID] = d
+		a._dataSubMissionID[d.SubMissionID] = d
 	}
-}
-
-// BySubMissionID returns the ActivityRaidCollection uniquely identified by SubMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityRaidCollectionAccessor) BySubMissionID(identifier float64) (ActivityRaidCollection, error) {
-	if a._dataSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidCollection{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSubMissionID[identifier], nil
 }
 
 // ByRaidCollectionID returns the ActivityRaidCollection uniquely identified by RaidCollectionID
@@ -76,9 +61,11 @@ func (a *ActivityRaidCollectionAccessor) BySubMissionID(identifier float64) (Act
 // Error is only non-nil if the source errors out
 func (a *ActivityRaidCollectionAccessor) ByRaidCollectionID(identifier float64) (ActivityRaidCollection, error) {
 	if a._dataRaidCollectionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidCollection{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidCollection{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -90,11 +77,29 @@ func (a *ActivityRaidCollectionAccessor) ByRaidCollectionID(identifier float64) 
 // Error is only non-nil if the source errors out
 func (a *ActivityRaidCollectionAccessor) ByRaidID(identifier float64) (ActivityRaidCollection, error) {
 	if a._dataRaidID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidCollection{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidCollection{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRaidID[identifier], nil
+}
+
+// BySubMissionID returns the ActivityRaidCollection uniquely identified by SubMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityRaidCollectionAccessor) BySubMissionID(identifier float64) (ActivityRaidCollection, error) {
+	if a._dataSubMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidCollection{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSubMissionID[identifier], nil
 }

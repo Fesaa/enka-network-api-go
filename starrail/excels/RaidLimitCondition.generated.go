@@ -43,7 +43,6 @@ func (a *RaidLimitConditionAccessor) Raw() ([]RaidLimitCondition, error) {
 		if err != nil {
 			return []RaidLimitCondition{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *RaidLimitConditionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RaidLimitConditionAccessor) ByID(identifier float64) (RaidLimitCondition, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RaidLimitCondition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RaidLimitCondition{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *RaidLimitConditionAccessor) ByID(identifier float64) (RaidLimitConditio
 // Error is only non-nil if the source errors out
 func (a *RaidLimitConditionAccessor) ByParamInt1(identifier float64) (RaidLimitCondition, error) {
 	if a._dataParamInt1 == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RaidLimitCondition{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RaidLimitCondition{}, err
+			}
 		}
 		a.GroupData()
 	}

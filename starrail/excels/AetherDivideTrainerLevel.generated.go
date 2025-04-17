@@ -18,9 +18,9 @@ type AetherDivideTrainerLevel struct {
 }
 type AetherDivideTrainerLevelAccessor struct {
 	_data         []AetherDivideTrainerLevel
-	_dataQuestID  map[float64]AetherDivideTrainerLevel
 	_dataID       map[float64]AetherDivideTrainerLevel
 	_dataIconPath map[string]AetherDivideTrainerLevel
+	_dataQuestID  map[float64]AetherDivideTrainerLevel
 }
 
 // LoadData retrieves the data. Must be called before AetherDivideTrainerLevel.GroupData
@@ -44,7 +44,6 @@ func (a *AetherDivideTrainerLevelAccessor) Raw() ([]AetherDivideTrainerLevel, er
 		if err != nil {
 			return []AetherDivideTrainerLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,24 +52,10 @@ func (a *AetherDivideTrainerLevelAccessor) Raw() ([]AetherDivideTrainerLevel, er
 // Can be called manually in conjunction with AetherDivideTrainerLevelAccessor.LoadData to preload everything
 func (a *AetherDivideTrainerLevelAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataQuestID[d.QuestID] = d
 		a._dataID[d.ID] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataQuestID[d.QuestID] = d
 	}
-}
-
-// ByQuestID returns the AetherDivideTrainerLevel uniquely identified by QuestID
-//
-// Error is only non-nil if the source errors out
-func (a *AetherDivideTrainerLevelAccessor) ByQuestID(identifier float64) (AetherDivideTrainerLevel, error) {
-	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideTrainerLevel{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataQuestID[identifier], nil
 }
 
 // ByID returns the AetherDivideTrainerLevel uniquely identified by ID
@@ -78,9 +63,11 @@ func (a *AetherDivideTrainerLevelAccessor) ByQuestID(identifier float64) (Aether
 // Error is only non-nil if the source errors out
 func (a *AetherDivideTrainerLevelAccessor) ByID(identifier float64) (AetherDivideTrainerLevel, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideTrainerLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideTrainerLevel{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -92,11 +79,29 @@ func (a *AetherDivideTrainerLevelAccessor) ByID(identifier float64) (AetherDivid
 // Error is only non-nil if the source errors out
 func (a *AetherDivideTrainerLevelAccessor) ByIconPath(identifier string) (AetherDivideTrainerLevel, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideTrainerLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideTrainerLevel{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// ByQuestID returns the AetherDivideTrainerLevel uniquely identified by QuestID
+//
+// Error is only non-nil if the source errors out
+func (a *AetherDivideTrainerLevelAccessor) ByQuestID(identifier float64) (AetherDivideTrainerLevel, error) {
+	if a._dataQuestID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideTrainerLevel{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataQuestID[identifier], nil
 }

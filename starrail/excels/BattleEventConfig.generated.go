@@ -56,7 +56,6 @@ func (a *BattleEventConfigAccessor) Raw() ([]BattleEventConfig, error) {
 		if err != nil {
 			return []BattleEventConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -74,9 +73,11 @@ func (a *BattleEventConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BattleEventConfigAccessor) ByBattleEventID(identifier float64) (BattleEventConfig, error) {
 	if a._dataBattleEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleEventConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleEventConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

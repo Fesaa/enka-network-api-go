@@ -31,15 +31,15 @@ type MusicRhythmGroup struct {
 }
 type MusicRhythmGroupAccessor struct {
 	_data                   []MusicRhythmGroup
-	_dataID                 map[float64]MusicRhythmGroup
-	_dataGroupCoverImgPath  map[string]MusicRhythmGroup
-	_dataTakeMissionID      map[float64]MusicRhythmGroup
 	_dataBGMpath            map[string]MusicRhythmGroup
-	_dataGotoID             map[float64]MusicRhythmGroup
-	_dataEntranceID         map[float64]MusicRhythmGroup
-	_dataMapInfoID          map[float64]MusicRhythmGroup
 	_dataEntityGroup        map[float64]MusicRhythmGroup
 	_dataEntityGroupMission map[float64]MusicRhythmGroup
+	_dataEntranceID         map[float64]MusicRhythmGroup
+	_dataGotoID             map[float64]MusicRhythmGroup
+	_dataGroupCoverImgPath  map[string]MusicRhythmGroup
+	_dataID                 map[float64]MusicRhythmGroup
+	_dataMapInfoID          map[float64]MusicRhythmGroup
+	_dataTakeMissionID      map[float64]MusicRhythmGroup
 }
 
 // LoadData retrieves the data. Must be called before MusicRhythmGroup.GroupData
@@ -63,7 +63,6 @@ func (a *MusicRhythmGroupAccessor) Raw() ([]MusicRhythmGroup, error) {
 		if err != nil {
 			return []MusicRhythmGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -72,58 +71,16 @@ func (a *MusicRhythmGroupAccessor) Raw() ([]MusicRhythmGroup, error) {
 // Can be called manually in conjunction with MusicRhythmGroupAccessor.LoadData to preload everything
 func (a *MusicRhythmGroupAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
-		a._dataGroupCoverImgPath[d.GroupCoverImgPath] = d
-		a._dataTakeMissionID[d.TakeMissionID] = d
 		a._dataBGMpath[d.BGMpath] = d
-		a._dataGotoID[d.GotoID] = d
-		a._dataEntranceID[d.EntranceID] = d
-		a._dataMapInfoID[d.MapInfoID] = d
 		a._dataEntityGroup[d.EntityGroup] = d
 		a._dataEntityGroupMission[d.EntityGroupMission] = d
+		a._dataEntranceID[d.EntranceID] = d
+		a._dataGotoID[d.GotoID] = d
+		a._dataGroupCoverImgPath[d.GroupCoverImgPath] = d
+		a._dataID[d.ID] = d
+		a._dataMapInfoID[d.MapInfoID] = d
+		a._dataTakeMissionID[d.TakeMissionID] = d
 	}
-}
-
-// ByID returns the MusicRhythmGroup uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmGroupAccessor) ByID(identifier float64) (MusicRhythmGroup, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
-}
-
-// ByGroupCoverImgPath returns the MusicRhythmGroup uniquely identified by GroupCoverImgPath
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmGroupAccessor) ByGroupCoverImgPath(identifier string) (MusicRhythmGroup, error) {
-	if a._dataGroupCoverImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGroupCoverImgPath[identifier], nil
-}
-
-// ByTakeMissionID returns the MusicRhythmGroup uniquely identified by TakeMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmGroupAccessor) ByTakeMissionID(identifier float64) (MusicRhythmGroup, error) {
-	if a._dataTakeMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTakeMissionID[identifier], nil
 }
 
 // ByBGMpath returns the MusicRhythmGroup uniquely identified by BGMpath
@@ -131,55 +88,15 @@ func (a *MusicRhythmGroupAccessor) ByTakeMissionID(identifier float64) (MusicRhy
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmGroupAccessor) ByBGMpath(identifier string) (MusicRhythmGroup, error) {
 	if a._dataBGMpath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBGMpath[identifier], nil
-}
-
-// ByGotoID returns the MusicRhythmGroup uniquely identified by GotoID
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmGroupAccessor) ByGotoID(identifier float64) (MusicRhythmGroup, error) {
-	if a._dataGotoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGotoID[identifier], nil
-}
-
-// ByEntranceID returns the MusicRhythmGroup uniquely identified by EntranceID
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmGroupAccessor) ByEntranceID(identifier float64) (MusicRhythmGroup, error) {
-	if a._dataEntranceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataEntranceID[identifier], nil
-}
-
-// ByMapInfoID returns the MusicRhythmGroup uniquely identified by MapInfoID
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmGroupAccessor) ByMapInfoID(identifier float64) (MusicRhythmGroup, error) {
-	if a._dataMapInfoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMapInfoID[identifier], nil
 }
 
 // ByEntityGroup returns the MusicRhythmGroup uniquely identified by EntityGroup
@@ -187,9 +104,11 @@ func (a *MusicRhythmGroupAccessor) ByMapInfoID(identifier float64) (MusicRhythmG
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmGroupAccessor) ByEntityGroup(identifier float64) (MusicRhythmGroup, error) {
 	if a._dataEntityGroup == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -201,11 +120,109 @@ func (a *MusicRhythmGroupAccessor) ByEntityGroup(identifier float64) (MusicRhyth
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmGroupAccessor) ByEntityGroupMission(identifier float64) (MusicRhythmGroup, error) {
 	if a._dataEntityGroupMission == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEntityGroupMission[identifier], nil
+}
+
+// ByEntranceID returns the MusicRhythmGroup uniquely identified by EntranceID
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmGroupAccessor) ByEntranceID(identifier float64) (MusicRhythmGroup, error) {
+	if a._dataEntranceID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataEntranceID[identifier], nil
+}
+
+// ByGotoID returns the MusicRhythmGroup uniquely identified by GotoID
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmGroupAccessor) ByGotoID(identifier float64) (MusicRhythmGroup, error) {
+	if a._dataGotoID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGotoID[identifier], nil
+}
+
+// ByGroupCoverImgPath returns the MusicRhythmGroup uniquely identified by GroupCoverImgPath
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmGroupAccessor) ByGroupCoverImgPath(identifier string) (MusicRhythmGroup, error) {
+	if a._dataGroupCoverImgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGroupCoverImgPath[identifier], nil
+}
+
+// ByID returns the MusicRhythmGroup uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmGroupAccessor) ByID(identifier float64) (MusicRhythmGroup, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByMapInfoID returns the MusicRhythmGroup uniquely identified by MapInfoID
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmGroupAccessor) ByMapInfoID(identifier float64) (MusicRhythmGroup, error) {
+	if a._dataMapInfoID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMapInfoID[identifier], nil
+}
+
+// ByTakeMissionID returns the MusicRhythmGroup uniquely identified by TakeMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmGroupAccessor) ByTakeMissionID(identifier float64) (MusicRhythmGroup, error) {
+	if a._dataTakeMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTakeMissionID[identifier], nil
 }

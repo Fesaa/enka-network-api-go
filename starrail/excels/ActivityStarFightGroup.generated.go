@@ -24,12 +24,12 @@ type ActivityStarFightGroup struct {
 }
 type ActivityStarFightGroupAccessor struct {
 	_data                 []ActivityStarFightGroup
+	_dataActivityModuleID map[float64]ActivityStarFightGroup
 	_dataGroupID          map[float64]ActivityStarFightGroup
 	_dataGroupPicPath     map[string]ActivityStarFightGroup
-	_dataActivityModuleID map[float64]ActivityStarFightGroup
 	_dataMazeBuffID       map[float64]ActivityStarFightGroup
-	_dataTutorialGuideID  map[float64]ActivityStarFightGroup
 	_dataPerfectQuest     map[float64]ActivityStarFightGroup
+	_dataTutorialGuideID  map[float64]ActivityStarFightGroup
 }
 
 // LoadData retrieves the data. Must be called before ActivityStarFightGroup.GroupData
@@ -53,7 +53,6 @@ func (a *ActivityStarFightGroupAccessor) Raw() ([]ActivityStarFightGroup, error)
 		if err != nil {
 			return []ActivityStarFightGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,13 +61,29 @@ func (a *ActivityStarFightGroupAccessor) Raw() ([]ActivityStarFightGroup, error)
 // Can be called manually in conjunction with ActivityStarFightGroupAccessor.LoadData to preload everything
 func (a *ActivityStarFightGroupAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataGroupID[d.GroupID] = d
 		a._dataGroupPicPath[d.GroupPicPath] = d
-		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataMazeBuffID[d.MazeBuffID] = d
-		a._dataTutorialGuideID[d.TutorialGuideID] = d
 		a._dataPerfectQuest[d.PerfectQuest] = d
+		a._dataTutorialGuideID[d.TutorialGuideID] = d
 	}
+}
+
+// ByActivityModuleID returns the ActivityStarFightGroup uniquely identified by ActivityModuleID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityStarFightGroupAccessor) ByActivityModuleID(identifier float64) (ActivityStarFightGroup, error) {
+	if a._dataActivityModuleID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityStarFightGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataActivityModuleID[identifier], nil
 }
 
 // ByGroupID returns the ActivityStarFightGroup uniquely identified by GroupID
@@ -76,9 +91,11 @@ func (a *ActivityStarFightGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityStarFightGroupAccessor) ByGroupID(identifier float64) (ActivityStarFightGroup, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityStarFightGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityStarFightGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -90,27 +107,15 @@ func (a *ActivityStarFightGroupAccessor) ByGroupID(identifier float64) (Activity
 // Error is only non-nil if the source errors out
 func (a *ActivityStarFightGroupAccessor) ByGroupPicPath(identifier string) (ActivityStarFightGroup, error) {
 	if a._dataGroupPicPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityStarFightGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityStarFightGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGroupPicPath[identifier], nil
-}
-
-// ByActivityModuleID returns the ActivityStarFightGroup uniquely identified by ActivityModuleID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityStarFightGroupAccessor) ByActivityModuleID(identifier float64) (ActivityStarFightGroup, error) {
-	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityStarFightGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataActivityModuleID[identifier], nil
 }
 
 // ByMazeBuffID returns the ActivityStarFightGroup uniquely identified by MazeBuffID
@@ -118,27 +123,15 @@ func (a *ActivityStarFightGroupAccessor) ByActivityModuleID(identifier float64) 
 // Error is only non-nil if the source errors out
 func (a *ActivityStarFightGroupAccessor) ByMazeBuffID(identifier float64) (ActivityStarFightGroup, error) {
 	if a._dataMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityStarFightGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityStarFightGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMazeBuffID[identifier], nil
-}
-
-// ByTutorialGuideID returns the ActivityStarFightGroup uniquely identified by TutorialGuideID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityStarFightGroupAccessor) ByTutorialGuideID(identifier float64) (ActivityStarFightGroup, error) {
-	if a._dataTutorialGuideID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityStarFightGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTutorialGuideID[identifier], nil
 }
 
 // ByPerfectQuest returns the ActivityStarFightGroup uniquely identified by PerfectQuest
@@ -146,11 +139,29 @@ func (a *ActivityStarFightGroupAccessor) ByTutorialGuideID(identifier float64) (
 // Error is only non-nil if the source errors out
 func (a *ActivityStarFightGroupAccessor) ByPerfectQuest(identifier float64) (ActivityStarFightGroup, error) {
 	if a._dataPerfectQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityStarFightGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityStarFightGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPerfectQuest[identifier], nil
+}
+
+// ByTutorialGuideID returns the ActivityStarFightGroup uniquely identified by TutorialGuideID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityStarFightGroupAccessor) ByTutorialGuideID(identifier float64) (ActivityStarFightGroup, error) {
+	if a._dataTutorialGuideID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityStarFightGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTutorialGuideID[identifier], nil
 }

@@ -43,7 +43,6 @@ func (a *DocumentaryPhaseQuestPanelAccessor) Raw() ([]DocumentaryPhaseQuestPanel
 		if err != nil {
 			return []DocumentaryPhaseQuestPanel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *DocumentaryPhaseQuestPanelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DocumentaryPhaseQuestPanelAccessor) ByExtraQuest(identifier float64) (DocumentaryPhaseQuestPanel, error) {
 	if a._dataExtraQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DocumentaryPhaseQuestPanel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DocumentaryPhaseQuestPanel{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *DocumentaryPhaseQuestPanelAccessor) ByExtraQuest(identifier float64) (D
 // Error is only non-nil if the source errors out
 func (a *DocumentaryPhaseQuestPanelAccessor) ByPhaseID(identifier float64) (DocumentaryPhaseQuestPanel, error) {
 	if a._dataPhaseID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DocumentaryPhaseQuestPanel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DocumentaryPhaseQuestPanel{}, err
+			}
 		}
 		a.GroupData()
 	}

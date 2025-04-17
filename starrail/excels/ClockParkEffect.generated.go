@@ -44,7 +44,6 @@ func (a *ClockParkEffectAccessor) Raw() ([]ClockParkEffect, error) {
 		if err != nil {
 			return []ClockParkEffect{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

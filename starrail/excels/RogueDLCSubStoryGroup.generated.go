@@ -41,7 +41,6 @@ func (a *RogueDLCSubStoryGroupAccessor) Raw() ([]RogueDLCSubStoryGroup, error) {
 		if err != nil {
 			return []RogueDLCSubStoryGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RogueDLCSubStoryGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCSubStoryGroupAccessor) BySubStoryGroupID(identifier float64) (RogueDLCSubStoryGroup, error) {
 	if a._dataSubStoryGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCSubStoryGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCSubStoryGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

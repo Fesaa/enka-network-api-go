@@ -42,7 +42,6 @@ func (a *DialogueNPCAccessor) Raw() ([]DialogueNPC, error) {
 		if err != nil {
 			return []DialogueNPC{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *DialogueNPCAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DialogueNPCAccessor) ByGroupID(identifier float64) (DialogueNPC, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DialogueNPC{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DialogueNPC{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -37,7 +37,6 @@ func (a *ActivityRogueGuideBannerAccessor) Raw() ([]ActivityRogueGuideBanner, er
 		if err != nil {
 			return []ActivityRogueGuideBanner{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *ActivityRogueGuideBannerAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityRogueGuideBannerAccessor) ByActivityID(identifier float64) (ActivityRogueGuideBanner, error) {
 	if a._dataActivityID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRogueGuideBanner{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRogueGuideBanner{}, err
+			}
 		}
 		a.GroupData()
 	}

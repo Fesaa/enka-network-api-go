@@ -38,7 +38,6 @@ func (a *MarbleRoundCustomBuffAccessor) Raw() ([]MarbleRoundCustomBuff, error) {
 		if err != nil {
 			return []MarbleRoundCustomBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

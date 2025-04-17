@@ -14,8 +14,8 @@ type SystemDefaultLanguage struct {
 }
 type SystemDefaultLanguageAccessor struct {
 	_data                    []SystemDefaultLanguage
-	_dataSystemLanguage      map[string]SystemDefaultLanguage
 	_dataDefaultTextLanguage map[string]SystemDefaultLanguage
+	_dataSystemLanguage      map[string]SystemDefaultLanguage
 }
 
 // LoadData retrieves the data. Must be called before SystemDefaultLanguage.GroupData
@@ -39,7 +39,6 @@ func (a *SystemDefaultLanguageAccessor) Raw() ([]SystemDefaultLanguage, error) {
 		if err != nil {
 			return []SystemDefaultLanguage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *SystemDefaultLanguageAccessor) Raw() ([]SystemDefaultLanguage, error) {
 // Can be called manually in conjunction with SystemDefaultLanguageAccessor.LoadData to preload everything
 func (a *SystemDefaultLanguageAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSystemLanguage[d.SystemLanguage] = d
 		a._dataDefaultTextLanguage[d.DefaultTextLanguage] = d
+		a._dataSystemLanguage[d.SystemLanguage] = d
 	}
-}
-
-// BySystemLanguage returns the SystemDefaultLanguage uniquely identified by SystemLanguage
-//
-// Error is only non-nil if the source errors out
-func (a *SystemDefaultLanguageAccessor) BySystemLanguage(identifier string) (SystemDefaultLanguage, error) {
-	if a._dataSystemLanguage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SystemDefaultLanguage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSystemLanguage[identifier], nil
 }
 
 // ByDefaultTextLanguage returns the SystemDefaultLanguage uniquely identified by DefaultTextLanguage
@@ -72,11 +57,29 @@ func (a *SystemDefaultLanguageAccessor) BySystemLanguage(identifier string) (Sys
 // Error is only non-nil if the source errors out
 func (a *SystemDefaultLanguageAccessor) ByDefaultTextLanguage(identifier string) (SystemDefaultLanguage, error) {
 	if a._dataDefaultTextLanguage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SystemDefaultLanguage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SystemDefaultLanguage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDefaultTextLanguage[identifier], nil
+}
+
+// BySystemLanguage returns the SystemDefaultLanguage uniquely identified by SystemLanguage
+//
+// Error is only non-nil if the source errors out
+func (a *SystemDefaultLanguageAccessor) BySystemLanguage(identifier string) (SystemDefaultLanguage, error) {
+	if a._dataSystemLanguage == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SystemDefaultLanguage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSystemLanguage[identifier], nil
 }

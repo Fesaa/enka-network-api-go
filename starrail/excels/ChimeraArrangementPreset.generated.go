@@ -39,7 +39,6 @@ func (a *ChimeraArrangementPresetAccessor) Raw() ([]ChimeraArrangementPreset, er
 		if err != nil {
 			return []ChimeraArrangementPreset{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ChimeraArrangementPresetAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraArrangementPresetAccessor) ByPresetID(identifier float64) (ChimeraArrangementPreset, error) {
 	if a._dataPresetID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraArrangementPreset{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraArrangementPreset{}, err
+			}
 		}
 		a.GroupData()
 	}

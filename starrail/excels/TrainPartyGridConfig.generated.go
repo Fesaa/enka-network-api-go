@@ -39,7 +39,6 @@ func (a *TrainPartyGridConfigAccessor) Raw() ([]TrainPartyGridConfig, error) {
 		if err != nil {
 			return []TrainPartyGridConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *TrainPartyGridConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyGridConfigAccessor) ByGridID(identifier float64) (TrainPartyGridConfig, error) {
 	if a._dataGridID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyGridConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyGridConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

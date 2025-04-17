@@ -39,7 +39,6 @@ func (a *SilverWolfQuestConfigAccessor) Raw() ([]SilverWolfQuestConfig, error) {
 		if err != nil {
 			return []SilverWolfQuestConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *SilverWolfQuestConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SilverWolfQuestConfigAccessor) ByQuestID(identifier float64) (SilverWolfQuestConfig, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SilverWolfQuestConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SilverWolfQuestConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -39,7 +39,6 @@ func (a *SwordTrainingExamCommentAccessor) Raw() ([]SwordTrainingExamComment, er
 		if err != nil {
 			return []SwordTrainingExamComment{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *SwordTrainingExamCommentAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingExamCommentAccessor) ByCommentID(identifier float64) (SwordTrainingExamComment, error) {
 	if a._dataCommentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingExamComment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingExamComment{}, err
+			}
 		}
 		a.GroupData()
 	}

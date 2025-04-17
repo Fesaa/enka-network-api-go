@@ -38,7 +38,6 @@ func (a *ChimeraDisplayAccessor) Raw() ([]ChimeraDisplay, error) {
 		if err != nil {
 			return []ChimeraDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ChimeraDisplayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraDisplayAccessor) ByDisplayID(identifier float64) (ChimeraDisplay, error) {
 	if a._dataDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *RecolorConfigAccessor) Raw() ([]RecolorConfig, error) {
 		if err != nil {
 			return []RecolorConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RecolorConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RecolorConfigAccessor) ByID(identifier float64) (RecolorConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RecolorConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RecolorConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

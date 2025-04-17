@@ -37,7 +37,6 @@ func (a *MazeFloorUnlockAccessor) Raw() ([]MazeFloorUnlock, error) {
 		if err != nil {
 			return []MazeFloorUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MazeFloorUnlockAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MazeFloorUnlockAccessor) ByFloorID(identifier float64) (MazeFloorUnlock, error) {
 	if a._dataFloorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazeFloorUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazeFloorUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}

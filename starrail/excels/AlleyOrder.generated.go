@@ -48,7 +48,6 @@ func (a *AlleyOrderAccessor) Raw() ([]AlleyOrder, error) {
 		if err != nil {
 			return []AlleyOrder{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *AlleyOrderAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AlleyOrderAccessor) ByOrderID(identifier float64) (AlleyOrder, error) {
 	if a._dataOrderID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyOrder{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyOrder{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,9 +82,11 @@ func (a *AlleyOrderAccessor) ByOrderID(identifier float64) (AlleyOrder, error) {
 // Error is only non-nil if the source errors out
 func (a *AlleyOrderAccessor) ByOrderTips(identifier string) (AlleyOrder, error) {
 	if a._dataOrderTips == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyOrder{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyOrder{}, err
+			}
 		}
 		a.GroupData()
 	}

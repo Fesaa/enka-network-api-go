@@ -38,7 +38,6 @@ func (a *HeliobusPostImgAccessor) Raw() ([]HeliobusPostImg, error) {
 		if err != nil {
 			return []HeliobusPostImg{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *HeliobusPostImgAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusPostImgAccessor) ByPostImgID(identifier float64) (HeliobusPostImg, error) {
 	if a._dataPostImgID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusPostImg{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusPostImg{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *HeliobusPostImgAccessor) ByPostImgID(identifier float64) (HeliobusPostI
 // Error is only non-nil if the source errors out
 func (a *HeliobusPostImgAccessor) ByPostImgPath(identifier string) (HeliobusPostImg, error) {
 	if a._dataPostImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusPostImg{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusPostImg{}, err
+			}
 		}
 		a.GroupData()
 	}

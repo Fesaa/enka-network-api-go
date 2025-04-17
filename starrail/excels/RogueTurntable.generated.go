@@ -37,7 +37,6 @@ func (a *RogueTurntableAccessor) Raw() ([]RogueTurntable, error) {
 		if err != nil {
 			return []RogueTurntable{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

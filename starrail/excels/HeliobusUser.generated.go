@@ -40,7 +40,6 @@ func (a *HeliobusUserAccessor) Raw() ([]HeliobusUser, error) {
 		if err != nil {
 			return []HeliobusUser{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *HeliobusUserAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HeliobusUserAccessor) ByHeliobusUserID(identifier float64) (HeliobusUser, error) {
 	if a._dataHeliobusUserID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusUser{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusUser{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *HeliobusUserAccessor) ByHeliobusUserID(identifier float64) (HeliobusUse
 // Error is only non-nil if the source errors out
 func (a *HeliobusUserAccessor) ByUserIconPath(identifier string) (HeliobusUser, error) {
 	if a._dataUserIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HeliobusUser{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HeliobusUser{}, err
+			}
 		}
 		a.GroupData()
 	}

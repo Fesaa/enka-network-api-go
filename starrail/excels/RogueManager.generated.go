@@ -17,9 +17,9 @@ type RogueManager struct {
 }
 type RogueManagerAccessor struct {
 	_data               []RogueManager
-	_dataRogueSeason    map[float64]RogueManager
 	_dataBeginTime      map[string]RogueManager
 	_dataEndTime        map[string]RogueManager
+	_dataRogueSeason    map[float64]RogueManager
 	_dataScheduleDataID map[float64]RogueManager
 }
 
@@ -44,7 +44,6 @@ func (a *RogueManagerAccessor) Raw() ([]RogueManager, error) {
 		if err != nil {
 			return []RogueManager{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,25 +52,11 @@ func (a *RogueManagerAccessor) Raw() ([]RogueManager, error) {
 // Can be called manually in conjunction with RogueManagerAccessor.LoadData to preload everything
 func (a *RogueManagerAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRogueSeason[d.RogueSeason] = d
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d
+		a._dataRogueSeason[d.RogueSeason] = d
 		a._dataScheduleDataID[d.ScheduleDataID] = d
 	}
-}
-
-// ByRogueSeason returns the RogueManager uniquely identified by RogueSeason
-//
-// Error is only non-nil if the source errors out
-func (a *RogueManagerAccessor) ByRogueSeason(identifier float64) (RogueManager, error) {
-	if a._dataRogueSeason == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueManager{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRogueSeason[identifier], nil
 }
 
 // ByBeginTime returns the RogueManager uniquely identified by BeginTime
@@ -79,9 +64,11 @@ func (a *RogueManagerAccessor) ByRogueSeason(identifier float64) (RogueManager, 
 // Error is only non-nil if the source errors out
 func (a *RogueManagerAccessor) ByBeginTime(identifier string) (RogueManager, error) {
 	if a._dataBeginTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueManager{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueManager{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -93,13 +80,31 @@ func (a *RogueManagerAccessor) ByBeginTime(identifier string) (RogueManager, err
 // Error is only non-nil if the source errors out
 func (a *RogueManagerAccessor) ByEndTime(identifier string) (RogueManager, error) {
 	if a._dataEndTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueManager{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueManager{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEndTime[identifier], nil
+}
+
+// ByRogueSeason returns the RogueManager uniquely identified by RogueSeason
+//
+// Error is only non-nil if the source errors out
+func (a *RogueManagerAccessor) ByRogueSeason(identifier float64) (RogueManager, error) {
+	if a._dataRogueSeason == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueManager{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueSeason[identifier], nil
 }
 
 // ByScheduleDataID returns the RogueManager uniquely identified by ScheduleDataID
@@ -107,9 +112,11 @@ func (a *RogueManagerAccessor) ByEndTime(identifier string) (RogueManager, error
 // Error is only non-nil if the source errors out
 func (a *RogueManagerAccessor) ByScheduleDataID(identifier float64) (RogueManager, error) {
 	if a._dataScheduleDataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueManager{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueManager{}, err
+			}
 		}
 		a.GroupData()
 	}

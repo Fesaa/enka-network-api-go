@@ -43,7 +43,6 @@ func (a *ActivityRaidCollectionGroupAccessor) Raw() ([]ActivityRaidCollectionGro
 		if err != nil {
 			return []ActivityRaidCollectionGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *ActivityRaidCollectionGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityRaidCollectionGroupAccessor) ByGroupEntrancePrefabPath(identifier string) (ActivityRaidCollectionGroup, error) {
 	if a._dataGroupEntrancePrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidCollectionGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidCollectionGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *ActivityRaidCollectionGroupAccessor) ByGroupEntrancePrefabPath(identifi
 // Error is only non-nil if the source errors out
 func (a *ActivityRaidCollectionGroupAccessor) ByRaidCollectionGroupID(identifier float64) (ActivityRaidCollectionGroup, error) {
 	if a._dataRaidCollectionGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRaidCollectionGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRaidCollectionGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

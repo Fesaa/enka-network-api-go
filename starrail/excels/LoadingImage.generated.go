@@ -38,7 +38,6 @@ func (a *LoadingImageAccessor) Raw() ([]LoadingImage, error) {
 		if err != nil {
 			return []LoadingImage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *LoadingImageAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *LoadingImageAccessor) ByID(identifier float64) (LoadingImage, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LoadingImage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LoadingImage{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *LoadingImageAccessor) ByID(identifier float64) (LoadingImage, error) {
 // Error is only non-nil if the source errors out
 func (a *LoadingImageAccessor) ByImagePath(identifier string) (LoadingImage, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LoadingImage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LoadingImage{}, err
+			}
 		}
 		a.GroupData()
 	}

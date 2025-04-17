@@ -17,12 +17,12 @@ type PlanetFesGameConfig struct {
 }
 type PlanetFesGameConfigAccessor struct {
 	_data             []PlanetFesGameConfig
-	_dataParamStr1    map[string]PlanetFesGameConfig
-	_dataRewardPool   map[float64]PlanetFesGameConfig
-	_dataRaiseCurveID map[float64]PlanetFesGameConfig
 	_dataGameID       map[string]PlanetFesGameConfig
 	_dataLandID       map[float64]PlanetFesGameConfig
 	_dataParamInt3    map[float64]PlanetFesGameConfig
+	_dataParamStr1    map[string]PlanetFesGameConfig
+	_dataRaiseCurveID map[float64]PlanetFesGameConfig
+	_dataRewardPool   map[float64]PlanetFesGameConfig
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesGameConfig.GroupData
@@ -46,7 +46,6 @@ func (a *PlanetFesGameConfigAccessor) Raw() ([]PlanetFesGameConfig, error) {
 		if err != nil {
 			return []PlanetFesGameConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,55 +54,13 @@ func (a *PlanetFesGameConfigAccessor) Raw() ([]PlanetFesGameConfig, error) {
 // Can be called manually in conjunction with PlanetFesGameConfigAccessor.LoadData to preload everything
 func (a *PlanetFesGameConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataParamStr1[d.ParamStr1] = d
-		a._dataRewardPool[d.RewardPool] = d
-		a._dataRaiseCurveID[d.RaiseCurveID] = d
 		a._dataGameID[d.GameID] = d
 		a._dataLandID[d.LandID] = d
 		a._dataParamInt3[d.ParamInt3] = d
+		a._dataParamStr1[d.ParamStr1] = d
+		a._dataRaiseCurveID[d.RaiseCurveID] = d
+		a._dataRewardPool[d.RewardPool] = d
 	}
-}
-
-// ByParamStr1 returns the PlanetFesGameConfig uniquely identified by ParamStr1
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesGameConfigAccessor) ByParamStr1(identifier string) (PlanetFesGameConfig, error) {
-	if a._dataParamStr1 == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataParamStr1[identifier], nil
-}
-
-// ByRewardPool returns the PlanetFesGameConfig uniquely identified by RewardPool
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesGameConfigAccessor) ByRewardPool(identifier float64) (PlanetFesGameConfig, error) {
-	if a._dataRewardPool == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardPool[identifier], nil
-}
-
-// ByRaiseCurveID returns the PlanetFesGameConfig uniquely identified by RaiseCurveID
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesGameConfigAccessor) ByRaiseCurveID(identifier float64) (PlanetFesGameConfig, error) {
-	if a._dataRaiseCurveID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRaiseCurveID[identifier], nil
 }
 
 // ByGameID returns the PlanetFesGameConfig uniquely identified by GameID
@@ -111,9 +68,11 @@ func (a *PlanetFesGameConfigAccessor) ByRaiseCurveID(identifier float64) (Planet
 // Error is only non-nil if the source errors out
 func (a *PlanetFesGameConfigAccessor) ByGameID(identifier string) (PlanetFesGameConfig, error) {
 	if a._dataGameID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -125,9 +84,11 @@ func (a *PlanetFesGameConfigAccessor) ByGameID(identifier string) (PlanetFesGame
 // Error is only non-nil if the source errors out
 func (a *PlanetFesGameConfigAccessor) ByLandID(identifier float64) (PlanetFesGameConfig, error) {
 	if a._dataLandID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -139,11 +100,61 @@ func (a *PlanetFesGameConfigAccessor) ByLandID(identifier float64) (PlanetFesGam
 // Error is only non-nil if the source errors out
 func (a *PlanetFesGameConfigAccessor) ByParamInt3(identifier float64) (PlanetFesGameConfig, error) {
 	if a._dataParamInt3 == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataParamInt3[identifier], nil
+}
+
+// ByParamStr1 returns the PlanetFesGameConfig uniquely identified by ParamStr1
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesGameConfigAccessor) ByParamStr1(identifier string) (PlanetFesGameConfig, error) {
+	if a._dataParamStr1 == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataParamStr1[identifier], nil
+}
+
+// ByRaiseCurveID returns the PlanetFesGameConfig uniquely identified by RaiseCurveID
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesGameConfigAccessor) ByRaiseCurveID(identifier float64) (PlanetFesGameConfig, error) {
+	if a._dataRaiseCurveID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRaiseCurveID[identifier], nil
+}
+
+// ByRewardPool returns the PlanetFesGameConfig uniquely identified by RewardPool
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesGameConfigAccessor) ByRewardPool(identifier float64) (PlanetFesGameConfig, error) {
+	if a._dataRewardPool == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardPool[identifier], nil
 }

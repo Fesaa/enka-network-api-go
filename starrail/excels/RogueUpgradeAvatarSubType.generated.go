@@ -37,7 +37,6 @@ func (a *RogueUpgradeAvatarSubTypeAccessor) Raw() ([]RogueUpgradeAvatarSubType, 
 		if err != nil {
 			return []RogueUpgradeAvatarSubType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *RogueUpgradeAvatarSubTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueUpgradeAvatarSubTypeAccessor) ByAvatarID(identifier float64) (RogueUpgradeAvatarSubType, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueUpgradeAvatarSubType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueUpgradeAvatarSubType{}, err
+			}
 		}
 		a.GroupData()
 	}

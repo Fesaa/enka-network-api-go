@@ -47,7 +47,6 @@ func (a *PreAvatarLevelingTemplateAccessor) Raw() ([]PreAvatarLevelingTemplate, 
 		if err != nil {
 			return []PreAvatarLevelingTemplate{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

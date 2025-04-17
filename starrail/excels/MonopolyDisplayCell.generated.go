@@ -18,8 +18,8 @@ type MonopolyDisplayCell struct {
 }
 type MonopolyDisplayCellAccessor struct {
 	_data            []MonopolyDisplayCell
-	_dataDisplaySort map[float64]MonopolyDisplayCell
 	_dataDisplayID   map[float64]MonopolyDisplayCell
+	_dataDisplaySort map[float64]MonopolyDisplayCell
 	_dataIconPath    map[string]MonopolyDisplayCell
 }
 
@@ -44,7 +44,6 @@ func (a *MonopolyDisplayCellAccessor) Raw() ([]MonopolyDisplayCell, error) {
 		if err != nil {
 			return []MonopolyDisplayCell{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,24 +52,10 @@ func (a *MonopolyDisplayCellAccessor) Raw() ([]MonopolyDisplayCell, error) {
 // Can be called manually in conjunction with MonopolyDisplayCellAccessor.LoadData to preload everything
 func (a *MonopolyDisplayCellAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataDisplaySort[d.DisplaySort] = d
 		a._dataDisplayID[d.DisplayID] = d
+		a._dataDisplaySort[d.DisplaySort] = d
 		a._dataIconPath[d.IconPath] = d
 	}
-}
-
-// ByDisplaySort returns the MonopolyDisplayCell uniquely identified by DisplaySort
-//
-// Error is only non-nil if the source errors out
-func (a *MonopolyDisplayCellAccessor) ByDisplaySort(identifier float64) (MonopolyDisplayCell, error) {
-	if a._dataDisplaySort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyDisplayCell{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataDisplaySort[identifier], nil
 }
 
 // ByDisplayID returns the MonopolyDisplayCell uniquely identified by DisplayID
@@ -78,13 +63,31 @@ func (a *MonopolyDisplayCellAccessor) ByDisplaySort(identifier float64) (Monopol
 // Error is only non-nil if the source errors out
 func (a *MonopolyDisplayCellAccessor) ByDisplayID(identifier float64) (MonopolyDisplayCell, error) {
 	if a._dataDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyDisplayCell{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyDisplayCell{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDisplayID[identifier], nil
+}
+
+// ByDisplaySort returns the MonopolyDisplayCell uniquely identified by DisplaySort
+//
+// Error is only non-nil if the source errors out
+func (a *MonopolyDisplayCellAccessor) ByDisplaySort(identifier float64) (MonopolyDisplayCell, error) {
+	if a._dataDisplaySort == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyDisplayCell{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataDisplaySort[identifier], nil
 }
 
 // ByIconPath returns the MonopolyDisplayCell uniquely identified by IconPath
@@ -92,9 +95,11 @@ func (a *MonopolyDisplayCellAccessor) ByDisplayID(identifier float64) (MonopolyD
 // Error is only non-nil if the source errors out
 func (a *MonopolyDisplayCellAccessor) ByIconPath(identifier string) (MonopolyDisplayCell, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyDisplayCell{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyDisplayCell{}, err
+			}
 		}
 		a.GroupData()
 	}

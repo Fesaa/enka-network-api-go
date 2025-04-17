@@ -43,7 +43,6 @@ func (a *PlanetFesOpticalAccessor) Raw() ([]PlanetFesOptical, error) {
 		if err != nil {
 			return []PlanetFesOptical{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *PlanetFesOpticalAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesOpticalAccessor) ByQuestID(identifier float64) (PlanetFesOptical, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesOptical{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesOptical{}, err
+			}
 		}
 		a.GroupData()
 	}

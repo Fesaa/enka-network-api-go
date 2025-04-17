@@ -40,7 +40,6 @@ func (a *ActionSettingAccessor) Raw() ([]ActionSetting, error) {
 		if err != nil {
 			return []ActionSetting{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ActionSettingAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActionSettingAccessor) ByActionName(identifier string) (ActionSetting, error) {
 	if a._dataActionName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActionSetting{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActionSetting{}, err
+			}
 		}
 		a.GroupData()
 	}

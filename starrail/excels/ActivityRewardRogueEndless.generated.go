@@ -16,9 +16,9 @@ type ActivityRewardRogueEndless struct {
 }
 type ActivityRewardRogueEndlessAccessor struct {
 	_data            []ActivityRewardRogueEndless
+	_dataRewardID    map[float64]ActivityRewardRogueEndless
 	_dataRewardLevel map[float64]ActivityRewardRogueEndless
 	_dataRewardPoint map[float64]ActivityRewardRogueEndless
-	_dataRewardID    map[float64]ActivityRewardRogueEndless
 }
 
 // LoadData retrieves the data. Must be called before ActivityRewardRogueEndless.GroupData
@@ -42,7 +42,6 @@ func (a *ActivityRewardRogueEndlessAccessor) Raw() ([]ActivityRewardRogueEndless
 		if err != nil {
 			return []ActivityRewardRogueEndless{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,10 +50,26 @@ func (a *ActivityRewardRogueEndlessAccessor) Raw() ([]ActivityRewardRogueEndless
 // Can be called manually in conjunction with ActivityRewardRogueEndlessAccessor.LoadData to preload everything
 func (a *ActivityRewardRogueEndlessAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataRewardID[d.RewardID] = d
 		a._dataRewardLevel[d.RewardLevel] = d
 		a._dataRewardPoint[d.RewardPoint] = d
-		a._dataRewardID[d.RewardID] = d
 	}
+}
+
+// ByRewardID returns the ActivityRewardRogueEndless uniquely identified by RewardID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityRewardRogueEndlessAccessor) ByRewardID(identifier float64) (ActivityRewardRogueEndless, error) {
+	if a._dataRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRewardRogueEndless{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardID[identifier], nil
 }
 
 // ByRewardLevel returns the ActivityRewardRogueEndless uniquely identified by RewardLevel
@@ -62,9 +77,11 @@ func (a *ActivityRewardRogueEndlessAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityRewardRogueEndlessAccessor) ByRewardLevel(identifier float64) (ActivityRewardRogueEndless, error) {
 	if a._dataRewardLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRewardRogueEndless{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRewardRogueEndless{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,25 +93,13 @@ func (a *ActivityRewardRogueEndlessAccessor) ByRewardLevel(identifier float64) (
 // Error is only non-nil if the source errors out
 func (a *ActivityRewardRogueEndlessAccessor) ByRewardPoint(identifier float64) (ActivityRewardRogueEndless, error) {
 	if a._dataRewardPoint == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRewardRogueEndless{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRewardRogueEndless{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRewardPoint[identifier], nil
-}
-
-// ByRewardID returns the ActivityRewardRogueEndless uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityRewardRogueEndlessAccessor) ByRewardID(identifier float64) (ActivityRewardRogueEndless, error) {
-	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRewardRogueEndless{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
 }

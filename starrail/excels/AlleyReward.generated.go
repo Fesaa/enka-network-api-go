@@ -14,8 +14,8 @@ type AlleyReward struct {
 }
 type AlleyRewardAccessor struct {
 	_data         []AlleyReward
-	_dataRewardID map[float64]AlleyReward
 	_dataLevel    map[float64]AlleyReward
+	_dataRewardID map[float64]AlleyReward
 }
 
 // LoadData retrieves the data. Must be called before AlleyReward.GroupData
@@ -39,7 +39,6 @@ func (a *AlleyRewardAccessor) Raw() ([]AlleyReward, error) {
 		if err != nil {
 			return []AlleyReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *AlleyRewardAccessor) Raw() ([]AlleyReward, error) {
 // Can be called manually in conjunction with AlleyRewardAccessor.LoadData to preload everything
 func (a *AlleyRewardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRewardID[d.RewardID] = d
 		a._dataLevel[d.Level] = d
+		a._dataRewardID[d.RewardID] = d
 	}
-}
-
-// ByRewardID returns the AlleyReward uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *AlleyRewardAccessor) ByRewardID(identifier float64) (AlleyReward, error) {
-	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
 }
 
 // ByLevel returns the AlleyReward uniquely identified by Level
@@ -72,11 +57,29 @@ func (a *AlleyRewardAccessor) ByRewardID(identifier float64) (AlleyReward, error
 // Error is only non-nil if the source errors out
 func (a *AlleyRewardAccessor) ByLevel(identifier float64) (AlleyReward, error) {
 	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyReward{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLevel[identifier], nil
+}
+
+// ByRewardID returns the AlleyReward uniquely identified by RewardID
+//
+// Error is only non-nil if the source errors out
+func (a *AlleyRewardAccessor) ByRewardID(identifier float64) (AlleyReward, error) {
+	if a._dataRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardID[identifier], nil
 }

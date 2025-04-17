@@ -41,7 +41,6 @@ func (a *BattlePassAdvertisementAccessor) Raw() ([]BattlePassAdvertisement, erro
 		if err != nil {
 			return []BattlePassAdvertisement{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *BattlePassAdvertisementAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BattlePassAdvertisementAccessor) ByID(identifier float64) (BattlePassAdvertisement, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattlePassAdvertisement{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattlePassAdvertisement{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *BattlePassAdvertisementAccessor) ByID(identifier float64) (BattlePassAd
 // Error is only non-nil if the source errors out
 func (a *BattlePassAdvertisementAccessor) ByIconBundlePath(identifier string) (BattlePassAdvertisement, error) {
 	if a._dataIconBundlePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattlePassAdvertisement{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattlePassAdvertisement{}, err
+			}
 		}
 		a.GroupData()
 	}

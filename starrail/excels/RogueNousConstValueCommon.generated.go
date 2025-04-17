@@ -44,7 +44,6 @@ func (a *RogueNousConstValueCommonAccessor) Raw() ([]RogueNousConstValueCommon, 
 		if err != nil {
 			return []RogueNousConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *RogueNousConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueNousConstValueCommonAccessor) ByConstValueName(identifier string) (RogueNousConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

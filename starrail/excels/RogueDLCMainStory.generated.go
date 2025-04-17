@@ -21,8 +21,8 @@ type RogueDLCMainStory struct {
 }
 type RogueDLCMainStoryAccessor struct {
 	_data                    []RogueDLCMainStory
-	_dataMainStoryID         map[float64]RogueDLCMainStory
 	_dataMainStoryButtonIcon map[string]RogueDLCMainStory
+	_dataMainStoryID         map[float64]RogueDLCMainStory
 }
 
 // LoadData retrieves the data. Must be called before RogueDLCMainStory.GroupData
@@ -46,7 +46,6 @@ func (a *RogueDLCMainStoryAccessor) Raw() ([]RogueDLCMainStory, error) {
 		if err != nil {
 			return []RogueDLCMainStory{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,23 +54,9 @@ func (a *RogueDLCMainStoryAccessor) Raw() ([]RogueDLCMainStory, error) {
 // Can be called manually in conjunction with RogueDLCMainStoryAccessor.LoadData to preload everything
 func (a *RogueDLCMainStoryAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataMainStoryID[d.MainStoryID] = d
 		a._dataMainStoryButtonIcon[d.MainStoryButtonIcon] = d
+		a._dataMainStoryID[d.MainStoryID] = d
 	}
-}
-
-// ByMainStoryID returns the RogueDLCMainStory uniquely identified by MainStoryID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueDLCMainStoryAccessor) ByMainStoryID(identifier float64) (RogueDLCMainStory, error) {
-	if a._dataMainStoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCMainStory{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMainStoryID[identifier], nil
 }
 
 // ByMainStoryButtonIcon returns the RogueDLCMainStory uniquely identified by MainStoryButtonIcon
@@ -79,11 +64,29 @@ func (a *RogueDLCMainStoryAccessor) ByMainStoryID(identifier float64) (RogueDLCM
 // Error is only non-nil if the source errors out
 func (a *RogueDLCMainStoryAccessor) ByMainStoryButtonIcon(identifier string) (RogueDLCMainStory, error) {
 	if a._dataMainStoryButtonIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCMainStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCMainStory{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMainStoryButtonIcon[identifier], nil
+}
+
+// ByMainStoryID returns the RogueDLCMainStory uniquely identified by MainStoryID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueDLCMainStoryAccessor) ByMainStoryID(identifier float64) (RogueDLCMainStory, error) {
+	if a._dataMainStoryID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCMainStory{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMainStoryID[identifier], nil
 }

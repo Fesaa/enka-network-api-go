@@ -45,7 +45,6 @@ func (a *TrainPartyProgressAccessor) Raw() ([]TrainPartyProgress, error) {
 		if err != nil {
 			return []TrainPartyProgress{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *TrainPartyProgressAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyProgressAccessor) ByProgressID(identifier float64) (TrainPartyProgress, error) {
 	if a._dataProgressID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyProgress{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyProgress{}, err
+			}
 		}
 		a.GroupData()
 	}

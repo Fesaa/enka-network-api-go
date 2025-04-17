@@ -43,7 +43,6 @@ func (a *MusicRhythmOpticalAccessor) Raw() ([]MusicRhythmOptical, error) {
 		if err != nil {
 			return []MusicRhythmOptical{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *MusicRhythmOpticalAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmOpticalAccessor) ByQuestID(identifier float64) (MusicRhythmOptical, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmOptical{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmOptical{}, err
+			}
 		}
 		a.GroupData()
 	}

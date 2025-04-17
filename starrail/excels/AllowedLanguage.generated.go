@@ -38,7 +38,6 @@ func (a *AllowedLanguageAccessor) Raw() ([]AllowedLanguage, error) {
 		if err != nil {
 			return []AllowedLanguage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

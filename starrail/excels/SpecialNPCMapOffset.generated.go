@@ -37,7 +37,6 @@ func (a *SpecialNPCMapOffsetAccessor) Raw() ([]SpecialNPCMapOffset, error) {
 		if err != nil {
 			return []SpecialNPCMapOffset{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *SpecialNPCMapOffsetAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpecialNPCMapOffsetAccessor) ByID(identifier float64) (SpecialNPCMapOffset, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialNPCMapOffset{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialNPCMapOffset{}, err
+			}
 		}
 		a.GroupData()
 	}

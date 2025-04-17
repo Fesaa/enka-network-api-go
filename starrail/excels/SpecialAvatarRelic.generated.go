@@ -42,7 +42,6 @@ func (a *SpecialAvatarRelicAccessor) Raw() ([]SpecialAvatarRelic, error) {
 		if err != nil {
 			return []SpecialAvatarRelic{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *SpecialAvatarRelicAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpecialAvatarRelicAccessor) ByRelicPropertyType(identifier float64) (SpecialAvatarRelic, error) {
 	if a._dataRelicPropertyType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpecialAvatarRelic{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpecialAvatarRelic{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -43,7 +43,6 @@ func (a *MonsterGuidePhaseAccessor) Raw() ([]MonsterGuidePhase, error) {
 		if err != nil {
 			return []MonsterGuidePhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *MonsterGuidePhaseAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonsterGuidePhaseAccessor) ByPhaseID(identifier float64) (MonsterGuidePhase, error) {
 	if a._dataPhaseID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterGuidePhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterGuidePhase{}, err
+			}
 		}
 		a.GroupData()
 	}

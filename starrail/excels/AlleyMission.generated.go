@@ -40,7 +40,6 @@ func (a *AlleyMissionAccessor) Raw() ([]AlleyMission, error) {
 		if err != nil {
 			return []AlleyMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *AlleyMissionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AlleyMissionAccessor) ByMissionID(identifier float64) (AlleyMission, error) {
 	if a._dataMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyMission{}, err
+			}
 		}
 		a.GroupData()
 	}

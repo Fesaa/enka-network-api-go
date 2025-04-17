@@ -14,8 +14,8 @@ type DecalGameplayConfig struct {
 }
 type DecalGameplayConfigAccessor struct {
 	_data               []DecalGameplayConfig
-	_dataIconPath       map[string]DecalGameplayConfig
 	_dataDecalID        map[float64]DecalGameplayConfig
+	_dataIconPath       map[string]DecalGameplayConfig
 	_dataTextureMapPath map[string]DecalGameplayConfig
 }
 
@@ -40,7 +40,6 @@ func (a *DecalGameplayConfigAccessor) Raw() ([]DecalGameplayConfig, error) {
 		if err != nil {
 			return []DecalGameplayConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,24 +48,10 @@ func (a *DecalGameplayConfigAccessor) Raw() ([]DecalGameplayConfig, error) {
 // Can be called manually in conjunction with DecalGameplayConfigAccessor.LoadData to preload everything
 func (a *DecalGameplayConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIconPath[d.IconPath] = d
 		a._dataDecalID[d.DecalID] = d
+		a._dataIconPath[d.IconPath] = d
 		a._dataTextureMapPath[d.TextureMapPath] = d
 	}
-}
-
-// ByIconPath returns the DecalGameplayConfig uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *DecalGameplayConfigAccessor) ByIconPath(identifier string) (DecalGameplayConfig, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DecalGameplayConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByDecalID returns the DecalGameplayConfig uniquely identified by DecalID
@@ -74,13 +59,31 @@ func (a *DecalGameplayConfigAccessor) ByIconPath(identifier string) (DecalGamepl
 // Error is only non-nil if the source errors out
 func (a *DecalGameplayConfigAccessor) ByDecalID(identifier float64) (DecalGameplayConfig, error) {
 	if a._dataDecalID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DecalGameplayConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DecalGameplayConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDecalID[identifier], nil
+}
+
+// ByIconPath returns the DecalGameplayConfig uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *DecalGameplayConfigAccessor) ByIconPath(identifier string) (DecalGameplayConfig, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DecalGameplayConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
 }
 
 // ByTextureMapPath returns the DecalGameplayConfig uniquely identified by TextureMapPath
@@ -88,9 +91,11 @@ func (a *DecalGameplayConfigAccessor) ByDecalID(identifier float64) (DecalGamepl
 // Error is only non-nil if the source errors out
 func (a *DecalGameplayConfigAccessor) ByTextureMapPath(identifier string) (DecalGameplayConfig, error) {
 	if a._dataTextureMapPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DecalGameplayConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DecalGameplayConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

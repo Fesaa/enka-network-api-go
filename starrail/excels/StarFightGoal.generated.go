@@ -37,7 +37,6 @@ func (a *StarFightGoalAccessor) Raw() ([]StarFightGoal, error) {
 		if err != nil {
 			return []StarFightGoal{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *StarFightGoalAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StarFightGoalAccessor) ByID(identifier float64) (StarFightGoal, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StarFightGoal{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StarFightGoal{}, err
+			}
 		}
 		a.GroupData()
 	}

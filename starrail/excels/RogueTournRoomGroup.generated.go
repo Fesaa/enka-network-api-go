@@ -36,7 +36,6 @@ func (a *RogueTournRoomGroupAccessor) Raw() ([]RogueTournRoomGroup, error) {
 		if err != nil {
 			return []RogueTournRoomGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

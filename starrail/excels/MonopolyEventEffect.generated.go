@@ -38,7 +38,6 @@ func (a *MonopolyEventEffectAccessor) Raw() ([]MonopolyEventEffect, error) {
 		if err != nil {
 			return []MonopolyEventEffect{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MonopolyEventEffectAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyEventEffectAccessor) ByEffectID(identifier float64) (MonopolyEventEffect, error) {
 	if a._dataEffectID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyEventEffect{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyEventEffect{}, err
+			}
 		}
 		a.GroupData()
 	}

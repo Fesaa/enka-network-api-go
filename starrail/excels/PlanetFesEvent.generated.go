@@ -43,7 +43,6 @@ func (a *PlanetFesEventAccessor) Raw() ([]PlanetFesEvent, error) {
 		if err != nil {
 			return []PlanetFesEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *PlanetFesEventAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesEventAccessor) ByID(identifier string) (PlanetFesEvent, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesEvent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesEvent{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *PlanetFesEventAccessor) ByID(identifier string) (PlanetFesEvent, error)
 // Error is only non-nil if the source errors out
 func (a *PlanetFesEventAccessor) ByInitialAppearCD(identifier float64) (PlanetFesEvent, error) {
 	if a._dataInitialAppearCD == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesEvent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesEvent{}, err
+			}
 		}
 		a.GroupData()
 	}

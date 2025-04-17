@@ -15,9 +15,9 @@ type GachaCeiling struct {
 }
 type GachaCeilingAccessor struct {
 	_data            []GachaCeiling
-	_dataGachaType   map[string]GachaCeiling
-	_dataCeilingType map[string]GachaCeiling
 	_dataCeilingNum  map[float64]GachaCeiling
+	_dataCeilingType map[string]GachaCeiling
+	_dataGachaType   map[string]GachaCeiling
 }
 
 // LoadData retrieves the data. Must be called before GachaCeiling.GroupData
@@ -41,7 +41,6 @@ func (a *GachaCeilingAccessor) Raw() ([]GachaCeiling, error) {
 		if err != nil {
 			return []GachaCeiling{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,38 +49,10 @@ func (a *GachaCeilingAccessor) Raw() ([]GachaCeiling, error) {
 // Can be called manually in conjunction with GachaCeilingAccessor.LoadData to preload everything
 func (a *GachaCeilingAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataGachaType[d.GachaType] = d
-		a._dataCeilingType[d.CeilingType] = d
 		a._dataCeilingNum[d.CeilingNum] = d
+		a._dataCeilingType[d.CeilingType] = d
+		a._dataGachaType[d.GachaType] = d
 	}
-}
-
-// ByGachaType returns the GachaCeiling uniquely identified by GachaType
-//
-// Error is only non-nil if the source errors out
-func (a *GachaCeilingAccessor) ByGachaType(identifier string) (GachaCeiling, error) {
-	if a._dataGachaType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaCeiling{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGachaType[identifier], nil
-}
-
-// ByCeilingType returns the GachaCeiling uniquely identified by CeilingType
-//
-// Error is only non-nil if the source errors out
-func (a *GachaCeilingAccessor) ByCeilingType(identifier string) (GachaCeiling, error) {
-	if a._dataCeilingType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaCeiling{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataCeilingType[identifier], nil
 }
 
 // ByCeilingNum returns the GachaCeiling uniquely identified by CeilingNum
@@ -89,11 +60,45 @@ func (a *GachaCeilingAccessor) ByCeilingType(identifier string) (GachaCeiling, e
 // Error is only non-nil if the source errors out
 func (a *GachaCeilingAccessor) ByCeilingNum(identifier float64) (GachaCeiling, error) {
 	if a._dataCeilingNum == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaCeiling{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaCeiling{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCeilingNum[identifier], nil
+}
+
+// ByCeilingType returns the GachaCeiling uniquely identified by CeilingType
+//
+// Error is only non-nil if the source errors out
+func (a *GachaCeilingAccessor) ByCeilingType(identifier string) (GachaCeiling, error) {
+	if a._dataCeilingType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaCeiling{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataCeilingType[identifier], nil
+}
+
+// ByGachaType returns the GachaCeiling uniquely identified by GachaType
+//
+// Error is only non-nil if the source errors out
+func (a *GachaCeilingAccessor) ByGachaType(identifier string) (GachaCeiling, error) {
+	if a._dataGachaType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaCeiling{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGachaType[identifier], nil
 }

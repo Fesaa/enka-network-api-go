@@ -45,7 +45,6 @@ func (a *FinishWayEventMissionAccessor) Raw() ([]FinishWayEventMission, error) {
 		if err != nil {
 			return []FinishWayEventMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *FinishWayEventMissionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FinishWayEventMissionAccessor) ByID(identifier float64) (FinishWayEventMission, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FinishWayEventMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FinishWayEventMission{}, err
+			}
 		}
 		a.GroupData()
 	}

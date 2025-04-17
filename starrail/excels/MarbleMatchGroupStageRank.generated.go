@@ -40,7 +40,6 @@ func (a *MarbleMatchGroupStageRankAccessor) Raw() ([]MarbleMatchGroupStageRank, 
 		if err != nil {
 			return []MarbleMatchGroupStageRank{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

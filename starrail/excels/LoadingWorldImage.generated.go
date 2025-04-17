@@ -37,7 +37,6 @@ func (a *LoadingWorldImageAccessor) Raw() ([]LoadingWorldImage, error) {
 		if err != nil {
 			return []LoadingWorldImage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

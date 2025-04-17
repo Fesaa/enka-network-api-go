@@ -40,7 +40,6 @@ func (a *ActivityRankIconAccessor) Raw() ([]ActivityRankIcon, error) {
 		if err != nil {
 			return []ActivityRankIcon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ActivityRankIconAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityRankIconAccessor) ByCommonRankIconPath(identifier string) (ActivityRankIcon, error) {
 	if a._dataCommonRankIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRankIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRankIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *ActivityRankIconAccessor) ByCommonRankIconPath(identifier string) (Acti
 // Error is only non-nil if the source errors out
 func (a *ActivityRankIconAccessor) ByID(identifier string) (ActivityRankIcon, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityRankIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityRankIcon{}, err
+			}
 		}
 		a.GroupData()
 	}

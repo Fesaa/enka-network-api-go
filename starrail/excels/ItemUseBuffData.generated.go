@@ -28,8 +28,8 @@ type ItemUseBuffData struct {
 }
 type ItemUseBuffDataAccessor struct {
 	_data           []ItemUseBuffData
-	_dataUseDataID  map[float64]ItemUseBuffData
 	_dataMazeBuffID map[float64]ItemUseBuffData
+	_dataUseDataID  map[float64]ItemUseBuffData
 }
 
 // LoadData retrieves the data. Must be called before ItemUseBuffData.GroupData
@@ -53,7 +53,6 @@ func (a *ItemUseBuffDataAccessor) Raw() ([]ItemUseBuffData, error) {
 		if err != nil {
 			return []ItemUseBuffData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,23 +61,9 @@ func (a *ItemUseBuffDataAccessor) Raw() ([]ItemUseBuffData, error) {
 // Can be called manually in conjunction with ItemUseBuffDataAccessor.LoadData to preload everything
 func (a *ItemUseBuffDataAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUseDataID[d.UseDataID] = d
 		a._dataMazeBuffID[d.MazeBuffID] = d
+		a._dataUseDataID[d.UseDataID] = d
 	}
-}
-
-// ByUseDataID returns the ItemUseBuffData uniquely identified by UseDataID
-//
-// Error is only non-nil if the source errors out
-func (a *ItemUseBuffDataAccessor) ByUseDataID(identifier float64) (ItemUseBuffData, error) {
-	if a._dataUseDataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemUseBuffData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUseDataID[identifier], nil
 }
 
 // ByMazeBuffID returns the ItemUseBuffData uniquely identified by MazeBuffID
@@ -86,11 +71,29 @@ func (a *ItemUseBuffDataAccessor) ByUseDataID(identifier float64) (ItemUseBuffDa
 // Error is only non-nil if the source errors out
 func (a *ItemUseBuffDataAccessor) ByMazeBuffID(identifier float64) (ItemUseBuffData, error) {
 	if a._dataMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemUseBuffData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemUseBuffData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMazeBuffID[identifier], nil
+}
+
+// ByUseDataID returns the ItemUseBuffData uniquely identified by UseDataID
+//
+// Error is only non-nil if the source errors out
+func (a *ItemUseBuffDataAccessor) ByUseDataID(identifier float64) (ItemUseBuffData, error) {
+	if a._dataUseDataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemUseBuffData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUseDataID[identifier], nil
 }

@@ -38,7 +38,6 @@ func (a *ChatBubbleConfigAccessor) Raw() ([]ChatBubbleConfig, error) {
 		if err != nil {
 			return []ChatBubbleConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ChatBubbleConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChatBubbleConfigAccessor) ByID(identifier float64) (ChatBubbleConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChatBubbleConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChatBubbleConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

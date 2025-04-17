@@ -39,7 +39,6 @@ func (a *OpenURLWebViewRuleAccessor) Raw() ([]OpenURLWebViewRule, error) {
 		if err != nil {
 			return []OpenURLWebViewRule{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *OpenURLWebViewRuleAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *OpenURLWebViewRuleAccessor) ByRuleID(identifier float64) (OpenURLWebViewRule, error) {
 	if a._dataRuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return OpenURLWebViewRule{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return OpenURLWebViewRule{}, err
+			}
 		}
 		a.GroupData()
 	}

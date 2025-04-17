@@ -38,7 +38,6 @@ func (a *PlanetFesGameBingoSymbolAccessor) Raw() ([]PlanetFesGameBingoSymbol, er
 		if err != nil {
 			return []PlanetFesGameBingoSymbol{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *PlanetFesGameBingoSymbolAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesGameBingoSymbolAccessor) ByID(identifier float64) (PlanetFesGameBingoSymbol, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameBingoSymbol{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameBingoSymbol{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *PlanetFesGameBingoSymbolAccessor) ByID(identifier float64) (PlanetFesGa
 // Error is only non-nil if the source errors out
 func (a *PlanetFesGameBingoSymbolAccessor) ByIconPath(identifier string) (PlanetFesGameBingoSymbol, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesGameBingoSymbol{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesGameBingoSymbol{}, err
+			}
 		}
 		a.GroupData()
 	}

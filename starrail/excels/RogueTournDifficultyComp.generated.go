@@ -38,7 +38,6 @@ func (a *RogueTournDifficultyCompAccessor) Raw() ([]RogueTournDifficultyComp, er
 		if err != nil {
 			return []RogueTournDifficultyComp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueTournDifficultyCompAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournDifficultyCompAccessor) ByDifficultyCompID(identifier float64) (RogueTournDifficultyComp, error) {
 	if a._dataDifficultyCompID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournDifficultyComp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournDifficultyComp{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *RogueTournDifficultyCompAccessor) ByDifficultyCompID(identifier float64
 // Error is only non-nil if the source errors out
 func (a *RogueTournDifficultyCompAccessor) ByLevel(identifier float64) (RogueTournDifficultyComp, error) {
 	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournDifficultyComp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournDifficultyComp{}, err
+			}
 		}
 		a.GroupData()
 	}

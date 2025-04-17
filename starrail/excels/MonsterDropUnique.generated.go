@@ -37,7 +37,6 @@ func (a *MonsterDropUniqueAccessor) Raw() ([]MonsterDropUnique, error) {
 		if err != nil {
 			return []MonsterDropUnique{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

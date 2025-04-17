@@ -36,7 +36,6 @@ func (a *RogueMagicLayerRoomAccessor) Raw() ([]RogueMagicLayerRoom, error) {
 		if err != nil {
 			return []RogueMagicLayerRoom{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

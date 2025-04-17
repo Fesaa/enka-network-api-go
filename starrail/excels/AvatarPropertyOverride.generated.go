@@ -40,7 +40,6 @@ func (a *AvatarPropertyOverrideAccessor) Raw() ([]AvatarPropertyOverride, error)
 		if err != nil {
 			return []AvatarPropertyOverride{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *AvatarPropertyOverrideAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarPropertyOverrideAccessor) ByAvatarID(identifier float64) (AvatarPropertyOverride, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarPropertyOverride{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarPropertyOverride{}, err
+			}
 		}
 		a.GroupData()
 	}

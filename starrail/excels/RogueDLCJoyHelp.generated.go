@@ -38,7 +38,6 @@ func (a *RogueDLCJoyHelpAccessor) Raw() ([]RogueDLCJoyHelp, error) {
 		if err != nil {
 			return []RogueDLCJoyHelp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueDLCJoyHelpAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCJoyHelpAccessor) ByAeonDimensionID(identifier float64) (RogueDLCJoyHelp, error) {
 	if a._dataAeonDimensionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCJoyHelp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCJoyHelp{}, err
+			}
 		}
 		a.GroupData()
 	}

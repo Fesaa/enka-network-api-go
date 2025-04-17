@@ -40,7 +40,6 @@ func (a *MuseumStatsAccessor) Raw() ([]MuseumStats, error) {
 		if err != nil {
 			return []MuseumStats{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -38,7 +38,6 @@ func (a *RogueDialogueDynamicDisplayAccessor) Raw() ([]RogueDialogueDynamicDispl
 		if err != nil {
 			return []RogueDialogueDynamicDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueDialogueDynamicDisplayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDialogueDynamicDisplayAccessor) ByDisplayID(identifier float64) (RogueDialogueDynamicDisplay, error) {
 	if a._dataDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDialogueDynamicDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDialogueDynamicDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}

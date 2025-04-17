@@ -69,7 +69,6 @@ func (a *RaidConfigAccessor) Raw() ([]RaidConfig, error) {
 		if err != nil {
 			return []RaidConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

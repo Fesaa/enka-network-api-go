@@ -40,7 +40,6 @@ func (a *StuffStatsConfigAccessor) Raw() ([]StuffStatsConfig, error) {
 		if err != nil {
 			return []StuffStatsConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *StuffStatsConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StuffStatsConfigAccessor) ByStatsID(identifier string) (StuffStatsConfig, error) {
 	if a._dataStatsID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StuffStatsConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StuffStatsConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *StuffStatsConfigAccessor) ByStatsID(identifier string) (StuffStatsConfi
 // Error is only non-nil if the source errors out
 func (a *StuffStatsConfigAccessor) ByStatsIconPath(identifier string) (StuffStatsConfig, error) {
 	if a._dataStatsIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StuffStatsConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StuffStatsConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -24,8 +24,8 @@ type RogueTournHandBookEventUnlockNPCProgressIDList struct {
 }
 type RogueTournHandBookEventAccessor struct {
 	_data                []RogueTournHandBookEvent
-	_dataPriority        map[float64]RogueTournHandBookEvent
 	_dataEventHandbookID map[float64]RogueTournHandBookEvent
+	_dataPriority        map[float64]RogueTournHandBookEvent
 }
 
 // LoadData retrieves the data. Must be called before RogueTournHandBookEvent.GroupData
@@ -49,7 +49,6 @@ func (a *RogueTournHandBookEventAccessor) Raw() ([]RogueTournHandBookEvent, erro
 		if err != nil {
 			return []RogueTournHandBookEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,23 +57,9 @@ func (a *RogueTournHandBookEventAccessor) Raw() ([]RogueTournHandBookEvent, erro
 // Can be called manually in conjunction with RogueTournHandBookEventAccessor.LoadData to preload everything
 func (a *RogueTournHandBookEventAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataPriority[d.Priority] = d
 		a._dataEventHandbookID[d.EventHandbookID] = d
+		a._dataPriority[d.Priority] = d
 	}
-}
-
-// ByPriority returns the RogueTournHandBookEvent uniquely identified by Priority
-//
-// Error is only non-nil if the source errors out
-func (a *RogueTournHandBookEventAccessor) ByPriority(identifier float64) (RogueTournHandBookEvent, error) {
-	if a._dataPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournHandBookEvent{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPriority[identifier], nil
 }
 
 // ByEventHandbookID returns the RogueTournHandBookEvent uniquely identified by EventHandbookID
@@ -82,11 +67,29 @@ func (a *RogueTournHandBookEventAccessor) ByPriority(identifier float64) (RogueT
 // Error is only non-nil if the source errors out
 func (a *RogueTournHandBookEventAccessor) ByEventHandbookID(identifier float64) (RogueTournHandBookEvent, error) {
 	if a._dataEventHandbookID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournHandBookEvent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournHandBookEvent{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventHandbookID[identifier], nil
+}
+
+// ByPriority returns the RogueTournHandBookEvent uniquely identified by Priority
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournHandBookEventAccessor) ByPriority(identifier float64) (RogueTournHandBookEvent, error) {
+	if a._dataPriority == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournHandBookEvent{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPriority[identifier], nil
 }

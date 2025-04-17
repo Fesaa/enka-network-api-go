@@ -38,7 +38,6 @@ func (a *RogueDLCDifficultyAccessor) Raw() ([]RogueDLCDifficulty, error) {
 		if err != nil {
 			return []RogueDLCDifficulty{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueDLCDifficultyAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCDifficultyAccessor) ByDifficultyID(identifier float64) (RogueDLCDifficulty, error) {
 	if a._dataDifficultyID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCDifficulty{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCDifficulty{}, err
+			}
 		}
 		a.GroupData()
 	}

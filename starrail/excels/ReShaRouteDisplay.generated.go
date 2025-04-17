@@ -21,12 +21,12 @@ type ReShaRouteDisplay struct {
 }
 type ReShaRouteDisplayAccessor struct {
 	_data                                    []ReShaRouteDisplay
-	_dataRoutePanelPrefab                    map[string]ReShaRouteDisplay
-	_dataAssistantItemID                     map[float64]ReShaRouteDisplay
 	_dataAssistantImagePanelPrefab           map[string]ReShaRouteDisplay
-	_dataID                                  map[float64]ReShaRouteDisplay
-	_dataHiddenRouteUnlockFloorSavedValueKey map[string]ReShaRouteDisplay
+	_dataAssistantItemID                     map[float64]ReShaRouteDisplay
 	_dataHiddenRouteClearFloorSavedValueKey  map[string]ReShaRouteDisplay
+	_dataHiddenRouteUnlockFloorSavedValueKey map[string]ReShaRouteDisplay
+	_dataID                                  map[float64]ReShaRouteDisplay
+	_dataRoutePanelPrefab                    map[string]ReShaRouteDisplay
 }
 
 // LoadData retrieves the data. Must be called before ReShaRouteDisplay.GroupData
@@ -50,7 +50,6 @@ func (a *ReShaRouteDisplayAccessor) Raw() ([]ReShaRouteDisplay, error) {
 		if err != nil {
 			return []ReShaRouteDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,41 +58,13 @@ func (a *ReShaRouteDisplayAccessor) Raw() ([]ReShaRouteDisplay, error) {
 // Can be called manually in conjunction with ReShaRouteDisplayAccessor.LoadData to preload everything
 func (a *ReShaRouteDisplayAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRoutePanelPrefab[d.RoutePanelPrefab] = d
-		a._dataAssistantItemID[d.AssistantItemID] = d
 		a._dataAssistantImagePanelPrefab[d.AssistantImagePanelPrefab] = d
-		a._dataID[d.ID] = d
-		a._dataHiddenRouteUnlockFloorSavedValueKey[d.HiddenRouteUnlockFloorSavedValueKey] = d
+		a._dataAssistantItemID[d.AssistantItemID] = d
 		a._dataHiddenRouteClearFloorSavedValueKey[d.HiddenRouteClearFloorSavedValueKey] = d
+		a._dataHiddenRouteUnlockFloorSavedValueKey[d.HiddenRouteUnlockFloorSavedValueKey] = d
+		a._dataID[d.ID] = d
+		a._dataRoutePanelPrefab[d.RoutePanelPrefab] = d
 	}
-}
-
-// ByRoutePanelPrefab returns the ReShaRouteDisplay uniquely identified by RoutePanelPrefab
-//
-// Error is only non-nil if the source errors out
-func (a *ReShaRouteDisplayAccessor) ByRoutePanelPrefab(identifier string) (ReShaRouteDisplay, error) {
-	if a._dataRoutePanelPrefab == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ReShaRouteDisplay{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRoutePanelPrefab[identifier], nil
-}
-
-// ByAssistantItemID returns the ReShaRouteDisplay uniquely identified by AssistantItemID
-//
-// Error is only non-nil if the source errors out
-func (a *ReShaRouteDisplayAccessor) ByAssistantItemID(identifier float64) (ReShaRouteDisplay, error) {
-	if a._dataAssistantItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ReShaRouteDisplay{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAssistantItemID[identifier], nil
 }
 
 // ByAssistantImagePanelPrefab returns the ReShaRouteDisplay uniquely identified by AssistantImagePanelPrefab
@@ -101,41 +72,31 @@ func (a *ReShaRouteDisplayAccessor) ByAssistantItemID(identifier float64) (ReSha
 // Error is only non-nil if the source errors out
 func (a *ReShaRouteDisplayAccessor) ByAssistantImagePanelPrefab(identifier string) (ReShaRouteDisplay, error) {
 	if a._dataAssistantImagePanelPrefab == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ReShaRouteDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ReShaRouteDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAssistantImagePanelPrefab[identifier], nil
 }
 
-// ByID returns the ReShaRouteDisplay uniquely identified by ID
+// ByAssistantItemID returns the ReShaRouteDisplay uniquely identified by AssistantItemID
 //
 // Error is only non-nil if the source errors out
-func (a *ReShaRouteDisplayAccessor) ByID(identifier float64) (ReShaRouteDisplay, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ReShaRouteDisplay{}, err
+func (a *ReShaRouteDisplayAccessor) ByAssistantItemID(identifier float64) (ReShaRouteDisplay, error) {
+	if a._dataAssistantItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ReShaRouteDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataID[identifier], nil
-}
-
-// ByHiddenRouteUnlockFloorSavedValueKey returns the ReShaRouteDisplay uniquely identified by HiddenRouteUnlockFloorSavedValueKey
-//
-// Error is only non-nil if the source errors out
-func (a *ReShaRouteDisplayAccessor) ByHiddenRouteUnlockFloorSavedValueKey(identifier string) (ReShaRouteDisplay, error) {
-	if a._dataHiddenRouteUnlockFloorSavedValueKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ReShaRouteDisplay{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataHiddenRouteUnlockFloorSavedValueKey[identifier], nil
+	return a._dataAssistantItemID[identifier], nil
 }
 
 // ByHiddenRouteClearFloorSavedValueKey returns the ReShaRouteDisplay uniquely identified by HiddenRouteClearFloorSavedValueKey
@@ -143,11 +104,61 @@ func (a *ReShaRouteDisplayAccessor) ByHiddenRouteUnlockFloorSavedValueKey(identi
 // Error is only non-nil if the source errors out
 func (a *ReShaRouteDisplayAccessor) ByHiddenRouteClearFloorSavedValueKey(identifier string) (ReShaRouteDisplay, error) {
 	if a._dataHiddenRouteClearFloorSavedValueKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ReShaRouteDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ReShaRouteDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataHiddenRouteClearFloorSavedValueKey[identifier], nil
+}
+
+// ByHiddenRouteUnlockFloorSavedValueKey returns the ReShaRouteDisplay uniquely identified by HiddenRouteUnlockFloorSavedValueKey
+//
+// Error is only non-nil if the source errors out
+func (a *ReShaRouteDisplayAccessor) ByHiddenRouteUnlockFloorSavedValueKey(identifier string) (ReShaRouteDisplay, error) {
+	if a._dataHiddenRouteUnlockFloorSavedValueKey == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ReShaRouteDisplay{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataHiddenRouteUnlockFloorSavedValueKey[identifier], nil
+}
+
+// ByID returns the ReShaRouteDisplay uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ReShaRouteDisplayAccessor) ByID(identifier float64) (ReShaRouteDisplay, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ReShaRouteDisplay{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByRoutePanelPrefab returns the ReShaRouteDisplay uniquely identified by RoutePanelPrefab
+//
+// Error is only non-nil if the source errors out
+func (a *ReShaRouteDisplayAccessor) ByRoutePanelPrefab(identifier string) (ReShaRouteDisplay, error) {
+	if a._dataRoutePanelPrefab == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ReShaRouteDisplay{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRoutePanelPrefab[identifier], nil
 }

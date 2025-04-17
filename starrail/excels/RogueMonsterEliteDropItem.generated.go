@@ -37,7 +37,6 @@ func (a *RogueMonsterEliteDropItemAccessor) Raw() ([]RogueMonsterEliteDropItem, 
 		if err != nil {
 			return []RogueMonsterEliteDropItem{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *RogueMonsterEliteDropItemAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMonsterEliteDropItemAccessor) ByMonsterEliteDropItemID(identifier float64) (RogueMonsterEliteDropItem, error) {
 	if a._dataMonsterEliteDropItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMonsterEliteDropItem{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMonsterEliteDropItem{}, err
+			}
 		}
 		a.GroupData()
 	}

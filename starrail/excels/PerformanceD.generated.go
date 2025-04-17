@@ -22,8 +22,8 @@ type PerformanceD struct {
 }
 type PerformanceDAccessor struct {
 	_data                []PerformanceD
-	_dataPerformancePath map[string]PerformanceD
 	_dataPerformanceID   map[float64]PerformanceD
+	_dataPerformancePath map[string]PerformanceD
 }
 
 // LoadData retrieves the data. Must be called before PerformanceD.GroupData
@@ -47,7 +47,6 @@ func (a *PerformanceDAccessor) Raw() ([]PerformanceD, error) {
 		if err != nil {
 			return []PerformanceD{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,23 +55,9 @@ func (a *PerformanceDAccessor) Raw() ([]PerformanceD, error) {
 // Can be called manually in conjunction with PerformanceDAccessor.LoadData to preload everything
 func (a *PerformanceDAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataPerformancePath[d.PerformancePath] = d
 		a._dataPerformanceID[d.PerformanceID] = d
+		a._dataPerformancePath[d.PerformancePath] = d
 	}
-}
-
-// ByPerformancePath returns the PerformanceD uniquely identified by PerformancePath
-//
-// Error is only non-nil if the source errors out
-func (a *PerformanceDAccessor) ByPerformancePath(identifier string) (PerformanceD, error) {
-	if a._dataPerformancePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceD{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPerformancePath[identifier], nil
 }
 
 // ByPerformanceID returns the PerformanceD uniquely identified by PerformanceID
@@ -80,11 +65,29 @@ func (a *PerformanceDAccessor) ByPerformancePath(identifier string) (Performance
 // Error is only non-nil if the source errors out
 func (a *PerformanceDAccessor) ByPerformanceID(identifier float64) (PerformanceD, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceD{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceD{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPerformanceID[identifier], nil
+}
+
+// ByPerformancePath returns the PerformanceD uniquely identified by PerformancePath
+//
+// Error is only non-nil if the source errors out
+func (a *PerformanceDAccessor) ByPerformancePath(identifier string) (PerformanceD, error) {
+	if a._dataPerformancePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceD{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPerformancePath[identifier], nil
 }

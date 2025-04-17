@@ -71,7 +71,6 @@ func (a *MonsterTemplateConfigAccessor) Raw() ([]MonsterTemplateConfig, error) {
 		if err != nil {
 			return []MonsterTemplateConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -89,9 +88,11 @@ func (a *MonsterTemplateConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonsterTemplateConfigAccessor) ByMonsterTemplateID(identifier float64) (MonsterTemplateConfig, error) {
 	if a._dataMonsterTemplateID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonsterTemplateConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonsterTemplateConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

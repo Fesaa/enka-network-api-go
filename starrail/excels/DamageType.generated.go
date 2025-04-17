@@ -37,29 +37,29 @@ type DamageType struct {
 }
 type DamageTypeAccessor struct {
 	_data                            []DamageType
-	_dataLight1Color                 map[string]DamageType
-	_dataIconNatureColor             map[string]DamageType
-	_dataUnfullColor                 map[string]DamageType
-	_dataCriticalDamage              map[string]DamageType
-	_dataSkillTreeDecoColor          map[string]DamageType
-	_dataMazeEnterBattleWeakIconPath map[string]DamageType
-	_dataIconNatureForWeakActive     map[string]DamageType
-	_dataSPMazeInfoEffFront          map[string]DamageType
-	_dataSPInfoEffFront              map[string]DamageType
-	_dataSkillTreePanelPath          map[string]DamageType
-	_dataSkillTreeLightColor         map[string]DamageType
-	_dataIconNatureColorSimple       map[string]DamageType
-	_dataSPInfoEffFrontDouble        map[string]DamageType
-	_dataNormalDamage                map[string]DamageType
 	_dataColor                       map[string]DamageType
-	_dataIconNatureWhite             map[string]DamageType
-	_dataLightColor                  map[string]DamageType
+	_dataCriticalDamage              map[string]DamageType
+	_dataDamageTypeIconPath          map[string]DamageType
 	_dataID                          map[string]DamageType
+	_dataIconNatureColor             map[string]DamageType
+	_dataIconNatureColorSimple       map[string]DamageType
+	_dataIconNatureForWeakActive     map[string]DamageType
 	_dataIconNatureForWeakUnactive   map[string]DamageType
+	_dataIconNatureWhite             map[string]DamageType
+	_dataLight1Color                 map[string]DamageType
+	_dataLightColor                  map[string]DamageType
+	_dataMazeEnterBattleWeakIconPath map[string]DamageType
+	_dataNormalDamage                map[string]DamageType
+	_dataSPInfoEffFront              map[string]DamageType
+	_dataSPInfoEffFrontDouble        map[string]DamageType
+	_dataSPMazeInfoEffFront          map[string]DamageType
 	_dataShaderColor                 map[string]DamageType
 	_dataSkillBtnEff                 map[string]DamageType
-	_dataDamageTypeIconPath          map[string]DamageType
+	_dataSkillTreeDecoColor          map[string]DamageType
 	_dataSkillTreeLeftPanelColor     map[string]DamageType
+	_dataSkillTreeLightColor         map[string]DamageType
+	_dataSkillTreePanelPath          map[string]DamageType
+	_dataUnfullColor                 map[string]DamageType
 }
 
 // LoadData retrieves the data. Must be called before DamageType.GroupData
@@ -83,7 +83,6 @@ func (a *DamageTypeAccessor) Raw() ([]DamageType, error) {
 		if err != nil {
 			return []DamageType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -92,226 +91,30 @@ func (a *DamageTypeAccessor) Raw() ([]DamageType, error) {
 // Can be called manually in conjunction with DamageTypeAccessor.LoadData to preload everything
 func (a *DamageTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataLight1Color[d.Light1Color] = d
-		a._dataIconNatureColor[d.IconNatureColor] = d
-		a._dataUnfullColor[d.UnfullColor] = d
-		a._dataCriticalDamage[d.CriticalDamage] = d
-		a._dataSkillTreeDecoColor[d.SkillTreeDecoColor] = d
-		a._dataMazeEnterBattleWeakIconPath[d.MazeEnterBattleWeakIconPath] = d
-		a._dataIconNatureForWeakActive[d.IconNatureForWeakActive] = d
-		a._dataSPMazeInfoEffFront[d.SPMazeInfoEffFront] = d
-		a._dataSPInfoEffFront[d.SPInfoEffFront] = d
-		a._dataSkillTreePanelPath[d.SkillTreePanelPath] = d
-		a._dataSkillTreeLightColor[d.SkillTreeLightColor] = d
-		a._dataIconNatureColorSimple[d.IconNatureColorSimple] = d
-		a._dataSPInfoEffFrontDouble[d.SPInfoEffFrontDouble] = d
-		a._dataNormalDamage[d.NormalDamage] = d
 		a._dataColor[d.Color] = d
-		a._dataIconNatureWhite[d.IconNatureWhite] = d
-		a._dataLightColor[d.LightColor] = d
+		a._dataCriticalDamage[d.CriticalDamage] = d
+		a._dataDamageTypeIconPath[d.DamageTypeIconPath] = d
 		a._dataID[d.ID] = d
+		a._dataIconNatureColor[d.IconNatureColor] = d
+		a._dataIconNatureColorSimple[d.IconNatureColorSimple] = d
+		a._dataIconNatureForWeakActive[d.IconNatureForWeakActive] = d
 		a._dataIconNatureForWeakUnactive[d.IconNatureForWeakUnactive] = d
+		a._dataIconNatureWhite[d.IconNatureWhite] = d
+		a._dataLight1Color[d.Light1Color] = d
+		a._dataLightColor[d.LightColor] = d
+		a._dataMazeEnterBattleWeakIconPath[d.MazeEnterBattleWeakIconPath] = d
+		a._dataNormalDamage[d.NormalDamage] = d
+		a._dataSPInfoEffFront[d.SPInfoEffFront] = d
+		a._dataSPInfoEffFrontDouble[d.SPInfoEffFrontDouble] = d
+		a._dataSPMazeInfoEffFront[d.SPMazeInfoEffFront] = d
 		a._dataShaderColor[d.ShaderColor] = d
 		a._dataSkillBtnEff[d.SkillBtnEff] = d
-		a._dataDamageTypeIconPath[d.DamageTypeIconPath] = d
+		a._dataSkillTreeDecoColor[d.SkillTreeDecoColor] = d
 		a._dataSkillTreeLeftPanelColor[d.SkillTreeLeftPanelColor] = d
+		a._dataSkillTreeLightColor[d.SkillTreeLightColor] = d
+		a._dataSkillTreePanelPath[d.SkillTreePanelPath] = d
+		a._dataUnfullColor[d.UnfullColor] = d
 	}
-}
-
-// ByLight1Color returns the DamageType uniquely identified by Light1Color
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByLight1Color(identifier string) (DamageType, error) {
-	if a._dataLight1Color == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataLight1Color[identifier], nil
-}
-
-// ByIconNatureColor returns the DamageType uniquely identified by IconNatureColor
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByIconNatureColor(identifier string) (DamageType, error) {
-	if a._dataIconNatureColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconNatureColor[identifier], nil
-}
-
-// ByUnfullColor returns the DamageType uniquely identified by UnfullColor
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByUnfullColor(identifier string) (DamageType, error) {
-	if a._dataUnfullColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnfullColor[identifier], nil
-}
-
-// ByCriticalDamage returns the DamageType uniquely identified by CriticalDamage
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByCriticalDamage(identifier string) (DamageType, error) {
-	if a._dataCriticalDamage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataCriticalDamage[identifier], nil
-}
-
-// BySkillTreeDecoColor returns the DamageType uniquely identified by SkillTreeDecoColor
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) BySkillTreeDecoColor(identifier string) (DamageType, error) {
-	if a._dataSkillTreeDecoColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSkillTreeDecoColor[identifier], nil
-}
-
-// ByMazeEnterBattleWeakIconPath returns the DamageType uniquely identified by MazeEnterBattleWeakIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByMazeEnterBattleWeakIconPath(identifier string) (DamageType, error) {
-	if a._dataMazeEnterBattleWeakIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMazeEnterBattleWeakIconPath[identifier], nil
-}
-
-// ByIconNatureForWeakActive returns the DamageType uniquely identified by IconNatureForWeakActive
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByIconNatureForWeakActive(identifier string) (DamageType, error) {
-	if a._dataIconNatureForWeakActive == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconNatureForWeakActive[identifier], nil
-}
-
-// BySPMazeInfoEffFront returns the DamageType uniquely identified by SPMazeInfoEffFront
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) BySPMazeInfoEffFront(identifier string) (DamageType, error) {
-	if a._dataSPMazeInfoEffFront == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSPMazeInfoEffFront[identifier], nil
-}
-
-// BySPInfoEffFront returns the DamageType uniquely identified by SPInfoEffFront
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) BySPInfoEffFront(identifier string) (DamageType, error) {
-	if a._dataSPInfoEffFront == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSPInfoEffFront[identifier], nil
-}
-
-// BySkillTreePanelPath returns the DamageType uniquely identified by SkillTreePanelPath
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) BySkillTreePanelPath(identifier string) (DamageType, error) {
-	if a._dataSkillTreePanelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSkillTreePanelPath[identifier], nil
-}
-
-// BySkillTreeLightColor returns the DamageType uniquely identified by SkillTreeLightColor
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) BySkillTreeLightColor(identifier string) (DamageType, error) {
-	if a._dataSkillTreeLightColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSkillTreeLightColor[identifier], nil
-}
-
-// ByIconNatureColorSimple returns the DamageType uniquely identified by IconNatureColorSimple
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByIconNatureColorSimple(identifier string) (DamageType, error) {
-	if a._dataIconNatureColorSimple == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconNatureColorSimple[identifier], nil
-}
-
-// BySPInfoEffFrontDouble returns the DamageType uniquely identified by SPInfoEffFrontDouble
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) BySPInfoEffFrontDouble(identifier string) (DamageType, error) {
-	if a._dataSPInfoEffFrontDouble == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSPInfoEffFrontDouble[identifier], nil
-}
-
-// ByNormalDamage returns the DamageType uniquely identified by NormalDamage
-//
-// Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByNormalDamage(identifier string) (DamageType, error) {
-	if a._dataNormalDamage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataNormalDamage[identifier], nil
 }
 
 // ByColor returns the DamageType uniquely identified by Color
@@ -319,41 +122,47 @@ func (a *DamageTypeAccessor) ByNormalDamage(identifier string) (DamageType, erro
 // Error is only non-nil if the source errors out
 func (a *DamageTypeAccessor) ByColor(identifier string) (DamageType, error) {
 	if a._dataColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataColor[identifier], nil
 }
 
-// ByIconNatureWhite returns the DamageType uniquely identified by IconNatureWhite
+// ByCriticalDamage returns the DamageType uniquely identified by CriticalDamage
 //
 // Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByIconNatureWhite(identifier string) (DamageType, error) {
-	if a._dataIconNatureWhite == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
+func (a *DamageTypeAccessor) ByCriticalDamage(identifier string) (DamageType, error) {
+	if a._dataCriticalDamage == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataIconNatureWhite[identifier], nil
+	return a._dataCriticalDamage[identifier], nil
 }
 
-// ByLightColor returns the DamageType uniquely identified by LightColor
+// ByDamageTypeIconPath returns the DamageType uniquely identified by DamageTypeIconPath
 //
 // Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByLightColor(identifier string) (DamageType, error) {
-	if a._dataLightColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
+func (a *DamageTypeAccessor) ByDamageTypeIconPath(identifier string) (DamageType, error) {
+	if a._dataDamageTypeIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataLightColor[identifier], nil
+	return a._dataDamageTypeIconPath[identifier], nil
 }
 
 // ByID returns the DamageType uniquely identified by ID
@@ -361,13 +170,63 @@ func (a *DamageTypeAccessor) ByLightColor(identifier string) (DamageType, error)
 // Error is only non-nil if the source errors out
 func (a *DamageTypeAccessor) ByID(identifier string) (DamageType, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByIconNatureColor returns the DamageType uniquely identified by IconNatureColor
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) ByIconNatureColor(identifier string) (DamageType, error) {
+	if a._dataIconNatureColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconNatureColor[identifier], nil
+}
+
+// ByIconNatureColorSimple returns the DamageType uniquely identified by IconNatureColorSimple
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) ByIconNatureColorSimple(identifier string) (DamageType, error) {
+	if a._dataIconNatureColorSimple == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconNatureColorSimple[identifier], nil
+}
+
+// ByIconNatureForWeakActive returns the DamageType uniquely identified by IconNatureForWeakActive
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) ByIconNatureForWeakActive(identifier string) (DamageType, error) {
+	if a._dataIconNatureForWeakActive == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconNatureForWeakActive[identifier], nil
 }
 
 // ByIconNatureForWeakUnactive returns the DamageType uniquely identified by IconNatureForWeakUnactive
@@ -375,13 +234,143 @@ func (a *DamageTypeAccessor) ByID(identifier string) (DamageType, error) {
 // Error is only non-nil if the source errors out
 func (a *DamageTypeAccessor) ByIconNatureForWeakUnactive(identifier string) (DamageType, error) {
 	if a._dataIconNatureForWeakUnactive == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconNatureForWeakUnactive[identifier], nil
+}
+
+// ByIconNatureWhite returns the DamageType uniquely identified by IconNatureWhite
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) ByIconNatureWhite(identifier string) (DamageType, error) {
+	if a._dataIconNatureWhite == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconNatureWhite[identifier], nil
+}
+
+// ByLight1Color returns the DamageType uniquely identified by Light1Color
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) ByLight1Color(identifier string) (DamageType, error) {
+	if a._dataLight1Color == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataLight1Color[identifier], nil
+}
+
+// ByLightColor returns the DamageType uniquely identified by LightColor
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) ByLightColor(identifier string) (DamageType, error) {
+	if a._dataLightColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataLightColor[identifier], nil
+}
+
+// ByMazeEnterBattleWeakIconPath returns the DamageType uniquely identified by MazeEnterBattleWeakIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) ByMazeEnterBattleWeakIconPath(identifier string) (DamageType, error) {
+	if a._dataMazeEnterBattleWeakIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMazeEnterBattleWeakIconPath[identifier], nil
+}
+
+// ByNormalDamage returns the DamageType uniquely identified by NormalDamage
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) ByNormalDamage(identifier string) (DamageType, error) {
+	if a._dataNormalDamage == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataNormalDamage[identifier], nil
+}
+
+// BySPInfoEffFront returns the DamageType uniquely identified by SPInfoEffFront
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) BySPInfoEffFront(identifier string) (DamageType, error) {
+	if a._dataSPInfoEffFront == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSPInfoEffFront[identifier], nil
+}
+
+// BySPInfoEffFrontDouble returns the DamageType uniquely identified by SPInfoEffFrontDouble
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) BySPInfoEffFrontDouble(identifier string) (DamageType, error) {
+	if a._dataSPInfoEffFrontDouble == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSPInfoEffFrontDouble[identifier], nil
+}
+
+// BySPMazeInfoEffFront returns the DamageType uniquely identified by SPMazeInfoEffFront
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) BySPMazeInfoEffFront(identifier string) (DamageType, error) {
+	if a._dataSPMazeInfoEffFront == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSPMazeInfoEffFront[identifier], nil
 }
 
 // ByShaderColor returns the DamageType uniquely identified by ShaderColor
@@ -389,9 +378,11 @@ func (a *DamageTypeAccessor) ByIconNatureForWeakUnactive(identifier string) (Dam
 // Error is only non-nil if the source errors out
 func (a *DamageTypeAccessor) ByShaderColor(identifier string) (DamageType, error) {
 	if a._dataShaderColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -403,27 +394,31 @@ func (a *DamageTypeAccessor) ByShaderColor(identifier string) (DamageType, error
 // Error is only non-nil if the source errors out
 func (a *DamageTypeAccessor) BySkillBtnEff(identifier string) (DamageType, error) {
 	if a._dataSkillBtnEff == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSkillBtnEff[identifier], nil
 }
 
-// ByDamageTypeIconPath returns the DamageType uniquely identified by DamageTypeIconPath
+// BySkillTreeDecoColor returns the DamageType uniquely identified by SkillTreeDecoColor
 //
 // Error is only non-nil if the source errors out
-func (a *DamageTypeAccessor) ByDamageTypeIconPath(identifier string) (DamageType, error) {
-	if a._dataDamageTypeIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
+func (a *DamageTypeAccessor) BySkillTreeDecoColor(identifier string) (DamageType, error) {
+	if a._dataSkillTreeDecoColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataDamageTypeIconPath[identifier], nil
+	return a._dataSkillTreeDecoColor[identifier], nil
 }
 
 // BySkillTreeLeftPanelColor returns the DamageType uniquely identified by SkillTreeLeftPanelColor
@@ -431,11 +426,61 @@ func (a *DamageTypeAccessor) ByDamageTypeIconPath(identifier string) (DamageType
 // Error is only non-nil if the source errors out
 func (a *DamageTypeAccessor) BySkillTreeLeftPanelColor(identifier string) (DamageType, error) {
 	if a._dataSkillTreeLeftPanelColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DamageType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSkillTreeLeftPanelColor[identifier], nil
+}
+
+// BySkillTreeLightColor returns the DamageType uniquely identified by SkillTreeLightColor
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) BySkillTreeLightColor(identifier string) (DamageType, error) {
+	if a._dataSkillTreeLightColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSkillTreeLightColor[identifier], nil
+}
+
+// BySkillTreePanelPath returns the DamageType uniquely identified by SkillTreePanelPath
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) BySkillTreePanelPath(identifier string) (DamageType, error) {
+	if a._dataSkillTreePanelPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSkillTreePanelPath[identifier], nil
+}
+
+// ByUnfullColor returns the DamageType uniquely identified by UnfullColor
+//
+// Error is only non-nil if the source errors out
+func (a *DamageTypeAccessor) ByUnfullColor(identifier string) (DamageType, error) {
+	if a._dataUnfullColor == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DamageType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnfullColor[identifier], nil
 }

@@ -41,7 +41,6 @@ func (a *TrainPartySlotConfigAccessor) Raw() ([]TrainPartySlotConfig, error) {
 		if err != nil {
 			return []TrainPartySlotConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *TrainPartySlotConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartySlotConfigAccessor) ByID(identifier float64) (TrainPartySlotConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartySlotConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartySlotConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

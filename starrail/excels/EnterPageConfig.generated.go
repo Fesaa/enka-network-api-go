@@ -36,7 +36,6 @@ func (a *EnterPageConfigAccessor) Raw() ([]EnterPageConfig, error) {
 		if err != nil {
 			return []EnterPageConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,9 +53,11 @@ func (a *EnterPageConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EnterPageConfigAccessor) ByKey(identifier string) (EnterPageConfig, error) {
 	if a._dataKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EnterPageConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EnterPageConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

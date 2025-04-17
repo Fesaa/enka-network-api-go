@@ -41,7 +41,6 @@ func (a *ChimeraPhaseAccessor) Raw() ([]ChimeraPhase, error) {
 		if err != nil {
 			return []ChimeraPhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ChimeraPhaseAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraPhaseAccessor) ByPhaseID(identifier float64) (ChimeraPhase, error) {
 	if a._dataPhaseID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraPhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraPhase{}, err
+			}
 		}
 		a.GroupData()
 	}

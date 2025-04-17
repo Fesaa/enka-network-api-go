@@ -38,7 +38,6 @@ func (a *SpaceZooBagSlotsAccessor) Raw() ([]SpaceZooBagSlots, error) {
 		if err != nil {
 			return []SpaceZooBagSlots{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *SpaceZooBagSlotsAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooBagSlotsAccessor) ByImagePath(identifier string) (SpaceZooBagSlots, error) {
 	if a._dataImagePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooBagSlots{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooBagSlots{}, err
+			}
 		}
 		a.GroupData()
 	}

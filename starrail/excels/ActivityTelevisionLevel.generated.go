@@ -40,9 +40,9 @@ type ActivityTelevisionLevel struct {
 type ActivityTelevisionLevelAccessor struct {
 	_data             []ActivityTelevisionLevel
 	_dataEventID      map[float64]ActivityTelevisionLevel
+	_dataMazeBuffID   map[float64]ActivityTelevisionLevel
 	_dataMonsterPic   map[string]ActivityTelevisionLevel
 	_dataTelevisionID map[float64]ActivityTelevisionLevel
-	_dataMazeBuffID   map[float64]ActivityTelevisionLevel
 }
 
 // LoadData retrieves the data. Must be called before ActivityTelevisionLevel.GroupData
@@ -66,7 +66,6 @@ func (a *ActivityTelevisionLevelAccessor) Raw() ([]ActivityTelevisionLevel, erro
 		if err != nil {
 			return []ActivityTelevisionLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -76,9 +75,9 @@ func (a *ActivityTelevisionLevelAccessor) Raw() ([]ActivityTelevisionLevel, erro
 func (a *ActivityTelevisionLevelAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataEventID[d.EventID] = d
+		a._dataMazeBuffID[d.MazeBuffID] = d
 		a._dataMonsterPic[d.MonsterPic] = d
 		a._dataTelevisionID[d.TelevisionID] = d
-		a._dataMazeBuffID[d.MazeBuffID] = d
 	}
 }
 
@@ -87,13 +86,31 @@ func (a *ActivityTelevisionLevelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionLevelAccessor) ByEventID(identifier float64) (ActivityTelevisionLevel, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionLevel{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataEventID[identifier], nil
+}
+
+// ByMazeBuffID returns the ActivityTelevisionLevel uniquely identified by MazeBuffID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityTelevisionLevelAccessor) ByMazeBuffID(identifier float64) (ActivityTelevisionLevel, error) {
+	if a._dataMazeBuffID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionLevel{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMazeBuffID[identifier], nil
 }
 
 // ByMonsterPic returns the ActivityTelevisionLevel uniquely identified by MonsterPic
@@ -101,9 +118,11 @@ func (a *ActivityTelevisionLevelAccessor) ByEventID(identifier float64) (Activit
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionLevelAccessor) ByMonsterPic(identifier string) (ActivityTelevisionLevel, error) {
 	if a._dataMonsterPic == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionLevel{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -115,25 +134,13 @@ func (a *ActivityTelevisionLevelAccessor) ByMonsterPic(identifier string) (Activ
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionLevelAccessor) ByTelevisionID(identifier float64) (ActivityTelevisionLevel, error) {
 	if a._dataTelevisionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionLevel{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTelevisionID[identifier], nil
-}
-
-// ByMazeBuffID returns the ActivityTelevisionLevel uniquely identified by MazeBuffID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityTelevisionLevelAccessor) ByMazeBuffID(identifier float64) (ActivityTelevisionLevel, error) {
-	if a._dataMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionLevel{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMazeBuffID[identifier], nil
 }

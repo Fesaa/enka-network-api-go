@@ -38,7 +38,6 @@ func (a *ReportTypeAccessor) Raw() ([]ReportType, error) {
 		if err != nil {
 			return []ReportType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ReportTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ReportTypeAccessor) ByTypeID(identifier float64) (ReportType, error) {
 	if a._dataTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ReportType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ReportType{}, err
+			}
 		}
 		a.GroupData()
 	}

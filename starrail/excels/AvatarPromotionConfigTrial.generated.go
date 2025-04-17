@@ -55,7 +55,6 @@ func (a *AvatarPromotionConfigTrialAccessor) Raw() ([]AvatarPromotionConfigTrial
 		if err != nil {
 			return []AvatarPromotionConfigTrial{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

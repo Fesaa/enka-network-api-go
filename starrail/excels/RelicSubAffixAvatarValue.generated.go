@@ -45,7 +45,6 @@ func (a *RelicSubAffixAvatarValueAccessor) Raw() ([]RelicSubAffixAvatarValue, er
 		if err != nil {
 			return []RelicSubAffixAvatarValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *RelicSubAffixAvatarValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RelicSubAffixAvatarValueAccessor) ByAvatarID(identifier float64) (RelicSubAffixAvatarValue, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RelicSubAffixAvatarValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RelicSubAffixAvatarValue{}, err
+			}
 		}
 		a.GroupData()
 	}

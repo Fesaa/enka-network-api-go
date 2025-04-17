@@ -37,7 +37,6 @@ func (a *ExpTypeAccessor) Raw() ([]ExpType, error) {
 		if err != nil {
 			return []ExpType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

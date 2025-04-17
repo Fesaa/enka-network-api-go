@@ -19,10 +19,10 @@ type DrinkMakerChallenge struct {
 }
 type DrinkMakerChallengeAccessor struct {
 	_data                  []DrinkMakerChallenge
-	_dataChallengeRewardID map[float64]DrinkMakerChallenge
 	_dataChallengeID       map[float64]DrinkMakerChallenge
-	_dataChallengeRequest  map[float64]DrinkMakerChallenge
 	_dataChallengePic      map[string]DrinkMakerChallenge
+	_dataChallengeRequest  map[float64]DrinkMakerChallenge
+	_dataChallengeRewardID map[float64]DrinkMakerChallenge
 }
 
 // LoadData retrieves the data. Must be called before DrinkMakerChallenge.GroupData
@@ -46,7 +46,6 @@ func (a *DrinkMakerChallengeAccessor) Raw() ([]DrinkMakerChallenge, error) {
 		if err != nil {
 			return []DrinkMakerChallenge{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,25 +54,11 @@ func (a *DrinkMakerChallengeAccessor) Raw() ([]DrinkMakerChallenge, error) {
 // Can be called manually in conjunction with DrinkMakerChallengeAccessor.LoadData to preload everything
 func (a *DrinkMakerChallengeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataChallengeRewardID[d.ChallengeRewardID] = d
 		a._dataChallengeID[d.ChallengeID] = d
-		a._dataChallengeRequest[d.ChallengeRequest] = d
 		a._dataChallengePic[d.ChallengePic] = d
+		a._dataChallengeRequest[d.ChallengeRequest] = d
+		a._dataChallengeRewardID[d.ChallengeRewardID] = d
 	}
-}
-
-// ByChallengeRewardID returns the DrinkMakerChallenge uniquely identified by ChallengeRewardID
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerChallengeAccessor) ByChallengeRewardID(identifier float64) (DrinkMakerChallenge, error) {
-	if a._dataChallengeRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerChallenge{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataChallengeRewardID[identifier], nil
 }
 
 // ByChallengeID returns the DrinkMakerChallenge uniquely identified by ChallengeID
@@ -81,27 +66,15 @@ func (a *DrinkMakerChallengeAccessor) ByChallengeRewardID(identifier float64) (D
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerChallengeAccessor) ByChallengeID(identifier float64) (DrinkMakerChallenge, error) {
 	if a._dataChallengeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerChallenge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataChallengeID[identifier], nil
-}
-
-// ByChallengeRequest returns the DrinkMakerChallenge uniquely identified by ChallengeRequest
-//
-// Error is only non-nil if the source errors out
-func (a *DrinkMakerChallengeAccessor) ByChallengeRequest(identifier float64) (DrinkMakerChallenge, error) {
-	if a._dataChallengeRequest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerChallenge{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataChallengeRequest[identifier], nil
 }
 
 // ByChallengePic returns the DrinkMakerChallenge uniquely identified by ChallengePic
@@ -109,11 +82,45 @@ func (a *DrinkMakerChallengeAccessor) ByChallengeRequest(identifier float64) (Dr
 // Error is only non-nil if the source errors out
 func (a *DrinkMakerChallengeAccessor) ByChallengePic(identifier string) (DrinkMakerChallenge, error) {
 	if a._dataChallengePic == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DrinkMakerChallenge{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerChallenge{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataChallengePic[identifier], nil
+}
+
+// ByChallengeRequest returns the DrinkMakerChallenge uniquely identified by ChallengeRequest
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerChallengeAccessor) ByChallengeRequest(identifier float64) (DrinkMakerChallenge, error) {
+	if a._dataChallengeRequest == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerChallenge{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataChallengeRequest[identifier], nil
+}
+
+// ByChallengeRewardID returns the DrinkMakerChallenge uniquely identified by ChallengeRewardID
+//
+// Error is only non-nil if the source errors out
+func (a *DrinkMakerChallengeAccessor) ByChallengeRewardID(identifier float64) (DrinkMakerChallenge, error) {
+	if a._dataChallengeRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DrinkMakerChallenge{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataChallengeRewardID[identifier], nil
 }

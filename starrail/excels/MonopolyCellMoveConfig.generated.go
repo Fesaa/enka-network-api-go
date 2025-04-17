@@ -37,7 +37,6 @@ func (a *MonopolyCellMoveConfigAccessor) Raw() ([]MonopolyCellMoveConfig, error)
 		if err != nil {
 			return []MonopolyCellMoveConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

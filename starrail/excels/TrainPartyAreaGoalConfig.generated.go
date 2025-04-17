@@ -14,8 +14,8 @@ type TrainPartyAreaGoalConfig struct {
 }
 type TrainPartyAreaGoalConfigAccessor struct {
 	_data       []TrainPartyAreaGoalConfig
-	_dataID     map[float64]TrainPartyAreaGoalConfig
 	_dataAreaID map[float64]TrainPartyAreaGoalConfig
+	_dataID     map[float64]TrainPartyAreaGoalConfig
 }
 
 // LoadData retrieves the data. Must be called before TrainPartyAreaGoalConfig.GroupData
@@ -39,7 +39,6 @@ func (a *TrainPartyAreaGoalConfigAccessor) Raw() ([]TrainPartyAreaGoalConfig, er
 		if err != nil {
 			return []TrainPartyAreaGoalConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *TrainPartyAreaGoalConfigAccessor) Raw() ([]TrainPartyAreaGoalConfig, er
 // Can be called manually in conjunction with TrainPartyAreaGoalConfigAccessor.LoadData to preload everything
 func (a *TrainPartyAreaGoalConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataAreaID[d.AreaID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the TrainPartyAreaGoalConfig uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *TrainPartyAreaGoalConfigAccessor) ByID(identifier float64) (TrainPartyAreaGoalConfig, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyAreaGoalConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByAreaID returns the TrainPartyAreaGoalConfig uniquely identified by AreaID
@@ -72,11 +57,29 @@ func (a *TrainPartyAreaGoalConfigAccessor) ByID(identifier float64) (TrainPartyA
 // Error is only non-nil if the source errors out
 func (a *TrainPartyAreaGoalConfigAccessor) ByAreaID(identifier float64) (TrainPartyAreaGoalConfig, error) {
 	if a._dataAreaID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyAreaGoalConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyAreaGoalConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAreaID[identifier], nil
+}
+
+// ByID returns the TrainPartyAreaGoalConfig uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *TrainPartyAreaGoalConfigAccessor) ByID(identifier float64) (TrainPartyAreaGoalConfig, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyAreaGoalConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

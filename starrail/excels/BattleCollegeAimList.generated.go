@@ -40,7 +40,6 @@ func (a *BattleCollegeAimListAccessor) Raw() ([]BattleCollegeAimList, error) {
 		if err != nil {
 			return []BattleCollegeAimList{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *BattleCollegeAimListAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BattleCollegeAimListAccessor) ByAimID(identifier float64) (BattleCollegeAimList, error) {
 	if a._dataAimID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BattleCollegeAimList{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BattleCollegeAimList{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -44,7 +44,6 @@ func (a *FightFestAvatarInfoAccessor) Raw() ([]FightFestAvatarInfo, error) {
 		if err != nil {
 			return []FightFestAvatarInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *FightFestAvatarInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FightFestAvatarInfoAccessor) ByAvatarID(identifier float64) (FightFestAvatarInfo, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestAvatarInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestAvatarInfo{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *FightFestAvatarInfoAccessor) ByAvatarID(identifier float64) (FightFestA
 // Error is only non-nil if the source errors out
 func (a *FightFestAvatarInfoAccessor) ByVSImgPath(identifier string) (FightFestAvatarInfo, error) {
 	if a._dataVSImgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestAvatarInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestAvatarInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

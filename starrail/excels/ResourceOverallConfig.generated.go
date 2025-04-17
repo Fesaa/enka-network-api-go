@@ -38,7 +38,6 @@ func (a *ResourceOverallConfigAccessor) Raw() ([]ResourceOverallConfig, error) {
 		if err != nil {
 			return []ResourceOverallConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ResourceOverallConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ResourceOverallConfigAccessor) ByPageKey(identifier string) (ResourceOverallConfig, error) {
 	if a._dataPageKey == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ResourceOverallConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ResourceOverallConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

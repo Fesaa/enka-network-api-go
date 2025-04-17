@@ -39,7 +39,6 @@ func (a *MaterialSubmitterGroupAccessor) Raw() ([]MaterialSubmitterGroup, error)
 		if err != nil {
 			return []MaterialSubmitterGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *MaterialSubmitterGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MaterialSubmitterGroupAccessor) ByActivityID(identifier float64) (MaterialSubmitterGroup, error) {
 	if a._dataActivityID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MaterialSubmitterGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MaterialSubmitterGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *MaterialSubmitterGroupAccessor) ByActivityID(identifier float64) (Mater
 // Error is only non-nil if the source errors out
 func (a *MaterialSubmitterGroupAccessor) ByType(identifier string) (MaterialSubmitterGroup, error) {
 	if a._dataType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MaterialSubmitterGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MaterialSubmitterGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

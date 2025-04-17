@@ -29,8 +29,8 @@ type SwordTrainingSkillCost struct {
 }
 type SwordTrainingSkillAccessor struct {
 	_data           []SwordTrainingSkill
-	_dataMazeBuffID map[float64]SwordTrainingSkill
 	_dataCondition  map[float64]SwordTrainingSkill
+	_dataMazeBuffID map[float64]SwordTrainingSkill
 	_dataSkillID    map[float64]SwordTrainingSkill
 }
 
@@ -55,7 +55,6 @@ func (a *SwordTrainingSkillAccessor) Raw() ([]SwordTrainingSkill, error) {
 		if err != nil {
 			return []SwordTrainingSkill{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,24 +63,10 @@ func (a *SwordTrainingSkillAccessor) Raw() ([]SwordTrainingSkill, error) {
 // Can be called manually in conjunction with SwordTrainingSkillAccessor.LoadData to preload everything
 func (a *SwordTrainingSkillAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataMazeBuffID[d.MazeBuffID] = d
 		a._dataCondition[d.Condition] = d
+		a._dataMazeBuffID[d.MazeBuffID] = d
 		a._dataSkillID[d.SkillID] = d
 	}
-}
-
-// ByMazeBuffID returns the SwordTrainingSkill uniquely identified by MazeBuffID
-//
-// Error is only non-nil if the source errors out
-func (a *SwordTrainingSkillAccessor) ByMazeBuffID(identifier float64) (SwordTrainingSkill, error) {
-	if a._dataMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingSkill{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMazeBuffID[identifier], nil
 }
 
 // ByCondition returns the SwordTrainingSkill uniquely identified by Condition
@@ -89,13 +74,31 @@ func (a *SwordTrainingSkillAccessor) ByMazeBuffID(identifier float64) (SwordTrai
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingSkillAccessor) ByCondition(identifier float64) (SwordTrainingSkill, error) {
 	if a._dataCondition == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingSkill{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataCondition[identifier], nil
+}
+
+// ByMazeBuffID returns the SwordTrainingSkill uniquely identified by MazeBuffID
+//
+// Error is only non-nil if the source errors out
+func (a *SwordTrainingSkillAccessor) ByMazeBuffID(identifier float64) (SwordTrainingSkill, error) {
+	if a._dataMazeBuffID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingSkill{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMazeBuffID[identifier], nil
 }
 
 // BySkillID returns the SwordTrainingSkill uniquely identified by SkillID
@@ -103,9 +106,11 @@ func (a *SwordTrainingSkillAccessor) ByCondition(identifier float64) (SwordTrain
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingSkillAccessor) BySkillID(identifier float64) (SwordTrainingSkill, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingSkill{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingSkill{}, err
+			}
 		}
 		a.GroupData()
 	}

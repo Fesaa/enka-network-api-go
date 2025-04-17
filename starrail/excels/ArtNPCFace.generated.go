@@ -21,8 +21,8 @@ type ArtNPCFace struct {
 }
 type ArtNPCFaceAccessor struct {
 	_data            []ArtNPCFace
-	_dataHDJHBFHPOBE map[string]ArtNPCFace
 	_dataDKHCFIILCIK map[string]ArtNPCFace
+	_dataHDJHBFHPOBE map[string]ArtNPCFace
 }
 
 // LoadData retrieves the data. Must be called before ArtNPCFace.GroupData
@@ -46,7 +46,6 @@ func (a *ArtNPCFaceAccessor) Raw() ([]ArtNPCFace, error) {
 		if err != nil {
 			return []ArtNPCFace{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,23 +54,9 @@ func (a *ArtNPCFaceAccessor) Raw() ([]ArtNPCFace, error) {
 // Can be called manually in conjunction with ArtNPCFaceAccessor.LoadData to preload everything
 func (a *ArtNPCFaceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataHDJHBFHPOBE[d.HDJHBFHPOBE] = d
 		a._dataDKHCFIILCIK[d.DKHCFIILCIK] = d
+		a._dataHDJHBFHPOBE[d.HDJHBFHPOBE] = d
 	}
-}
-
-// ByHDJHBFHPOBE returns the ArtNPCFace uniquely identified by HDJHBFHPOBE
-//
-// Error is only non-nil if the source errors out
-func (a *ArtNPCFaceAccessor) ByHDJHBFHPOBE(identifier string) (ArtNPCFace, error) {
-	if a._dataHDJHBFHPOBE == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ArtNPCFace{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataHDJHBFHPOBE[identifier], nil
 }
 
 // ByDKHCFIILCIK returns the ArtNPCFace uniquely identified by DKHCFIILCIK
@@ -79,11 +64,29 @@ func (a *ArtNPCFaceAccessor) ByHDJHBFHPOBE(identifier string) (ArtNPCFace, error
 // Error is only non-nil if the source errors out
 func (a *ArtNPCFaceAccessor) ByDKHCFIILCIK(identifier string) (ArtNPCFace, error) {
 	if a._dataDKHCFIILCIK == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ArtNPCFace{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ArtNPCFace{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDKHCFIILCIK[identifier], nil
+}
+
+// ByHDJHBFHPOBE returns the ArtNPCFace uniquely identified by HDJHBFHPOBE
+//
+// Error is only non-nil if the source errors out
+func (a *ArtNPCFaceAccessor) ByHDJHBFHPOBE(identifier string) (ArtNPCFace, error) {
+	if a._dataHDJHBFHPOBE == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ArtNPCFace{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataHDJHBFHPOBE[identifier], nil
 }

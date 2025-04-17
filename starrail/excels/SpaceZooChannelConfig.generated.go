@@ -40,7 +40,6 @@ func (a *SpaceZooChannelConfigAccessor) Raw() ([]SpaceZooChannelConfig, error) {
 		if err != nil {
 			return []SpaceZooChannelConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *SpaceZooChannelConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SpaceZooChannelConfigAccessor) ByChannel(identifier string) (SpaceZooChannelConfig, error) {
 	if a._dataChannel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SpaceZooChannelConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SpaceZooChannelConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

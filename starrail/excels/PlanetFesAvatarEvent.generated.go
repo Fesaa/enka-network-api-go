@@ -19,8 +19,8 @@ type PlanetFesAvatarEvent struct {
 }
 type PlanetFesAvatarEventAccessor struct {
 	_data        []PlanetFesAvatarEvent
-	_dataPicPath map[string]PlanetFesAvatarEvent
 	_dataID      map[float64]PlanetFesAvatarEvent
+	_dataPicPath map[string]PlanetFesAvatarEvent
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesAvatarEvent.GroupData
@@ -44,7 +44,6 @@ func (a *PlanetFesAvatarEventAccessor) Raw() ([]PlanetFesAvatarEvent, error) {
 		if err != nil {
 			return []PlanetFesAvatarEvent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,23 +52,9 @@ func (a *PlanetFesAvatarEventAccessor) Raw() ([]PlanetFesAvatarEvent, error) {
 // Can be called manually in conjunction with PlanetFesAvatarEventAccessor.LoadData to preload everything
 func (a *PlanetFesAvatarEventAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataPicPath[d.PicPath] = d
 		a._dataID[d.ID] = d
+		a._dataPicPath[d.PicPath] = d
 	}
-}
-
-// ByPicPath returns the PlanetFesAvatarEvent uniquely identified by PicPath
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAvatarEventAccessor) ByPicPath(identifier string) (PlanetFesAvatarEvent, error) {
-	if a._dataPicPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatarEvent{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPicPath[identifier], nil
 }
 
 // ByID returns the PlanetFesAvatarEvent uniquely identified by ID
@@ -77,11 +62,29 @@ func (a *PlanetFesAvatarEventAccessor) ByPicPath(identifier string) (PlanetFesAv
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAvatarEventAccessor) ByID(identifier float64) (PlanetFesAvatarEvent, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatarEvent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatarEvent{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByPicPath returns the PlanetFesAvatarEvent uniquely identified by PicPath
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAvatarEventAccessor) ByPicPath(identifier string) (PlanetFesAvatarEvent, error) {
+	if a._dataPicPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatarEvent{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPicPath[identifier], nil
 }

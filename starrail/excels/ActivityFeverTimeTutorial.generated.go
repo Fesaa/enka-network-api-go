@@ -38,7 +38,6 @@ func (a *ActivityFeverTimeTutorialAccessor) Raw() ([]ActivityFeverTimeTutorial, 
 		if err != nil {
 			return []ActivityFeverTimeTutorial{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ActivityFeverTimeTutorialAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityFeverTimeTutorialAccessor) ByP2AvailableBuffID(identifier float64) (ActivityFeverTimeTutorial, error) {
 	if a._dataP2AvailableBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityFeverTimeTutorial{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityFeverTimeTutorial{}, err
+			}
 		}
 		a.GroupData()
 	}

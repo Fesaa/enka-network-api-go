@@ -18,9 +18,9 @@ type RogueMagicScepterDisplay struct {
 }
 type RogueMagicScepterDisplayAccessor struct {
 	_data                  []RogueMagicScepterDisplay
+	_dataScepterFigurePath map[string]RogueMagicScepterDisplay
 	_dataScepterID         map[float64]RogueMagicScepterDisplay
 	_dataScepterIconPath   map[string]RogueMagicScepterDisplay
-	_dataScepterFigurePath map[string]RogueMagicScepterDisplay
 }
 
 // LoadData retrieves the data. Must be called before RogueMagicScepterDisplay.GroupData
@@ -44,7 +44,6 @@ func (a *RogueMagicScepterDisplayAccessor) Raw() ([]RogueMagicScepterDisplay, er
 		if err != nil {
 			return []RogueMagicScepterDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,10 +52,26 @@ func (a *RogueMagicScepterDisplayAccessor) Raw() ([]RogueMagicScepterDisplay, er
 // Can be called manually in conjunction with RogueMagicScepterDisplayAccessor.LoadData to preload everything
 func (a *RogueMagicScepterDisplayAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataScepterFigurePath[d.ScepterFigurePath] = d
 		a._dataScepterID[d.ScepterID] = d
 		a._dataScepterIconPath[d.ScepterIconPath] = d
-		a._dataScepterFigurePath[d.ScepterFigurePath] = d
 	}
+}
+
+// ByScepterFigurePath returns the RogueMagicScepterDisplay uniquely identified by ScepterFigurePath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueMagicScepterDisplayAccessor) ByScepterFigurePath(identifier string) (RogueMagicScepterDisplay, error) {
+	if a._dataScepterFigurePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicScepterDisplay{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataScepterFigurePath[identifier], nil
 }
 
 // ByScepterID returns the RogueMagicScepterDisplay uniquely identified by ScepterID
@@ -64,9 +79,11 @@ func (a *RogueMagicScepterDisplayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicScepterDisplayAccessor) ByScepterID(identifier float64) (RogueMagicScepterDisplay, error) {
 	if a._dataScepterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicScepterDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicScepterDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,25 +95,13 @@ func (a *RogueMagicScepterDisplayAccessor) ByScepterID(identifier float64) (Rogu
 // Error is only non-nil if the source errors out
 func (a *RogueMagicScepterDisplayAccessor) ByScepterIconPath(identifier string) (RogueMagicScepterDisplay, error) {
 	if a._dataScepterIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicScepterDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicScepterDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataScepterIconPath[identifier], nil
-}
-
-// ByScepterFigurePath returns the RogueMagicScepterDisplay uniquely identified by ScepterFigurePath
-//
-// Error is only non-nil if the source errors out
-func (a *RogueMagicScepterDisplayAccessor) ByScepterFigurePath(identifier string) (RogueMagicScepterDisplay, error) {
-	if a._dataScepterFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicScepterDisplay{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataScepterFigurePath[identifier], nil
 }

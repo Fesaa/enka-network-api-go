@@ -13,8 +13,8 @@ type RogueMagicNPC struct {
 }
 type RogueMagicNPCAccessor struct {
 	_data            []RogueMagicNPC
-	_dataRogueNPCID  map[float64]RogueMagicNPC
 	_dataNPCJsonPath map[string]RogueMagicNPC
+	_dataRogueNPCID  map[float64]RogueMagicNPC
 }
 
 // LoadData retrieves the data. Must be called before RogueMagicNPC.GroupData
@@ -38,7 +38,6 @@ func (a *RogueMagicNPCAccessor) Raw() ([]RogueMagicNPC, error) {
 		if err != nil {
 			return []RogueMagicNPC{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *RogueMagicNPCAccessor) Raw() ([]RogueMagicNPC, error) {
 // Can be called manually in conjunction with RogueMagicNPCAccessor.LoadData to preload everything
 func (a *RogueMagicNPCAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRogueNPCID[d.RogueNPCID] = d
 		a._dataNPCJsonPath[d.NPCJsonPath] = d
+		a._dataRogueNPCID[d.RogueNPCID] = d
 	}
-}
-
-// ByRogueNPCID returns the RogueMagicNPC uniquely identified by RogueNPCID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueMagicNPCAccessor) ByRogueNPCID(identifier float64) (RogueMagicNPC, error) {
-	if a._dataRogueNPCID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicNPC{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRogueNPCID[identifier], nil
 }
 
 // ByNPCJsonPath returns the RogueMagicNPC uniquely identified by NPCJsonPath
@@ -71,11 +56,29 @@ func (a *RogueMagicNPCAccessor) ByRogueNPCID(identifier float64) (RogueMagicNPC,
 // Error is only non-nil if the source errors out
 func (a *RogueMagicNPCAccessor) ByNPCJsonPath(identifier string) (RogueMagicNPC, error) {
 	if a._dataNPCJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicNPC{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicNPC{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataNPCJsonPath[identifier], nil
+}
+
+// ByRogueNPCID returns the RogueMagicNPC uniquely identified by RogueNPCID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueMagicNPCAccessor) ByRogueNPCID(identifier float64) (RogueMagicNPC, error) {
+	if a._dataRogueNPCID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicNPC{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueNPCID[identifier], nil
 }

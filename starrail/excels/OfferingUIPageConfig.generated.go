@@ -44,7 +44,6 @@ func (a *OfferingUIPageConfigAccessor) Raw() ([]OfferingUIPageConfig, error) {
 		if err != nil {
 			return []OfferingUIPageConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *OfferingUIPageConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *OfferingUIPageConfigAccessor) ByID(identifier float64) (OfferingUIPageConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return OfferingUIPageConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return OfferingUIPageConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

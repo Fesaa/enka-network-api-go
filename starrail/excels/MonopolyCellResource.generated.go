@@ -14,8 +14,8 @@ type MonopolyCellResource struct {
 }
 type MonopolyCellResourceAccessor struct {
 	_data           []MonopolyCellResource
-	_dataResourceID map[float64]MonopolyCellResource
 	_dataIconPath   map[string]MonopolyCellResource
+	_dataResourceID map[float64]MonopolyCellResource
 }
 
 // LoadData retrieves the data. Must be called before MonopolyCellResource.GroupData
@@ -39,7 +39,6 @@ func (a *MonopolyCellResourceAccessor) Raw() ([]MonopolyCellResource, error) {
 		if err != nil {
 			return []MonopolyCellResource{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *MonopolyCellResourceAccessor) Raw() ([]MonopolyCellResource, error) {
 // Can be called manually in conjunction with MonopolyCellResourceAccessor.LoadData to preload everything
 func (a *MonopolyCellResourceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataResourceID[d.ResourceID] = d
 		a._dataIconPath[d.IconPath] = d
+		a._dataResourceID[d.ResourceID] = d
 	}
-}
-
-// ByResourceID returns the MonopolyCellResource uniquely identified by ResourceID
-//
-// Error is only non-nil if the source errors out
-func (a *MonopolyCellResourceAccessor) ByResourceID(identifier float64) (MonopolyCellResource, error) {
-	if a._dataResourceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyCellResource{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataResourceID[identifier], nil
 }
 
 // ByIconPath returns the MonopolyCellResource uniquely identified by IconPath
@@ -72,11 +57,29 @@ func (a *MonopolyCellResourceAccessor) ByResourceID(identifier float64) (Monopol
 // Error is only non-nil if the source errors out
 func (a *MonopolyCellResourceAccessor) ByIconPath(identifier string) (MonopolyCellResource, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyCellResource{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyCellResource{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataIconPath[identifier], nil
+}
+
+// ByResourceID returns the MonopolyCellResource uniquely identified by ResourceID
+//
+// Error is only non-nil if the source errors out
+func (a *MonopolyCellResourceAccessor) ByResourceID(identifier float64) (MonopolyCellResource, error) {
+	if a._dataResourceID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyCellResource{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataResourceID[identifier], nil
 }

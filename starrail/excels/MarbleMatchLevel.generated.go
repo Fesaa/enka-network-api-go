@@ -39,7 +39,6 @@ func (a *MarbleMatchLevelAccessor) Raw() ([]MarbleMatchLevel, error) {
 		if err != nil {
 			return []MarbleMatchLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *MarbleMatchLevelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarbleMatchLevelAccessor) ByID(identifier float64) (MarbleMatchLevel, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarbleMatchLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarbleMatchLevel{}, err
+			}
 		}
 		a.GroupData()
 	}

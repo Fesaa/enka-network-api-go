@@ -38,7 +38,6 @@ func (a *NPCMonsterTrackConfigAccessor) Raw() ([]NPCMonsterTrackConfig, error) {
 		if err != nil {
 			return []NPCMonsterTrackConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

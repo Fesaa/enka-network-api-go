@@ -39,7 +39,6 @@ func (a *PlayerReturnLoginRewardAccessor) Raw() ([]PlayerReturnLoginReward, erro
 		if err != nil {
 			return []PlayerReturnLoginReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *PlayerReturnLoginRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnLoginRewardAccessor) ByID(identifier float64) (PlayerReturnLoginReward, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnLoginReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnLoginReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *PlayerReturnLoginRewardAccessor) ByID(identifier float64) (PlayerReturn
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnLoginRewardAccessor) ByLoginReward(identifier float64) (PlayerReturnLoginReward, error) {
 	if a._dataLoginReward == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnLoginReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnLoginReward{}, err
+			}
 		}
 		a.GroupData()
 	}

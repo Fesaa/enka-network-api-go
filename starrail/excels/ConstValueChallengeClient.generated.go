@@ -38,7 +38,6 @@ func (a *ConstValueChallengeClientAccessor) Raw() ([]ConstValueChallengeClient, 
 		if err != nil {
 			return []ConstValueChallengeClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ConstValueChallengeClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ConstValueChallengeClientAccessor) ByConstValueName(identifier string) (ConstValueChallengeClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ConstValueChallengeClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ConstValueChallengeClient{}, err
+			}
 		}
 		a.GroupData()
 	}

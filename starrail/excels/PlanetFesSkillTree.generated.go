@@ -46,7 +46,6 @@ func (a *PlanetFesSkillTreeAccessor) Raw() ([]PlanetFesSkillTree, error) {
 		if err != nil {
 			return []PlanetFesSkillTree{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *PlanetFesSkillTreeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesSkillTreeAccessor) BySkillID(identifier float64) (PlanetFesSkillTree, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesSkillTree{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesSkillTree{}, err
+			}
 		}
 		a.GroupData()
 	}

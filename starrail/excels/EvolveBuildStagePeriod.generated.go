@@ -53,7 +53,6 @@ func (a *EvolveBuildStagePeriodAccessor) Raw() ([]EvolveBuildStagePeriod, error)
 		if err != nil {
 			return []EvolveBuildStagePeriod{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -71,9 +70,11 @@ func (a *EvolveBuildStagePeriodAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildStagePeriodAccessor) ByStagePeriodID(identifier float64) (EvolveBuildStagePeriod, error) {
 	if a._dataStagePeriodID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildStagePeriod{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildStagePeriod{}, err
+			}
 		}
 		a.GroupData()
 	}

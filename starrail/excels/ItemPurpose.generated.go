@@ -38,7 +38,6 @@ func (a *ItemPurposeAccessor) Raw() ([]ItemPurpose, error) {
 		if err != nil {
 			return []ItemPurpose{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ItemPurposeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemPurposeAccessor) ByID(identifier float64) (ItemPurpose, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemPurpose{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemPurpose{}, err
+			}
 		}
 		a.GroupData()
 	}

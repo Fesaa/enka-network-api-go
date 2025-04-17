@@ -42,7 +42,6 @@ func (a *MuseumRandomEventConfigAccessor) Raw() ([]MuseumRandomEventConfig, erro
 		if err != nil {
 			return []MuseumRandomEventConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *MuseumRandomEventConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MuseumRandomEventConfigAccessor) ByRandomEventID(identifier float64) (MuseumRandomEventConfig, error) {
 	if a._dataRandomEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumRandomEventConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumRandomEventConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

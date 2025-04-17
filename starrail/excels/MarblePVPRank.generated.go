@@ -22,9 +22,9 @@ type MarblePVPRank struct {
 type MarblePVPRankAccessor struct {
 	_data              []MarblePVPRank
 	_dataBigIconPath   map[string]MarblePVPRank
-	_dataSmallIconPath map[string]MarblePVPRank
-	_dataIconPath      map[string]MarblePVPRank
 	_dataID            map[float64]MarblePVPRank
+	_dataIconPath      map[string]MarblePVPRank
+	_dataSmallIconPath map[string]MarblePVPRank
 }
 
 // LoadData retrieves the data. Must be called before MarblePVPRank.GroupData
@@ -48,7 +48,6 @@ func (a *MarblePVPRankAccessor) Raw() ([]MarblePVPRank, error) {
 		if err != nil {
 			return []MarblePVPRank{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,9 @@ func (a *MarblePVPRankAccessor) Raw() ([]MarblePVPRank, error) {
 func (a *MarblePVPRankAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataBigIconPath[d.BigIconPath] = d
-		a._dataSmallIconPath[d.SmallIconPath] = d
-		a._dataIconPath[d.IconPath] = d
 		a._dataID[d.ID] = d
+		a._dataIconPath[d.IconPath] = d
+		a._dataSmallIconPath[d.SmallIconPath] = d
 	}
 }
 
@@ -69,41 +68,15 @@ func (a *MarblePVPRankAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MarblePVPRankAccessor) ByBigIconPath(identifier string) (MarblePVPRank, error) {
 	if a._dataBigIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarblePVPRank{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarblePVPRank{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBigIconPath[identifier], nil
-}
-
-// BySmallIconPath returns the MarblePVPRank uniquely identified by SmallIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *MarblePVPRankAccessor) BySmallIconPath(identifier string) (MarblePVPRank, error) {
-	if a._dataSmallIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarblePVPRank{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSmallIconPath[identifier], nil
-}
-
-// ByIconPath returns the MarblePVPRank uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *MarblePVPRankAccessor) ByIconPath(identifier string) (MarblePVPRank, error) {
-	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarblePVPRank{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
 }
 
 // ByID returns the MarblePVPRank uniquely identified by ID
@@ -111,11 +84,45 @@ func (a *MarblePVPRankAccessor) ByIconPath(identifier string) (MarblePVPRank, er
 // Error is only non-nil if the source errors out
 func (a *MarblePVPRankAccessor) ByID(identifier float64) (MarblePVPRank, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MarblePVPRank{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarblePVPRank{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByIconPath returns the MarblePVPRank uniquely identified by IconPath
+//
+// Error is only non-nil if the source errors out
+func (a *MarblePVPRankAccessor) ByIconPath(identifier string) (MarblePVPRank, error) {
+	if a._dataIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarblePVPRank{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIconPath[identifier], nil
+}
+
+// BySmallIconPath returns the MarblePVPRank uniquely identified by SmallIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *MarblePVPRankAccessor) BySmallIconPath(identifier string) (MarblePVPRank, error) {
+	if a._dataSmallIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MarblePVPRank{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSmallIconPath[identifier], nil
 }

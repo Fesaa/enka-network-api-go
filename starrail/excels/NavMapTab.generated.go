@@ -43,7 +43,6 @@ func (a *NavMapTabAccessor) Raw() ([]NavMapTab, error) {
 		if err != nil {
 			return []NavMapTab{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *NavMapTabAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *NavMapTabAccessor) ByID(identifier float64) (NavMapTab, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NavMapTab{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NavMapTab{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *FreeStyleCharacterInfoAccessor) Raw() ([]FreeStyleCharacterInfo, error)
 		if err != nil {
 			return []FreeStyleCharacterInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *FreeStyleCharacterInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FreeStyleCharacterInfoAccessor) ByFreeStyleCharacterID(identifier string) (FreeStyleCharacterInfo, error) {
 	if a._dataFreeStyleCharacterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FreeStyleCharacterInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FreeStyleCharacterInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

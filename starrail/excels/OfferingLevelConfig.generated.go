@@ -41,7 +41,6 @@ func (a *OfferingLevelConfigAccessor) Raw() ([]OfferingLevelConfig, error) {
 		if err != nil {
 			return []OfferingLevelConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *OfferingLevelConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *OfferingLevelConfigAccessor) ByRewardID(identifier float64) (OfferingLevelConfig, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return OfferingLevelConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return OfferingLevelConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

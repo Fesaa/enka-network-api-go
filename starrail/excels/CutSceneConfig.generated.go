@@ -48,7 +48,6 @@ func (a *CutSceneConfigAccessor) Raw() ([]CutSceneConfig, error) {
 		if err != nil {
 			return []CutSceneConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *CutSceneConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *CutSceneConfigAccessor) ByCutSceneName(identifier string) (CutSceneConfig, error) {
 	if a._dataCutSceneName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CutSceneConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CutSceneConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,9 +82,11 @@ func (a *CutSceneConfigAccessor) ByCutSceneName(identifier string) (CutSceneConf
 // Error is only non-nil if the source errors out
 func (a *CutSceneConfigAccessor) ByCutScenePath(identifier string) (CutSceneConfig, error) {
 	if a._dataCutScenePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CutSceneConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CutSceneConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

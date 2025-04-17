@@ -42,7 +42,6 @@ func (a *EliteGroupAccessor) Raw() ([]EliteGroup, error) {
 		if err != nil {
 			return []EliteGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *EliteGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EliteGroupAccessor) ByEliteGroup(identifier float64) (EliteGroup, error) {
 	if a._dataEliteGroup == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EliteGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EliteGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

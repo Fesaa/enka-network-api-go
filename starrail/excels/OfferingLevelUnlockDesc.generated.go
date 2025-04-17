@@ -38,7 +38,6 @@ func (a *OfferingLevelUnlockDescAccessor) Raw() ([]OfferingLevelUnlockDesc, erro
 		if err != nil {
 			return []OfferingLevelUnlockDesc{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *OfferingLevelUnlockDescAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *OfferingLevelUnlockDescAccessor) ByUnlockID(identifier float64) (OfferingLevelUnlockDesc, error) {
 	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return OfferingLevelUnlockDesc{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return OfferingLevelUnlockDesc{}, err
+			}
 		}
 		a.GroupData()
 	}

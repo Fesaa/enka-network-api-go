@@ -38,7 +38,6 @@ func (a *TrainPartyStatusRankAccessor) Raw() ([]TrainPartyStatusRank, error) {
 		if err != nil {
 			return []TrainPartyStatusRank{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *TrainPartyStatusRankAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyStatusRankAccessor) ByRank(identifier float64) (TrainPartyStatusRank, error) {
 	if a._dataRank == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyStatusRank{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyStatusRank{}, err
+			}
 		}
 		a.GroupData()
 	}

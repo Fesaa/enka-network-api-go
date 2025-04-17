@@ -14,8 +14,8 @@ type ClockParkRaid struct {
 }
 type ClockParkRaidAccessor struct {
 	_data                   []ClockParkRaid
-	_dataRaidMapinfo        map[float64]ClockParkRaid
 	_dataRaidID             map[float64]ClockParkRaid
+	_dataRaidMapinfo        map[float64]ClockParkRaid
 	_dataRaidUnlockProgress map[float64]ClockParkRaid
 }
 
@@ -40,7 +40,6 @@ func (a *ClockParkRaidAccessor) Raw() ([]ClockParkRaid, error) {
 		if err != nil {
 			return []ClockParkRaid{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,24 +48,10 @@ func (a *ClockParkRaidAccessor) Raw() ([]ClockParkRaid, error) {
 // Can be called manually in conjunction with ClockParkRaidAccessor.LoadData to preload everything
 func (a *ClockParkRaidAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRaidMapinfo[d.RaidMapinfo] = d
 		a._dataRaidID[d.RaidID] = d
+		a._dataRaidMapinfo[d.RaidMapinfo] = d
 		a._dataRaidUnlockProgress[d.RaidUnlockProgress] = d
 	}
-}
-
-// ByRaidMapinfo returns the ClockParkRaid uniquely identified by RaidMapinfo
-//
-// Error is only non-nil if the source errors out
-func (a *ClockParkRaidAccessor) ByRaidMapinfo(identifier float64) (ClockParkRaid, error) {
-	if a._dataRaidMapinfo == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkRaid{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRaidMapinfo[identifier], nil
 }
 
 // ByRaidID returns the ClockParkRaid uniquely identified by RaidID
@@ -74,13 +59,31 @@ func (a *ClockParkRaidAccessor) ByRaidMapinfo(identifier float64) (ClockParkRaid
 // Error is only non-nil if the source errors out
 func (a *ClockParkRaidAccessor) ByRaidID(identifier float64) (ClockParkRaid, error) {
 	if a._dataRaidID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkRaid{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkRaid{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRaidID[identifier], nil
+}
+
+// ByRaidMapinfo returns the ClockParkRaid uniquely identified by RaidMapinfo
+//
+// Error is only non-nil if the source errors out
+func (a *ClockParkRaidAccessor) ByRaidMapinfo(identifier float64) (ClockParkRaid, error) {
+	if a._dataRaidMapinfo == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkRaid{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRaidMapinfo[identifier], nil
 }
 
 // ByRaidUnlockProgress returns the ClockParkRaid uniquely identified by RaidUnlockProgress
@@ -88,9 +91,11 @@ func (a *ClockParkRaidAccessor) ByRaidID(identifier float64) (ClockParkRaid, err
 // Error is only non-nil if the source errors out
 func (a *ClockParkRaidAccessor) ByRaidUnlockProgress(identifier float64) (ClockParkRaid, error) {
 	if a._dataRaidUnlockProgress == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkRaid{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkRaid{}, err
+			}
 		}
 		a.GroupData()
 	}

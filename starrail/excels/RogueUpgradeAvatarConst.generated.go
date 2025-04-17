@@ -38,7 +38,6 @@ func (a *RogueUpgradeAvatarConstAccessor) Raw() ([]RogueUpgradeAvatarConst, erro
 		if err != nil {
 			return []RogueUpgradeAvatarConst{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueUpgradeAvatarConstAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueUpgradeAvatarConstAccessor) ByConstValueName(identifier string) (RogueUpgradeAvatarConst, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueUpgradeAvatarConst{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueUpgradeAvatarConst{}, err
+			}
 		}
 		a.GroupData()
 	}

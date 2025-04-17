@@ -41,7 +41,6 @@ func (a *TitanAtlasGroupAccessor) Raw() ([]TitanAtlasGroup, error) {
 		if err != nil {
 			return []TitanAtlasGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *TitanAtlasGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TitanAtlasGroupAccessor) ByTitanGroupID(identifier float64) (TitanAtlasGroup, error) {
 	if a._dataTitanGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TitanAtlasGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TitanAtlasGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *TitanAtlasGroupAccessor) ByTitanGroupID(identifier float64) (TitanAtlas
 // Error is only non-nil if the source errors out
 func (a *TitanAtlasGroupAccessor) ByTitleBGColor(identifier string) (TitanAtlasGroup, error) {
 	if a._dataTitleBGColor == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TitanAtlasGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TitanAtlasGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

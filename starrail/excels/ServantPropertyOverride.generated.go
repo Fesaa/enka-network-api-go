@@ -39,7 +39,6 @@ func (a *ServantPropertyOverrideAccessor) Raw() ([]ServantPropertyOverride, erro
 		if err != nil {
 			return []ServantPropertyOverride{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ServantPropertyOverrideAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ServantPropertyOverrideAccessor) ByServantID(identifier float64) (ServantPropertyOverride, error) {
 	if a._dataServantID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ServantPropertyOverride{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ServantPropertyOverride{}, err
+			}
 		}
 		a.GroupData()
 	}

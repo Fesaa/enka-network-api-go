@@ -44,7 +44,6 @@ func (a *MatchThreeOpponentAccessor) Raw() ([]MatchThreeOpponent, error) {
 		if err != nil {
 			return []MatchThreeOpponent{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *MatchThreeOpponentAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeOpponentAccessor) ByAIConfig(identifier string) (MatchThreeOpponent, error) {
 	if a._dataAIConfig == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeOpponent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeOpponent{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *MatchThreeOpponentAccessor) ByAIConfig(identifier string) (MatchThreeOp
 // Error is only non-nil if the source errors out
 func (a *MatchThreeOpponentAccessor) ByOpponentID(identifier float64) (MatchThreeOpponent, error) {
 	if a._dataOpponentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeOpponent{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeOpponent{}, err
+			}
 		}
 		a.GroupData()
 	}

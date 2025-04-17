@@ -13,8 +13,8 @@ type BookDisplayType struct {
 }
 type BookDisplayTypeAccessor struct {
 	_data                  []BookDisplayType
-	_dataBookDisplayTypeID map[float64]BookDisplayType
 	_dataAlignment         map[float64]BookDisplayType
+	_dataBookDisplayTypeID map[float64]BookDisplayType
 }
 
 // LoadData retrieves the data. Must be called before BookDisplayType.GroupData
@@ -38,7 +38,6 @@ func (a *BookDisplayTypeAccessor) Raw() ([]BookDisplayType, error) {
 		if err != nil {
 			return []BookDisplayType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *BookDisplayTypeAccessor) Raw() ([]BookDisplayType, error) {
 // Can be called manually in conjunction with BookDisplayTypeAccessor.LoadData to preload everything
 func (a *BookDisplayTypeAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataBookDisplayTypeID[d.BookDisplayTypeID] = d
 		a._dataAlignment[d.Alignment] = d
+		a._dataBookDisplayTypeID[d.BookDisplayTypeID] = d
 	}
-}
-
-// ByBookDisplayTypeID returns the BookDisplayType uniquely identified by BookDisplayTypeID
-//
-// Error is only non-nil if the source errors out
-func (a *BookDisplayTypeAccessor) ByBookDisplayTypeID(identifier float64) (BookDisplayType, error) {
-	if a._dataBookDisplayTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BookDisplayType{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBookDisplayTypeID[identifier], nil
 }
 
 // ByAlignment returns the BookDisplayType uniquely identified by Alignment
@@ -71,11 +56,29 @@ func (a *BookDisplayTypeAccessor) ByBookDisplayTypeID(identifier float64) (BookD
 // Error is only non-nil if the source errors out
 func (a *BookDisplayTypeAccessor) ByAlignment(identifier float64) (BookDisplayType, error) {
 	if a._dataAlignment == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BookDisplayType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BookDisplayType{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAlignment[identifier], nil
+}
+
+// ByBookDisplayTypeID returns the BookDisplayType uniquely identified by BookDisplayTypeID
+//
+// Error is only non-nil if the source errors out
+func (a *BookDisplayTypeAccessor) ByBookDisplayTypeID(identifier float64) (BookDisplayType, error) {
+	if a._dataBookDisplayTypeID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BookDisplayType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBookDisplayTypeID[identifier], nil
 }

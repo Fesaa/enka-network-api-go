@@ -19,11 +19,11 @@ type ActivityAdventurePlayer struct {
 }
 type ActivityAdventurePlayerAccessor struct {
 	_data                          []ActivityAdventurePlayer
-	_dataID                        map[float64]ActivityAdventurePlayer
 	_dataAvatarID                  map[float64]ActivityAdventurePlayer
-	_dataPlayerPrefabPath          map[string]ActivityAdventurePlayer
-	_dataPlayerJsonPath            map[string]ActivityAdventurePlayer
 	_dataDefaultAvatarHeadIconPath map[string]ActivityAdventurePlayer
+	_dataID                        map[float64]ActivityAdventurePlayer
+	_dataPlayerJsonPath            map[string]ActivityAdventurePlayer
+	_dataPlayerPrefabPath          map[string]ActivityAdventurePlayer
 }
 
 // LoadData retrieves the data. Must be called before ActivityAdventurePlayer.GroupData
@@ -47,7 +47,6 @@ func (a *ActivityAdventurePlayerAccessor) Raw() ([]ActivityAdventurePlayer, erro
 		if err != nil {
 			return []ActivityAdventurePlayer{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,26 +55,12 @@ func (a *ActivityAdventurePlayerAccessor) Raw() ([]ActivityAdventurePlayer, erro
 // Can be called manually in conjunction with ActivityAdventurePlayerAccessor.LoadData to preload everything
 func (a *ActivityAdventurePlayerAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataAvatarID[d.AvatarID] = d
-		a._dataPlayerPrefabPath[d.PlayerPrefabPath] = d
-		a._dataPlayerJsonPath[d.PlayerJsonPath] = d
 		a._dataDefaultAvatarHeadIconPath[d.DefaultAvatarHeadIconPath] = d
+		a._dataID[d.ID] = d
+		a._dataPlayerJsonPath[d.PlayerJsonPath] = d
+		a._dataPlayerPrefabPath[d.PlayerPrefabPath] = d
 	}
-}
-
-// ByID returns the ActivityAdventurePlayer uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityAdventurePlayerAccessor) ByID(identifier float64) (ActivityAdventurePlayer, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityAdventurePlayer{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByAvatarID returns the ActivityAdventurePlayer uniquely identified by AvatarID
@@ -83,41 +68,15 @@ func (a *ActivityAdventurePlayerAccessor) ByID(identifier float64) (ActivityAdve
 // Error is only non-nil if the source errors out
 func (a *ActivityAdventurePlayerAccessor) ByAvatarID(identifier float64) (ActivityAdventurePlayer, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityAdventurePlayer{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityAdventurePlayer{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarID[identifier], nil
-}
-
-// ByPlayerPrefabPath returns the ActivityAdventurePlayer uniquely identified by PlayerPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityAdventurePlayerAccessor) ByPlayerPrefabPath(identifier string) (ActivityAdventurePlayer, error) {
-	if a._dataPlayerPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityAdventurePlayer{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPlayerPrefabPath[identifier], nil
-}
-
-// ByPlayerJsonPath returns the ActivityAdventurePlayer uniquely identified by PlayerJsonPath
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityAdventurePlayerAccessor) ByPlayerJsonPath(identifier string) (ActivityAdventurePlayer, error) {
-	if a._dataPlayerJsonPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityAdventurePlayer{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPlayerJsonPath[identifier], nil
 }
 
 // ByDefaultAvatarHeadIconPath returns the ActivityAdventurePlayer uniquely identified by DefaultAvatarHeadIconPath
@@ -125,11 +84,61 @@ func (a *ActivityAdventurePlayerAccessor) ByPlayerJsonPath(identifier string) (A
 // Error is only non-nil if the source errors out
 func (a *ActivityAdventurePlayerAccessor) ByDefaultAvatarHeadIconPath(identifier string) (ActivityAdventurePlayer, error) {
 	if a._dataDefaultAvatarHeadIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityAdventurePlayer{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityAdventurePlayer{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDefaultAvatarHeadIconPath[identifier], nil
+}
+
+// ByID returns the ActivityAdventurePlayer uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityAdventurePlayerAccessor) ByID(identifier float64) (ActivityAdventurePlayer, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityAdventurePlayer{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
+}
+
+// ByPlayerJsonPath returns the ActivityAdventurePlayer uniquely identified by PlayerJsonPath
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityAdventurePlayerAccessor) ByPlayerJsonPath(identifier string) (ActivityAdventurePlayer, error) {
+	if a._dataPlayerJsonPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityAdventurePlayer{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPlayerJsonPath[identifier], nil
+}
+
+// ByPlayerPrefabPath returns the ActivityAdventurePlayer uniquely identified by PlayerPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityAdventurePlayerAccessor) ByPlayerPrefabPath(identifier string) (ActivityAdventurePlayer, error) {
+	if a._dataPlayerPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityAdventurePlayer{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPlayerPrefabPath[identifier], nil
 }

@@ -15,8 +15,8 @@ type ActivityPanelSingleReward struct {
 }
 type ActivityPanelSingleRewardAccessor struct {
 	_data           []ActivityPanelSingleReward
-	_dataAvatarID   map[float64]ActivityPanelSingleReward
 	_dataActivityID map[float64]ActivityPanelSingleReward
+	_dataAvatarID   map[float64]ActivityPanelSingleReward
 }
 
 // LoadData retrieves the data. Must be called before ActivityPanelSingleReward.GroupData
@@ -40,7 +40,6 @@ func (a *ActivityPanelSingleRewardAccessor) Raw() ([]ActivityPanelSingleReward, 
 		if err != nil {
 			return []ActivityPanelSingleReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *ActivityPanelSingleRewardAccessor) Raw() ([]ActivityPanelSingleReward, 
 // Can be called manually in conjunction with ActivityPanelSingleRewardAccessor.LoadData to preload everything
 func (a *ActivityPanelSingleRewardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataAvatarID[d.AvatarID] = d
 		a._dataActivityID[d.ActivityID] = d
+		a._dataAvatarID[d.AvatarID] = d
 	}
-}
-
-// ByAvatarID returns the ActivityPanelSingleReward uniquely identified by AvatarID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityPanelSingleRewardAccessor) ByAvatarID(identifier float64) (ActivityPanelSingleReward, error) {
-	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSingleReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataAvatarID[identifier], nil
 }
 
 // ByActivityID returns the ActivityPanelSingleReward uniquely identified by ActivityID
@@ -73,11 +58,29 @@ func (a *ActivityPanelSingleRewardAccessor) ByAvatarID(identifier float64) (Acti
 // Error is only non-nil if the source errors out
 func (a *ActivityPanelSingleRewardAccessor) ByActivityID(identifier float64) (ActivityPanelSingleReward, error) {
 	if a._dataActivityID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityPanelSingleReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSingleReward{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityID[identifier], nil
+}
+
+// ByAvatarID returns the ActivityPanelSingleReward uniquely identified by AvatarID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityPanelSingleRewardAccessor) ByAvatarID(identifier float64) (ActivityPanelSingleReward, error) {
+	if a._dataAvatarID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityPanelSingleReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataAvatarID[identifier], nil
 }

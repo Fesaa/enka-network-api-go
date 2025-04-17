@@ -41,7 +41,6 @@ func (a *ChimeraGalleryTalkAccessor) Raw() ([]ChimeraGalleryTalk, error) {
 		if err != nil {
 			return []ChimeraGalleryTalk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *ChimeraGalleryTalkAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChimeraGalleryTalkAccessor) ByConditionType(identifier string) (ChimeraGalleryTalk, error) {
 	if a._dataConditionType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraGalleryTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraGalleryTalk{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *ChimeraGalleryTalkAccessor) ByConditionType(identifier string) (Chimera
 // Error is only non-nil if the source errors out
 func (a *ChimeraGalleryTalkAccessor) BySort(identifier float64) (ChimeraGalleryTalk, error) {
 	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChimeraGalleryTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChimeraGalleryTalk{}, err
+			}
 		}
 		a.GroupData()
 	}

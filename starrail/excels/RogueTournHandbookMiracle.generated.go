@@ -40,7 +40,6 @@ func (a *RogueTournHandbookMiracleAccessor) Raw() ([]RogueTournHandbookMiracle, 
 		if err != nil {
 			return []RogueTournHandbookMiracle{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueTournHandbookMiracleAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournHandbookMiracleAccessor) ByHandbookMiracleID(identifier float64) (RogueTournHandbookMiracle, error) {
 	if a._dataHandbookMiracleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournHandbookMiracle{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournHandbookMiracle{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -46,7 +46,6 @@ func (a *EquipmentSkillConfigAccessor) Raw() ([]EquipmentSkillConfig, error) {
 		if err != nil {
 			return []EquipmentSkillConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

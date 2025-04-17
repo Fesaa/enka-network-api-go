@@ -37,7 +37,6 @@ func (a *DifficultyAdjustmentStageAccessor) Raw() ([]DifficultyAdjustmentStage, 
 		if err != nil {
 			return []DifficultyAdjustmentStage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *DifficultyAdjustmentStageAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DifficultyAdjustmentStageAccessor) ByID(identifier float64) (DifficultyAdjustmentStage, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DifficultyAdjustmentStage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DifficultyAdjustmentStage{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *MultiplePathAvatarAtlasAccessor) Raw() ([]MultiplePathAvatarAtlas, erro
 		if err != nil {
 			return []MultiplePathAvatarAtlas{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *MultiplePathAvatarAtlasAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MultiplePathAvatarAtlasAccessor) ByAvatarID(identifier float64) (MultiplePathAvatarAtlas, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MultiplePathAvatarAtlas{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MultiplePathAvatarAtlas{}, err
+			}
 		}
 		a.GroupData()
 	}

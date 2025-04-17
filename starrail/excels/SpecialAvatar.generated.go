@@ -67,7 +67,6 @@ func (a *SpecialAvatarAccessor) Raw() ([]SpecialAvatar, error) {
 		if err != nil {
 			return []SpecialAvatar{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

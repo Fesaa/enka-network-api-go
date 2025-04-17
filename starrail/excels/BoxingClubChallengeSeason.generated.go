@@ -19,9 +19,9 @@ type BoxingClubChallengeSeason struct {
 type BoxingClubChallengeSeasonAccessor struct {
 	_data               []BoxingClubChallengeSeason
 	_dataActivityTitle  map[string]BoxingClubChallengeSeason
+	_dataSeasonID       map[float64]BoxingClubChallengeSeason
 	_dataSeasonIconPath map[string]BoxingClubChallengeSeason
 	_dataSeasonTabPath  map[string]BoxingClubChallengeSeason
-	_dataSeasonID       map[float64]BoxingClubChallengeSeason
 	_dataSeasonType     map[string]BoxingClubChallengeSeason
 }
 
@@ -46,7 +46,6 @@ func (a *BoxingClubChallengeSeasonAccessor) Raw() ([]BoxingClubChallengeSeason, 
 		if err != nil {
 			return []BoxingClubChallengeSeason{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,9 @@ func (a *BoxingClubChallengeSeasonAccessor) Raw() ([]BoxingClubChallengeSeason, 
 func (a *BoxingClubChallengeSeasonAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataActivityTitle[d.ActivityTitle] = d
+		a._dataSeasonID[d.SeasonID] = d
 		a._dataSeasonIconPath[d.SeasonIconPath] = d
 		a._dataSeasonTabPath[d.SeasonTabPath] = d
-		a._dataSeasonID[d.SeasonID] = d
 		a._dataSeasonType[d.SeasonType] = d
 	}
 }
@@ -68,13 +67,31 @@ func (a *BoxingClubChallengeSeasonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BoxingClubChallengeSeasonAccessor) ByActivityTitle(identifier string) (BoxingClubChallengeSeason, error) {
 	if a._dataActivityTitle == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubChallengeSeason{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubChallengeSeason{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataActivityTitle[identifier], nil
+}
+
+// BySeasonID returns the BoxingClubChallengeSeason uniquely identified by SeasonID
+//
+// Error is only non-nil if the source errors out
+func (a *BoxingClubChallengeSeasonAccessor) BySeasonID(identifier float64) (BoxingClubChallengeSeason, error) {
+	if a._dataSeasonID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubChallengeSeason{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSeasonID[identifier], nil
 }
 
 // BySeasonIconPath returns the BoxingClubChallengeSeason uniquely identified by SeasonIconPath
@@ -82,9 +99,11 @@ func (a *BoxingClubChallengeSeasonAccessor) ByActivityTitle(identifier string) (
 // Error is only non-nil if the source errors out
 func (a *BoxingClubChallengeSeasonAccessor) BySeasonIconPath(identifier string) (BoxingClubChallengeSeason, error) {
 	if a._dataSeasonIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubChallengeSeason{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubChallengeSeason{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -96,27 +115,15 @@ func (a *BoxingClubChallengeSeasonAccessor) BySeasonIconPath(identifier string) 
 // Error is only non-nil if the source errors out
 func (a *BoxingClubChallengeSeasonAccessor) BySeasonTabPath(identifier string) (BoxingClubChallengeSeason, error) {
 	if a._dataSeasonTabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubChallengeSeason{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubChallengeSeason{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSeasonTabPath[identifier], nil
-}
-
-// BySeasonID returns the BoxingClubChallengeSeason uniquely identified by SeasonID
-//
-// Error is only non-nil if the source errors out
-func (a *BoxingClubChallengeSeasonAccessor) BySeasonID(identifier float64) (BoxingClubChallengeSeason, error) {
-	if a._dataSeasonID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubChallengeSeason{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSeasonID[identifier], nil
 }
 
 // BySeasonType returns the BoxingClubChallengeSeason uniquely identified by SeasonType
@@ -124,9 +131,11 @@ func (a *BoxingClubChallengeSeasonAccessor) BySeasonID(identifier float64) (Boxi
 // Error is only non-nil if the source errors out
 func (a *BoxingClubChallengeSeasonAccessor) BySeasonType(identifier string) (BoxingClubChallengeSeason, error) {
 	if a._dataSeasonType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingClubChallengeSeason{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingClubChallengeSeason{}, err
+			}
 		}
 		a.GroupData()
 	}

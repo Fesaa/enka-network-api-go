@@ -41,7 +41,6 @@ func (a *MonopolyAreaAssetConfigAccessor) Raw() ([]MonopolyAreaAssetConfig, erro
 		if err != nil {
 			return []MonopolyAreaAssetConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *MonopolyAreaAssetConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyAreaAssetConfigAccessor) ByFigurePath(identifier string) (MonopolyAreaAssetConfig, error) {
 	if a._dataFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyAreaAssetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyAreaAssetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *MonopolyAreaAssetConfigAccessor) ByFigurePath(identifier string) (Monop
 // Error is only non-nil if the source errors out
 func (a *MonopolyAreaAssetConfigAccessor) ByID(identifier float64) (MonopolyAreaAssetConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyAreaAssetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyAreaAssetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

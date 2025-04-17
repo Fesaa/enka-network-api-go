@@ -37,10 +37,10 @@ type FantasticStoryBattleID struct {
 }
 type FantasticStoryBattleIDAccessor struct {
 	_data            []FantasticStoryBattleID
-	_dataFinishQuest map[float64]FantasticStoryBattleID
 	_dataBattleID    map[float64]FantasticStoryBattleID
 	_dataEventID     map[float64]FantasticStoryBattleID
 	_dataFigurePath  map[string]FantasticStoryBattleID
+	_dataFinishQuest map[float64]FantasticStoryBattleID
 }
 
 // LoadData retrieves the data. Must be called before FantasticStoryBattleID.GroupData
@@ -64,7 +64,6 @@ func (a *FantasticStoryBattleIDAccessor) Raw() ([]FantasticStoryBattleID, error)
 		if err != nil {
 			return []FantasticStoryBattleID{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -73,25 +72,11 @@ func (a *FantasticStoryBattleIDAccessor) Raw() ([]FantasticStoryBattleID, error)
 // Can be called manually in conjunction with FantasticStoryBattleIDAccessor.LoadData to preload everything
 func (a *FantasticStoryBattleIDAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataFinishQuest[d.FinishQuest] = d
 		a._dataBattleID[d.BattleID] = d
 		a._dataEventID[d.EventID] = d
 		a._dataFigurePath[d.FigurePath] = d
+		a._dataFinishQuest[d.FinishQuest] = d
 	}
-}
-
-// ByFinishQuest returns the FantasticStoryBattleID uniquely identified by FinishQuest
-//
-// Error is only non-nil if the source errors out
-func (a *FantasticStoryBattleIDAccessor) ByFinishQuest(identifier float64) (FantasticStoryBattleID, error) {
-	if a._dataFinishQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryBattleID{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFinishQuest[identifier], nil
 }
 
 // ByBattleID returns the FantasticStoryBattleID uniquely identified by BattleID
@@ -99,9 +84,11 @@ func (a *FantasticStoryBattleIDAccessor) ByFinishQuest(identifier float64) (Fant
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryBattleIDAccessor) ByBattleID(identifier float64) (FantasticStoryBattleID, error) {
 	if a._dataBattleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryBattleID{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryBattleID{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -113,9 +100,11 @@ func (a *FantasticStoryBattleIDAccessor) ByBattleID(identifier float64) (Fantast
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryBattleIDAccessor) ByEventID(identifier float64) (FantasticStoryBattleID, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryBattleID{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryBattleID{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -127,11 +116,29 @@ func (a *FantasticStoryBattleIDAccessor) ByEventID(identifier float64) (Fantasti
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryBattleIDAccessor) ByFigurePath(identifier string) (FantasticStoryBattleID, error) {
 	if a._dataFigurePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryBattleID{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryBattleID{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFigurePath[identifier], nil
+}
+
+// ByFinishQuest returns the FantasticStoryBattleID uniquely identified by FinishQuest
+//
+// Error is only non-nil if the source errors out
+func (a *FantasticStoryBattleIDAccessor) ByFinishQuest(identifier float64) (FantasticStoryBattleID, error) {
+	if a._dataFinishQuest == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryBattleID{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFinishQuest[identifier], nil
 }

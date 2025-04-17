@@ -14,8 +14,8 @@ type ChallengeBossRewardLine struct {
 }
 type ChallengeBossRewardLineAccessor struct {
 	_data          []ChallengeBossRewardLine
-	_dataStarCount map[float64]ChallengeBossRewardLine
 	_dataRewardID  map[float64]ChallengeBossRewardLine
+	_dataStarCount map[float64]ChallengeBossRewardLine
 }
 
 // LoadData retrieves the data. Must be called before ChallengeBossRewardLine.GroupData
@@ -39,7 +39,6 @@ func (a *ChallengeBossRewardLineAccessor) Raw() ([]ChallengeBossRewardLine, erro
 		if err != nil {
 			return []ChallengeBossRewardLine{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -48,23 +47,9 @@ func (a *ChallengeBossRewardLineAccessor) Raw() ([]ChallengeBossRewardLine, erro
 // Can be called manually in conjunction with ChallengeBossRewardLineAccessor.LoadData to preload everything
 func (a *ChallengeBossRewardLineAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataStarCount[d.StarCount] = d
 		a._dataRewardID[d.RewardID] = d
+		a._dataStarCount[d.StarCount] = d
 	}
-}
-
-// ByStarCount returns the ChallengeBossRewardLine uniquely identified by StarCount
-//
-// Error is only non-nil if the source errors out
-func (a *ChallengeBossRewardLineAccessor) ByStarCount(identifier float64) (ChallengeBossRewardLine, error) {
-	if a._dataStarCount == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeBossRewardLine{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataStarCount[identifier], nil
 }
 
 // ByRewardID returns the ChallengeBossRewardLine uniquely identified by RewardID
@@ -72,11 +57,29 @@ func (a *ChallengeBossRewardLineAccessor) ByStarCount(identifier float64) (Chall
 // Error is only non-nil if the source errors out
 func (a *ChallengeBossRewardLineAccessor) ByRewardID(identifier float64) (ChallengeBossRewardLine, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeBossRewardLine{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeBossRewardLine{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRewardID[identifier], nil
+}
+
+// ByStarCount returns the ChallengeBossRewardLine uniquely identified by StarCount
+//
+// Error is only non-nil if the source errors out
+func (a *ChallengeBossRewardLineAccessor) ByStarCount(identifier float64) (ChallengeBossRewardLine, error) {
+	if a._dataStarCount == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeBossRewardLine{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataStarCount[identifier], nil
 }

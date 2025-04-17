@@ -38,7 +38,6 @@ func (a *ClockParkTalkTextAccessor) Raw() ([]ClockParkTalkText, error) {
 		if err != nil {
 			return []ClockParkTalkText{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ClockParkTalkTextAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClockParkTalkTextAccessor) ByTalkID(identifier float64) (ClockParkTalkText, error) {
 	if a._dataTalkID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkTalkText{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkTalkText{}, err
+			}
 		}
 		a.GroupData()
 	}

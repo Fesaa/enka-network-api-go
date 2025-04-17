@@ -48,7 +48,6 @@ func (a *StatusConfigAccessor) Raw() ([]StatusConfig, error) {
 		if err != nil {
 			return []StatusConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,9 +66,11 @@ func (a *StatusConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StatusConfigAccessor) ByModifierName(identifier string) (StatusConfig, error) {
 	if a._dataModifierName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StatusConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StatusConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,9 +82,11 @@ func (a *StatusConfigAccessor) ByModifierName(identifier string) (StatusConfig, 
 // Error is only non-nil if the source errors out
 func (a *StatusConfigAccessor) ByStatusID(identifier float64) (StatusConfig, error) {
 	if a._dataStatusID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StatusConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StatusConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

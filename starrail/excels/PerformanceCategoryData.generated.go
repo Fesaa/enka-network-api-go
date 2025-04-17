@@ -40,7 +40,6 @@ func (a *PerformanceCategoryDataAccessor) Raw() ([]PerformanceCategoryData, erro
 		if err != nil {
 			return []PerformanceCategoryData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *PerformanceCategoryDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PerformanceCategoryDataAccessor) ByCategoryID(identifier float64) (PerformanceCategoryData, error) {
 	if a._dataCategoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PerformanceCategoryData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PerformanceCategoryData{}, err
+			}
 		}
 		a.GroupData()
 	}

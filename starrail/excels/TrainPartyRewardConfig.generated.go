@@ -41,7 +41,6 @@ func (a *TrainPartyRewardConfigAccessor) Raw() ([]TrainPartyRewardConfig, error)
 		if err != nil {
 			return []TrainPartyRewardConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *TrainPartyRewardConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TrainPartyRewardConfigAccessor) ByLevel(identifier float64) (TrainPartyRewardConfig, error) {
 	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyRewardConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyRewardConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *TrainPartyRewardConfigAccessor) ByLevel(identifier float64) (TrainParty
 // Error is only non-nil if the source errors out
 func (a *TrainPartyRewardConfigAccessor) ByRewardID(identifier float64) (TrainPartyRewardConfig, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TrainPartyRewardConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TrainPartyRewardConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

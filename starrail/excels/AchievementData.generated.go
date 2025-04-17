@@ -27,8 +27,8 @@ type AchievementData struct {
 }
 type AchievementDataAccessor struct {
 	_data              []AchievementData
-	_dataLinearQuestID map[float64]AchievementData
 	_dataAchievementID map[float64]AchievementData
+	_dataLinearQuestID map[float64]AchievementData
 	_dataQuestID       map[float64]AchievementData
 }
 
@@ -53,7 +53,6 @@ func (a *AchievementDataAccessor) Raw() ([]AchievementData, error) {
 		if err != nil {
 			return []AchievementData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,24 +61,10 @@ func (a *AchievementDataAccessor) Raw() ([]AchievementData, error) {
 // Can be called manually in conjunction with AchievementDataAccessor.LoadData to preload everything
 func (a *AchievementDataAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataLinearQuestID[d.LinearQuestID] = d
 		a._dataAchievementID[d.AchievementID] = d
+		a._dataLinearQuestID[d.LinearQuestID] = d
 		a._dataQuestID[d.QuestID] = d
 	}
-}
-
-// ByLinearQuestID returns the AchievementData uniquely identified by LinearQuestID
-//
-// Error is only non-nil if the source errors out
-func (a *AchievementDataAccessor) ByLinearQuestID(identifier float64) (AchievementData, error) {
-	if a._dataLinearQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataLinearQuestID[identifier], nil
 }
 
 // ByAchievementID returns the AchievementData uniquely identified by AchievementID
@@ -87,13 +72,31 @@ func (a *AchievementDataAccessor) ByLinearQuestID(identifier float64) (Achieveme
 // Error is only non-nil if the source errors out
 func (a *AchievementDataAccessor) ByAchievementID(identifier float64) (AchievementData, error) {
 	if a._dataAchievementID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAchievementID[identifier], nil
+}
+
+// ByLinearQuestID returns the AchievementData uniquely identified by LinearQuestID
+//
+// Error is only non-nil if the source errors out
+func (a *AchievementDataAccessor) ByLinearQuestID(identifier float64) (AchievementData, error) {
+	if a._dataLinearQuestID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataLinearQuestID[identifier], nil
 }
 
 // ByQuestID returns the AchievementData uniquely identified by QuestID
@@ -101,9 +104,11 @@ func (a *AchievementDataAccessor) ByAchievementID(identifier float64) (Achieveme
 // Error is only non-nil if the source errors out
 func (a *AchievementDataAccessor) ByQuestID(identifier float64) (AchievementData, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AchievementData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AchievementData{}, err
+			}
 		}
 		a.GroupData()
 	}

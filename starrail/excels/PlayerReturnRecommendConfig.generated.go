@@ -50,7 +50,6 @@ func (a *PlayerReturnRecommendConfigAccessor) Raw() ([]PlayerReturnRecommendConf
 		if err != nil {
 			return []PlayerReturnRecommendConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -69,9 +68,11 @@ func (a *PlayerReturnRecommendConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnRecommendConfigAccessor) ByRecommendID(identifier float64) (PlayerReturnRecommendConfig, error) {
 	if a._dataRecommendID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnRecommendConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnRecommendConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -83,9 +84,11 @@ func (a *PlayerReturnRecommendConfigAccessor) ByRecommendID(identifier float64) 
 // Error is only non-nil if the source errors out
 func (a *PlayerReturnRecommendConfigAccessor) ByWeight(identifier float64) (PlayerReturnRecommendConfig, error) {
 	if a._dataWeight == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlayerReturnRecommendConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlayerReturnRecommendConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

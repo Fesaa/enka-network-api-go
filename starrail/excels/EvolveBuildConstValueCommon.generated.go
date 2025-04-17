@@ -38,7 +38,6 @@ func (a *EvolveBuildConstValueCommonAccessor) Raw() ([]EvolveBuildConstValueComm
 		if err != nil {
 			return []EvolveBuildConstValueCommon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *EvolveBuildConstValueCommonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildConstValueCommonAccessor) ByConstValueName(identifier string) (EvolveBuildConstValueCommon, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildConstValueCommon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildConstValueCommon{}, err
+			}
 		}
 		a.GroupData()
 	}

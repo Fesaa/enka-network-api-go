@@ -39,7 +39,6 @@ func (a *RogueTournDivisionEffectAccessor) Raw() ([]RogueTournDivisionEffect, er
 		if err != nil {
 			return []RogueTournDivisionEffect{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueTournDivisionEffectAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournDivisionEffectAccessor) ByDivisionLevel(identifier float64) (RogueTournDivisionEffect, error) {
 	if a._dataDivisionLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournDivisionEffect{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournDivisionEffect{}, err
+			}
 		}
 		a.GroupData()
 	}

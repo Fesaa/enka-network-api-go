@@ -15,10 +15,10 @@ type AvatarSkinSpecialAction struct {
 }
 type AvatarSkinSpecialActionAccessor struct {
 	_data                            []AvatarSkinSpecialAction
-	_dataSpecialActionPrefabPath     map[string]AvatarSkinSpecialAction
-	_dataSkinSpecialActionPrefabPath map[string]AvatarSkinSpecialAction
 	_dataID                          map[float64]AvatarSkinSpecialAction
 	_dataSkinID                      map[float64]AvatarSkinSpecialAction
+	_dataSkinSpecialActionPrefabPath map[string]AvatarSkinSpecialAction
+	_dataSpecialActionPrefabPath     map[string]AvatarSkinSpecialAction
 }
 
 // LoadData retrieves the data. Must be called before AvatarSkinSpecialAction.GroupData
@@ -42,7 +42,6 @@ func (a *AvatarSkinSpecialActionAccessor) Raw() ([]AvatarSkinSpecialAction, erro
 		if err != nil {
 			return []AvatarSkinSpecialAction{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,39 +50,11 @@ func (a *AvatarSkinSpecialActionAccessor) Raw() ([]AvatarSkinSpecialAction, erro
 // Can be called manually in conjunction with AvatarSkinSpecialActionAccessor.LoadData to preload everything
 func (a *AvatarSkinSpecialActionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSpecialActionPrefabPath[d.SpecialActionPrefabPath] = d
-		a._dataSkinSpecialActionPrefabPath[d.SkinSpecialActionPrefabPath] = d
 		a._dataID[d.ID] = d
 		a._dataSkinID[d.SkinID] = d
+		a._dataSkinSpecialActionPrefabPath[d.SkinSpecialActionPrefabPath] = d
+		a._dataSpecialActionPrefabPath[d.SpecialActionPrefabPath] = d
 	}
-}
-
-// BySpecialActionPrefabPath returns the AvatarSkinSpecialAction uniquely identified by SpecialActionPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinSpecialActionAccessor) BySpecialActionPrefabPath(identifier string) (AvatarSkinSpecialAction, error) {
-	if a._dataSpecialActionPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkinSpecialAction{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSpecialActionPrefabPath[identifier], nil
-}
-
-// BySkinSpecialActionPrefabPath returns the AvatarSkinSpecialAction uniquely identified by SkinSpecialActionPrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarSkinSpecialActionAccessor) BySkinSpecialActionPrefabPath(identifier string) (AvatarSkinSpecialAction, error) {
-	if a._dataSkinSpecialActionPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkinSpecialAction{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSkinSpecialActionPrefabPath[identifier], nil
 }
 
 // ByID returns the AvatarSkinSpecialAction uniquely identified by ID
@@ -91,9 +62,11 @@ func (a *AvatarSkinSpecialActionAccessor) BySkinSpecialActionPrefabPath(identifi
 // Error is only non-nil if the source errors out
 func (a *AvatarSkinSpecialActionAccessor) ByID(identifier float64) (AvatarSkinSpecialAction, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkinSpecialAction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkinSpecialAction{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -105,11 +78,45 @@ func (a *AvatarSkinSpecialActionAccessor) ByID(identifier float64) (AvatarSkinSp
 // Error is only non-nil if the source errors out
 func (a *AvatarSkinSpecialActionAccessor) BySkinID(identifier float64) (AvatarSkinSpecialAction, error) {
 	if a._dataSkinID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarSkinSpecialAction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkinSpecialAction{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSkinID[identifier], nil
+}
+
+// BySkinSpecialActionPrefabPath returns the AvatarSkinSpecialAction uniquely identified by SkinSpecialActionPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinSpecialActionAccessor) BySkinSpecialActionPrefabPath(identifier string) (AvatarSkinSpecialAction, error) {
+	if a._dataSkinSpecialActionPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkinSpecialAction{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSkinSpecialActionPrefabPath[identifier], nil
+}
+
+// BySpecialActionPrefabPath returns the AvatarSkinSpecialAction uniquely identified by SpecialActionPrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinSpecialActionAccessor) BySpecialActionPrefabPath(identifier string) (AvatarSkinSpecialAction, error) {
+	if a._dataSpecialActionPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkinSpecialAction{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSpecialActionPrefabPath[identifier], nil
 }

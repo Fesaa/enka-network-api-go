@@ -13,8 +13,8 @@ type TalkVerificationDistance struct {
 }
 type TalkVerificationDistanceAccessor struct {
 	_data         []TalkVerificationDistance
-	_dataID       map[float64]TalkVerificationDistance
 	_dataDistance map[float64]TalkVerificationDistance
+	_dataID       map[float64]TalkVerificationDistance
 }
 
 // LoadData retrieves the data. Must be called before TalkVerificationDistance.GroupData
@@ -38,7 +38,6 @@ func (a *TalkVerificationDistanceAccessor) Raw() ([]TalkVerificationDistance, er
 		if err != nil {
 			return []TalkVerificationDistance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *TalkVerificationDistanceAccessor) Raw() ([]TalkVerificationDistance, er
 // Can be called manually in conjunction with TalkVerificationDistanceAccessor.LoadData to preload everything
 func (a *TalkVerificationDistanceAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataDistance[d.Distance] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the TalkVerificationDistance uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *TalkVerificationDistanceAccessor) ByID(identifier float64) (TalkVerificationDistance, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TalkVerificationDistance{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByDistance returns the TalkVerificationDistance uniquely identified by Distance
@@ -71,11 +56,29 @@ func (a *TalkVerificationDistanceAccessor) ByID(identifier float64) (TalkVerific
 // Error is only non-nil if the source errors out
 func (a *TalkVerificationDistanceAccessor) ByDistance(identifier float64) (TalkVerificationDistance, error) {
 	if a._dataDistance == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TalkVerificationDistance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TalkVerificationDistance{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataDistance[identifier], nil
+}
+
+// ByID returns the TalkVerificationDistance uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *TalkVerificationDistanceAccessor) ByID(identifier float64) (TalkVerificationDistance, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TalkVerificationDistance{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

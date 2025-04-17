@@ -18,8 +18,8 @@ type FantasticStoryBuffID struct {
 }
 type FantasticStoryBuffIDAccessor struct {
 	_data           []FantasticStoryBuffID
-	_dataMazebuffID map[float64]FantasticStoryBuffID
 	_dataBuffID     map[float64]FantasticStoryBuffID
+	_dataMazebuffID map[float64]FantasticStoryBuffID
 }
 
 // LoadData retrieves the data. Must be called before FantasticStoryBuffID.GroupData
@@ -43,7 +43,6 @@ func (a *FantasticStoryBuffIDAccessor) Raw() ([]FantasticStoryBuffID, error) {
 		if err != nil {
 			return []FantasticStoryBuffID{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,23 +51,9 @@ func (a *FantasticStoryBuffIDAccessor) Raw() ([]FantasticStoryBuffID, error) {
 // Can be called manually in conjunction with FantasticStoryBuffIDAccessor.LoadData to preload everything
 func (a *FantasticStoryBuffIDAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataMazebuffID[d.MazebuffID] = d
 		a._dataBuffID[d.BuffID] = d
+		a._dataMazebuffID[d.MazebuffID] = d
 	}
-}
-
-// ByMazebuffID returns the FantasticStoryBuffID uniquely identified by MazebuffID
-//
-// Error is only non-nil if the source errors out
-func (a *FantasticStoryBuffIDAccessor) ByMazebuffID(identifier float64) (FantasticStoryBuffID, error) {
-	if a._dataMazebuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryBuffID{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataMazebuffID[identifier], nil
 }
 
 // ByBuffID returns the FantasticStoryBuffID uniquely identified by BuffID
@@ -76,11 +61,29 @@ func (a *FantasticStoryBuffIDAccessor) ByMazebuffID(identifier float64) (Fantast
 // Error is only non-nil if the source errors out
 func (a *FantasticStoryBuffIDAccessor) ByBuffID(identifier float64) (FantasticStoryBuffID, error) {
 	if a._dataBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FantasticStoryBuffID{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryBuffID{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBuffID[identifier], nil
+}
+
+// ByMazebuffID returns the FantasticStoryBuffID uniquely identified by MazebuffID
+//
+// Error is only non-nil if the source errors out
+func (a *FantasticStoryBuffIDAccessor) ByMazebuffID(identifier float64) (FantasticStoryBuffID, error) {
+	if a._dataMazebuffID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FantasticStoryBuffID{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataMazebuffID[identifier], nil
 }

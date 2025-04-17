@@ -39,7 +39,6 @@ func (a *AvatarDemoGuideGroupAccessor) Raw() ([]AvatarDemoGuideGroup, error) {
 		if err != nil {
 			return []AvatarDemoGuideGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *AvatarDemoGuideGroupAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarDemoGuideGroupAccessor) ByAvatarID(identifier float64) (AvatarDemoGuideGroup, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDemoGuideGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDemoGuideGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -72,9 +73,11 @@ func (a *AvatarDemoGuideGroupAccessor) ByAvatarID(identifier float64) (AvatarDem
 // Error is only non-nil if the source errors out
 func (a *AvatarDemoGuideGroupAccessor) ByStageID(identifier float64) (AvatarDemoGuideGroup, error) {
 	if a._dataStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDemoGuideGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDemoGuideGroup{}, err
+			}
 		}
 		a.GroupData()
 	}

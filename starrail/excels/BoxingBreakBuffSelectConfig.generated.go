@@ -38,7 +38,6 @@ func (a *BoxingBreakBuffSelectConfigAccessor) Raw() ([]BoxingBreakBuffSelectConf
 		if err != nil {
 			return []BoxingBreakBuffSelectConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *BoxingBreakBuffSelectConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *BoxingBreakBuffSelectConfigAccessor) ByBoxingClubBuffID(identifier float64) (BoxingBreakBuffSelectConfig, error) {
 	if a._dataBoxingClubBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return BoxingBreakBuffSelectConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return BoxingBreakBuffSelectConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

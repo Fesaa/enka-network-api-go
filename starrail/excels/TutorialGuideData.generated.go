@@ -39,7 +39,6 @@ func (a *TutorialGuideDataAccessor) Raw() ([]TutorialGuideData, error) {
 		if err != nil {
 			return []TutorialGuideData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -41,7 +41,6 @@ func (a *ChallengeTargetConfigAccessor) Raw() ([]ChallengeTargetConfig, error) {
 		if err != nil {
 			return []ChallengeTargetConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ChallengeTargetConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChallengeTargetConfigAccessor) ByID(identifier float64) (ChallengeTargetConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChallengeTargetConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChallengeTargetConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

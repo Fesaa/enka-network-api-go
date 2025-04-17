@@ -45,7 +45,6 @@ func (a *AetherDivideChallengeRankAccessor) Raw() ([]AetherDivideChallengeRank, 
 		if err != nil {
 			return []AetherDivideChallengeRank{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *AetherDivideChallengeRankAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AetherDivideChallengeRankAccessor) ByChallengeRank(identifier float64) (AetherDivideChallengeRank, error) {
 	if a._dataChallengeRank == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideChallengeRank{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideChallengeRank{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -78,9 +79,11 @@ func (a *AetherDivideChallengeRankAccessor) ByChallengeRank(identifier float64) 
 // Error is only non-nil if the source errors out
 func (a *AetherDivideChallengeRankAccessor) ByIconPath(identifier string) (AetherDivideChallengeRank, error) {
 	if a._dataIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AetherDivideChallengeRank{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AetherDivideChallengeRank{}, err
+			}
 		}
 		a.GroupData()
 	}

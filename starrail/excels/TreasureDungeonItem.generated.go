@@ -45,7 +45,6 @@ func (a *TreasureDungeonItemAccessor) Raw() ([]TreasureDungeonItem, error) {
 		if err != nil {
 			return []TreasureDungeonItem{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *TreasureDungeonItemAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TreasureDungeonItemAccessor) ByItemID(identifier float64) (TreasureDungeonItem, error) {
 	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TreasureDungeonItem{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TreasureDungeonItem{}, err
+			}
 		}
 		a.GroupData()
 	}

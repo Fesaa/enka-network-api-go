@@ -38,7 +38,6 @@ func (a *SwordTrainingStoryLineBonusAccessor) Raw() ([]SwordTrainingStoryLineBon
 		if err != nil {
 			return []SwordTrainingStoryLineBonus{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *SwordTrainingStoryLineBonusAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SwordTrainingStoryLineBonusAccessor) ByStoryLineNum(identifier float64) (SwordTrainingStoryLineBonus, error) {
 	if a._dataStoryLineNum == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SwordTrainingStoryLineBonus{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SwordTrainingStoryLineBonus{}, err
+			}
 		}
 		a.GroupData()
 	}

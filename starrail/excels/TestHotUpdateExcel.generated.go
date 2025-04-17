@@ -38,7 +38,6 @@ func (a *TestHotUpdateExcelAccessor) Raw() ([]TestHotUpdateExcel, error) {
 		if err != nil {
 			return []TestHotUpdateExcel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *TestHotUpdateExcelAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TestHotUpdateExcelAccessor) ByAvatarID(identifier float64) (TestHotUpdateExcel, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TestHotUpdateExcel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TestHotUpdateExcel{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *TestHotUpdateExcelAccessor) ByAvatarID(identifier float64) (TestHotUpda
 // Error is only non-nil if the source errors out
 func (a *TestHotUpdateExcelAccessor) ByAvatarName(identifier string) (TestHotUpdateExcel, error) {
 	if a._dataAvatarName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TestHotUpdateExcel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TestHotUpdateExcel{}, err
+			}
 		}
 		a.GroupData()
 	}

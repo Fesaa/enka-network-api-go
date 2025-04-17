@@ -41,7 +41,6 @@ func (a *RogueTournRoomMarkAccessor) Raw() ([]RogueTournRoomMark, error) {
 		if err != nil {
 			return []RogueTournRoomMark{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

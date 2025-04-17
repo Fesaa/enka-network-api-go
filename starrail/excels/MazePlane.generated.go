@@ -44,7 +44,6 @@ func (a *MazePlaneAccessor) Raw() ([]MazePlane, error) {
 		if err != nil {
 			return []MazePlane{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *MazePlaneAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MazePlaneAccessor) ByPlaneID(identifier float64) (MazePlane, error) {
 	if a._dataPlaneID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MazePlane{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MazePlane{}, err
+			}
 		}
 		a.GroupData()
 	}

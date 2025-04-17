@@ -19,8 +19,8 @@ type TalkReward struct {
 }
 type TalkRewardAccessor struct {
 	_data         []TalkReward
-	_dataRewardID map[float64]TalkReward
 	_dataID       map[float64]TalkReward
+	_dataRewardID map[float64]TalkReward
 }
 
 // LoadData retrieves the data. Must be called before TalkReward.GroupData
@@ -44,7 +44,6 @@ func (a *TalkRewardAccessor) Raw() ([]TalkReward, error) {
 		if err != nil {
 			return []TalkReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,23 +52,9 @@ func (a *TalkRewardAccessor) Raw() ([]TalkReward, error) {
 // Can be called manually in conjunction with TalkRewardAccessor.LoadData to preload everything
 func (a *TalkRewardAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRewardID[d.RewardID] = d
 		a._dataID[d.ID] = d
+		a._dataRewardID[d.RewardID] = d
 	}
-}
-
-// ByRewardID returns the TalkReward uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *TalkRewardAccessor) ByRewardID(identifier float64) (TalkReward, error) {
-	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TalkReward{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
 }
 
 // ByID returns the TalkReward uniquely identified by ID
@@ -77,11 +62,29 @@ func (a *TalkRewardAccessor) ByRewardID(identifier float64) (TalkReward, error) 
 // Error is only non-nil if the source errors out
 func (a *TalkRewardAccessor) ByID(identifier float64) (TalkReward, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TalkReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TalkReward{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByRewardID returns the TalkReward uniquely identified by RewardID
+//
+// Error is only non-nil if the source errors out
+func (a *TalkRewardAccessor) ByRewardID(identifier float64) (TalkReward, error) {
+	if a._dataRewardID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TalkReward{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRewardID[identifier], nil
 }

@@ -42,7 +42,6 @@ func (a *GachaGroupDataAccessor) Raw() ([]GachaGroupData, error) {
 		if err != nil {
 			return []GachaGroupData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *GachaGroupDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GachaGroupDataAccessor) ByGroupID(identifier float64) (GachaGroupData, error) {
 	if a._dataGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaGroupData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaGroupData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *GachaGroupDataAccessor) ByGroupID(identifier float64) (GachaGroupData, 
 // Error is only non-nil if the source errors out
 func (a *GachaGroupDataAccessor) ByPoolLabelIcon(identifier string) (GachaGroupData, error) {
 	if a._dataPoolLabelIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaGroupData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaGroupData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -90,9 +93,11 @@ func (a *GachaGroupDataAccessor) ByPoolLabelIcon(identifier string) (GachaGroupD
 // Error is only non-nil if the source errors out
 func (a *GachaGroupDataAccessor) ByPoolLabelIconSelected(identifier string) (GachaGroupData, error) {
 	if a._dataPoolLabelIconSelected == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GachaGroupData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GachaGroupData{}, err
+			}
 		}
 		a.GroupData()
 	}

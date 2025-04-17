@@ -18,8 +18,8 @@ type AlleyDeskTalk struct {
 }
 type AlleyDeskTalkAccessor struct {
 	_data           []AlleyDeskTalk
-	_dataTextIDList map[string]AlleyDeskTalk
 	_dataTalkID     map[float64]AlleyDeskTalk
+	_dataTextIDList map[string]AlleyDeskTalk
 }
 
 // LoadData retrieves the data. Must be called before AlleyDeskTalk.GroupData
@@ -43,7 +43,6 @@ func (a *AlleyDeskTalkAccessor) Raw() ([]AlleyDeskTalk, error) {
 		if err != nil {
 			return []AlleyDeskTalk{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,23 +51,9 @@ func (a *AlleyDeskTalkAccessor) Raw() ([]AlleyDeskTalk, error) {
 // Can be called manually in conjunction with AlleyDeskTalkAccessor.LoadData to preload everything
 func (a *AlleyDeskTalkAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTextIDList[d.TextIDList] = d
 		a._dataTalkID[d.TalkID] = d
+		a._dataTextIDList[d.TextIDList] = d
 	}
-}
-
-// ByTextIDList returns the AlleyDeskTalk uniquely identified by TextIDList
-//
-// Error is only non-nil if the source errors out
-func (a *AlleyDeskTalkAccessor) ByTextIDList(identifier string) (AlleyDeskTalk, error) {
-	if a._dataTextIDList == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyDeskTalk{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTextIDList[identifier], nil
 }
 
 // ByTalkID returns the AlleyDeskTalk uniquely identified by TalkID
@@ -76,11 +61,29 @@ func (a *AlleyDeskTalkAccessor) ByTextIDList(identifier string) (AlleyDeskTalk, 
 // Error is only non-nil if the source errors out
 func (a *AlleyDeskTalkAccessor) ByTalkID(identifier float64) (AlleyDeskTalk, error) {
 	if a._dataTalkID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AlleyDeskTalk{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyDeskTalk{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTalkID[identifier], nil
+}
+
+// ByTextIDList returns the AlleyDeskTalk uniquely identified by TextIDList
+//
+// Error is only non-nil if the source errors out
+func (a *AlleyDeskTalkAccessor) ByTextIDList(identifier string) (AlleyDeskTalk, error) {
+	if a._dataTextIDList == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AlleyDeskTalk{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTextIDList[identifier], nil
 }

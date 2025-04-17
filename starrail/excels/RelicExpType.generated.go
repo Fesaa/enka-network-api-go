@@ -37,7 +37,6 @@ func (a *RelicExpTypeAccessor) Raw() ([]RelicExpType, error) {
 		if err != nil {
 			return []RelicExpType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -18,8 +18,8 @@ type RogueBonus struct {
 }
 type RogueBonusAccessor struct {
 	_data           []RogueBonus
-	_dataBonusID    map[float64]RogueBonus
 	_dataBonusEvent map[float64]RogueBonus
+	_dataBonusID    map[float64]RogueBonus
 }
 
 // LoadData retrieves the data. Must be called before RogueBonus.GroupData
@@ -43,7 +43,6 @@ func (a *RogueBonusAccessor) Raw() ([]RogueBonus, error) {
 		if err != nil {
 			return []RogueBonus{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -52,23 +51,9 @@ func (a *RogueBonusAccessor) Raw() ([]RogueBonus, error) {
 // Can be called manually in conjunction with RogueBonusAccessor.LoadData to preload everything
 func (a *RogueBonusAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataBonusID[d.BonusID] = d
 		a._dataBonusEvent[d.BonusEvent] = d
+		a._dataBonusID[d.BonusID] = d
 	}
-}
-
-// ByBonusID returns the RogueBonus uniquely identified by BonusID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueBonusAccessor) ByBonusID(identifier float64) (RogueBonus, error) {
-	if a._dataBonusID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueBonus{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBonusID[identifier], nil
 }
 
 // ByBonusEvent returns the RogueBonus uniquely identified by BonusEvent
@@ -76,11 +61,29 @@ func (a *RogueBonusAccessor) ByBonusID(identifier float64) (RogueBonus, error) {
 // Error is only non-nil if the source errors out
 func (a *RogueBonusAccessor) ByBonusEvent(identifier float64) (RogueBonus, error) {
 	if a._dataBonusEvent == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueBonus{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueBonus{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBonusEvent[identifier], nil
+}
+
+// ByBonusID returns the RogueBonus uniquely identified by BonusID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueBonusAccessor) ByBonusID(identifier float64) (RogueBonus, error) {
+	if a._dataBonusID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueBonus{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBonusID[identifier], nil
 }

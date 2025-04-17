@@ -14,9 +14,9 @@ type ScheduleDataChallengeMaze struct {
 }
 type ScheduleDataChallengeMazeAccessor struct {
 	_data          []ScheduleDataChallengeMaze
+	_dataBeginTime map[string]ScheduleDataChallengeMaze
 	_dataEndTime   map[string]ScheduleDataChallengeMaze
 	_dataID        map[float64]ScheduleDataChallengeMaze
-	_dataBeginTime map[string]ScheduleDataChallengeMaze
 }
 
 // LoadData retrieves the data. Must be called before ScheduleDataChallengeMaze.GroupData
@@ -40,7 +40,6 @@ func (a *ScheduleDataChallengeMazeAccessor) Raw() ([]ScheduleDataChallengeMaze, 
 		if err != nil {
 			return []ScheduleDataChallengeMaze{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,10 +48,26 @@ func (a *ScheduleDataChallengeMazeAccessor) Raw() ([]ScheduleDataChallengeMaze, 
 // Can be called manually in conjunction with ScheduleDataChallengeMazeAccessor.LoadData to preload everything
 func (a *ScheduleDataChallengeMazeAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d
 		a._dataID[d.ID] = d
-		a._dataBeginTime[d.BeginTime] = d
 	}
+}
+
+// ByBeginTime returns the ScheduleDataChallengeMaze uniquely identified by BeginTime
+//
+// Error is only non-nil if the source errors out
+func (a *ScheduleDataChallengeMazeAccessor) ByBeginTime(identifier string) (ScheduleDataChallengeMaze, error) {
+	if a._dataBeginTime == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataChallengeMaze{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBeginTime[identifier], nil
 }
 
 // ByEndTime returns the ScheduleDataChallengeMaze uniquely identified by EndTime
@@ -60,9 +75,11 @@ func (a *ScheduleDataChallengeMazeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataChallengeMazeAccessor) ByEndTime(identifier string) (ScheduleDataChallengeMaze, error) {
 	if a._dataEndTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataChallengeMaze{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataChallengeMaze{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,25 +91,13 @@ func (a *ScheduleDataChallengeMazeAccessor) ByEndTime(identifier string) (Schedu
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataChallengeMazeAccessor) ByID(identifier float64) (ScheduleDataChallengeMaze, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataChallengeMaze{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataChallengeMaze{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
-}
-
-// ByBeginTime returns the ScheduleDataChallengeMaze uniquely identified by BeginTime
-//
-// Error is only non-nil if the source errors out
-func (a *ScheduleDataChallengeMazeAccessor) ByBeginTime(identifier string) (ScheduleDataChallengeMaze, error) {
-	if a._dataBeginTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataChallengeMaze{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBeginTime[identifier], nil
 }

@@ -43,7 +43,6 @@ func (a *InControlActionMapAccessor) Raw() ([]InControlActionMap, error) {
 		if err != nil {
 			return []InControlActionMap{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *InControlActionMapAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *InControlActionMapAccessor) ByactionName(identifier string) (InControlActionMap, error) {
 	if a._dataActionName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InControlActionMap{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InControlActionMap{}, err
+			}
 		}
 		a.GroupData()
 	}

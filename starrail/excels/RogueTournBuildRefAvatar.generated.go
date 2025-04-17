@@ -38,7 +38,6 @@ func (a *RogueTournBuildRefAvatarAccessor) Raw() ([]RogueTournBuildRefAvatar, er
 		if err != nil {
 			return []RogueTournBuildRefAvatar{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueTournBuildRefAvatarAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournBuildRefAvatarAccessor) ByAvatarID(identifier float64) (RogueTournBuildRefAvatar, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournBuildRefAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournBuildRefAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *RogueTournBuildRefAvatarAccessor) ByAvatarID(identifier float64) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueTournBuildRefAvatarAccessor) BySortWeight(identifier float64) (RogueTournBuildRefAvatar, error) {
 	if a._dataSortWeight == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournBuildRefAvatar{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournBuildRefAvatar{}, err
+			}
 		}
 		a.GroupData()
 	}

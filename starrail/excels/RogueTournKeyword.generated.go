@@ -44,7 +44,6 @@ func (a *RogueTournKeywordAccessor) Raw() ([]RogueTournKeyword, error) {
 		if err != nil {
 			return []RogueTournKeyword{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -63,9 +62,11 @@ func (a *RogueTournKeywordAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournKeywordAccessor) ByKeywordID(identifier float64) (RogueTournKeyword, error) {
 	if a._dataKeywordID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournKeyword{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournKeyword{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -77,9 +78,11 @@ func (a *RogueTournKeywordAccessor) ByKeywordID(identifier float64) (RogueTournK
 // Error is only non-nil if the source errors out
 func (a *RogueTournKeywordAccessor) ByMazeBuffID(identifier float64) (RogueTournKeyword, error) {
 	if a._dataMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournKeyword{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournKeyword{}, err
+			}
 		}
 		a.GroupData()
 	}

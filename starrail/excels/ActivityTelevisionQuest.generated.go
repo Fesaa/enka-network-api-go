@@ -40,7 +40,6 @@ func (a *ActivityTelevisionQuestAccessor) Raw() ([]ActivityTelevisionQuest, erro
 		if err != nil {
 			return []ActivityTelevisionQuest{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *ActivityTelevisionQuestAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionQuestAccessor) ByQuestGroupID(identifier float64) (ActivityTelevisionQuest, error) {
 	if a._dataQuestGroupID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionQuest{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionQuest{}, err
+			}
 		}
 		a.GroupData()
 	}

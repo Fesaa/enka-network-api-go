@@ -40,7 +40,6 @@ func (a *InControlControlTypeInfoAccessor) Raw() ([]InControlControlTypeInfo, er
 		if err != nil {
 			return []InControlControlTypeInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *InControlControlTypeInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *InControlControlTypeInfoAccessor) BycontrolType(identifier string) (InControlControlTypeInfo, error) {
 	if a._dataControlType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return InControlControlTypeInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return InControlControlTypeInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

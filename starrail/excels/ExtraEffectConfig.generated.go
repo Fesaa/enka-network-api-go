@@ -42,7 +42,6 @@ func (a *ExtraEffectConfigAccessor) Raw() ([]ExtraEffectConfig, error) {
 		if err != nil {
 			return []ExtraEffectConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *ExtraEffectConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ExtraEffectConfigAccessor) ByExtraEffectID(identifier float64) (ExtraEffectConfig, error) {
 	if a._dataExtraEffectID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ExtraEffectConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ExtraEffectConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

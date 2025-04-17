@@ -15,9 +15,9 @@ type RechargeBenefitConfig struct {
 }
 type RechargeBenefitConfigAccessor struct {
 	_data                 []RechargeBenefitConfig
-	_dataType             map[string]RechargeBenefitConfig
 	_dataActivityModuleID map[float64]RechargeBenefitConfig
 	_dataID               map[float64]RechargeBenefitConfig
+	_dataType             map[string]RechargeBenefitConfig
 }
 
 // LoadData retrieves the data. Must be called before RechargeBenefitConfig.GroupData
@@ -41,7 +41,6 @@ func (a *RechargeBenefitConfigAccessor) Raw() ([]RechargeBenefitConfig, error) {
 		if err != nil {
 			return []RechargeBenefitConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,24 +49,10 @@ func (a *RechargeBenefitConfigAccessor) Raw() ([]RechargeBenefitConfig, error) {
 // Can be called manually in conjunction with RechargeBenefitConfigAccessor.LoadData to preload everything
 func (a *RechargeBenefitConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataType[d.Type] = d
 		a._dataActivityModuleID[d.ActivityModuleID] = d
 		a._dataID[d.ID] = d
+		a._dataType[d.Type] = d
 	}
-}
-
-// ByType returns the RechargeBenefitConfig uniquely identified by Type
-//
-// Error is only non-nil if the source errors out
-func (a *RechargeBenefitConfigAccessor) ByType(identifier string) (RechargeBenefitConfig, error) {
-	if a._dataType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RechargeBenefitConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataType[identifier], nil
 }
 
 // ByActivityModuleID returns the RechargeBenefitConfig uniquely identified by ActivityModuleID
@@ -75,9 +60,11 @@ func (a *RechargeBenefitConfigAccessor) ByType(identifier string) (RechargeBenef
 // Error is only non-nil if the source errors out
 func (a *RechargeBenefitConfigAccessor) ByActivityModuleID(identifier float64) (RechargeBenefitConfig, error) {
 	if a._dataActivityModuleID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RechargeBenefitConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RechargeBenefitConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -89,11 +76,29 @@ func (a *RechargeBenefitConfigAccessor) ByActivityModuleID(identifier float64) (
 // Error is only non-nil if the source errors out
 func (a *RechargeBenefitConfigAccessor) ByID(identifier float64) (RechargeBenefitConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RechargeBenefitConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RechargeBenefitConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByType returns the RechargeBenefitConfig uniquely identified by Type
+//
+// Error is only non-nil if the source errors out
+func (a *RechargeBenefitConfigAccessor) ByType(identifier string) (RechargeBenefitConfig, error) {
+	if a._dataType == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RechargeBenefitConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataType[identifier], nil
 }

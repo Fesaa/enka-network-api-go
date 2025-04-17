@@ -19,8 +19,8 @@ type FunctionHud struct {
 }
 type FunctionHudAccessor struct {
 	_data           []FunctionHud
-	_dataID         map[float64]FunctionHud
 	_dataFunctionID map[float64]FunctionHud
+	_dataID         map[float64]FunctionHud
 }
 
 // LoadData retrieves the data. Must be called before FunctionHud.GroupData
@@ -44,7 +44,6 @@ func (a *FunctionHudAccessor) Raw() ([]FunctionHud, error) {
 		if err != nil {
 			return []FunctionHud{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,23 +52,9 @@ func (a *FunctionHudAccessor) Raw() ([]FunctionHud, error) {
 // Can be called manually in conjunction with FunctionHudAccessor.LoadData to preload everything
 func (a *FunctionHudAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataFunctionID[d.FunctionID] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the FunctionHud uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *FunctionHudAccessor) ByID(identifier float64) (FunctionHud, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FunctionHud{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByFunctionID returns the FunctionHud uniquely identified by FunctionID
@@ -77,11 +62,29 @@ func (a *FunctionHudAccessor) ByID(identifier float64) (FunctionHud, error) {
 // Error is only non-nil if the source errors out
 func (a *FunctionHudAccessor) ByFunctionID(identifier float64) (FunctionHud, error) {
 	if a._dataFunctionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FunctionHud{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FunctionHud{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFunctionID[identifier], nil
+}
+
+// ByID returns the FunctionHud uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *FunctionHudAccessor) ByID(identifier float64) (FunctionHud, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FunctionHud{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

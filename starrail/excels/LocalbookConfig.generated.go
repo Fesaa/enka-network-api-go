@@ -43,7 +43,6 @@ func (a *LocalbookConfigAccessor) Raw() ([]LocalbookConfig, error) {
 		if err != nil {
 			return []LocalbookConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *LocalbookConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *LocalbookConfigAccessor) ByBookID(identifier float64) (LocalbookConfig, error) {
 	if a._dataBookID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return LocalbookConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return LocalbookConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

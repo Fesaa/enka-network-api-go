@@ -38,7 +38,6 @@ func (a *RogueMagicConstClientAccessor) Raw() ([]RogueMagicConstClient, error) {
 		if err != nil {
 			return []RogueMagicConstClient{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *RogueMagicConstClientAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueMagicConstClientAccessor) ByConstValueName(identifier string) (RogueMagicConstClient, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueMagicConstClient{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueMagicConstClient{}, err
+			}
 		}
 		a.GroupData()
 	}

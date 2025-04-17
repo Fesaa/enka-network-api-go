@@ -13,8 +13,8 @@ type RogueImmerseLevel struct {
 }
 type RogueImmerseLevelAccessor struct {
 	_data         []RogueImmerseLevel
-	_dataUnlockID map[float64]RogueImmerseLevel
 	_dataLevel    map[float64]RogueImmerseLevel
+	_dataUnlockID map[float64]RogueImmerseLevel
 }
 
 // LoadData retrieves the data. Must be called before RogueImmerseLevel.GroupData
@@ -38,7 +38,6 @@ func (a *RogueImmerseLevelAccessor) Raw() ([]RogueImmerseLevel, error) {
 		if err != nil {
 			return []RogueImmerseLevel{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *RogueImmerseLevelAccessor) Raw() ([]RogueImmerseLevel, error) {
 // Can be called manually in conjunction with RogueImmerseLevelAccessor.LoadData to preload everything
 func (a *RogueImmerseLevelAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUnlockID[d.UnlockID] = d
 		a._dataLevel[d.Level] = d
+		a._dataUnlockID[d.UnlockID] = d
 	}
-}
-
-// ByUnlockID returns the RogueImmerseLevel uniquely identified by UnlockID
-//
-// Error is only non-nil if the source errors out
-func (a *RogueImmerseLevelAccessor) ByUnlockID(identifier float64) (RogueImmerseLevel, error) {
-	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueImmerseLevel{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockID[identifier], nil
 }
 
 // ByLevel returns the RogueImmerseLevel uniquely identified by Level
@@ -71,11 +56,29 @@ func (a *RogueImmerseLevelAccessor) ByUnlockID(identifier float64) (RogueImmerse
 // Error is only non-nil if the source errors out
 func (a *RogueImmerseLevelAccessor) ByLevel(identifier float64) (RogueImmerseLevel, error) {
 	if a._dataLevel == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueImmerseLevel{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueImmerseLevel{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLevel[identifier], nil
+}
+
+// ByUnlockID returns the RogueImmerseLevel uniquely identified by UnlockID
+//
+// Error is only non-nil if the source errors out
+func (a *RogueImmerseLevelAccessor) ByUnlockID(identifier float64) (RogueImmerseLevel, error) {
+	if a._dataUnlockID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueImmerseLevel{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockID[identifier], nil
 }

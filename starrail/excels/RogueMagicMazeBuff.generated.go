@@ -49,7 +49,6 @@ func (a *RogueMagicMazeBuffAccessor) Raw() ([]RogueMagicMazeBuff, error) {
 		if err != nil {
 			return []RogueMagicMazeBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

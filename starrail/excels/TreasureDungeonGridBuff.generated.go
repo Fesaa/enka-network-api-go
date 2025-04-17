@@ -43,7 +43,6 @@ func (a *TreasureDungeonGridBuffAccessor) Raw() ([]TreasureDungeonGridBuff, erro
 		if err != nil {
 			return []TreasureDungeonGridBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,9 +60,11 @@ func (a *TreasureDungeonGridBuffAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *TreasureDungeonGridBuffAccessor) ByGridBuffID(identifier float64) (TreasureDungeonGridBuff, error) {
 	if a._dataGridBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TreasureDungeonGridBuff{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TreasureDungeonGridBuff{}, err
+			}
 		}
 		a.GroupData()
 	}

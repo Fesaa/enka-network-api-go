@@ -39,7 +39,6 @@ func (a *RogueUnlockConfigAccessor) Raw() ([]RogueUnlockConfig, error) {
 		if err != nil {
 			return []RogueUnlockConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueUnlockConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueUnlockConfigAccessor) ByRogueUnlockID(identifier float64) (RogueUnlockConfig, error) {
 	if a._dataRogueUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueUnlockConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueUnlockConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

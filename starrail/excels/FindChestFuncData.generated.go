@@ -21,9 +21,9 @@ type FindChestFuncData struct {
 }
 type FindChestFuncDataAccessor struct {
 	_data                   []FindChestFuncData
+	_dataFuncID             map[float64]FindChestFuncData
 	_dataMappingInfoID      map[float64]FindChestFuncData
 	_dataSpecialMappinginfo map[float64]FindChestFuncData
-	_dataFuncID             map[float64]FindChestFuncData
 }
 
 // LoadData retrieves the data. Must be called before FindChestFuncData.GroupData
@@ -47,7 +47,6 @@ func (a *FindChestFuncDataAccessor) Raw() ([]FindChestFuncData, error) {
 		if err != nil {
 			return []FindChestFuncData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,10 +55,26 @@ func (a *FindChestFuncDataAccessor) Raw() ([]FindChestFuncData, error) {
 // Can be called manually in conjunction with FindChestFuncDataAccessor.LoadData to preload everything
 func (a *FindChestFuncDataAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataFuncID[d.FuncID] = d
 		a._dataMappingInfoID[d.MappingInfoID] = d
 		a._dataSpecialMappinginfo[d.SpecialMappinginfo] = d
-		a._dataFuncID[d.FuncID] = d
 	}
+}
+
+// ByFuncID returns the FindChestFuncData uniquely identified by FuncID
+//
+// Error is only non-nil if the source errors out
+func (a *FindChestFuncDataAccessor) ByFuncID(identifier float64) (FindChestFuncData, error) {
+	if a._dataFuncID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FindChestFuncData{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFuncID[identifier], nil
 }
 
 // ByMappingInfoID returns the FindChestFuncData uniquely identified by MappingInfoID
@@ -67,9 +82,11 @@ func (a *FindChestFuncDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FindChestFuncDataAccessor) ByMappingInfoID(identifier float64) (FindChestFuncData, error) {
 	if a._dataMappingInfoID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FindChestFuncData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FindChestFuncData{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -81,25 +98,13 @@ func (a *FindChestFuncDataAccessor) ByMappingInfoID(identifier float64) (FindChe
 // Error is only non-nil if the source errors out
 func (a *FindChestFuncDataAccessor) BySpecialMappinginfo(identifier float64) (FindChestFuncData, error) {
 	if a._dataSpecialMappinginfo == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FindChestFuncData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FindChestFuncData{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataSpecialMappinginfo[identifier], nil
-}
-
-// ByFuncID returns the FindChestFuncData uniquely identified by FuncID
-//
-// Error is only non-nil if the source errors out
-func (a *FindChestFuncDataAccessor) ByFuncID(identifier float64) (FindChestFuncData, error) {
-	if a._dataFuncID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FindChestFuncData{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFuncID[identifier], nil
 }

@@ -15,8 +15,8 @@ type PlanetFesUnlock struct {
 }
 type PlanetFesUnlockAccessor struct {
 	_data            []PlanetFesUnlock
-	_dataUnlockID    map[float64]PlanetFesUnlock
 	_dataFinishWayID map[float64]PlanetFesUnlock
+	_dataUnlockID    map[float64]PlanetFesUnlock
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesUnlock.GroupData
@@ -40,7 +40,6 @@ func (a *PlanetFesUnlockAccessor) Raw() ([]PlanetFesUnlock, error) {
 		if err != nil {
 			return []PlanetFesUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *PlanetFesUnlockAccessor) Raw() ([]PlanetFesUnlock, error) {
 // Can be called manually in conjunction with PlanetFesUnlockAccessor.LoadData to preload everything
 func (a *PlanetFesUnlockAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUnlockID[d.UnlockID] = d
 		a._dataFinishWayID[d.FinishWayID] = d
+		a._dataUnlockID[d.UnlockID] = d
 	}
-}
-
-// ByUnlockID returns the PlanetFesUnlock uniquely identified by UnlockID
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesUnlockAccessor) ByUnlockID(identifier float64) (PlanetFesUnlock, error) {
-	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesUnlock{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockID[identifier], nil
 }
 
 // ByFinishWayID returns the PlanetFesUnlock uniquely identified by FinishWayID
@@ -73,11 +58,29 @@ func (a *PlanetFesUnlockAccessor) ByUnlockID(identifier float64) (PlanetFesUnloc
 // Error is only non-nil if the source errors out
 func (a *PlanetFesUnlockAccessor) ByFinishWayID(identifier float64) (PlanetFesUnlock, error) {
 	if a._dataFinishWayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFinishWayID[identifier], nil
+}
+
+// ByUnlockID returns the PlanetFesUnlock uniquely identified by UnlockID
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesUnlockAccessor) ByUnlockID(identifier float64) (PlanetFesUnlock, error) {
+	if a._dataUnlockID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesUnlock{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockID[identifier], nil
 }

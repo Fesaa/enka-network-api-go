@@ -40,7 +40,6 @@ func (a *StoryCharacterAccessor) Raw() ([]StoryCharacter, error) {
 		if err != nil {
 			return []StoryCharacter{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *StoryCharacterAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *StoryCharacterAccessor) ByStoryCharacterID(identifier string) (StoryCharacter, error) {
 	if a._dataStoryCharacterID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return StoryCharacter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return StoryCharacter{}, err
+			}
 		}
 		a.GroupData()
 	}

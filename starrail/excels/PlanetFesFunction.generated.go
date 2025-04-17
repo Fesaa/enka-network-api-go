@@ -40,7 +40,6 @@ func (a *PlanetFesFunctionAccessor) Raw() ([]PlanetFesFunction, error) {
 		if err != nil {
 			return []PlanetFesFunction{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *PlanetFesFunctionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesFunctionAccessor) BySkillID(identifier float64) (PlanetFesFunction, error) {
 	if a._dataSkillID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesFunction{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesFunction{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -13,8 +13,8 @@ type AvatarExpItemConfig struct {
 }
 type AvatarExpItemConfigAccessor struct {
 	_data       []AvatarExpItemConfig
-	_dataItemID map[float64]AvatarExpItemConfig
 	_dataExp    map[float64]AvatarExpItemConfig
+	_dataItemID map[float64]AvatarExpItemConfig
 }
 
 // LoadData retrieves the data. Must be called before AvatarExpItemConfig.GroupData
@@ -38,7 +38,6 @@ func (a *AvatarExpItemConfigAccessor) Raw() ([]AvatarExpItemConfig, error) {
 		if err != nil {
 			return []AvatarExpItemConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *AvatarExpItemConfigAccessor) Raw() ([]AvatarExpItemConfig, error) {
 // Can be called manually in conjunction with AvatarExpItemConfigAccessor.LoadData to preload everything
 func (a *AvatarExpItemConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataItemID[d.ItemID] = d
 		a._dataExp[d.Exp] = d
+		a._dataItemID[d.ItemID] = d
 	}
-}
-
-// ByItemID returns the AvatarExpItemConfig uniquely identified by ItemID
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarExpItemConfigAccessor) ByItemID(identifier float64) (AvatarExpItemConfig, error) {
-	if a._dataItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarExpItemConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemID[identifier], nil
 }
 
 // ByExp returns the AvatarExpItemConfig uniquely identified by Exp
@@ -71,11 +56,29 @@ func (a *AvatarExpItemConfigAccessor) ByItemID(identifier float64) (AvatarExpIte
 // Error is only non-nil if the source errors out
 func (a *AvatarExpItemConfigAccessor) ByExp(identifier float64) (AvatarExpItemConfig, error) {
 	if a._dataExp == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarExpItemConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarExpItemConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataExp[identifier], nil
+}
+
+// ByItemID returns the AvatarExpItemConfig uniquely identified by ItemID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarExpItemConfigAccessor) ByItemID(identifier float64) (AvatarExpItemConfig, error) {
+	if a._dataItemID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarExpItemConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemID[identifier], nil
 }

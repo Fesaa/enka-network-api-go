@@ -38,7 +38,6 @@ func (a *AvatarDemoConstValueAccessor) Raw() ([]AvatarDemoConstValue, error) {
 		if err != nil {
 			return []AvatarDemoConstValue{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *AvatarDemoConstValueAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarDemoConstValueAccessor) ByConstValueName(identifier string) (AvatarDemoConstValue, error) {
 	if a._dataConstValueName == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDemoConstValue{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDemoConstValue{}, err
+			}
 		}
 		a.GroupData()
 	}

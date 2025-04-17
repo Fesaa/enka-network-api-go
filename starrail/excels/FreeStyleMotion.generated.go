@@ -42,7 +42,6 @@ func (a *FreeStyleMotionAccessor) Raw() ([]FreeStyleMotion, error) {
 		if err != nil {
 			return []FreeStyleMotion{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *FreeStyleMotionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FreeStyleMotionAccessor) ByID(identifier float64) (FreeStyleMotion, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FreeStyleMotion{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FreeStyleMotion{}, err
+			}
 		}
 		a.GroupData()
 	}

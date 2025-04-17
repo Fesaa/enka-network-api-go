@@ -44,7 +44,6 @@ func (a *FightFestPaperInterviewAccessor) Raw() ([]FightFestPaperInterview, erro
 		if err != nil {
 			return []FightFestPaperInterview{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *FightFestPaperInterviewAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FightFestPaperInterviewAccessor) ByTextJoinItemID(identifier float64) (FightFestPaperInterview, error) {
 	if a._dataTextJoinItemID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FightFestPaperInterview{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FightFestPaperInterview{}, err
+			}
 		}
 		a.GroupData()
 	}

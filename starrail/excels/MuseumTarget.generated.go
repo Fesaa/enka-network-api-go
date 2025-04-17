@@ -19,8 +19,8 @@ type MuseumTarget struct {
 type MuseumTargetAccessor struct {
 	_data              []MuseumTarget
 	_dataOrder         map[float64]MuseumTarget
-	_dataTypeParameter map[float64]MuseumTarget
 	_dataTargetID      map[float64]MuseumTarget
+	_dataTypeParameter map[float64]MuseumTarget
 }
 
 // LoadData retrieves the data. Must be called before MuseumTarget.GroupData
@@ -44,7 +44,6 @@ func (a *MuseumTargetAccessor) Raw() ([]MuseumTarget, error) {
 		if err != nil {
 			return []MuseumTarget{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,8 +53,8 @@ func (a *MuseumTargetAccessor) Raw() ([]MuseumTarget, error) {
 func (a *MuseumTargetAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataOrder[d.Order] = d
-		a._dataTypeParameter[d.TypeParameter] = d
 		a._dataTargetID[d.TargetID] = d
+		a._dataTypeParameter[d.TypeParameter] = d
 	}
 }
 
@@ -64,27 +63,15 @@ func (a *MuseumTargetAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MuseumTargetAccessor) ByOrder(identifier float64) (MuseumTarget, error) {
 	if a._dataOrder == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumTarget{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumTarget{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataOrder[identifier], nil
-}
-
-// ByTypeParameter returns the MuseumTarget uniquely identified by TypeParameter
-//
-// Error is only non-nil if the source errors out
-func (a *MuseumTargetAccessor) ByTypeParameter(identifier float64) (MuseumTarget, error) {
-	if a._dataTypeParameter == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumTarget{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataTypeParameter[identifier], nil
 }
 
 // ByTargetID returns the MuseumTarget uniquely identified by TargetID
@@ -92,11 +79,29 @@ func (a *MuseumTargetAccessor) ByTypeParameter(identifier float64) (MuseumTarget
 // Error is only non-nil if the source errors out
 func (a *MuseumTargetAccessor) ByTargetID(identifier float64) (MuseumTarget, error) {
 	if a._dataTargetID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MuseumTarget{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumTarget{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataTargetID[identifier], nil
+}
+
+// ByTypeParameter returns the MuseumTarget uniquely identified by TypeParameter
+//
+// Error is only non-nil if the source errors out
+func (a *MuseumTargetAccessor) ByTypeParameter(identifier float64) (MuseumTarget, error) {
+	if a._dataTypeParameter == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MuseumTarget{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTypeParameter[identifier], nil
 }

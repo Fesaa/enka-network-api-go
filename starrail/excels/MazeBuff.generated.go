@@ -55,7 +55,6 @@ func (a *MazeBuffAccessor) Raw() ([]MazeBuff, error) {
 		if err != nil {
 			return []MazeBuff{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

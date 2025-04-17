@@ -37,7 +37,6 @@ func (a *PamPlaceInfoAccessor) Raw() ([]PamPlaceInfo, error) {
 		if err != nil {
 			return []PamPlaceInfo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *PamPlaceInfoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PamPlaceInfoAccessor) ByPamPlaceType(identifier string) (PamPlaceInfo, error) {
 	if a._dataPamPlaceType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PamPlaceInfo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PamPlaceInfo{}, err
+			}
 		}
 		a.GroupData()
 	}

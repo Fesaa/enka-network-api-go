@@ -39,7 +39,6 @@ func (a *MonopolyQuizTaskConfigAccessor) Raw() ([]MonopolyQuizTaskConfig, error)
 		if err != nil {
 			return []MonopolyQuizTaskConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *MonopolyQuizTaskConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MonopolyQuizTaskConfigAccessor) ByQuizTaskID(identifier float64) (MonopolyQuizTaskConfig, error) {
 	if a._dataQuizTaskID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MonopolyQuizTaskConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MonopolyQuizTaskConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

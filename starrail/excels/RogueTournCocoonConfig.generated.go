@@ -58,7 +58,6 @@ func (a *RogueTournCocoonConfigAccessor) Raw() ([]RogueTournCocoonConfig, error)
 		if err != nil {
 			return []RogueTournCocoonConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -76,9 +75,11 @@ func (a *RogueTournCocoonConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournCocoonConfigAccessor) ByEventID(identifier float64) (RogueTournCocoonConfig, error) {
 	if a._dataEventID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournCocoonConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournCocoonConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

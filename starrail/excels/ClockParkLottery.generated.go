@@ -44,7 +44,6 @@ func (a *ClockParkLotteryAccessor) Raw() ([]ClockParkLottery, error) {
 		if err != nil {
 			return []ClockParkLottery{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *ClockParkLotteryAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ClockParkLotteryAccessor) ByLotteryID(identifier float64) (ClockParkLottery, error) {
 	if a._dataLotteryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ClockParkLottery{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ClockParkLottery{}, err
+			}
 		}
 		a.GroupData()
 	}

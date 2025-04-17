@@ -66,7 +66,6 @@ func (a *MainMissionAccessor) Raw() ([]MainMission, error) {
 		if err != nil {
 			return []MainMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -85,9 +84,11 @@ func (a *MainMissionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MainMissionAccessor) ByDisplayPriority(identifier float64) (MainMission, error) {
 	if a._dataDisplayPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MainMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MainMission{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -99,9 +100,11 @@ func (a *MainMissionAccessor) ByDisplayPriority(identifier float64) (MainMission
 // Error is only non-nil if the source errors out
 func (a *MainMissionAccessor) ByMainMissionID(identifier float64) (MainMission, error) {
 	if a._dataMainMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MainMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MainMission{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -13,8 +13,8 @@ type RndOptionGroup struct {
 }
 type RndOptionGroupAccessor struct {
 	_data            []RndOptionGroup
-	_dataOptionCount map[float64]RndOptionGroup
 	_dataID          map[string]RndOptionGroup
+	_dataOptionCount map[float64]RndOptionGroup
 }
 
 // LoadData retrieves the data. Must be called before RndOptionGroup.GroupData
@@ -38,7 +38,6 @@ func (a *RndOptionGroupAccessor) Raw() ([]RndOptionGroup, error) {
 		if err != nil {
 			return []RndOptionGroup{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *RndOptionGroupAccessor) Raw() ([]RndOptionGroup, error) {
 // Can be called manually in conjunction with RndOptionGroupAccessor.LoadData to preload everything
 func (a *RndOptionGroupAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataOptionCount[d.OptionCount] = d
 		a._dataID[d.ID] = d
+		a._dataOptionCount[d.OptionCount] = d
 	}
-}
-
-// ByOptionCount returns the RndOptionGroup uniquely identified by OptionCount
-//
-// Error is only non-nil if the source errors out
-func (a *RndOptionGroupAccessor) ByOptionCount(identifier float64) (RndOptionGroup, error) {
-	if a._dataOptionCount == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RndOptionGroup{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataOptionCount[identifier], nil
 }
 
 // ByID returns the RndOptionGroup uniquely identified by ID
@@ -71,11 +56,29 @@ func (a *RndOptionGroupAccessor) ByOptionCount(identifier float64) (RndOptionGro
 // Error is only non-nil if the source errors out
 func (a *RndOptionGroupAccessor) ByID(identifier string) (RndOptionGroup, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RndOptionGroup{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RndOptionGroup{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByOptionCount returns the RndOptionGroup uniquely identified by OptionCount
+//
+// Error is only non-nil if the source errors out
+func (a *RndOptionGroupAccessor) ByOptionCount(identifier float64) (RndOptionGroup, error) {
+	if a._dataOptionCount == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RndOptionGroup{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataOptionCount[identifier], nil
 }

@@ -42,7 +42,6 @@ func (a *AvatarDemoEntranceAccessor) Raw() ([]AvatarDemoEntrance, error) {
 		if err != nil {
 			return []AvatarDemoEntrance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,9 +61,11 @@ func (a *AvatarDemoEntranceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AvatarDemoEntranceAccessor) ByAvatarID(identifier float64) (AvatarDemoEntrance, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDemoEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDemoEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -76,9 +77,11 @@ func (a *AvatarDemoEntranceAccessor) ByAvatarID(identifier float64) (AvatarDemoE
 // Error is only non-nil if the source errors out
 func (a *AvatarDemoEntranceAccessor) ByStageID(identifier float64) (AvatarDemoEntrance, error) {
 	if a._dataStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDemoEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDemoEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -90,9 +93,11 @@ func (a *AvatarDemoEntranceAccessor) ByStageID(identifier float64) (AvatarDemoEn
 // Error is only non-nil if the source errors out
 func (a *AvatarDemoEntranceAccessor) ByTrialRoleAvatarPath(identifier string) (AvatarDemoEntrance, error) {
 	if a._dataTrialRoleAvatarPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarDemoEntrance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarDemoEntrance{}, err
+			}
 		}
 		a.GroupData()
 	}

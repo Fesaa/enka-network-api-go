@@ -41,7 +41,6 @@ func (a *PlanetFesLevelUnlockAccessor) Raw() ([]PlanetFesLevelUnlock, error) {
 		if err != nil {
 			return []PlanetFesLevelUnlock{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *PlanetFesLevelUnlockAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesLevelUnlockAccessor) ByID(identifier float64) (PlanetFesLevelUnlock, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesLevelUnlock{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesLevelUnlock{}, err
+			}
 		}
 		a.GroupData()
 	}

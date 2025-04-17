@@ -39,7 +39,6 @@ func (a *RogueTournExpRewardAccessor) Raw() ([]RogueTournExpReward, error) {
 		if err != nil {
 			return []RogueTournExpReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueTournExpRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournExpRewardAccessor) ByRewardID(identifier float64) (RogueTournExpReward, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournExpReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournExpReward{}, err
+			}
 		}
 		a.GroupData()
 	}

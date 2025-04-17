@@ -19,8 +19,8 @@ type FarmStageUnlockConfig struct {
 }
 type FarmStageUnlockConfigAccessor struct {
 	_data                 []FarmStageUnlockConfig
-	_dataUIEntranceBgPath map[string]FarmStageUnlockConfig
 	_dataID               map[float64]FarmStageUnlockConfig
+	_dataUIEntranceBgPath map[string]FarmStageUnlockConfig
 }
 
 // LoadData retrieves the data. Must be called before FarmStageUnlockConfig.GroupData
@@ -44,7 +44,6 @@ func (a *FarmStageUnlockConfigAccessor) Raw() ([]FarmStageUnlockConfig, error) {
 		if err != nil {
 			return []FarmStageUnlockConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -53,23 +52,9 @@ func (a *FarmStageUnlockConfigAccessor) Raw() ([]FarmStageUnlockConfig, error) {
 // Can be called manually in conjunction with FarmStageUnlockConfigAccessor.LoadData to preload everything
 func (a *FarmStageUnlockConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUIEntranceBgPath[d.UIEntranceBgPath] = d
 		a._dataID[d.ID] = d
+		a._dataUIEntranceBgPath[d.UIEntranceBgPath] = d
 	}
-}
-
-// ByUIEntranceBgPath returns the FarmStageUnlockConfig uniquely identified by UIEntranceBgPath
-//
-// Error is only non-nil if the source errors out
-func (a *FarmStageUnlockConfigAccessor) ByUIEntranceBgPath(identifier string) (FarmStageUnlockConfig, error) {
-	if a._dataUIEntranceBgPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FarmStageUnlockConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUIEntranceBgPath[identifier], nil
 }
 
 // ByID returns the FarmStageUnlockConfig uniquely identified by ID
@@ -77,11 +62,29 @@ func (a *FarmStageUnlockConfigAccessor) ByUIEntranceBgPath(identifier string) (F
 // Error is only non-nil if the source errors out
 func (a *FarmStageUnlockConfigAccessor) ByID(identifier float64) (FarmStageUnlockConfig, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FarmStageUnlockConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FarmStageUnlockConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByUIEntranceBgPath returns the FarmStageUnlockConfig uniquely identified by UIEntranceBgPath
+//
+// Error is only non-nil if the source errors out
+func (a *FarmStageUnlockConfigAccessor) ByUIEntranceBgPath(identifier string) (FarmStageUnlockConfig, error) {
+	if a._dataUIEntranceBgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FarmStageUnlockConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUIEntranceBgPath[identifier], nil
 }

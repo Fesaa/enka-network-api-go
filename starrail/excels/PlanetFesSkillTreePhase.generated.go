@@ -39,7 +39,6 @@ func (a *PlanetFesSkillTreePhaseAccessor) Raw() ([]PlanetFesSkillTreePhase, erro
 		if err != nil {
 			return []PlanetFesSkillTreePhase{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *PlanetFesSkillTreePhaseAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesSkillTreePhaseAccessor) ByPhase(identifier float64) (PlanetFesSkillTreePhase, error) {
 	if a._dataPhase == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesSkillTreePhase{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesSkillTreePhase{}, err
+			}
 		}
 		a.GroupData()
 	}

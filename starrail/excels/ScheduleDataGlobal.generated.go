@@ -15,10 +15,10 @@ type ScheduleDataGlobal struct {
 }
 type ScheduleDataGlobalAccessor struct {
 	_data              []ScheduleDataGlobal
-	_dataID            map[float64]ScheduleDataGlobal
 	_dataBeginTime     map[string]ScheduleDataGlobal
 	_dataEndTime       map[string]ScheduleDataGlobal
 	_dataGlobalEndTime map[string]ScheduleDataGlobal
+	_dataID            map[float64]ScheduleDataGlobal
 }
 
 // LoadData retrieves the data. Must be called before ScheduleDataGlobal.GroupData
@@ -42,7 +42,6 @@ func (a *ScheduleDataGlobalAccessor) Raw() ([]ScheduleDataGlobal, error) {
 		if err != nil {
 			return []ScheduleDataGlobal{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,25 +50,11 @@ func (a *ScheduleDataGlobalAccessor) Raw() ([]ScheduleDataGlobal, error) {
 // Can be called manually in conjunction with ScheduleDataGlobalAccessor.LoadData to preload everything
 func (a *ScheduleDataGlobalAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataID[d.ID] = d
 		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d
 		a._dataGlobalEndTime[d.GlobalEndTime] = d
+		a._dataID[d.ID] = d
 	}
-}
-
-// ByID returns the ScheduleDataGlobal uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *ScheduleDataGlobalAccessor) ByID(identifier float64) (ScheduleDataGlobal, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataGlobal{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
 }
 
 // ByBeginTime returns the ScheduleDataGlobal uniquely identified by BeginTime
@@ -77,9 +62,11 @@ func (a *ScheduleDataGlobalAccessor) ByID(identifier float64) (ScheduleDataGloba
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataGlobalAccessor) ByBeginTime(identifier string) (ScheduleDataGlobal, error) {
 	if a._dataBeginTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataGlobal{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataGlobal{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -91,9 +78,11 @@ func (a *ScheduleDataGlobalAccessor) ByBeginTime(identifier string) (ScheduleDat
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataGlobalAccessor) ByEndTime(identifier string) (ScheduleDataGlobal, error) {
 	if a._dataEndTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataGlobal{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataGlobal{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -105,11 +94,29 @@ func (a *ScheduleDataGlobalAccessor) ByEndTime(identifier string) (ScheduleDataG
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataGlobalAccessor) ByGlobalEndTime(identifier string) (ScheduleDataGlobal, error) {
 	if a._dataGlobalEndTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataGlobal{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataGlobal{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataGlobalEndTime[identifier], nil
+}
+
+// ByID returns the ScheduleDataGlobal uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *ScheduleDataGlobalAccessor) ByID(identifier float64) (ScheduleDataGlobal, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataGlobal{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }

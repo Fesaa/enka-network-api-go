@@ -36,7 +36,6 @@ func (a *FirstPerformanceAccessor) Raw() ([]FirstPerformance, error) {
 		if err != nil {
 			return []FirstPerformance{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,9 +53,11 @@ func (a *FirstPerformanceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FirstPerformanceAccessor) ByPerformanceID(identifier float64) (FirstPerformance, error) {
 	if a._dataPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FirstPerformance{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FirstPerformance{}, err
+			}
 		}
 		a.GroupData()
 	}

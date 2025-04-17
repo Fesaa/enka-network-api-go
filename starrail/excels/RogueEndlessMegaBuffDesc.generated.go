@@ -40,7 +40,6 @@ func (a *RogueEndlessMegaBuffDescAccessor) Raw() ([]RogueEndlessMegaBuffDesc, er
 		if err != nil {
 			return []RogueEndlessMegaBuffDesc{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *RogueEndlessMegaBuffDescAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueEndlessMegaBuffDescAccessor) ByMazeBuffID(identifier float64) (RogueEndlessMegaBuffDesc, error) {
 	if a._dataMazeBuffID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueEndlessMegaBuffDesc{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueEndlessMegaBuffDesc{}, err
+			}
 		}
 		a.GroupData()
 	}

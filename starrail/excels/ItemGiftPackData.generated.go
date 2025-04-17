@@ -39,7 +39,6 @@ func (a *ItemGiftPackDataAccessor) Raw() ([]ItemGiftPackData, error) {
 		if err != nil {
 			return []ItemGiftPackData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

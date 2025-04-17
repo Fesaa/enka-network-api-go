@@ -46,7 +46,6 @@ func (a *RogueTournFinishwayAccessor) Raw() ([]RogueTournFinishway, error) {
 		if err != nil {
 			return []RogueTournFinishway{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -64,9 +63,11 @@ func (a *RogueTournFinishwayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournFinishwayAccessor) ByID(identifier float64) (RogueTournFinishway, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournFinishway{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournFinishway{}, err
+			}
 		}
 		a.GroupData()
 	}

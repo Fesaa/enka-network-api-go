@@ -13,8 +13,8 @@ type MissionVersionConst struct {
 }
 type MissionVersionConstAccessor struct {
 	_data                          []MissionVersionConst
-	_dataVersionFinalMainMissionID map[float64]MissionVersionConst
 	_dataID                        map[float64]MissionVersionConst
+	_dataVersionFinalMainMissionID map[float64]MissionVersionConst
 }
 
 // LoadData retrieves the data. Must be called before MissionVersionConst.GroupData
@@ -38,7 +38,6 @@ func (a *MissionVersionConstAccessor) Raw() ([]MissionVersionConst, error) {
 		if err != nil {
 			return []MissionVersionConst{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -47,23 +46,9 @@ func (a *MissionVersionConstAccessor) Raw() ([]MissionVersionConst, error) {
 // Can be called manually in conjunction with MissionVersionConstAccessor.LoadData to preload everything
 func (a *MissionVersionConstAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataVersionFinalMainMissionID[d.VersionFinalMainMissionID] = d
 		a._dataID[d.ID] = d
+		a._dataVersionFinalMainMissionID[d.VersionFinalMainMissionID] = d
 	}
-}
-
-// ByVersionFinalMainMissionID returns the MissionVersionConst uniquely identified by VersionFinalMainMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *MissionVersionConstAccessor) ByVersionFinalMainMissionID(identifier float64) (MissionVersionConst, error) {
-	if a._dataVersionFinalMainMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MissionVersionConst{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataVersionFinalMainMissionID[identifier], nil
 }
 
 // ByID returns the MissionVersionConst uniquely identified by ID
@@ -71,11 +56,29 @@ func (a *MissionVersionConstAccessor) ByVersionFinalMainMissionID(identifier flo
 // Error is only non-nil if the source errors out
 func (a *MissionVersionConstAccessor) ByID(identifier float64) (MissionVersionConst, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MissionVersionConst{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MissionVersionConst{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByVersionFinalMainMissionID returns the MissionVersionConst uniquely identified by VersionFinalMainMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *MissionVersionConstAccessor) ByVersionFinalMainMissionID(identifier float64) (MissionVersionConst, error) {
+	if a._dataVersionFinalMainMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MissionVersionConst{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataVersionFinalMainMissionID[identifier], nil
 }

@@ -42,7 +42,6 @@ func (a *AtlasUnlockDataAccessor) Raw() ([]AtlasUnlockData, error) {
 		if err != nil {
 			return []AtlasUnlockData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *AtlasUnlockDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *AtlasUnlockDataAccessor) ByUnlockID(identifier float64) (AtlasUnlockData, error) {
 	if a._dataUnlockID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AtlasUnlockData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AtlasUnlockData{}, err
+			}
 		}
 		a.GroupData()
 	}

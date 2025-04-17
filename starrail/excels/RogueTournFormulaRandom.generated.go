@@ -36,7 +36,6 @@ func (a *RogueTournFormulaRandomAccessor) Raw() ([]RogueTournFormulaRandom, erro
 		if err != nil {
 			return []RogueTournFormulaRandom{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,9 +53,11 @@ func (a *RogueTournFormulaRandomAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournFormulaRandomAccessor) ByRandomID(identifier float64) (RogueTournFormulaRandom, error) {
 	if a._dataRandomID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournFormulaRandom{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournFormulaRandom{}, err
+			}
 		}
 		a.GroupData()
 	}

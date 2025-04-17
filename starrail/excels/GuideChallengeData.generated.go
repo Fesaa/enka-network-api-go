@@ -48,7 +48,6 @@ func (a *GuideChallengeDataAccessor) Raw() ([]GuideChallengeData, error) {
 		if err != nil {
 			return []GuideChallengeData{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,9 +65,11 @@ func (a *GuideChallengeDataAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *GuideChallengeDataAccessor) ByID(identifier float64) (GuideChallengeData, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return GuideChallengeData{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return GuideChallengeData{}, err
+			}
 		}
 		a.GroupData()
 	}

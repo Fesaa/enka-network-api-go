@@ -19,11 +19,11 @@ type ActivityTelevisionSeason struct {
 }
 type ActivityTelevisionSeasonAccessor struct {
 	_data                               []ActivityTelevisionSeason
+	_dataBuffLevelDefaultBackgroundPath map[string]ActivityTelevisionSeason
+	_dataFirstMainMissionID             map[float64]ActivityTelevisionSeason
 	_dataLastStage                      map[float64]ActivityTelevisionSeason
 	_dataLastStageQuest                 map[float64]ActivityTelevisionSeason
-	_dataFirstMainMissionID             map[float64]ActivityTelevisionSeason
 	_dataLevelMessageSubmission         map[float64]ActivityTelevisionSeason
-	_dataBuffLevelDefaultBackgroundPath map[string]ActivityTelevisionSeason
 	_dataSeason                         map[float64]ActivityTelevisionSeason
 }
 
@@ -48,7 +48,6 @@ func (a *ActivityTelevisionSeasonAccessor) Raw() ([]ActivityTelevisionSeason, er
 		if err != nil {
 			return []ActivityTelevisionSeason{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,13 +56,45 @@ func (a *ActivityTelevisionSeasonAccessor) Raw() ([]ActivityTelevisionSeason, er
 // Can be called manually in conjunction with ActivityTelevisionSeasonAccessor.LoadData to preload everything
 func (a *ActivityTelevisionSeasonAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataBuffLevelDefaultBackgroundPath[d.BuffLevelDefaultBackgroundPath] = d
+		a._dataFirstMainMissionID[d.FirstMainMissionID] = d
 		a._dataLastStage[d.LastStage] = d
 		a._dataLastStageQuest[d.LastStageQuest] = d
-		a._dataFirstMainMissionID[d.FirstMainMissionID] = d
 		a._dataLevelMessageSubmission[d.LevelMessageSubmission] = d
-		a._dataBuffLevelDefaultBackgroundPath[d.BuffLevelDefaultBackgroundPath] = d
 		a._dataSeason[d.Season] = d
 	}
+}
+
+// ByBuffLevelDefaultBackgroundPath returns the ActivityTelevisionSeason uniquely identified by BuffLevelDefaultBackgroundPath
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityTelevisionSeasonAccessor) ByBuffLevelDefaultBackgroundPath(identifier string) (ActivityTelevisionSeason, error) {
+	if a._dataBuffLevelDefaultBackgroundPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionSeason{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBuffLevelDefaultBackgroundPath[identifier], nil
+}
+
+// ByFirstMainMissionID returns the ActivityTelevisionSeason uniquely identified by FirstMainMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityTelevisionSeasonAccessor) ByFirstMainMissionID(identifier float64) (ActivityTelevisionSeason, error) {
+	if a._dataFirstMainMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionSeason{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataFirstMainMissionID[identifier], nil
 }
 
 // ByLastStage returns the ActivityTelevisionSeason uniquely identified by LastStage
@@ -71,9 +102,11 @@ func (a *ActivityTelevisionSeasonAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionSeasonAccessor) ByLastStage(identifier float64) (ActivityTelevisionSeason, error) {
 	if a._dataLastStage == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionSeason{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionSeason{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -85,27 +118,15 @@ func (a *ActivityTelevisionSeasonAccessor) ByLastStage(identifier float64) (Acti
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionSeasonAccessor) ByLastStageQuest(identifier float64) (ActivityTelevisionSeason, error) {
 	if a._dataLastStageQuest == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionSeason{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionSeason{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLastStageQuest[identifier], nil
-}
-
-// ByFirstMainMissionID returns the ActivityTelevisionSeason uniquely identified by FirstMainMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityTelevisionSeasonAccessor) ByFirstMainMissionID(identifier float64) (ActivityTelevisionSeason, error) {
-	if a._dataFirstMainMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionSeason{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataFirstMainMissionID[identifier], nil
 }
 
 // ByLevelMessageSubmission returns the ActivityTelevisionSeason uniquely identified by LevelMessageSubmission
@@ -113,27 +134,15 @@ func (a *ActivityTelevisionSeasonAccessor) ByFirstMainMissionID(identifier float
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionSeasonAccessor) ByLevelMessageSubmission(identifier float64) (ActivityTelevisionSeason, error) {
 	if a._dataLevelMessageSubmission == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionSeason{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionSeason{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataLevelMessageSubmission[identifier], nil
-}
-
-// ByBuffLevelDefaultBackgroundPath returns the ActivityTelevisionSeason uniquely identified by BuffLevelDefaultBackgroundPath
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityTelevisionSeasonAccessor) ByBuffLevelDefaultBackgroundPath(identifier string) (ActivityTelevisionSeason, error) {
-	if a._dataBuffLevelDefaultBackgroundPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionSeason{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBuffLevelDefaultBackgroundPath[identifier], nil
 }
 
 // BySeason returns the ActivityTelevisionSeason uniquely identified by Season
@@ -141,9 +150,11 @@ func (a *ActivityTelevisionSeasonAccessor) ByBuffLevelDefaultBackgroundPath(iden
 // Error is only non-nil if the source errors out
 func (a *ActivityTelevisionSeasonAccessor) BySeason(identifier float64) (ActivityTelevisionSeason, error) {
 	if a._dataSeason == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityTelevisionSeason{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityTelevisionSeason{}, err
+			}
 		}
 		a.GroupData()
 	}

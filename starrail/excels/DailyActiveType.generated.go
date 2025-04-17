@@ -37,7 +37,6 @@ func (a *DailyActiveTypeAccessor) Raw() ([]DailyActiveType, error) {
 		if err != nil {
 			return []DailyActiveType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *DailyActiveTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *DailyActiveTypeAccessor) ByType(identifier float64) (DailyActiveType, error) {
 	if a._dataType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return DailyActiveType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return DailyActiveType{}, err
+			}
 		}
 		a.GroupData()
 	}

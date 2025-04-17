@@ -40,7 +40,6 @@ func (a *ItemConsumeTypeAccessor) Raw() ([]ItemConsumeType, error) {
 		if err != nil {
 			return []ItemConsumeType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ItemConsumeTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ItemConsumeTypeAccessor) ByTypeID(identifier float64) (ItemConsumeType, error) {
 	if a._dataTypeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConsumeType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConsumeType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *ItemConsumeTypeAccessor) ByTypeID(identifier float64) (ItemConsumeType,
 // Error is only non-nil if the source errors out
 func (a *ItemConsumeTypeAccessor) ByTypeIconPath(identifier string) (ItemConsumeType, error) {
 	if a._dataTypeIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConsumeType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConsumeType{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -38,7 +38,6 @@ func (a *EvolveBuildRewardAccessor) Raw() ([]EvolveBuildReward, error) {
 		if err != nil {
 			return []EvolveBuildReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *EvolveBuildRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *EvolveBuildRewardAccessor) ByRewardID(identifier float64) (EvolveBuildReward, error) {
 	if a._dataRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return EvolveBuildReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildReward{}, err
+			}
 		}
 		a.GroupData()
 	}

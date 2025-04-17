@@ -40,7 +40,6 @@ func (a *HudUIInfoTemplateAccessor) Raw() ([]HudUIInfoTemplate, error) {
 		if err != nil {
 			return []HudUIInfoTemplate{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -58,9 +57,11 @@ func (a *HudUIInfoTemplateAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *HudUIInfoTemplateAccessor) ByID(identifier float64) (HudUIInfoTemplate, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return HudUIInfoTemplate{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return HudUIInfoTemplate{}, err
+			}
 		}
 		a.GroupData()
 	}

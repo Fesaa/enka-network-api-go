@@ -48,7 +48,6 @@ func (a *FunctionAccessor) Raw() ([]Function, error) {
 		if err != nil {
 			return []Function{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -66,9 +65,11 @@ func (a *FunctionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FunctionAccessor) ByID(identifier float64) (Function, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return Function{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return Function{}, err
+			}
 		}
 		a.GroupData()
 	}

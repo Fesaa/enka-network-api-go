@@ -38,7 +38,6 @@ func (a *RogueUpgradeAvatarEquipmentAccessor) Raw() ([]RogueUpgradeAvatarEquipme
 		if err != nil {
 			return []RogueUpgradeAvatarEquipment{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *RogueUpgradeAvatarEquipmentAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueUpgradeAvatarEquipmentAccessor) ByAvatarBaseType(identifier string) (RogueUpgradeAvatarEquipment, error) {
 	if a._dataAvatarBaseType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueUpgradeAvatarEquipment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueUpgradeAvatarEquipment{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *RogueUpgradeAvatarEquipmentAccessor) ByAvatarBaseType(identifier string
 // Error is only non-nil if the source errors out
 func (a *RogueUpgradeAvatarEquipmentAccessor) ByEquipmentID(identifier float64) (RogueUpgradeAvatarEquipment, error) {
 	if a._dataEquipmentID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueUpgradeAvatarEquipment{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueUpgradeAvatarEquipment{}, err
+			}
 		}
 		a.GroupData()
 	}

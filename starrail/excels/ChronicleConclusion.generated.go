@@ -38,7 +38,6 @@ func (a *ChronicleConclusionAccessor) Raw() ([]ChronicleConclusion, error) {
 		if err != nil {
 			return []ChronicleConclusion{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -56,9 +55,11 @@ func (a *ChronicleConclusionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ChronicleConclusionAccessor) ByMissionID(identifier float64) (ChronicleConclusion, error) {
 	if a._dataMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ChronicleConclusion{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ChronicleConclusion{}, err
+			}
 		}
 		a.GroupData()
 	}

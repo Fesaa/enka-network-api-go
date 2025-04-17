@@ -15,8 +15,8 @@ type WheelSelectConfig struct {
 }
 type WheelSelectConfigAccessor struct {
 	_data              []WheelSelectConfig
-	_dataIndexID       map[float64]WheelSelectConfig
 	_dataFunctionHudID map[float64]WheelSelectConfig
+	_dataIndexID       map[float64]WheelSelectConfig
 }
 
 // LoadData retrieves the data. Must be called before WheelSelectConfig.GroupData
@@ -40,7 +40,6 @@ func (a *WheelSelectConfigAccessor) Raw() ([]WheelSelectConfig, error) {
 		if err != nil {
 			return []WheelSelectConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *WheelSelectConfigAccessor) Raw() ([]WheelSelectConfig, error) {
 // Can be called manually in conjunction with WheelSelectConfigAccessor.LoadData to preload everything
 func (a *WheelSelectConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataIndexID[d.IndexID] = d
 		a._dataFunctionHudID[d.FunctionHudID] = d
+		a._dataIndexID[d.IndexID] = d
 	}
-}
-
-// ByIndexID returns the WheelSelectConfig uniquely identified by IndexID
-//
-// Error is only non-nil if the source errors out
-func (a *WheelSelectConfigAccessor) ByIndexID(identifier float64) (WheelSelectConfig, error) {
-	if a._dataIndexID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return WheelSelectConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataIndexID[identifier], nil
 }
 
 // ByFunctionHudID returns the WheelSelectConfig uniquely identified by FunctionHudID
@@ -73,11 +58,29 @@ func (a *WheelSelectConfigAccessor) ByIndexID(identifier float64) (WheelSelectCo
 // Error is only non-nil if the source errors out
 func (a *WheelSelectConfigAccessor) ByFunctionHudID(identifier float64) (WheelSelectConfig, error) {
 	if a._dataFunctionHudID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return WheelSelectConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return WheelSelectConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataFunctionHudID[identifier], nil
+}
+
+// ByIndexID returns the WheelSelectConfig uniquely identified by IndexID
+//
+// Error is only non-nil if the source errors out
+func (a *WheelSelectConfigAccessor) ByIndexID(identifier float64) (WheelSelectConfig, error) {
+	if a._dataIndexID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return WheelSelectConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIndexID[identifier], nil
 }

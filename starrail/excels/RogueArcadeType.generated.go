@@ -42,7 +42,6 @@ func (a *RogueArcadeTypeAccessor) Raw() ([]RogueArcadeType, error) {
 		if err != nil {
 			return []RogueArcadeType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *RogueArcadeTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueArcadeTypeAccessor) ByArcadeID(identifier float64) (RogueArcadeType, error) {
 	if a._dataArcadeID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueArcadeType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueArcadeType{}, err
+			}
 		}
 		a.GroupData()
 	}

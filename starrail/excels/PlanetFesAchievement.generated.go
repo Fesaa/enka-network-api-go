@@ -37,7 +37,6 @@ func (a *PlanetFesAchievementAccessor) Raw() ([]PlanetFesAchievement, error) {
 		if err != nil {
 			return []PlanetFesAchievement{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *PlanetFesAchievementAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAchievementAccessor) ByID(identifier float64) (PlanetFesAchievement, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAchievement{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAchievement{}, err
+			}
 		}
 		a.GroupData()
 	}

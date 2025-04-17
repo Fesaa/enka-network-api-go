@@ -37,7 +37,6 @@ func (a *MissionSubTypeAccessor) Raw() ([]MissionSubType, error) {
 		if err != nil {
 			return []MissionSubType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,9 +54,11 @@ func (a *MissionSubTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MissionSubTypeAccessor) ByTypePriority(identifier float64) (MissionSubType, error) {
 	if a._dataTypePriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MissionSubType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MissionSubType{}, err
+			}
 		}
 		a.GroupData()
 	}

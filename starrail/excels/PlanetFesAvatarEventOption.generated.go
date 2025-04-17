@@ -42,7 +42,6 @@ func (a *PlanetFesAvatarEventOptionAccessor) Raw() ([]PlanetFesAvatarEventOption
 		if err != nil {
 			return []PlanetFesAvatarEventOption{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *PlanetFesAvatarEventOptionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAvatarEventOptionAccessor) ByEventOptionID(identifier float64) (PlanetFesAvatarEventOption, error) {
 	if a._dataEventOptionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAvatarEventOption{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAvatarEventOption{}, err
+			}
 		}
 		a.GroupData()
 	}

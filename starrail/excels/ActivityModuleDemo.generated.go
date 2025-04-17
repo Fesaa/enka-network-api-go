@@ -39,7 +39,6 @@ func (a *ActivityModuleDemoAccessor) Raw() ([]ActivityModuleDemo, error) {
 		if err != nil {
 			return []ActivityModuleDemo{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ActivityModuleDemoAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityModuleDemoAccessor) ByAvatarDemoStageID(identifier float64) (ActivityModuleDemo, error) {
 	if a._dataAvatarDemoStageID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityModuleDemo{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityModuleDemo{}, err
+			}
 		}
 		a.GroupData()
 	}

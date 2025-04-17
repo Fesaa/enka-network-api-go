@@ -28,13 +28,13 @@ type MusicRhythmSong struct {
 }
 type MusicRhythmSongAccessor struct {
 	_data                   []MusicRhythmSong
-	_dataUnlockTypeParam    map[float64]MusicRhythmSong
-	_dataID                 map[float64]MusicRhythmSong
-	_dataPresetEndGrid      map[float64]MusicRhythmSong
-	_dataGridTransitionTime map[float64]MusicRhythmSong
 	_dataBGMMenuState       map[string]MusicRhythmSong
 	_dataBGMStageState      map[string]MusicRhythmSong
+	_dataGridTransitionTime map[float64]MusicRhythmSong
+	_dataID                 map[float64]MusicRhythmSong
 	_dataMixingWaveMatPath  map[string]MusicRhythmSong
+	_dataPresetEndGrid      map[float64]MusicRhythmSong
+	_dataUnlockTypeParam    map[float64]MusicRhythmSong
 }
 
 // LoadData retrieves the data. Must be called before MusicRhythmSong.GroupData
@@ -58,7 +58,6 @@ func (a *MusicRhythmSongAccessor) Raw() ([]MusicRhythmSong, error) {
 		if err != nil {
 			return []MusicRhythmSong{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -67,70 +66,14 @@ func (a *MusicRhythmSongAccessor) Raw() ([]MusicRhythmSong, error) {
 // Can be called manually in conjunction with MusicRhythmSongAccessor.LoadData to preload everything
 func (a *MusicRhythmSongAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUnlockTypeParam[d.UnlockTypeParam] = d
-		a._dataID[d.ID] = d
-		a._dataPresetEndGrid[d.PresetEndGrid] = d
-		a._dataGridTransitionTime[d.GridTransitionTime] = d
 		a._dataBGMMenuState[d.BGMMenuState] = d
 		a._dataBGMStageState[d.BGMStageState] = d
+		a._dataGridTransitionTime[d.GridTransitionTime] = d
+		a._dataID[d.ID] = d
 		a._dataMixingWaveMatPath[d.MixingWaveMatPath] = d
+		a._dataPresetEndGrid[d.PresetEndGrid] = d
+		a._dataUnlockTypeParam[d.UnlockTypeParam] = d
 	}
-}
-
-// ByUnlockTypeParam returns the MusicRhythmSong uniquely identified by UnlockTypeParam
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmSongAccessor) ByUnlockTypeParam(identifier float64) (MusicRhythmSong, error) {
-	if a._dataUnlockTypeParam == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmSong{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUnlockTypeParam[identifier], nil
-}
-
-// ByID returns the MusicRhythmSong uniquely identified by ID
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmSongAccessor) ByID(identifier float64) (MusicRhythmSong, error) {
-	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmSong{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataID[identifier], nil
-}
-
-// ByPresetEndGrid returns the MusicRhythmSong uniquely identified by PresetEndGrid
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmSongAccessor) ByPresetEndGrid(identifier float64) (MusicRhythmSong, error) {
-	if a._dataPresetEndGrid == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmSong{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPresetEndGrid[identifier], nil
-}
-
-// ByGridTransitionTime returns the MusicRhythmSong uniquely identified by GridTransitionTime
-//
-// Error is only non-nil if the source errors out
-func (a *MusicRhythmSongAccessor) ByGridTransitionTime(identifier float64) (MusicRhythmSong, error) {
-	if a._dataGridTransitionTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmSong{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataGridTransitionTime[identifier], nil
 }
 
 // ByBGMMenuState returns the MusicRhythmSong uniquely identified by BGMMenuState
@@ -138,9 +81,11 @@ func (a *MusicRhythmSongAccessor) ByGridTransitionTime(identifier float64) (Musi
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmSongAccessor) ByBGMMenuState(identifier string) (MusicRhythmSong, error) {
 	if a._dataBGMMenuState == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmSong{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmSong{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -152,13 +97,47 @@ func (a *MusicRhythmSongAccessor) ByBGMMenuState(identifier string) (MusicRhythm
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmSongAccessor) ByBGMStageState(identifier string) (MusicRhythmSong, error) {
 	if a._dataBGMStageState == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmSong{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmSong{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataBGMStageState[identifier], nil
+}
+
+// ByGridTransitionTime returns the MusicRhythmSong uniquely identified by GridTransitionTime
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmSongAccessor) ByGridTransitionTime(identifier float64) (MusicRhythmSong, error) {
+	if a._dataGridTransitionTime == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmSong{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataGridTransitionTime[identifier], nil
+}
+
+// ByID returns the MusicRhythmSong uniquely identified by ID
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmSongAccessor) ByID(identifier float64) (MusicRhythmSong, error) {
+	if a._dataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmSong{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataID[identifier], nil
 }
 
 // ByMixingWaveMatPath returns the MusicRhythmSong uniquely identified by MixingWaveMatPath
@@ -166,11 +145,45 @@ func (a *MusicRhythmSongAccessor) ByBGMStageState(identifier string) (MusicRhyth
 // Error is only non-nil if the source errors out
 func (a *MusicRhythmSongAccessor) ByMixingWaveMatPath(identifier string) (MusicRhythmSong, error) {
 	if a._dataMixingWaveMatPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MusicRhythmSong{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmSong{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataMixingWaveMatPath[identifier], nil
+}
+
+// ByPresetEndGrid returns the MusicRhythmSong uniquely identified by PresetEndGrid
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmSongAccessor) ByPresetEndGrid(identifier float64) (MusicRhythmSong, error) {
+	if a._dataPresetEndGrid == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmSong{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPresetEndGrid[identifier], nil
+}
+
+// ByUnlockTypeParam returns the MusicRhythmSong uniquely identified by UnlockTypeParam
+//
+// Error is only non-nil if the source errors out
+func (a *MusicRhythmSongAccessor) ByUnlockTypeParam(identifier float64) (MusicRhythmSong, error) {
+	if a._dataUnlockTypeParam == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MusicRhythmSong{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUnlockTypeParam[identifier], nil
 }

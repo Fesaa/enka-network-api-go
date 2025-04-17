@@ -45,7 +45,6 @@ func (a *VoiceAtlasAccessor) Raw() ([]VoiceAtlas, error) {
 		if err != nil {
 			return []VoiceAtlas{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }

@@ -14,9 +14,9 @@ type ScheduleDataDropLimit struct {
 }
 type ScheduleDataDropLimitAccessor struct {
 	_data          []ScheduleDataDropLimit
+	_dataBeginTime map[string]ScheduleDataDropLimit
 	_dataEndTime   map[string]ScheduleDataDropLimit
 	_dataID        map[float64]ScheduleDataDropLimit
-	_dataBeginTime map[string]ScheduleDataDropLimit
 }
 
 // LoadData retrieves the data. Must be called before ScheduleDataDropLimit.GroupData
@@ -40,7 +40,6 @@ func (a *ScheduleDataDropLimitAccessor) Raw() ([]ScheduleDataDropLimit, error) {
 		if err != nil {
 			return []ScheduleDataDropLimit{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,10 +48,26 @@ func (a *ScheduleDataDropLimitAccessor) Raw() ([]ScheduleDataDropLimit, error) {
 // Can be called manually in conjunction with ScheduleDataDropLimitAccessor.LoadData to preload everything
 func (a *ScheduleDataDropLimitAccessor) GroupData() {
 	for _, d := range a._data {
+		a._dataBeginTime[d.BeginTime] = d
 		a._dataEndTime[d.EndTime] = d
 		a._dataID[d.ID] = d
-		a._dataBeginTime[d.BeginTime] = d
 	}
+}
+
+// ByBeginTime returns the ScheduleDataDropLimit uniquely identified by BeginTime
+//
+// Error is only non-nil if the source errors out
+func (a *ScheduleDataDropLimitAccessor) ByBeginTime(identifier string) (ScheduleDataDropLimit, error) {
+	if a._dataBeginTime == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataDropLimit{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataBeginTime[identifier], nil
 }
 
 // ByEndTime returns the ScheduleDataDropLimit uniquely identified by EndTime
@@ -60,9 +75,11 @@ func (a *ScheduleDataDropLimitAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataDropLimitAccessor) ByEndTime(identifier string) (ScheduleDataDropLimit, error) {
 	if a._dataEndTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataDropLimit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataDropLimit{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,25 +91,13 @@ func (a *ScheduleDataDropLimitAccessor) ByEndTime(identifier string) (ScheduleDa
 // Error is only non-nil if the source errors out
 func (a *ScheduleDataDropLimitAccessor) ByID(identifier float64) (ScheduleDataDropLimit, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataDropLimit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ScheduleDataDropLimit{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
-}
-
-// ByBeginTime returns the ScheduleDataDropLimit uniquely identified by BeginTime
-//
-// Error is only non-nil if the source errors out
-func (a *ScheduleDataDropLimitAccessor) ByBeginTime(identifier string) (ScheduleDataDropLimit, error) {
-	if a._dataBeginTime == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ScheduleDataDropLimit{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataBeginTime[identifier], nil
 }

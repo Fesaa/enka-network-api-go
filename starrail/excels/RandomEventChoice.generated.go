@@ -42,7 +42,6 @@ func (a *RandomEventChoiceAccessor) Raw() ([]RandomEventChoice, error) {
 		if err != nil {
 			return []RandomEventChoice{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *RandomEventChoiceAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RandomEventChoiceAccessor) ByChoiceID(identifier float64) (RandomEventChoice, error) {
 	if a._dataChoiceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RandomEventChoice{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RandomEventChoice{}, err
+			}
 		}
 		a.GroupData()
 	}

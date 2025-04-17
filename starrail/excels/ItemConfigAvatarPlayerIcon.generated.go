@@ -27,8 +27,8 @@ type ItemConfigAvatarPlayerIcon struct {
 }
 type ItemConfigAvatarPlayerIconAccessor struct {
 	_data             []ItemConfigAvatarPlayerIcon
-	_dataItemIconPath map[string]ItemConfigAvatarPlayerIcon
 	_dataID           map[float64]ItemConfigAvatarPlayerIcon
+	_dataItemIconPath map[string]ItemConfigAvatarPlayerIcon
 }
 
 // LoadData retrieves the data. Must be called before ItemConfigAvatarPlayerIcon.GroupData
@@ -52,7 +52,6 @@ func (a *ItemConfigAvatarPlayerIconAccessor) Raw() ([]ItemConfigAvatarPlayerIcon
 		if err != nil {
 			return []ItemConfigAvatarPlayerIcon{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -61,23 +60,9 @@ func (a *ItemConfigAvatarPlayerIconAccessor) Raw() ([]ItemConfigAvatarPlayerIcon
 // Can be called manually in conjunction with ItemConfigAvatarPlayerIconAccessor.LoadData to preload everything
 func (a *ItemConfigAvatarPlayerIconAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataItemIconPath[d.ItemIconPath] = d
 		a._dataID[d.ID] = d
+		a._dataItemIconPath[d.ItemIconPath] = d
 	}
-}
-
-// ByItemIconPath returns the ItemConfigAvatarPlayerIcon uniquely identified by ItemIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *ItemConfigAvatarPlayerIconAccessor) ByItemIconPath(identifier string) (ItemConfigAvatarPlayerIcon, error) {
-	if a._dataItemIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarPlayerIcon{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataItemIconPath[identifier], nil
 }
 
 // ByID returns the ItemConfigAvatarPlayerIcon uniquely identified by ID
@@ -85,11 +70,29 @@ func (a *ItemConfigAvatarPlayerIconAccessor) ByItemIconPath(identifier string) (
 // Error is only non-nil if the source errors out
 func (a *ItemConfigAvatarPlayerIconAccessor) ByID(identifier float64) (ItemConfigAvatarPlayerIcon, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ItemConfigAvatarPlayerIcon{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarPlayerIcon{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByItemIconPath returns the ItemConfigAvatarPlayerIcon uniquely identified by ItemIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *ItemConfigAvatarPlayerIconAccessor) ByItemIconPath(identifier string) (ItemConfigAvatarPlayerIcon, error) {
+	if a._dataItemIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ItemConfigAvatarPlayerIcon{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataItemIconPath[identifier], nil
 }

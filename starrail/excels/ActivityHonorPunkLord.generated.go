@@ -40,7 +40,6 @@ func (a *ActivityHonorPunkLordAccessor) Raw() ([]ActivityHonorPunkLord, error) {
 		if err != nil {
 			return []ActivityHonorPunkLord{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *ActivityHonorPunkLordAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ActivityHonorPunkLordAccessor) ByDisplayPriority(identifier float64) (ActivityHonorPunkLord, error) {
 	if a._dataDisplayPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityHonorPunkLord{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityHonorPunkLord{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *ActivityHonorPunkLordAccessor) ByDisplayPriority(identifier float64) (A
 // Error is only non-nil if the source errors out
 func (a *ActivityHonorPunkLordAccessor) ByHonorID(identifier float64) (ActivityHonorPunkLord, error) {
 	if a._dataHonorID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityHonorPunkLord{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityHonorPunkLord{}, err
+			}
 		}
 		a.GroupData()
 	}

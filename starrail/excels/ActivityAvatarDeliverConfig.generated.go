@@ -17,8 +17,8 @@ type ActivityAvatarDeliverConfig struct {
 }
 type ActivityAvatarDeliverConfigAccessor struct {
 	_data         []ActivityAvatarDeliverConfig
-	_dataSort     map[float64]ActivityAvatarDeliverConfig
 	_dataAvatarID map[float64]ActivityAvatarDeliverConfig
+	_dataSort     map[float64]ActivityAvatarDeliverConfig
 }
 
 // LoadData retrieves the data. Must be called before ActivityAvatarDeliverConfig.GroupData
@@ -42,7 +42,6 @@ func (a *ActivityAvatarDeliverConfigAccessor) Raw() ([]ActivityAvatarDeliverConf
 		if err != nil {
 			return []ActivityAvatarDeliverConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,23 +50,9 @@ func (a *ActivityAvatarDeliverConfigAccessor) Raw() ([]ActivityAvatarDeliverConf
 // Can be called manually in conjunction with ActivityAvatarDeliverConfigAccessor.LoadData to preload everything
 func (a *ActivityAvatarDeliverConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataSort[d.Sort] = d
 		a._dataAvatarID[d.AvatarID] = d
+		a._dataSort[d.Sort] = d
 	}
-}
-
-// BySort returns the ActivityAvatarDeliverConfig uniquely identified by Sort
-//
-// Error is only non-nil if the source errors out
-func (a *ActivityAvatarDeliverConfigAccessor) BySort(identifier float64) (ActivityAvatarDeliverConfig, error) {
-	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityAvatarDeliverConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataSort[identifier], nil
 }
 
 // ByAvatarID returns the ActivityAvatarDeliverConfig uniquely identified by AvatarID
@@ -75,11 +60,29 @@ func (a *ActivityAvatarDeliverConfigAccessor) BySort(identifier float64) (Activi
 // Error is only non-nil if the source errors out
 func (a *ActivityAvatarDeliverConfigAccessor) ByAvatarID(identifier float64) (ActivityAvatarDeliverConfig, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ActivityAvatarDeliverConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityAvatarDeliverConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarID[identifier], nil
+}
+
+// BySort returns the ActivityAvatarDeliverConfig uniquely identified by Sort
+//
+// Error is only non-nil if the source errors out
+func (a *ActivityAvatarDeliverConfigAccessor) BySort(identifier float64) (ActivityAvatarDeliverConfig, error) {
+	if a._dataSort == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ActivityAvatarDeliverConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSort[identifier], nil
 }

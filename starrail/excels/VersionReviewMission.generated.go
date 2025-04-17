@@ -15,8 +15,8 @@ type VersionReviewMission struct {
 }
 type VersionReviewMissionAccessor struct {
 	_data                     []VersionReviewMission
-	_dataReviewMainMissionID  map[float64]VersionReviewMission
 	_dataPreMainMissionID     map[float64]VersionReviewMission
+	_dataReviewMainMissionID  map[float64]VersionReviewMission
 	_dataStoryPerformanceID   map[float64]VersionReviewMission
 	_dataStoryStartEntranceID map[float64]VersionReviewMission
 }
@@ -42,7 +42,6 @@ func (a *VersionReviewMissionAccessor) Raw() ([]VersionReviewMission, error) {
 		if err != nil {
 			return []VersionReviewMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -51,25 +50,11 @@ func (a *VersionReviewMissionAccessor) Raw() ([]VersionReviewMission, error) {
 // Can be called manually in conjunction with VersionReviewMissionAccessor.LoadData to preload everything
 func (a *VersionReviewMissionAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataReviewMainMissionID[d.ReviewMainMissionID] = d
 		a._dataPreMainMissionID[d.PreMainMissionID] = d
+		a._dataReviewMainMissionID[d.ReviewMainMissionID] = d
 		a._dataStoryPerformanceID[d.StoryPerformanceID] = d
 		a._dataStoryStartEntranceID[d.StoryStartEntranceID] = d
 	}
-}
-
-// ByReviewMainMissionID returns the VersionReviewMission uniquely identified by ReviewMainMissionID
-//
-// Error is only non-nil if the source errors out
-func (a *VersionReviewMissionAccessor) ByReviewMainMissionID(identifier float64) (VersionReviewMission, error) {
-	if a._dataReviewMainMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return VersionReviewMission{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataReviewMainMissionID[identifier], nil
 }
 
 // ByPreMainMissionID returns the VersionReviewMission uniquely identified by PreMainMissionID
@@ -77,13 +62,31 @@ func (a *VersionReviewMissionAccessor) ByReviewMainMissionID(identifier float64)
 // Error is only non-nil if the source errors out
 func (a *VersionReviewMissionAccessor) ByPreMainMissionID(identifier float64) (VersionReviewMission, error) {
 	if a._dataPreMainMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return VersionReviewMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return VersionReviewMission{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPreMainMissionID[identifier], nil
+}
+
+// ByReviewMainMissionID returns the VersionReviewMission uniquely identified by ReviewMainMissionID
+//
+// Error is only non-nil if the source errors out
+func (a *VersionReviewMissionAccessor) ByReviewMainMissionID(identifier float64) (VersionReviewMission, error) {
+	if a._dataReviewMainMissionID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return VersionReviewMission{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataReviewMainMissionID[identifier], nil
 }
 
 // ByStoryPerformanceID returns the VersionReviewMission uniquely identified by StoryPerformanceID
@@ -91,9 +94,11 @@ func (a *VersionReviewMissionAccessor) ByPreMainMissionID(identifier float64) (V
 // Error is only non-nil if the source errors out
 func (a *VersionReviewMissionAccessor) ByStoryPerformanceID(identifier float64) (VersionReviewMission, error) {
 	if a._dataStoryPerformanceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return VersionReviewMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return VersionReviewMission{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -105,9 +110,11 @@ func (a *VersionReviewMissionAccessor) ByStoryPerformanceID(identifier float64) 
 // Error is only non-nil if the source errors out
 func (a *VersionReviewMissionAccessor) ByStoryStartEntranceID(identifier float64) (VersionReviewMission, error) {
 	if a._dataStoryStartEntranceID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return VersionReviewMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return VersionReviewMission{}, err
+			}
 		}
 		a.GroupData()
 	}

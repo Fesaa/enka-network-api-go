@@ -23,10 +23,10 @@ type RogueNousSubStory struct {
 }
 type RogueNousSubStoryAccessor struct {
 	_data               []RogueNousSubStory
-	_dataTalkNameID     map[float64]RogueNousSubStory
+	_dataLevelGraphPath map[string]RogueNousSubStory
 	_dataQuestID        map[float64]RogueNousSubStory
 	_dataStoryID        map[float64]RogueNousSubStory
-	_dataLevelGraphPath map[string]RogueNousSubStory
+	_dataTalkNameID     map[float64]RogueNousSubStory
 }
 
 // LoadData retrieves the data. Must be called before RogueNousSubStory.GroupData
@@ -50,7 +50,6 @@ func (a *RogueNousSubStoryAccessor) Raw() ([]RogueNousSubStory, error) {
 		if err != nil {
 			return []RogueNousSubStory{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,25 +58,27 @@ func (a *RogueNousSubStoryAccessor) Raw() ([]RogueNousSubStory, error) {
 // Can be called manually in conjunction with RogueNousSubStoryAccessor.LoadData to preload everything
 func (a *RogueNousSubStoryAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataTalkNameID[d.TalkNameID] = d
+		a._dataLevelGraphPath[d.LevelGraphPath] = d
 		a._dataQuestID[d.QuestID] = d
 		a._dataStoryID[d.StoryID] = d
-		a._dataLevelGraphPath[d.LevelGraphPath] = d
+		a._dataTalkNameID[d.TalkNameID] = d
 	}
 }
 
-// ByTalkNameID returns the RogueNousSubStory uniquely identified by TalkNameID
+// ByLevelGraphPath returns the RogueNousSubStory uniquely identified by LevelGraphPath
 //
 // Error is only non-nil if the source errors out
-func (a *RogueNousSubStoryAccessor) ByTalkNameID(identifier float64) (RogueNousSubStory, error) {
-	if a._dataTalkNameID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousSubStory{}, err
+func (a *RogueNousSubStoryAccessor) ByLevelGraphPath(identifier string) (RogueNousSubStory, error) {
+	if a._dataLevelGraphPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousSubStory{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataTalkNameID[identifier], nil
+	return a._dataLevelGraphPath[identifier], nil
 }
 
 // ByQuestID returns the RogueNousSubStory uniquely identified by QuestID
@@ -85,9 +86,11 @@ func (a *RogueNousSubStoryAccessor) ByTalkNameID(identifier float64) (RogueNousS
 // Error is only non-nil if the source errors out
 func (a *RogueNousSubStoryAccessor) ByQuestID(identifier float64) (RogueNousSubStory, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousSubStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousSubStory{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -99,25 +102,29 @@ func (a *RogueNousSubStoryAccessor) ByQuestID(identifier float64) (RogueNousSubS
 // Error is only non-nil if the source errors out
 func (a *RogueNousSubStoryAccessor) ByStoryID(identifier float64) (RogueNousSubStory, error) {
 	if a._dataStoryID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousSubStory{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousSubStory{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataStoryID[identifier], nil
 }
 
-// ByLevelGraphPath returns the RogueNousSubStory uniquely identified by LevelGraphPath
+// ByTalkNameID returns the RogueNousSubStory uniquely identified by TalkNameID
 //
 // Error is only non-nil if the source errors out
-func (a *RogueNousSubStoryAccessor) ByLevelGraphPath(identifier string) (RogueNousSubStory, error) {
-	if a._dataLevelGraphPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueNousSubStory{}, err
+func (a *RogueNousSubStoryAccessor) ByTalkNameID(identifier float64) (RogueNousSubStory, error) {
+	if a._dataTalkNameID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueNousSubStory{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataLevelGraphPath[identifier], nil
+	return a._dataTalkNameID[identifier], nil
 }

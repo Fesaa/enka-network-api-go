@@ -24,12 +24,12 @@ type TarotBookCharacter struct {
 }
 type TarotBookCharacterAccessor struct {
 	_data              []TarotBookCharacter
-	_dataRectIconPath  map[string]TarotBookCharacter
-	_dataPrefabPath    map[string]TarotBookCharacter
-	_dataPosition      map[float64]TarotBookCharacter
 	_dataID            map[float64]TarotBookCharacter
-	_dataTabIconPath   map[string]TarotBookCharacter
+	_dataPosition      map[float64]TarotBookCharacter
+	_dataPrefabPath    map[string]TarotBookCharacter
+	_dataRectIconPath  map[string]TarotBookCharacter
 	_dataRoundIconPath map[string]TarotBookCharacter
+	_dataTabIconPath   map[string]TarotBookCharacter
 }
 
 // LoadData retrieves the data. Must be called before TarotBookCharacter.GroupData
@@ -53,7 +53,6 @@ func (a *TarotBookCharacterAccessor) Raw() ([]TarotBookCharacter, error) {
 		if err != nil {
 			return []TarotBookCharacter{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -62,55 +61,13 @@ func (a *TarotBookCharacterAccessor) Raw() ([]TarotBookCharacter, error) {
 // Can be called manually in conjunction with TarotBookCharacterAccessor.LoadData to preload everything
 func (a *TarotBookCharacterAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataRectIconPath[d.RectIconPath] = d
-		a._dataPrefabPath[d.PrefabPath] = d
-		a._dataPosition[d.Position] = d
 		a._dataID[d.ID] = d
-		a._dataTabIconPath[d.TabIconPath] = d
+		a._dataPosition[d.Position] = d
+		a._dataPrefabPath[d.PrefabPath] = d
+		a._dataRectIconPath[d.RectIconPath] = d
 		a._dataRoundIconPath[d.RoundIconPath] = d
+		a._dataTabIconPath[d.TabIconPath] = d
 	}
-}
-
-// ByRectIconPath returns the TarotBookCharacter uniquely identified by RectIconPath
-//
-// Error is only non-nil if the source errors out
-func (a *TarotBookCharacterAccessor) ByRectIconPath(identifier string) (TarotBookCharacter, error) {
-	if a._dataRectIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookCharacter{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataRectIconPath[identifier], nil
-}
-
-// ByPrefabPath returns the TarotBookCharacter uniquely identified by PrefabPath
-//
-// Error is only non-nil if the source errors out
-func (a *TarotBookCharacterAccessor) ByPrefabPath(identifier string) (TarotBookCharacter, error) {
-	if a._dataPrefabPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookCharacter{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPrefabPath[identifier], nil
-}
-
-// ByPosition returns the TarotBookCharacter uniquely identified by Position
-//
-// Error is only non-nil if the source errors out
-func (a *TarotBookCharacterAccessor) ByPosition(identifier float64) (TarotBookCharacter, error) {
-	if a._dataPosition == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookCharacter{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPosition[identifier], nil
 }
 
 // ByID returns the TarotBookCharacter uniquely identified by ID
@@ -118,27 +75,63 @@ func (a *TarotBookCharacterAccessor) ByPosition(identifier float64) (TarotBookCh
 // Error is only non-nil if the source errors out
 func (a *TarotBookCharacterAccessor) ByID(identifier float64) (TarotBookCharacter, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookCharacter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookCharacter{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
 }
 
-// ByTabIconPath returns the TarotBookCharacter uniquely identified by TabIconPath
+// ByPosition returns the TarotBookCharacter uniquely identified by Position
 //
 // Error is only non-nil if the source errors out
-func (a *TarotBookCharacterAccessor) ByTabIconPath(identifier string) (TarotBookCharacter, error) {
-	if a._dataTabIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookCharacter{}, err
+func (a *TarotBookCharacterAccessor) ByPosition(identifier float64) (TarotBookCharacter, error) {
+	if a._dataPosition == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookCharacter{}, err
+			}
 		}
 		a.GroupData()
 	}
-	return a._dataTabIconPath[identifier], nil
+	return a._dataPosition[identifier], nil
+}
+
+// ByPrefabPath returns the TarotBookCharacter uniquely identified by PrefabPath
+//
+// Error is only non-nil if the source errors out
+func (a *TarotBookCharacterAccessor) ByPrefabPath(identifier string) (TarotBookCharacter, error) {
+	if a._dataPrefabPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookCharacter{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPrefabPath[identifier], nil
+}
+
+// ByRectIconPath returns the TarotBookCharacter uniquely identified by RectIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *TarotBookCharacterAccessor) ByRectIconPath(identifier string) (TarotBookCharacter, error) {
+	if a._dataRectIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookCharacter{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRectIconPath[identifier], nil
 }
 
 // ByRoundIconPath returns the TarotBookCharacter uniquely identified by RoundIconPath
@@ -146,11 +139,29 @@ func (a *TarotBookCharacterAccessor) ByTabIconPath(identifier string) (TarotBook
 // Error is only non-nil if the source errors out
 func (a *TarotBookCharacterAccessor) ByRoundIconPath(identifier string) (TarotBookCharacter, error) {
 	if a._dataRoundIconPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return TarotBookCharacter{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookCharacter{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataRoundIconPath[identifier], nil
+}
+
+// ByTabIconPath returns the TarotBookCharacter uniquely identified by TabIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *TarotBookCharacterAccessor) ByTabIconPath(identifier string) (TarotBookCharacter, error) {
+	if a._dataTabIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return TarotBookCharacter{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataTabIconPath[identifier], nil
 }

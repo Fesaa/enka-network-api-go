@@ -38,7 +38,6 @@ func (a *ResourceDeletionVPListAccessor) Raw() ([]ResourceDeletionVPList, error)
 		if err != nil {
 			return []ResourceDeletionVPList{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *ResourceDeletionVPListAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *ResourceDeletionVPListAccessor) ByID(identifier float64) (ResourceDeletionVPList, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ResourceDeletionVPList{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ResourceDeletionVPList{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -71,9 +72,11 @@ func (a *ResourceDeletionVPListAccessor) ByID(identifier float64) (ResourceDelet
 // Error is only non-nil if the source errors out
 func (a *ResourceDeletionVPListAccessor) ByPath(identifier string) (ResourceDeletionVPList, error) {
 	if a._dataPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return ResourceDeletionVPList{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return ResourceDeletionVPList{}, err
+			}
 		}
 		a.GroupData()
 	}

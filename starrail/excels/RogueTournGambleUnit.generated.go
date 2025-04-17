@@ -40,7 +40,6 @@ func (a *RogueTournGambleUnitAccessor) Raw() ([]RogueTournGambleUnit, error) {
 		if err != nil {
 			return []RogueTournGambleUnit{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RogueTournGambleUnitAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournGambleUnitAccessor) ByGambleUnitID(identifier float64) (RogueTournGambleUnit, error) {
 	if a._dataGambleUnitID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournGambleUnit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournGambleUnit{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -73,9 +74,11 @@ func (a *RogueTournGambleUnitAccessor) ByGambleUnitID(identifier float64) (Rogue
 // Error is only non-nil if the source errors out
 func (a *RogueTournGambleUnitAccessor) ByGambleUnitParam(identifier float64) (RogueTournGambleUnit, error) {
 	if a._dataGambleUnitParam == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournGambleUnit{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournGambleUnit{}, err
+			}
 		}
 		a.GroupData()
 	}

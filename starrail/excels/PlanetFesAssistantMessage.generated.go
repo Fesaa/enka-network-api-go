@@ -21,8 +21,8 @@ type PlanetFesAssistantMessage struct {
 }
 type PlanetFesAssistantMessageAccessor struct {
 	_data         []PlanetFesAssistantMessage
-	_dataPriority map[float64]PlanetFesAssistantMessage
 	_dataID       map[float64]PlanetFesAssistantMessage
+	_dataPriority map[float64]PlanetFesAssistantMessage
 }
 
 // LoadData retrieves the data. Must be called before PlanetFesAssistantMessage.GroupData
@@ -46,7 +46,6 @@ func (a *PlanetFesAssistantMessageAccessor) Raw() ([]PlanetFesAssistantMessage, 
 		if err != nil {
 			return []PlanetFesAssistantMessage{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -55,23 +54,9 @@ func (a *PlanetFesAssistantMessageAccessor) Raw() ([]PlanetFesAssistantMessage, 
 // Can be called manually in conjunction with PlanetFesAssistantMessageAccessor.LoadData to preload everything
 func (a *PlanetFesAssistantMessageAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataPriority[d.Priority] = d
 		a._dataID[d.ID] = d
+		a._dataPriority[d.Priority] = d
 	}
-}
-
-// ByPriority returns the PlanetFesAssistantMessage uniquely identified by Priority
-//
-// Error is only non-nil if the source errors out
-func (a *PlanetFesAssistantMessageAccessor) ByPriority(identifier float64) (PlanetFesAssistantMessage, error) {
-	if a._dataPriority == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAssistantMessage{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPriority[identifier], nil
 }
 
 // ByID returns the PlanetFesAssistantMessage uniquely identified by ID
@@ -79,11 +64,29 @@ func (a *PlanetFesAssistantMessageAccessor) ByPriority(identifier float64) (Plan
 // Error is only non-nil if the source errors out
 func (a *PlanetFesAssistantMessageAccessor) ByID(identifier float64) (PlanetFesAssistantMessage, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return PlanetFesAssistantMessage{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAssistantMessage{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
+}
+
+// ByPriority returns the PlanetFesAssistantMessage uniquely identified by Priority
+//
+// Error is only non-nil if the source errors out
+func (a *PlanetFesAssistantMessageAccessor) ByPriority(identifier float64) (PlanetFesAssistantMessage, error) {
+	if a._dataPriority == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return PlanetFesAssistantMessage{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPriority[identifier], nil
 }

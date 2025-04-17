@@ -41,7 +41,6 @@ func (a *RogueHandBookEventTypeAccessor) Raw() ([]RogueHandBookEventType, error)
 		if err != nil {
 			return []RogueHandBookEventType{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *RogueHandBookEventTypeAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueHandBookEventTypeAccessor) ByRogueHandBookEventType(identifier float64) (RogueHandBookEventType, error) {
 	if a._dataRogueHandBookEventType == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandBookEventType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandBookEventType{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *RogueHandBookEventTypeAccessor) ByRogueHandBookEventType(identifier flo
 // Error is only non-nil if the source errors out
 func (a *RogueHandBookEventTypeAccessor) ByTypeIcon(identifier string) (RogueHandBookEventType, error) {
 	if a._dataTypeIcon == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueHandBookEventType{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueHandBookEventType{}, err
+			}
 		}
 		a.GroupData()
 	}

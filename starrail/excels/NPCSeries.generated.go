@@ -36,7 +36,6 @@ func (a *NPCSeriesAccessor) Raw() ([]NPCSeries, error) {
 		if err != nil {
 			return []NPCSeries{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -54,9 +53,11 @@ func (a *NPCSeriesAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *NPCSeriesAccessor) BySeriesID(identifier float64) (NPCSeries, error) {
 	if a._dataSeriesID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return NPCSeries{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return NPCSeries{}, err
+			}
 		}
 		a.GroupData()
 	}

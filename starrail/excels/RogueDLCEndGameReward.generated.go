@@ -40,7 +40,6 @@ func (a *RogueDLCEndGameRewardAccessor) Raw() ([]RogueDLCEndGameReward, error) {
 		if err != nil {
 			return []RogueDLCEndGameReward{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *RogueDLCEndGameRewardAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueDLCEndGameRewardAccessor) ByEndGameRewardID(identifier float64) (RogueDLCEndGameReward, error) {
 	if a._dataEndGameRewardID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCEndGameReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCEndGameReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -74,9 +75,11 @@ func (a *RogueDLCEndGameRewardAccessor) ByEndGameRewardID(identifier float64) (R
 // Error is only non-nil if the source errors out
 func (a *RogueDLCEndGameRewardAccessor) ByQuestID(identifier float64) (RogueDLCEndGameReward, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCEndGameReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCEndGameReward{}, err
+			}
 		}
 		a.GroupData()
 	}
@@ -88,9 +91,11 @@ func (a *RogueDLCEndGameRewardAccessor) ByQuestID(identifier float64) (RogueDLCE
 // Error is only non-nil if the source errors out
 func (a *RogueDLCEndGameRewardAccessor) BySort(identifier float64) (RogueDLCEndGameReward, error) {
 	if a._dataSort == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueDLCEndGameReward{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueDLCEndGameReward{}, err
+			}
 		}
 		a.GroupData()
 	}

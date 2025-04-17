@@ -39,7 +39,6 @@ func (a *SubMissionAccessor) Raw() ([]SubMission, error) {
 		if err != nil {
 			return []SubMission{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *SubMissionAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *SubMissionAccessor) BySubMissionID(identifier float64) (SubMission, error) {
 	if a._dataSubMissionID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return SubMission{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return SubMission{}, err
+			}
 		}
 		a.GroupData()
 	}

@@ -41,7 +41,6 @@ func (a *RogueTournMiracleDisplayAccessor) Raw() ([]RogueTournMiracleDisplay, er
 		if err != nil {
 			return []RogueTournMiracleDisplay{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *RogueTournMiracleDisplayAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *RogueTournMiracleDisplayAccessor) ByMiracleDisplayID(identifier float64) (RogueTournMiracleDisplay, error) {
 	if a._dataMiracleDisplayID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return RogueTournMiracleDisplay{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournMiracleDisplay{}, err
+			}
 		}
 		a.GroupData()
 	}

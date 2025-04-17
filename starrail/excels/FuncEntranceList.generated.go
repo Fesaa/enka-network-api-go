@@ -42,7 +42,6 @@ func (a *FuncEntranceListAccessor) Raw() ([]FuncEntranceList, error) {
 		if err != nil {
 			return []FuncEntranceList{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -60,9 +59,11 @@ func (a *FuncEntranceListAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *FuncEntranceListAccessor) ByID(identifier float64) (FuncEntranceList, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return FuncEntranceList{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return FuncEntranceList{}, err
+			}
 		}
 		a.GroupData()
 	}

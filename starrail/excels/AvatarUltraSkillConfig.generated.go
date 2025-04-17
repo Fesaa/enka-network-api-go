@@ -16,8 +16,8 @@ type AvatarUltraSkillConfig struct {
 }
 type AvatarUltraSkillConfigAccessor struct {
 	_data                       []AvatarUltraSkillConfig
-	_dataUltraSkillResourcePath map[string]AvatarUltraSkillConfig
 	_dataAvatarID               map[float64]AvatarUltraSkillConfig
+	_dataUltraSkillResourcePath map[string]AvatarUltraSkillConfig
 }
 
 // LoadData retrieves the data. Must be called before AvatarUltraSkillConfig.GroupData
@@ -41,7 +41,6 @@ func (a *AvatarUltraSkillConfigAccessor) Raw() ([]AvatarUltraSkillConfig, error)
 		if err != nil {
 			return []AvatarUltraSkillConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -50,23 +49,9 @@ func (a *AvatarUltraSkillConfigAccessor) Raw() ([]AvatarUltraSkillConfig, error)
 // Can be called manually in conjunction with AvatarUltraSkillConfigAccessor.LoadData to preload everything
 func (a *AvatarUltraSkillConfigAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataUltraSkillResourcePath[d.UltraSkillResourcePath] = d
 		a._dataAvatarID[d.AvatarID] = d
+		a._dataUltraSkillResourcePath[d.UltraSkillResourcePath] = d
 	}
-}
-
-// ByUltraSkillResourcePath returns the AvatarUltraSkillConfig uniquely identified by UltraSkillResourcePath
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarUltraSkillConfigAccessor) ByUltraSkillResourcePath(identifier string) (AvatarUltraSkillConfig, error) {
-	if a._dataUltraSkillResourcePath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarUltraSkillConfig{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataUltraSkillResourcePath[identifier], nil
 }
 
 // ByAvatarID returns the AvatarUltraSkillConfig uniquely identified by AvatarID
@@ -74,11 +59,29 @@ func (a *AvatarUltraSkillConfigAccessor) ByUltraSkillResourcePath(identifier str
 // Error is only non-nil if the source errors out
 func (a *AvatarUltraSkillConfigAccessor) ByAvatarID(identifier float64) (AvatarUltraSkillConfig, error) {
 	if a._dataAvatarID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return AvatarUltraSkillConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarUltraSkillConfig{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataAvatarID[identifier], nil
+}
+
+// ByUltraSkillResourcePath returns the AvatarUltraSkillConfig uniquely identified by UltraSkillResourcePath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarUltraSkillConfigAccessor) ByUltraSkillResourcePath(identifier string) (AvatarUltraSkillConfig, error) {
+	if a._dataUltraSkillResourcePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarUltraSkillConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataUltraSkillResourcePath[identifier], nil
 }

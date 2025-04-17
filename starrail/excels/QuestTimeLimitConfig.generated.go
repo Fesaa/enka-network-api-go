@@ -39,7 +39,6 @@ func (a *QuestTimeLimitConfigAccessor) Raw() ([]QuestTimeLimitConfig, error) {
 		if err != nil {
 			return []QuestTimeLimitConfig{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -57,9 +56,11 @@ func (a *QuestTimeLimitConfigAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *QuestTimeLimitConfigAccessor) ByQuestID(identifier float64) (QuestTimeLimitConfig, error) {
 	if a._dataQuestID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return QuestTimeLimitConfig{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return QuestTimeLimitConfig{}, err
+			}
 		}
 		a.GroupData()
 	}

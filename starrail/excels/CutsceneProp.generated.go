@@ -15,8 +15,8 @@ type CutsceneProp struct {
 }
 type CutscenePropAccessor struct {
 	_data              []CutsceneProp
-	_dataPropModelPath map[string]CutsceneProp
 	_dataPropID        map[string]CutsceneProp
+	_dataPropModelPath map[string]CutsceneProp
 }
 
 // LoadData retrieves the data. Must be called before CutsceneProp.GroupData
@@ -40,7 +40,6 @@ func (a *CutscenePropAccessor) Raw() ([]CutsceneProp, error) {
 		if err != nil {
 			return []CutsceneProp{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -49,23 +48,9 @@ func (a *CutscenePropAccessor) Raw() ([]CutsceneProp, error) {
 // Can be called manually in conjunction with CutscenePropAccessor.LoadData to preload everything
 func (a *CutscenePropAccessor) GroupData() {
 	for _, d := range a._data {
-		a._dataPropModelPath[d.PropModelPath] = d
 		a._dataPropID[d.PropID] = d
+		a._dataPropModelPath[d.PropModelPath] = d
 	}
-}
-
-// ByPropModelPath returns the CutsceneProp uniquely identified by PropModelPath
-//
-// Error is only non-nil if the source errors out
-func (a *CutscenePropAccessor) ByPropModelPath(identifier string) (CutsceneProp, error) {
-	if a._dataPropModelPath == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CutsceneProp{}, err
-		}
-		a.GroupData()
-	}
-	return a._dataPropModelPath[identifier], nil
 }
 
 // ByPropID returns the CutsceneProp uniquely identified by PropID
@@ -73,11 +58,29 @@ func (a *CutscenePropAccessor) ByPropModelPath(identifier string) (CutsceneProp,
 // Error is only non-nil if the source errors out
 func (a *CutscenePropAccessor) ByPropID(identifier string) (CutsceneProp, error) {
 	if a._dataPropID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return CutsceneProp{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CutsceneProp{}, err
+			}
 		}
 		a.GroupData()
 	}
 	return a._dataPropID[identifier], nil
+}
+
+// ByPropModelPath returns the CutsceneProp uniquely identified by PropModelPath
+//
+// Error is only non-nil if the source errors out
+func (a *CutscenePropAccessor) ByPropModelPath(identifier string) (CutsceneProp, error) {
+	if a._dataPropModelPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return CutsceneProp{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataPropModelPath[identifier], nil
 }

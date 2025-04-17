@@ -41,7 +41,6 @@ func (a *MatchThreeTemplateApplyRuleAccessor) Raw() ([]MatchThreeTemplateApplyRu
 		if err != nil {
 			return []MatchThreeTemplateApplyRule{}, err
 		}
-		a.GroupData()
 	}
 	return a._data, nil
 }
@@ -59,9 +58,11 @@ func (a *MatchThreeTemplateApplyRuleAccessor) GroupData() {
 // Error is only non-nil if the source errors out
 func (a *MatchThreeTemplateApplyRuleAccessor) ByID(identifier float64) (MatchThreeTemplateApplyRule, error) {
 	if a._dataID == nil {
-		err := a.LoadData()
-		if err != nil {
-			return MatchThreeTemplateApplyRule{}, err
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return MatchThreeTemplateApplyRule{}, err
+			}
 		}
 		a.GroupData()
 	}
