@@ -12,14 +12,14 @@ type EquipmentSkillConfig struct {
 	AbilityName     string                                `json:"AbilityName"`
 	AbilityProperty []EquipmentSkillConfigAbilityProperty `json:"AbilityProperty"`
 	Level           float64                               `json:"Level"`
-	ParamList       []hash.IntValue                       `json:"ParamList"`
+	ParamList       []hash.Value                          `json:"ParamList"`
 	SkillDesc       hash.Hash                             `json:"SkillDesc"`
 	SkillID         float64                               `json:"SkillID"`
 	SkillName       hash.Hash                             `json:"SkillName"`
 }
 type EquipmentSkillConfigAbilityProperty struct {
-	PropertyType string        `json:"PropertyType"`
-	Value        hash.IntValue `json:"Value"`
+	PropertyType string     `json:"PropertyType"`
+	Value        hash.Value `json:"Value"`
 }
 type EquipmentSkillConfigAccessor struct {
 	_data []EquipmentSkillConfig

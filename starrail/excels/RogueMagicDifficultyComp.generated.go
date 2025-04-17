@@ -9,11 +9,11 @@ import (
 )
 
 type RogueMagicDifficultyComp struct {
-	DifficultyCompID float64         `json:"DifficultyCompID"`
-	DifficultyDesc   hash.Hash       `json:"DifficultyDesc"`
-	Level            float64         `json:"Level"`
-	ParamList        []hash.IntValue `json:"ParamList"`
-	UnlockID         float64         `json:"UnlockID"`
+	DifficultyCompID float64      `json:"DifficultyCompID"`
+	DifficultyDesc   hash.Hash    `json:"DifficultyDesc"`
+	Level            float64      `json:"Level"`
+	ParamList        []hash.Value `json:"ParamList"`
+	UnlockID         float64      `json:"UnlockID"`
 }
 type RogueMagicDifficultyCompAccessor struct {
 	_data                 []RogueMagicDifficultyComp

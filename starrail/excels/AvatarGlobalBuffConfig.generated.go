@@ -9,22 +9,22 @@ import (
 )
 
 type AvatarGlobalBuffConfig struct {
-	AvatarID                   float64         `json:"AvatarID"`
-	Desc                       hash.Hash       `json:"Desc"`
-	ExtraEffectIDList          []float64       `json:"ExtraEffectIDList"`
-	GameModeBlackList          []float64       `json:"GameModeBlackList"`
-	MazeBuffID                 float64         `json:"MazeBuffID"`
-	Name                       hash.Hash       `json:"Name"`
-	ParamList                  []hash.IntValue `json:"ParamList"`
-	SimpleDesc                 hash.Hash       `json:"SimpleDesc"`
-	SimpleExtraEffectIDList    []interface{}   `json:"SimpleExtraEffectIDList"`
-	SimpleParamList            []interface{}   `json:"SimpleParamList"`
-	SkillID                    float64         `json:"SkillID"`
-	SkillTag                   hash.Hash       `json:"SkillTag"`
-	StageTypeBlackList         []float64       `json:"StageTypeBlackList"`
-	TeamBlackList              []float64       `json:"TeamBlackList"`
-	TeamStageTypeBlackList     []float64       `json:"TeamStageTypeBlackList"`
-	TrialBagStageTypeWhiteList []float64       `json:"TrialBagStageTypeWhiteList"`
+	AvatarID                   float64       `json:"AvatarID"`
+	Desc                       hash.Hash     `json:"Desc"`
+	ExtraEffectIDList          []float64     `json:"ExtraEffectIDList"`
+	GameModeBlackList          []float64     `json:"GameModeBlackList"`
+	MazeBuffID                 float64       `json:"MazeBuffID"`
+	Name                       hash.Hash     `json:"Name"`
+	ParamList                  []hash.Value  `json:"ParamList"`
+	SimpleDesc                 hash.Hash     `json:"SimpleDesc"`
+	SimpleExtraEffectIDList    []interface{} `json:"SimpleExtraEffectIDList"`
+	SimpleParamList            []interface{} `json:"SimpleParamList"`
+	SkillID                    float64       `json:"SkillID"`
+	SkillTag                   hash.Hash     `json:"SkillTag"`
+	StageTypeBlackList         []float64     `json:"StageTypeBlackList"`
+	TeamBlackList              []float64     `json:"TeamBlackList"`
+	TeamStageTypeBlackList     []float64     `json:"TeamStageTypeBlackList"`
+	TrialBagStageTypeWhiteList []float64     `json:"TrialBagStageTypeWhiteList"`
 }
 type AvatarGlobalBuffConfigAccessor struct {
 	_data           []AvatarGlobalBuffConfig

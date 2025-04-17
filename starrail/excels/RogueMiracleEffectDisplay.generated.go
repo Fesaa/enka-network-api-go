@@ -9,11 +9,11 @@ import (
 )
 
 type RogueMiracleEffectDisplay struct {
-	DescParamList          []hash.IntValue `json:"DescParamList"`
-	ExtraEffect            []float64       `json:"ExtraEffect"`
-	MiracleDesc            hash.Hash       `json:"MiracleDesc"`
-	MiracleEffectDisplayID float64         `json:"MiracleEffectDisplayID"`
-	MiracleSimpleDesc      hash.Hash       `json:"MiracleSimpleDesc"`
+	DescParamList          []hash.Value `json:"DescParamList"`
+	ExtraEffect            []float64    `json:"ExtraEffect"`
+	MiracleDesc            hash.Hash    `json:"MiracleDesc"`
+	MiracleEffectDisplayID float64      `json:"MiracleEffectDisplayID"`
+	MiracleSimpleDesc      hash.Hash    `json:"MiracleSimpleDesc"`
 }
 type RogueMiracleEffectDisplayAccessor struct {
 	_data                       []RogueMiracleEffectDisplay

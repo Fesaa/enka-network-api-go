@@ -10,15 +10,15 @@ import (
 
 type RelicSetSkillConfig struct {
 	AbilityName      string                            `json:"AbilityName"`
-	AbilityParamList []hash.IntValue                   `json:"AbilityParamList"`
+	AbilityParamList []hash.Value                      `json:"AbilityParamList"`
 	PropertyList     []RelicSetSkillConfigPropertyList `json:"PropertyList"`
 	RequireNum       float64                           `json:"RequireNum"`
 	SetID            float64                           `json:"SetID"`
 	SkillDesc        string                            `json:"SkillDesc"`
 }
 type RelicSetSkillConfigPropertyList struct {
-	LKOEFDPJGKD string        `json:"LKOEFDPJGKD"`
-	MBMDOCJIMEJ hash.IntValue `json:"MBMDOCJIMEJ"`
+	LKOEFDPJGKD string     `json:"LKOEFDPJGKD"`
+	MBMDOCJIMEJ hash.Value `json:"MBMDOCJIMEJ"`
 }
 type RelicSetSkillConfigAccessor struct {
 	_data          []RelicSetSkillConfig

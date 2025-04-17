@@ -9,15 +9,15 @@ import (
 )
 
 type AetherDivideSpiritPromotion struct {
-	AttackBase       hash.IntValue `json:"AttackBase"`
+	AttackBase       hash.Value    `json:"AttackBase"`
 	AvatarID         float64       `json:"AvatarID"`
-	BaseAggro        hash.IntValue `json:"BaseAggro"`
+	BaseAggro        hash.Value    `json:"BaseAggro"`
 	Exp              float64       `json:"Exp"`
-	HPBase           hash.IntValue `json:"HPBase"`
+	HPBase           hash.Value    `json:"HPBase"`
 	Promotion        float64       `json:"Promotion"`
 	Slot             float64       `json:"Slot"`
 	SpecialSkillList []interface{} `json:"SpecialSkillList"`
-	SpeedBase        hash.IntValue `json:"SpeedBase"`
+	SpeedBase        hash.Value    `json:"SpeedBase"`
 }
 type AetherDivideSpiritPromotionAccessor struct {
 	_data []AetherDivideSpiritPromotion

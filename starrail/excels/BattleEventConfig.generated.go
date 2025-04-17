@@ -22,13 +22,13 @@ type BattleEventConfig struct {
 	HardLevel               bool                                `json:"HardLevel"`
 	HeadIcon                string                              `json:"HeadIcon"`
 	OverrideProperty        []BattleEventConfigOverrideProperty `json:"OverrideProperty"`
-	ParamList               []hash.IntValue                     `json:"ParamList"`
-	Speed                   hash.IntValue                       `json:"Speed"`
+	ParamList               []hash.Value                        `json:"ParamList"`
+	Speed                   hash.Value                          `json:"Speed"`
 	Team                    string                              `json:"Team"`
 }
 type BattleEventConfigOverrideProperty struct {
-	PropertyType string        `json:"PropertyType"`
-	Value        hash.IntValue `json:"Value"`
+	PropertyType string     `json:"PropertyType"`
+	Value        hash.Value `json:"Value"`
 }
 type BattleEventConfigAccessor struct {
 	_data              []BattleEventConfig

@@ -9,15 +9,15 @@ import (
 )
 
 type StageBattleEventConfig struct {
-	AbilityNameList      []interface{}   `json:"AbilityNameList"`
-	EventID              float64         `json:"EventID"`
-	EventType            string          `json:"EventType"`
-	IconPath             string          `json:"IconPath"`
-	IncludeAvatar        bool            `json:"IncludeAvatar"`
-	IncludeMonster       bool            `json:"IncludeMonster"`
-	ModifierNameList     []string        `json:"ModifierNameList"`
-	ParamList            []hash.IntValue `json:"ParamList"`
-	SelfModifierNameList []interface{}   `json:"SelfModifierNameList"`
+	AbilityNameList      []interface{} `json:"AbilityNameList"`
+	EventID              float64       `json:"EventID"`
+	EventType            string        `json:"EventType"`
+	IconPath             string        `json:"IconPath"`
+	IncludeAvatar        bool          `json:"IncludeAvatar"`
+	IncludeMonster       bool          `json:"IncludeMonster"`
+	ModifierNameList     []string      `json:"ModifierNameList"`
+	ParamList            []hash.Value  `json:"ParamList"`
+	SelfModifierNameList []interface{} `json:"SelfModifierNameList"`
 }
 type StageBattleEventConfigAccessor struct {
 	_data        []StageBattleEventConfig

@@ -9,20 +9,20 @@ import (
 )
 
 type RogueNousDiceSurface struct {
-	BranchLimitaion []float64       `json:"BranchLimitaion"`
-	DescParam       []hash.IntValue `json:"DescParam"`
-	DiceActiveStage float64         `json:"DiceActiveStage"`
-	ExtraDesc       []float64       `json:"ExtraDesc"`
-	Icon            string          `json:"Icon"`
-	ItemID          float64         `json:"ItemID"`
-	Rarity          float64         `json:"Rarity"`
-	SlotList        []float64       `json:"SlotList"`
-	Sort            float64         `json:"Sort"`
-	SurfaceDesc     hash.Hash       `json:"SurfaceDesc"`
-	SurfaceID       float64         `json:"SurfaceID"`
-	SurfaceName     hash.Hash       `json:"SurfaceName"`
-	TagList         []string        `json:"TagList"`
-	UnlockDisplayID float64         `json:"UnlockDisplayID"`
+	BranchLimitaion []float64    `json:"BranchLimitaion"`
+	DescParam       []hash.Value `json:"DescParam"`
+	DiceActiveStage float64      `json:"DiceActiveStage"`
+	ExtraDesc       []float64    `json:"ExtraDesc"`
+	Icon            string       `json:"Icon"`
+	ItemID          float64      `json:"ItemID"`
+	Rarity          float64      `json:"Rarity"`
+	SlotList        []float64    `json:"SlotList"`
+	Sort            float64      `json:"Sort"`
+	SurfaceDesc     hash.Hash    `json:"SurfaceDesc"`
+	SurfaceID       float64      `json:"SurfaceID"`
+	SurfaceName     hash.Hash    `json:"SurfaceName"`
+	TagList         []string     `json:"TagList"`
+	UnlockDisplayID float64      `json:"UnlockDisplayID"`
 }
 type RogueNousDiceSurfaceAccessor struct {
 	_data          []RogueNousDiceSurface

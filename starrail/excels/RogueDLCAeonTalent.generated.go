@@ -9,15 +9,15 @@ import (
 )
 
 type RogueDLCAeonTalent struct {
-	AeonDimensionID          float64         `json:"AeonDimensionID"`
-	AeonTalentID             float64         `json:"AeonTalentID"`
-	EffectDesc               hash.Hash       `json:"EffectDesc"`
-	EffectDescParamList      []hash.IntValue `json:"EffectDescParamList"`
-	EffectTitle              hash.Hash       `json:"EffectTitle"`
-	GamePlayEffectList       []float64       `json:"GamePlayEffectList"`
-	IsImportant              bool            `json:"IsImportant"`
-	TalentIcon               string          `json:"TalentIcon"`
-	UnlockAeonDimensionPoint float64         `json:"UnlockAeonDimensionPoint"`
+	AeonDimensionID          float64      `json:"AeonDimensionID"`
+	AeonTalentID             float64      `json:"AeonTalentID"`
+	EffectDesc               hash.Hash    `json:"EffectDesc"`
+	EffectDescParamList      []hash.Value `json:"EffectDescParamList"`
+	EffectTitle              hash.Hash    `json:"EffectTitle"`
+	GamePlayEffectList       []float64    `json:"GamePlayEffectList"`
+	IsImportant              bool         `json:"IsImportant"`
+	TalentIcon               string       `json:"TalentIcon"`
+	UnlockAeonDimensionPoint float64      `json:"UnlockAeonDimensionPoint"`
 }
 type RogueDLCAeonTalentAccessor struct {
 	_data             []RogueDLCAeonTalent

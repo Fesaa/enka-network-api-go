@@ -9,15 +9,15 @@ import (
 )
 
 type ActivitySummonSkill struct {
-	SimpleSkillDesc     hash.Hash       `json:"SimpleSkillDesc"`
-	SimpleSkillParmList []hash.IntValue `json:"SimpleSkillParmList"`
-	SkillDesc           hash.Hash       `json:"SkillDesc"`
-	SkillID             float64         `json:"SkillID"`
-	SkillIconPath       string          `json:"SkillIconPath"`
-	SkillName           hash.Hash       `json:"SkillName"`
-	SkillParmList       []hash.IntValue `json:"SkillParmList"`
-	SkillTriggerKey     string          `json:"SkillTriggerKey"`
-	SkillType           string          `json:"SkillType"`
+	SimpleSkillDesc     hash.Hash    `json:"SimpleSkillDesc"`
+	SimpleSkillParmList []hash.Value `json:"SimpleSkillParmList"`
+	SkillDesc           hash.Hash    `json:"SkillDesc"`
+	SkillID             float64      `json:"SkillID"`
+	SkillIconPath       string       `json:"SkillIconPath"`
+	SkillName           hash.Hash    `json:"SkillName"`
+	SkillParmList       []hash.Value `json:"SkillParmList"`
+	SkillTriggerKey     string       `json:"SkillTriggerKey"`
+	SkillType           string       `json:"SkillType"`
 }
 type ActivitySummonSkillAccessor struct {
 	_data        []ActivitySummonSkill

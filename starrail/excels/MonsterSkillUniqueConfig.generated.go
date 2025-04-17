@@ -9,24 +9,24 @@ import (
 )
 
 type MonsterSkillUniqueConfig struct {
-	AICD              float64         `json:"AI_CD"`
-	AIICD             float64         `json:"AI_ICD"`
-	AttackType        string          `json:"AttackType"`
-	DamageType        string          `json:"DamageType"`
-	DelayRatio        hash.IntValue   `json:"DelayRatio"`
-	ExtraEffectIDList []interface{}   `json:"ExtraEffectIDList"`
-	IconPath          string          `json:"IconPath"`
-	IsThreat          bool            `json:"IsThreat"`
-	ModifierList      []interface{}   `json:"ModifierList"`
-	ParamList         []hash.IntValue `json:"ParamList"`
-	PhaseList         []float64       `json:"PhaseList"`
-	SPHitBase         hash.IntValue   `json:"SPHitBase"`
-	SkillDesc         hash.Hash       `json:"SkillDesc"`
-	SkillID           float64         `json:"SkillID"`
-	SkillName         hash.Hash       `json:"SkillName"`
-	SkillTag          hash.Hash       `json:"SkillTag"`
-	SkillTriggerKey   string          `json:"SkillTriggerKey"`
-	SkillTypeDesc     hash.Hash       `json:"SkillTypeDesc"`
+	AICD              float64       `json:"AI_CD"`
+	AIICD             float64       `json:"AI_ICD"`
+	AttackType        string        `json:"AttackType"`
+	DamageType        string        `json:"DamageType"`
+	DelayRatio        hash.Value    `json:"DelayRatio"`
+	ExtraEffectIDList []interface{} `json:"ExtraEffectIDList"`
+	IconPath          string        `json:"IconPath"`
+	IsThreat          bool          `json:"IsThreat"`
+	ModifierList      []interface{} `json:"ModifierList"`
+	ParamList         []hash.Value  `json:"ParamList"`
+	PhaseList         []float64     `json:"PhaseList"`
+	SPHitBase         hash.Value    `json:"SPHitBase"`
+	SkillDesc         hash.Hash     `json:"SkillDesc"`
+	SkillID           float64       `json:"SkillID"`
+	SkillName         hash.Hash     `json:"SkillName"`
+	SkillTag          hash.Hash     `json:"SkillTag"`
+	SkillTriggerKey   string        `json:"SkillTriggerKey"`
+	SkillTypeDesc     hash.Hash     `json:"SkillTypeDesc"`
 }
 type MonsterSkillUniqueConfigAccessor struct {
 	_data        []MonsterSkillUniqueConfig

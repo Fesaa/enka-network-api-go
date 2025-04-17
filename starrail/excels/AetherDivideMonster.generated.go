@@ -9,10 +9,10 @@ import (
 )
 
 type AetherDivideMonster struct {
-	MonsterID                 float64       `json:"MonsterID"`
-	MonsterType               string        `json:"MonsterType"`
-	SPMax                     hash.IntValue `json:"SPMax"`
-	UltraSkillCutInPrefabPath string        `json:"UltraSkillCutInPrefabPath"`
+	MonsterID                 float64    `json:"MonsterID"`
+	MonsterType               string     `json:"MonsterType"`
+	SPMax                     hash.Value `json:"SPMax"`
+	UltraSkillCutInPrefabPath string     `json:"UltraSkillCutInPrefabPath"`
 }
 type AetherDivideMonsterAccessor struct {
 	_data          []AetherDivideMonster

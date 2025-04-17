@@ -9,11 +9,11 @@ import (
 )
 
 type RelicMainAffixConfig struct {
-	AffixID   float64       `json:"AffixID"`
-	BaseValue hash.IntValue `json:"BaseValue"`
-	GroupID   float64       `json:"GroupID"`
-	LevelAdd  hash.IntValue `json:"LevelAdd"`
-	Property  string        `json:"Property"`
+	AffixID   float64    `json:"AffixID"`
+	BaseValue hash.Value `json:"BaseValue"`
+	GroupID   float64    `json:"GroupID"`
+	LevelAdd  hash.Value `json:"LevelAdd"`
+	Property  string     `json:"Property"`
 }
 type RelicMainAffixConfigAccessor struct {
 	_data []RelicMainAffixConfig

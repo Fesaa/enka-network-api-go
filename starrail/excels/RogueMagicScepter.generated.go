@@ -13,7 +13,7 @@ type RogueMagicScepter struct {
 	FuncType          string                           `json:"FuncType"`
 	LimitRangeType    string                           `json:"LimitRangeType"`
 	LockMagicUnit     []RogueMagicScepterLockMagicUnit `json:"LockMagicUnit"`
-	ScepterBasicPower hash.IntValue                    `json:"ScepterBasicPower"`
+	ScepterBasicPower hash.Value                       `json:"ScepterBasicPower"`
 	ScepterID         float64                          `json:"ScepterID"`
 	ScepterLevel      float64                          `json:"ScepterLevel"`
 	StaffMazeBuffID   float64                          `json:"StaffMazeBuffID"`

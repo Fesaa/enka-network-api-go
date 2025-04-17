@@ -9,12 +9,12 @@ import (
 )
 
 type EliteGroup struct {
-	AttackRatio  hash.IntValue `json:"AttackRatio"`
-	DefenceRatio hash.IntValue `json:"DefenceRatio"`
-	EliteGroup   float64       `json:"EliteGroup"`
-	HPRatio      hash.IntValue `json:"HPRatio"`
-	SpeedRatio   hash.IntValue `json:"SpeedRatio"`
-	StanceRatio  hash.IntValue `json:"StanceRatio"`
+	AttackRatio  hash.Value `json:"AttackRatio"`
+	DefenceRatio hash.Value `json:"DefenceRatio"`
+	EliteGroup   float64    `json:"EliteGroup"`
+	HPRatio      hash.Value `json:"HPRatio"`
+	SpeedRatio   hash.Value `json:"SpeedRatio"`
+	StanceRatio  hash.Value `json:"StanceRatio"`
 }
 type EliteGroupAccessor struct {
 	_data           []EliteGroup

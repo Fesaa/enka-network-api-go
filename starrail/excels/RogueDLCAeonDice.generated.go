@@ -9,18 +9,18 @@ import (
 )
 
 type RogueDLCAeonDice struct {
-	AeonDiceID           float64         `json:"AeonDiceID"`
-	DescParam            []hash.IntValue `json:"DescParam"`
-	DiceIcon             string          `json:"DiceIcon"`
-	DiceModel            string          `json:"DiceModel"`
-	DiceShortDesc        hash.Hash       `json:"DiceShortDesc"`
-	DiceStartEffectDesc  hash.Hash       `json:"DiceStartEffectDesc"`
-	ExtraEffect          []float64       `json:"ExtraEffect"`
-	SoundReRoll          string          `json:"SoundReRoll"`
-	SoundRoll            string          `json:"SoundRoll"`
-	SoundSuspensionStart string          `json:"SoundSuspensionStart"`
-	SoundSuspensionStop  string          `json:"SoundSuspensionStop"`
-	StartDescParam       []float64       `json:"StartDescParam"`
+	AeonDiceID           float64      `json:"AeonDiceID"`
+	DescParam            []hash.Value `json:"DescParam"`
+	DiceIcon             string       `json:"DiceIcon"`
+	DiceModel            string       `json:"DiceModel"`
+	DiceShortDesc        hash.Hash    `json:"DiceShortDesc"`
+	DiceStartEffectDesc  hash.Hash    `json:"DiceStartEffectDesc"`
+	ExtraEffect          []float64    `json:"ExtraEffect"`
+	SoundReRoll          string       `json:"SoundReRoll"`
+	SoundRoll            string       `json:"SoundRoll"`
+	SoundSuspensionStart string       `json:"SoundSuspensionStart"`
+	SoundSuspensionStop  string       `json:"SoundSuspensionStop"`
+	StartDescParam       []float64    `json:"StartDescParam"`
 }
 type RogueDLCAeonDiceAccessor struct {
 	_data                     []RogueDLCAeonDice

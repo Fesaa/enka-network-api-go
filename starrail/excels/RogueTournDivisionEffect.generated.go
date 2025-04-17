@@ -9,9 +9,9 @@ import (
 )
 
 type RogueTournDivisionEffect struct {
-	DescParamList []hash.IntValue `json:"DescParamList"`
-	DescText      hash.Hash       `json:"DescText"`
-	DivisionLevel float64         `json:"DivisionLevel"`
+	DescParamList []hash.Value `json:"DescParamList"`
+	DescText      hash.Hash    `json:"DescText"`
+	DivisionLevel float64      `json:"DivisionLevel"`
 }
 type RogueTournDivisionEffectAccessor struct {
 	_data              []RogueTournDivisionEffect

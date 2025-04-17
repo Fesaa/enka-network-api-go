@@ -9,26 +9,26 @@ import (
 )
 
 type AetherDivideSpiritSkill struct {
-	AttackType              string          `json:"AttackType"`
-	BPAdd                   hash.IntValue   `json:"BPAdd"`
-	BPNeed                  hash.IntValue   `json:"BPNeed"`
-	ExtraEffectIDList       []float64       `json:"ExtraEffectIDList"`
-	ParamList               []hash.IntValue `json:"ParamList"`
-	PropertyType            string          `json:"PropertyType"`
-	SPMultipleRatio         hash.IntValue   `json:"SPMultipleRatio"`
-	SPNeed                  hash.IntValue   `json:"SPNeed"`
-	SimpleExtraEffectIDList []float64       `json:"SimpleExtraEffectIDList"`
-	SimpleParamList         []hash.IntValue `json:"SimpleParamList"`
-	SimpleSkillDesc         hash.Hash       `json:"SimpleSkillDesc"`
-	SkillDesc               hash.Hash       `json:"SkillDesc"`
-	SkillEffect             string          `json:"SkillEffect"`
-	SkillID                 float64         `json:"SkillID"`
-	SkillIcon               string          `json:"SkillIcon"`
-	SkillName               hash.Hash       `json:"SkillName"`
-	SkillTag                hash.Hash       `json:"SkillTag"`
-	SkillTriggerKey         string          `json:"SkillTriggerKey"`
-	SkillTypeDesc           hash.Hash       `json:"SkillTypeDesc"`
-	UltraSkillIcon          string          `json:"UltraSkillIcon"`
+	AttackType              string       `json:"AttackType"`
+	BPAdd                   hash.Value   `json:"BPAdd"`
+	BPNeed                  hash.Value   `json:"BPNeed"`
+	ExtraEffectIDList       []float64    `json:"ExtraEffectIDList"`
+	ParamList               []hash.Value `json:"ParamList"`
+	PropertyType            string       `json:"PropertyType"`
+	SPMultipleRatio         hash.Value   `json:"SPMultipleRatio"`
+	SPNeed                  hash.Value   `json:"SPNeed"`
+	SimpleExtraEffectIDList []float64    `json:"SimpleExtraEffectIDList"`
+	SimpleParamList         []hash.Value `json:"SimpleParamList"`
+	SimpleSkillDesc         hash.Hash    `json:"SimpleSkillDesc"`
+	SkillDesc               hash.Hash    `json:"SkillDesc"`
+	SkillEffect             string       `json:"SkillEffect"`
+	SkillID                 float64      `json:"SkillID"`
+	SkillIcon               string       `json:"SkillIcon"`
+	SkillName               hash.Hash    `json:"SkillName"`
+	SkillTag                hash.Hash    `json:"SkillTag"`
+	SkillTriggerKey         string       `json:"SkillTriggerKey"`
+	SkillTypeDesc           hash.Hash    `json:"SkillTypeDesc"`
+	UltraSkillIcon          string       `json:"UltraSkillIcon"`
 }
 type AetherDivideSpiritSkillAccessor struct {
 	_data        []AetherDivideSpiritSkill

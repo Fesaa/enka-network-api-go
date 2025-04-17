@@ -9,8 +9,8 @@ import (
 )
 
 type AvatarBreakDamage struct {
-	BreakBaseDamage hash.IntValue `json:"BreakBaseDamage"`
-	Level           float64       `json:"Level"`
+	BreakBaseDamage hash.Value `json:"BreakBaseDamage"`
+	Level           float64    `json:"Level"`
 }
 type AvatarBreakDamageAccessor struct {
 	_data      []AvatarBreakDamage

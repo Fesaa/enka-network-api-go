@@ -10,7 +10,7 @@ import (
 
 type AvatarRelicRecommend struct {
 	AvatarID             float64                            `json:"AvatarID"`
-	LocalCriticalChance  hash.IntValue                      `json:"LocalCriticalChance"`
+	LocalCriticalChance  hash.Value                         `json:"LocalCriticalChance"`
 	PropertyList         []AvatarRelicRecommendPropertyList `json:"PropertyList"`
 	PropertyList3        []string                           `json:"PropertyList3"`
 	PropertyList4        []string                           `json:"PropertyList4"`

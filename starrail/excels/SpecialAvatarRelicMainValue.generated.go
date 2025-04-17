@@ -13,8 +13,8 @@ type SpecialAvatarRelicMainValue struct {
 	RelicMainValueType float64                                `json:"RelicMainValueType"`
 }
 type SpecialAvatarRelicMainValueMainValue struct {
-	LKOEFDPJGKD string        `json:"LKOEFDPJGKD"`
-	MBMDOCJIMEJ hash.IntValue `json:"MBMDOCJIMEJ"`
+	LKOEFDPJGKD string     `json:"LKOEFDPJGKD"`
+	MBMDOCJIMEJ hash.Value `json:"MBMDOCJIMEJ"`
 }
 type SpecialAvatarRelicMainValueAccessor struct {
 	_data                   []SpecialAvatarRelicMainValue

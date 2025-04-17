@@ -9,12 +9,12 @@ import (
 )
 
 type RogueNousDifficultyLevel struct {
-	DifficultyDesc hash.Hash       `json:"DifficultyDesc"`
-	DifficultyID   float64         `json:"DifficultyID"`
-	DifficultyType string          `json:"DifficultyType"`
-	ParamList      []hash.IntValue `json:"ParamList"`
-	Sort           float64         `json:"Sort"`
-	Tag            float64         `json:"Tag"`
+	DifficultyDesc hash.Hash    `json:"DifficultyDesc"`
+	DifficultyID   float64      `json:"DifficultyID"`
+	DifficultyType string       `json:"DifficultyType"`
+	ParamList      []hash.Value `json:"ParamList"`
+	Sort           float64      `json:"Sort"`
+	Tag            float64      `json:"Tag"`
 }
 type RogueNousDifficultyLevelAccessor struct {
 	_data             []RogueNousDifficultyLevel

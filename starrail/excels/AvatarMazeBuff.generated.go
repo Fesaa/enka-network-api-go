@@ -9,26 +9,26 @@ import (
 )
 
 type AvatarMazeBuff struct {
-	BuffDesc                     hash.Hash       `json:"BuffDesc"`
-	BuffDescBattle               hash.Hash       `json:"BuffDescBattle"`
-	BuffDescParamByAvatarSkillID float64         `json:"BuffDescParamByAvatarSkillID"`
-	BuffEffect                   string          `json:"BuffEffect"`
-	BuffIcon                     string          `json:"BuffIcon"`
-	BuffName                     hash.Hash       `json:"BuffName"`
-	BuffRarity                   float64         `json:"BuffRarity"`
-	BuffSeries                   float64         `json:"BuffSeries"`
-	ID                           float64         `json:"ID"`
-	InBattleBindingKey           string          `json:"InBattleBindingKey"`
-	InBattleBindingType          string          `json:"InBattleBindingType"`
-	IsDisplay                    bool            `json:"IsDisplay"`
-	Lv                           float64         `json:"Lv"`
-	LvMax                        float64         `json:"LvMax"`
-	MazeBuffIconType             string          `json:"MazeBuffIconType"`
-	MazeBuffPool                 float64         `json:"MazeBuffPool"`
-	MazeBuffType                 string          `json:"MazeBuffType"`
-	ModifierName                 string          `json:"ModifierName"`
-	ParamList                    []hash.IntValue `json:"ParamList"`
-	UseType                      string          `json:"UseType"`
+	BuffDesc                     hash.Hash    `json:"BuffDesc"`
+	BuffDescBattle               hash.Hash    `json:"BuffDescBattle"`
+	BuffDescParamByAvatarSkillID float64      `json:"BuffDescParamByAvatarSkillID"`
+	BuffEffect                   string       `json:"BuffEffect"`
+	BuffIcon                     string       `json:"BuffIcon"`
+	BuffName                     hash.Hash    `json:"BuffName"`
+	BuffRarity                   float64      `json:"BuffRarity"`
+	BuffSeries                   float64      `json:"BuffSeries"`
+	ID                           float64      `json:"ID"`
+	InBattleBindingKey           string       `json:"InBattleBindingKey"`
+	InBattleBindingType          string       `json:"InBattleBindingType"`
+	IsDisplay                    bool         `json:"IsDisplay"`
+	Lv                           float64      `json:"Lv"`
+	LvMax                        float64      `json:"LvMax"`
+	MazeBuffIconType             string       `json:"MazeBuffIconType"`
+	MazeBuffPool                 float64      `json:"MazeBuffPool"`
+	MazeBuffType                 string       `json:"MazeBuffType"`
+	ModifierName                 string       `json:"ModifierName"`
+	ParamList                    []hash.Value `json:"ParamList"`
+	UseType                      string       `json:"UseType"`
 }
 type AvatarMazeBuffAccessor struct {
 	_data []AvatarMazeBuff

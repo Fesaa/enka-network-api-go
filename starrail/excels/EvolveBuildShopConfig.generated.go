@@ -17,7 +17,7 @@ type EvolveBuildShopConfig struct {
 	LvMax          float64                          `json:"LvMax"`
 	MazeBuffID     float64                          `json:"MazeBuffID"`
 	Name           hash.Hash                        `json:"Name"`
-	ParamList      []hash.IntValue                  `json:"ParamList"`
+	ParamList      []hash.Value                     `json:"ParamList"`
 	PriceList      []EvolveBuildShopConfigPriceList `json:"PriceList"`
 	ShopDesc       hash.Hash                        `json:"ShopDesc"`
 	ShopType       string                           `json:"ShopType"`

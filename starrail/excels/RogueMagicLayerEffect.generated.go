@@ -9,10 +9,10 @@ import (
 )
 
 type RogueMagicLayerEffect struct {
-	DescParamList   []hash.IntValue `json:"DescParamList"`
-	LayerEffectDesc hash.Hash       `json:"LayerEffectDesc"`
-	LayerEffectID   float64         `json:"LayerEffectID"`
-	LayerEffectName hash.Hash       `json:"LayerEffectName"`
+	DescParamList   []hash.Value `json:"DescParamList"`
+	LayerEffectDesc hash.Hash    `json:"LayerEffectDesc"`
+	LayerEffectID   float64      `json:"LayerEffectID"`
+	LayerEffectName hash.Hash    `json:"LayerEffectName"`
 }
 type RogueMagicLayerEffectAccessor struct {
 	_data              []RogueMagicLayerEffect

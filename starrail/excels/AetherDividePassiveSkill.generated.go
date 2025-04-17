@@ -9,17 +9,17 @@ import (
 )
 
 type AetherDividePassiveSkill struct {
-	AbilityName             string          `json:"AbilityName"`
-	ExtraEffectIDList       []interface{}   `json:"ExtraEffectIDList"`
-	ItemDescription         string          `json:"ItemDescription"`
-	ItemID                  float64         `json:"ItemID"`
-	ParamList               []hash.IntValue `json:"ParamList"`
-	PassiveSkillDescription string          `json:"PassiveSkillDescription"`
-	PassiveSkillName        string          `json:"PassiveSkillName"`
-	PassiveSkillType        string          `json:"PassiveSkillType"`
-	Rarity                  float64         `json:"Rarity"`
-	SimpleExtraEffectIDList []interface{}   `json:"SimpleExtraEffectIDList"`
-	SimpleParamList         []hash.IntValue `json:"SimpleParamList"`
+	AbilityName             string        `json:"AbilityName"`
+	ExtraEffectIDList       []interface{} `json:"ExtraEffectIDList"`
+	ItemDescription         string        `json:"ItemDescription"`
+	ItemID                  float64       `json:"ItemID"`
+	ParamList               []hash.Value  `json:"ParamList"`
+	PassiveSkillDescription string        `json:"PassiveSkillDescription"`
+	PassiveSkillName        string        `json:"PassiveSkillName"`
+	PassiveSkillType        string        `json:"PassiveSkillType"`
+	Rarity                  float64       `json:"Rarity"`
+	SimpleExtraEffectIDList []interface{} `json:"SimpleExtraEffectIDList"`
+	SimpleParamList         []hash.Value  `json:"SimpleParamList"`
 }
 type AetherDividePassiveSkillAccessor struct {
 	_data                        []AetherDividePassiveSkill

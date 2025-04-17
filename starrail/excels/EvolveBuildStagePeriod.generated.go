@@ -11,7 +11,7 @@ import (
 type EvolveBuildStagePeriod struct {
 	BattleArea       float64                              `json:"BattleArea"`
 	CountdownList    []float64                            `json:"CountdownList"`
-	DeadLinePosition hash.IntValue                        `json:"DeadLinePosition"`
+	DeadLinePosition hash.Value                           `json:"DeadLinePosition"`
 	EmotionList      []float64                            `json:"EmotionList"`
 	EventID          float64                              `json:"EventID"`
 	PeriodRank       string                               `json:"PeriodRank"`

@@ -9,16 +9,16 @@ import (
 )
 
 type BattleActionEventConfig struct {
-	AbilityName      string          `json:"AbilityName"`
-	ActiveDefault    bool            `json:"ActiveDefault"`
-	BriefDescription hash.Hash       `json:"BriefDescription"`
-	EventID          float64         `json:"EventID"`
-	EventName        hash.Hash       `json:"EventName"`
-	FullDescription  hash.Hash       `json:"FullDescription"`
-	IconPath         string          `json:"IconPath"`
-	InitialInterval  float64         `json:"InitialInterval"`
-	Interval         float64         `json:"Interval"`
-	ParamList        []hash.IntValue `json:"ParamList"`
+	AbilityName      string       `json:"AbilityName"`
+	ActiveDefault    bool         `json:"ActiveDefault"`
+	BriefDescription hash.Hash    `json:"BriefDescription"`
+	EventID          float64      `json:"EventID"`
+	EventName        hash.Hash    `json:"EventName"`
+	FullDescription  hash.Hash    `json:"FullDescription"`
+	IconPath         string       `json:"IconPath"`
+	InitialInterval  float64      `json:"InitialInterval"`
+	Interval         float64      `json:"Interval"`
+	ParamList        []hash.Value `json:"ParamList"`
 }
 type BattleActionEventConfigAccessor struct {
 	_data        []BattleActionEventConfig

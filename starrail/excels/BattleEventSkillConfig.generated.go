@@ -9,30 +9,30 @@ import (
 )
 
 type BattleEventSkillConfig struct {
-	AttackType           string          `json:"AttackType"`
-	BPNeed               hash.IntValue   `json:"BPNeed"`
-	CutinPath            string          `json:"CutinPath"`
-	DelayRatio           hash.IntValue   `json:"DelayRatio"`
-	ParamList            []hash.IntValue `json:"ParamList"`
-	SPAdd                hash.IntValue   `json:"SPAdd"`
-	SPBase               hash.IntValue   `json:"SPBase"`
-	SPMultipleRatio      hash.IntValue   `json:"SPMultipleRatio"`
-	SPNeed               hash.IntValue   `json:"SPNeed"`
-	ShowStanceList       []hash.IntValue `json:"ShowStanceList"`
-	SimpleParamList      []hash.IntValue `json:"SimpleParamList"`
-	SimpleSkillDesc      hash.Hash       `json:"SimpleSkillDesc"`
-	SkillButtonEffType   string          `json:"SkillButtonEffType"`
-	SkillComboValueDelta hash.IntValue   `json:"SkillComboValueDelta"`
-	SkillDesc            hash.Hash       `json:"SkillDesc"`
-	SkillEffect          string          `json:"SkillEffect"`
-	SkillID              float64         `json:"SkillID"`
-	SkillIcon            string          `json:"SkillIcon"`
-	SkillName            hash.Hash       `json:"SkillName"`
-	SkillTag             hash.Hash       `json:"SkillTag"`
-	SkillTriggerKey      string          `json:"SkillTriggerKey"`
-	SkillTypeDesc        hash.Hash       `json:"SkillTypeDesc"`
-	StanceDamageType     string          `json:"StanceDamageType"`
-	UltraSkillIcon       string          `json:"UltraSkillIcon"`
+	AttackType           string       `json:"AttackType"`
+	BPNeed               hash.Value   `json:"BPNeed"`
+	CutinPath            string       `json:"CutinPath"`
+	DelayRatio           hash.Value   `json:"DelayRatio"`
+	ParamList            []hash.Value `json:"ParamList"`
+	SPAdd                hash.Value   `json:"SPAdd"`
+	SPBase               hash.Value   `json:"SPBase"`
+	SPMultipleRatio      hash.Value   `json:"SPMultipleRatio"`
+	SPNeed               hash.Value   `json:"SPNeed"`
+	ShowStanceList       []hash.Value `json:"ShowStanceList"`
+	SimpleParamList      []hash.Value `json:"SimpleParamList"`
+	SimpleSkillDesc      hash.Hash    `json:"SimpleSkillDesc"`
+	SkillButtonEffType   string       `json:"SkillButtonEffType"`
+	SkillComboValueDelta hash.Value   `json:"SkillComboValueDelta"`
+	SkillDesc            hash.Hash    `json:"SkillDesc"`
+	SkillEffect          string       `json:"SkillEffect"`
+	SkillID              float64      `json:"SkillID"`
+	SkillIcon            string       `json:"SkillIcon"`
+	SkillName            hash.Hash    `json:"SkillName"`
+	SkillTag             hash.Hash    `json:"SkillTag"`
+	SkillTriggerKey      string       `json:"SkillTriggerKey"`
+	SkillTypeDesc        hash.Hash    `json:"SkillTypeDesc"`
+	StanceDamageType     string       `json:"StanceDamageType"`
+	UltraSkillIcon       string       `json:"UltraSkillIcon"`
 }
 type BattleEventSkillConfigAccessor struct {
 	_data        []BattleEventSkillConfig

@@ -9,9 +9,9 @@ import (
 )
 
 type StanceLevelEffect struct {
-	ID                float64       `json:"ID"`
-	LevelDifference   float64       `json:"LevelDifference"`
-	StanceLevelEffect hash.IntValue `json:"StanceLevelEffect"`
+	ID                float64    `json:"ID"`
+	LevelDifference   float64    `json:"LevelDifference"`
+	StanceLevelEffect hash.Value `json:"StanceLevelEffect"`
 }
 type StanceLevelEffectAccessor struct {
 	_data   []StanceLevelEffect

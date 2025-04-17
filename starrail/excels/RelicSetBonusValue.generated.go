@@ -9,10 +9,10 @@ import (
 )
 
 type RelicSetBonusValue struct {
-	BonusValue float64       `json:"BonusValue"`
-	Property   string        `json:"Property"`
-	SetID      float64       `json:"SetID"`
-	Threshold  hash.IntValue `json:"Threshold"`
+	BonusValue float64    `json:"BonusValue"`
+	Property   string     `json:"Property"`
+	SetID      float64    `json:"SetID"`
+	Threshold  hash.Value `json:"Threshold"`
 }
 type RelicSetBonusValueAccessor struct {
 	_data      []RelicSetBonusValue

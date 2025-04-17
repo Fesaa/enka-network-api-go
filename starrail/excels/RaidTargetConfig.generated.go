@@ -9,18 +9,18 @@ import (
 )
 
 type RaidTargetConfig struct {
-	AbilityName      string          `json:"AbilityName"`
-	HintStep         []float64       `json:"HintStep"`
-	ID               float64         `json:"ID"`
-	IsInBattle       bool            `json:"IsInBattle"`
-	IsShowProgress   float64         `json:"IsShowProgress"`
-	ParamList        []hash.IntValue `json:"ParamList"`
-	ParamType        string          `json:"ParamType"`
-	RewardID         float64         `json:"RewardID"`
-	TargetName       hash.Hash       `json:"TargetName"`
-	TargetNameSimple hash.Hash       `json:"TargetNameSimple"`
-	TargetParam1     float64         `json:"TargetParam1"`
-	TargetType       string          `json:"TargetType"`
+	AbilityName      string       `json:"AbilityName"`
+	HintStep         []float64    `json:"HintStep"`
+	ID               float64      `json:"ID"`
+	IsInBattle       bool         `json:"IsInBattle"`
+	IsShowProgress   float64      `json:"IsShowProgress"`
+	ParamList        []hash.Value `json:"ParamList"`
+	ParamType        string       `json:"ParamType"`
+	RewardID         float64      `json:"RewardID"`
+	TargetName       hash.Hash    `json:"TargetName"`
+	TargetNameSimple hash.Hash    `json:"TargetNameSimple"`
+	TargetParam1     float64      `json:"TargetParam1"`
+	TargetType       string       `json:"TargetType"`
 }
 type RaidTargetConfigAccessor struct {
 	_data   []RaidTargetConfig

@@ -13,8 +13,8 @@ type SpecialAvatarRelicSubValue struct {
 	SubValue          []SpecialAvatarRelicSubValueSubValue `json:"SubValue"`
 }
 type SpecialAvatarRelicSubValueSubValue struct {
-	LKOEFDPJGKD string        `json:"LKOEFDPJGKD"`
-	MBMDOCJIMEJ hash.IntValue `json:"MBMDOCJIMEJ"`
+	LKOEFDPJGKD string     `json:"LKOEFDPJGKD"`
+	MBMDOCJIMEJ hash.Value `json:"MBMDOCJIMEJ"`
 }
 type SpecialAvatarRelicSubValueAccessor struct {
 	_data                  []SpecialAvatarRelicSubValue

@@ -9,12 +9,12 @@ import (
 )
 
 type EquipmentPromotionConfig struct {
-	BaseAttack         hash.IntValue                               `json:"BaseAttack"`
-	BaseAttackAdd      hash.IntValue                               `json:"BaseAttackAdd"`
-	BaseDefence        hash.IntValue                               `json:"BaseDefence"`
-	BaseDefenceAdd     hash.IntValue                               `json:"BaseDefenceAdd"`
-	BaseHP             hash.IntValue                               `json:"BaseHP"`
-	BaseHPAdd          hash.IntValue                               `json:"BaseHPAdd"`
+	BaseAttack         hash.Value                                  `json:"BaseAttack"`
+	BaseAttackAdd      hash.Value                                  `json:"BaseAttackAdd"`
+	BaseDefence        hash.Value                                  `json:"BaseDefence"`
+	BaseDefenceAdd     hash.Value                                  `json:"BaseDefenceAdd"`
+	BaseHP             hash.Value                                  `json:"BaseHP"`
+	BaseHPAdd          hash.Value                                  `json:"BaseHPAdd"`
 	EquipmentID        float64                                     `json:"EquipmentID"`
 	MaxLevel           float64                                     `json:"MaxLevel"`
 	PlayerLevelRequire float64                                     `json:"PlayerLevelRequire"`

@@ -9,25 +9,25 @@ import (
 )
 
 type RogueDLCAeon struct {
-	AeonDiceID                  float64         `json:"AeonDiceID"`
-	AeonID                      float64         `json:"AeonID"`
-	BattleEventBuffGroup        float64         `json:"BattleEventBuffGroup"`
-	BattleEventEnhanceBuffGroup float64         `json:"BattleEventEnhanceBuffGroup"`
-	DescParam                   []hash.IntValue `json:"DescParam"`
-	EffectDesc3                 hash.Hash       `json:"EffectDesc3"`
-	EffectParam1                []float64       `json:"EffectParam1"`
-	EffectParam2                []float64       `json:"EffectParam2"`
-	EffectParam3                []float64       `json:"EffectParam3"`
-	EffectParam4                []float64       `json:"EffectParam4"`
-	EffectType1                 string          `json:"EffectType1"`
-	EffectType3                 string          `json:"EffectType3"`
-	EntrancePrefabPath          string          `json:"EntrancePrefabPath"`
-	ExtraEffect                 []float64       `json:"ExtraEffect"`
-	PlayShortDesc               hash.Hash       `json:"PlayShortDesc"`
-	RogueAeonDisplayID          float64         `json:"RogueAeonDisplayID"`
-	RogueBuffType               float64         `json:"RogueBuffType"`
-	Sort                        float64         `json:"Sort"`
-	UnlockID                    float64         `json:"UnlockID"`
+	AeonDiceID                  float64      `json:"AeonDiceID"`
+	AeonID                      float64      `json:"AeonID"`
+	BattleEventBuffGroup        float64      `json:"BattleEventBuffGroup"`
+	BattleEventEnhanceBuffGroup float64      `json:"BattleEventEnhanceBuffGroup"`
+	DescParam                   []hash.Value `json:"DescParam"`
+	EffectDesc3                 hash.Hash    `json:"EffectDesc3"`
+	EffectParam1                []float64    `json:"EffectParam1"`
+	EffectParam2                []float64    `json:"EffectParam2"`
+	EffectParam3                []float64    `json:"EffectParam3"`
+	EffectParam4                []float64    `json:"EffectParam4"`
+	EffectType1                 string       `json:"EffectType1"`
+	EffectType3                 string       `json:"EffectType3"`
+	EntrancePrefabPath          string       `json:"EntrancePrefabPath"`
+	ExtraEffect                 []float64    `json:"ExtraEffect"`
+	PlayShortDesc               hash.Hash    `json:"PlayShortDesc"`
+	RogueAeonDisplayID          float64      `json:"RogueAeonDisplayID"`
+	RogueBuffType               float64      `json:"RogueBuffType"`
+	Sort                        float64      `json:"Sort"`
+	UnlockID                    float64      `json:"UnlockID"`
 }
 type RogueDLCAeonAccessor struct {
 	_data                            []RogueDLCAeon

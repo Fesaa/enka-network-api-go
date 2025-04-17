@@ -21,7 +21,7 @@ type AvatarSkillTreeConfigTrial struct {
 	LevelUpSkillID          []float64                                 `json:"LevelUpSkillID"`
 	MaterialList            []AvatarSkillTreeConfigTrialMaterialList  `json:"MaterialList"`
 	MaxLevel                float64                                   `json:"MaxLevel"`
-	ParamList               []hash.IntValue                           `json:"ParamList"`
+	ParamList               []hash.Value                              `json:"ParamList"`
 	PointDesc               string                                    `json:"PointDesc"`
 	PointID                 float64                                   `json:"PointID"`
 	PointName               string                                    `json:"PointName"`
@@ -37,8 +37,8 @@ type AvatarSkillTreeConfigTrialMaterialList struct {
 	ItemNum float64 `json:"ItemNum"`
 }
 type AvatarSkillTreeConfigTrialStatusAddList struct {
-	PropertyType string        `json:"PropertyType"`
-	Value        hash.IntValue `json:"Value"`
+	PropertyType string     `json:"PropertyType"`
+	Value        hash.Value `json:"Value"`
 }
 type AvatarSkillTreeConfigTrialAccessor struct {
 	_data []AvatarSkillTreeConfigTrial

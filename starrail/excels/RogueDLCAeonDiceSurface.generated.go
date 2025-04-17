@@ -9,19 +9,19 @@ import (
 )
 
 type RogueDLCAeonDiceSurface struct {
-	AeonDiceID        float64         `json:"AeonDiceID"`
-	AeonSurfaceDiceID float64         `json:"AeonSurfaceDiceID"`
-	DescParam         []hash.IntValue `json:"DescParam"`
-	Dice3DSurfaceList []float64       `json:"Dice3DSurfaceList"`
-	DiceActiveStage   float64         `json:"DiceActiveStage"`
-	DiceEffectParam   []float64       `json:"DiceEffectParam"`
-	DiceEffectType    string          `json:"DiceEffectType"`
-	DiceSurfaceDesc   hash.Hash       `json:"DiceSurfaceDesc"`
-	DiceSurfaceIcon   string          `json:"DiceSurfaceIcon"`
-	DiceSurfaceName   hash.Hash       `json:"DiceSurfaceName"`
-	ExtraEffect       []float64       `json:"ExtraEffect"`
-	Rarity            float64         `json:"Rarity"`
-	Sort              float64         `json:"Sort"`
+	AeonDiceID        float64      `json:"AeonDiceID"`
+	AeonSurfaceDiceID float64      `json:"AeonSurfaceDiceID"`
+	DescParam         []hash.Value `json:"DescParam"`
+	Dice3DSurfaceList []float64    `json:"Dice3DSurfaceList"`
+	DiceActiveStage   float64      `json:"DiceActiveStage"`
+	DiceEffectParam   []float64    `json:"DiceEffectParam"`
+	DiceEffectType    string       `json:"DiceEffectType"`
+	DiceSurfaceDesc   hash.Hash    `json:"DiceSurfaceDesc"`
+	DiceSurfaceIcon   string       `json:"DiceSurfaceIcon"`
+	DiceSurfaceName   hash.Hash    `json:"DiceSurfaceName"`
+	ExtraEffect       []float64    `json:"ExtraEffect"`
+	Rarity            float64      `json:"Rarity"`
+	Sort              float64      `json:"Sort"`
 }
 type RogueDLCAeonDiceSurfaceAccessor struct {
 	_data                  []RogueDLCAeonDiceSurface

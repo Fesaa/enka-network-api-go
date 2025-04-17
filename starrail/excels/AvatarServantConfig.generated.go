@@ -9,26 +9,26 @@ import (
 )
 
 type AvatarServantConfig struct {
-	ActionServantHeadIconPath  string        `json:"ActionServantHeadIconPath"`
-	Aggro                      hash.IntValue `json:"Aggro"`
-	Config                     string        `json:"Config"`
-	HPBase                     string        `json:"HPBase"`
-	HPInherit                  string        `json:"HPInherit"`
-	HPSkill                    float64       `json:"HPSkill"`
-	HeadIcon                   string        `json:"HeadIcon"`
-	ManikinJsonPath            string        `json:"ManikinJsonPath"`
-	Prefab                     string        `json:"Prefab"`
-	ServantID                  float64       `json:"ServantID"`
-	ServantMiniIconPath        string        `json:"ServantMiniIconPath"`
-	ServantName                hash.Hash     `json:"ServantName"`
-	ServantSideIconPath        string        `json:"ServantSideIconPath"`
-	SkillIDList                []float64     `json:"SkillIDList"`
-	SpeedBase                  string        `json:"SpeedBase"`
-	SpeedInherit               string        `json:"SpeedInherit"`
-	SpeedSkill                 float64       `json:"SpeedSkill"`
-	UIServantModelPath         string        `json:"UIServantModelPath"`
-	UnCreateHeadIconPath       string        `json:"UnCreateHeadIconPath"`
-	WaitingServantHeadIconPath string        `json:"WaitingServantHeadIconPath"`
+	ActionServantHeadIconPath  string     `json:"ActionServantHeadIconPath"`
+	Aggro                      hash.Value `json:"Aggro"`
+	Config                     string     `json:"Config"`
+	HPBase                     string     `json:"HPBase"`
+	HPInherit                  string     `json:"HPInherit"`
+	HPSkill                    float64    `json:"HPSkill"`
+	HeadIcon                   string     `json:"HeadIcon"`
+	ManikinJsonPath            string     `json:"ManikinJsonPath"`
+	Prefab                     string     `json:"Prefab"`
+	ServantID                  float64    `json:"ServantID"`
+	ServantMiniIconPath        string     `json:"ServantMiniIconPath"`
+	ServantName                hash.Hash  `json:"ServantName"`
+	ServantSideIconPath        string     `json:"ServantSideIconPath"`
+	SkillIDList                []float64  `json:"SkillIDList"`
+	SpeedBase                  string     `json:"SpeedBase"`
+	SpeedInherit               string     `json:"SpeedInherit"`
+	SpeedSkill                 float64    `json:"SpeedSkill"`
+	UIServantModelPath         string     `json:"UIServantModelPath"`
+	UnCreateHeadIconPath       string     `json:"UnCreateHeadIconPath"`
+	WaitingServantHeadIconPath string     `json:"WaitingServantHeadIconPath"`
 }
 type AvatarServantConfigAccessor struct {
 	_data                           []AvatarServantConfig

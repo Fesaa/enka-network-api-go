@@ -9,8 +9,8 @@ import (
 )
 
 type RogueTournKeywordParam struct {
-	KeywordID float64         `json:"KeywordID"`
-	ParamList []hash.IntValue `json:"ParamList"`
+	KeywordID float64      `json:"KeywordID"`
+	ParamList []hash.Value `json:"ParamList"`
 }
 type RogueTournKeywordParamAccessor struct {
 	_data          []RogueTournKeywordParam

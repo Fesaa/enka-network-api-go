@@ -21,7 +21,7 @@ type AvatarSkillTreeConfig struct {
 	LevelUpSkillID          []float64                            `json:"LevelUpSkillID"`
 	MaterialList            []AvatarSkillTreeConfigMaterialList  `json:"MaterialList"`
 	MaxLevel                float64                              `json:"MaxLevel"`
-	ParamList               []hash.IntValue                      `json:"ParamList"`
+	ParamList               []hash.Value                         `json:"ParamList"`
 	PointDesc               string                               `json:"PointDesc"`
 	PointID                 float64                              `json:"PointID"`
 	PointName               string                               `json:"PointName"`
@@ -38,8 +38,8 @@ type AvatarSkillTreeConfigMaterialList struct {
 	ItemNum float64 `json:"ItemNum"`
 }
 type AvatarSkillTreeConfigStatusAddList struct {
-	PropertyType string        `json:"PropertyType"`
-	Value        hash.IntValue `json:"Value"`
+	PropertyType string     `json:"PropertyType"`
+	Value        hash.Value `json:"Value"`
 }
 type AvatarSkillTreeConfigAccessor struct {
 	_data []AvatarSkillTreeConfig

@@ -75,7 +75,7 @@ func getUniverse() yoitsu.Universe {
 		},
 	})
 	universe.AddType(&yoitsu.StructType{
-		Name:   "hash.IntValue",
+		Name:   "hash.Value",
 		Import: "github.com/Fesaa/enka-network-api-go/hash",
 		Fields: map[string]*yoitsu.StructField{
 			"Value": {

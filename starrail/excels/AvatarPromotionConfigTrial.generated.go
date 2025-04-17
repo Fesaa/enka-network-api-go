@@ -9,21 +9,21 @@ import (
 )
 
 type AvatarPromotionConfigTrial struct {
-	AttackAdd          hash.IntValue                                 `json:"AttackAdd"`
-	AttackBase         hash.IntValue                                 `json:"AttackBase"`
+	AttackAdd          hash.Value                                    `json:"AttackAdd"`
+	AttackBase         hash.Value                                    `json:"AttackBase"`
 	AvatarID           float64                                       `json:"AvatarID"`
-	BaseAggro          hash.IntValue                                 `json:"BaseAggro"`
-	CriticalChance     hash.IntValue                                 `json:"CriticalChance"`
-	CriticalDamage     hash.IntValue                                 `json:"CriticalDamage"`
-	DefenceAdd         hash.IntValue                                 `json:"DefenceAdd"`
-	DefenceBase        hash.IntValue                                 `json:"DefenceBase"`
-	HPAdd              hash.IntValue                                 `json:"HPAdd"`
-	HPBase             hash.IntValue                                 `json:"HPBase"`
+	BaseAggro          hash.Value                                    `json:"BaseAggro"`
+	CriticalChance     hash.Value                                    `json:"CriticalChance"`
+	CriticalDamage     hash.Value                                    `json:"CriticalDamage"`
+	DefenceAdd         hash.Value                                    `json:"DefenceAdd"`
+	DefenceBase        hash.Value                                    `json:"DefenceBase"`
+	HPAdd              hash.Value                                    `json:"HPAdd"`
+	HPBase             hash.Value                                    `json:"HPBase"`
 	MaxLevel           float64                                       `json:"MaxLevel"`
 	PlayerLevelRequire float64                                       `json:"PlayerLevelRequire"`
 	Promotion          float64                                       `json:"Promotion"`
 	PromotionCostList  []AvatarPromotionConfigTrialPromotionCostList `json:"PromotionCostList"`
-	SpeedBase          hash.IntValue                                 `json:"SpeedBase"`
+	SpeedBase          hash.Value                                    `json:"SpeedBase"`
 	WorldLevelRequire  float64                                       `json:"WorldLevelRequire"`
 }
 type AvatarPromotionConfigTrialPromotionCostList struct {

@@ -9,12 +9,12 @@ import (
 )
 
 type RelicSubAffixConfig struct {
-	AffixID   float64       `json:"AffixID"`
-	BaseValue hash.IntValue `json:"BaseValue"`
-	GroupID   float64       `json:"GroupID"`
-	Property  string        `json:"Property"`
-	StepNum   float64       `json:"StepNum"`
-	StepValue hash.IntValue `json:"StepValue"`
+	AffixID   float64    `json:"AffixID"`
+	BaseValue hash.Value `json:"BaseValue"`
+	GroupID   float64    `json:"GroupID"`
+	Property  string     `json:"Property"`
+	StepNum   float64    `json:"StepNum"`
+	StepValue hash.Value `json:"StepValue"`
 }
 type RelicSubAffixConfigAccessor struct {
 	_data []RelicSubAffixConfig

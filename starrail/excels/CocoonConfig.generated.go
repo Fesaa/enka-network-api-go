@@ -9,22 +9,22 @@ import (
 )
 
 type CocoonConfig struct {
-	AutoObtainDamageType bool            `json:"AutoObtainDamageType"`
-	BuffDesc             hash.Hash       `json:"BuffDesc"`
-	CocoonType           string          `json:"CocoonType"`
-	DamageType           []string        `json:"DamageType"`
-	DropList             []float64       `json:"DropList"`
-	FarmType             string          `json:"FarmType"`
-	ID                   float64         `json:"ID"`
-	MappingInfoID        float64         `json:"MappingInfoID"`
-	MaxWave              float64         `json:"MaxWave"`
-	OpenDate             []interface{}   `json:"OpenDate"`
-	ParamList            []hash.IntValue `json:"ParamList"`
-	PropID               float64         `json:"PropID"`
-	StageID              float64         `json:"StageID"`
-	StageIDList          []float64       `json:"StageIDList"`
-	StaminaCost          float64         `json:"StaminaCost"`
-	WorldLevel           float64         `json:"WorldLevel"`
+	AutoObtainDamageType bool          `json:"AutoObtainDamageType"`
+	BuffDesc             hash.Hash     `json:"BuffDesc"`
+	CocoonType           string        `json:"CocoonType"`
+	DamageType           []string      `json:"DamageType"`
+	DropList             []float64     `json:"DropList"`
+	FarmType             string        `json:"FarmType"`
+	ID                   float64       `json:"ID"`
+	MappingInfoID        float64       `json:"MappingInfoID"`
+	MaxWave              float64       `json:"MaxWave"`
+	OpenDate             []interface{} `json:"OpenDate"`
+	ParamList            []hash.Value  `json:"ParamList"`
+	PropID               float64       `json:"PropID"`
+	StageID              float64       `json:"StageID"`
+	StageIDList          []float64     `json:"StageIDList"`
+	StaminaCost          float64       `json:"StaminaCost"`
+	WorldLevel           float64       `json:"WorldLevel"`
 }
 type CocoonConfigAccessor struct {
 	_data []CocoonConfig

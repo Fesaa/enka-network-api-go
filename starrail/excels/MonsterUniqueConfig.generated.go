@@ -10,15 +10,15 @@ import (
 
 type MonsterUniqueConfig struct {
 	AbilityNameList         []interface{}                     `json:"AbilityNameList"`
-	AttackModifyRatio       hash.IntValue                     `json:"AttackModifyRatio"`
+	AttackModifyRatio       hash.Value                        `json:"AttackModifyRatio"`
 	CustomValueTags         []string                          `json:"CustomValueTags"`
 	CustomValues            []MonsterUniqueConfigCustomValues `json:"CustomValues"`
 	DamageTypeResistance    []interface{}                     `json:"DamageTypeResistance"`
 	DebuffResist            []MonsterUniqueConfigDebuffResist `json:"DebuffResist"`
-	DefenceModifyRatio      hash.IntValue                     `json:"DefenceModifyRatio"`
+	DefenceModifyRatio      hash.Value                        `json:"DefenceModifyRatio"`
 	DynamicValues           []interface{}                     `json:"DynamicValues"`
 	EliteGroup              float64                           `json:"EliteGroup"`
-	HPModifyRatio           hash.IntValue                     `json:"HPModifyRatio"`
+	HPModifyRatio           hash.Value                        `json:"HPModifyRatio"`
 	HardLevelGroup          float64                           `json:"HardLevelGroup"`
 	MonsterID               float64                           `json:"MonsterID"`
 	MonsterIntroduction     hash.Hash                         `json:"MonsterIntroduction"`
@@ -28,10 +28,10 @@ type MonsterUniqueConfig struct {
 	OverrideAISkillSequence []interface{}                     `json:"OverrideAISkillSequence"`
 	OverrideSkillParams     []interface{}                     `json:"OverrideSkillParams"`
 	SkillList               []float64                         `json:"SkillList"`
-	SpeedModifyRatio        hash.IntValue                     `json:"SpeedModifyRatio"`
-	SpeedModifyValue        hash.IntValue                     `json:"SpeedModifyValue"`
-	StanceModifyRatio       hash.IntValue                     `json:"StanceModifyRatio"`
-	StanceModifyValue       hash.IntValue                     `json:"StanceModifyValue"`
+	SpeedModifyRatio        hash.Value                        `json:"SpeedModifyRatio"`
+	SpeedModifyValue        hash.Value                        `json:"SpeedModifyValue"`
+	StanceModifyRatio       hash.Value                        `json:"StanceModifyRatio"`
+	StanceModifyValue       hash.Value                        `json:"StanceModifyValue"`
 	StanceWeakList          []string                          `json:"StanceWeakList"`
 	SummonIDList            []interface{}                     `json:"SummonIDList"`
 }
@@ -40,8 +40,8 @@ type MonsterUniqueConfigCustomValues struct {
 	MBMDOCJIMEJ float64 `json:"MBMDOCJIMEJ"`
 }
 type MonsterUniqueConfigDebuffResist struct {
-	Key   string        `json:"Key"`
-	Value hash.IntValue `json:"Value"`
+	Key   string     `json:"Key"`
+	Value hash.Value `json:"Value"`
 }
 type MonsterUniqueConfigAccessor struct {
 	_data          []MonsterUniqueConfig

@@ -43,7 +43,7 @@ type AvatarConfig struct {
 	Rarity                    string                   `json:"Rarity"`
 	Release                   bool                     `json:"Release"`
 	RewardList                []AvatarConfigRewardList `json:"RewardList"`
-	SPNeed                    hash.IntValue            `json:"SPNeed"`
+	SPNeed                    hash.Value               `json:"SPNeed"`
 	SideAvatarHeadIconPath    string                   `json:"SideAvatarHeadIconPath"`
 	SkillList                 []float64                `json:"SkillList"`
 	SkilltreePrefabPath       string                   `json:"SkilltreePrefabPath"`

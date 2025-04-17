@@ -12,7 +12,7 @@ type RogueTournTitanTalent struct {
 	ActJson        string                      `json:"ActJson"`
 	ActTitle       hash.Hash                   `json:"ActTitle"`
 	Cost           []RogueTournTitanTalentCost `json:"Cost"`
-	DescParamList  []hash.IntValue             `json:"DescParamList"`
+	DescParamList  []hash.Value                `json:"DescParamList"`
 	ID             float64                     `json:"ID"`
 	Level          float64                     `json:"Level"`
 	PreID          float64                     `json:"PreID"`

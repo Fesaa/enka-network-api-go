@@ -9,10 +9,10 @@ import (
 )
 
 type RogueNousDiceBranchValue struct {
-	AeonID           float64         `json:"AeonID"`
-	BranchEffectDesc hash.Hash       `json:"BranchEffectDesc"`
-	BranchID         float64         `json:"BranchID"`
-	ParamList        []hash.IntValue `json:"ParamList"`
+	AeonID           float64      `json:"AeonID"`
+	BranchEffectDesc hash.Hash    `json:"BranchEffectDesc"`
+	BranchID         float64      `json:"BranchID"`
+	ParamList        []hash.Value `json:"ParamList"`
 }
 type RogueNousDiceBranchValueAccessor struct {
 	_data []RogueNousDiceBranchValue

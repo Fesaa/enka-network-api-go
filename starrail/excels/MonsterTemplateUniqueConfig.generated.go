@@ -11,16 +11,16 @@ import (
 type MonsterTemplateUniqueConfig struct {
 	AIPath              string                                       `json:"AIPath"`
 	AISkillSequence     []MonsterTemplateUniqueConfigAISkillSequence `json:"AISkillSequence"`
-	AttackBase          hash.IntValue                                `json:"AttackBase"`
-	HPBase              hash.IntValue                                `json:"HPBase"`
+	AttackBase          hash.Value                                   `json:"AttackBase"`
+	HPBase              hash.Value                                   `json:"HPBase"`
 	IconPath            string                                       `json:"IconPath"`
 	ImagePath           string                                       `json:"ImagePath"`
-	InitialDelayRatio   hash.IntValue                                `json:"InitialDelayRatio"`
+	InitialDelayRatio   hash.Value                                   `json:"InitialDelayRatio"`
 	JsonConfig          string                                       `json:"JsonConfig"`
 	ManikinConfigPath   string                                       `json:"ManikinConfigPath"`
 	ManikinImagePath    string                                       `json:"ManikinImagePath"`
 	ManikinPrefabPath   string                                       `json:"ManikinPrefabPath"`
-	MinimumFatigueRatio hash.IntValue                                `json:"MinimumFatigueRatio"`
+	MinimumFatigueRatio hash.Value                                   `json:"MinimumFatigueRatio"`
 	MonsterBaseType     string                                       `json:"MonsterBaseType"`
 	MonsterName         hash.Hash                                    `json:"MonsterName"`
 	MonsterTemplateID   float64                                      `json:"MonsterTemplateID"`
@@ -29,8 +29,8 @@ type MonsterTemplateUniqueConfig struct {
 	PrefabPath          string                                       `json:"PrefabPath"`
 	Rank                string                                       `json:"Rank"`
 	RoundIconPath       string                                       `json:"RoundIconPath"`
-	SpeedBase           hash.IntValue                                `json:"SpeedBase"`
-	StanceBase          hash.IntValue                                `json:"StanceBase"`
+	SpeedBase           hash.Value                                   `json:"SpeedBase"`
+	StanceBase          hash.Value                                   `json:"StanceBase"`
 	StanceCount         float64                                      `json:"StanceCount"`
 }
 type MonsterTemplateUniqueConfigAISkillSequence struct {

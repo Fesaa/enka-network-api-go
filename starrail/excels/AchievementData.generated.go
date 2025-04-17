@@ -9,21 +9,21 @@ import (
 )
 
 type AchievementData struct {
-	AchievementDesc     hash.Hash       `json:"AchievementDesc"`
-	AchievementDescPS   hash.Hash       `json:"AchievementDescPS"`
-	AchievementID       float64         `json:"AchievementID"`
-	AchievementTitle    hash.Hash       `json:"AchievementTitle"`
-	HideAchievementDesc hash.Hash       `json:"HideAchievementDesc"`
-	LinearQuestID       float64         `json:"LinearQuestID"`
-	PSTrophyID          string          `json:"PSTrophyID"`
-	ParamList           []hash.IntValue `json:"ParamList"`
-	Priority            float64         `json:"Priority"`
-	QuestID             float64         `json:"QuestID"`
-	Rarity              string          `json:"Rarity"`
-	RecordText          hash.Hash       `json:"RecordText"`
-	RecordType          string          `json:"RecordType"`
-	SeriesID            float64         `json:"SeriesID"`
-	ShowType            string          `json:"ShowType"`
+	AchievementDesc     hash.Hash    `json:"AchievementDesc"`
+	AchievementDescPS   hash.Hash    `json:"AchievementDescPS"`
+	AchievementID       float64      `json:"AchievementID"`
+	AchievementTitle    hash.Hash    `json:"AchievementTitle"`
+	HideAchievementDesc hash.Hash    `json:"HideAchievementDesc"`
+	LinearQuestID       float64      `json:"LinearQuestID"`
+	PSTrophyID          string       `json:"PSTrophyID"`
+	ParamList           []hash.Value `json:"ParamList"`
+	Priority            float64      `json:"Priority"`
+	QuestID             float64      `json:"QuestID"`
+	Rarity              string       `json:"Rarity"`
+	RecordText          hash.Hash    `json:"RecordText"`
+	RecordType          string       `json:"RecordType"`
+	SeriesID            float64      `json:"SeriesID"`
+	ShowType            string       `json:"ShowType"`
 }
 type AchievementDataAccessor struct {
 	_data              []AchievementData

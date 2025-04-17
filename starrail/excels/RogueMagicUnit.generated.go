@@ -9,22 +9,22 @@ import (
 )
 
 type RogueMagicUnit struct {
-	AttachRangeTypeList []string      `json:"AttachRangeTypeList"`
-	EffectTypeList      []string      `json:"EffectTypeList"`
-	ExtraEffectID       []float64     `json:"ExtraEffectID"`
-	FuncType            string        `json:"FuncType"`
-	LimitRange          string        `json:"LimitRange"`
-	MagicUnitCategory   string        `json:"MagicUnitCategory"`
-	MagicUnitDesc       hash.Hash     `json:"MagicUnitDesc"`
-	MagicUnitID         float64       `json:"MagicUnitID"`
-	MagicUnitLevel      float64       `json:"MagicUnitLevel"`
-	MagicUnitMazeBuffID float64       `json:"MagicUnitMazeBuffID"`
-	MagicUnitSimpleDesc hash.Hash     `json:"MagicUnitSimpleDesc"`
-	MagicUnitType       string        `json:"MagicUnitType"`
-	SpecialType         string        `json:"SpecialType"`
-	StyleType           string        `json:"StyleType"`
-	UnitBasicPower      hash.IntValue `json:"UnitBasicPower"`
-	UnlockID            float64       `json:"UnlockID"`
+	AttachRangeTypeList []string   `json:"AttachRangeTypeList"`
+	EffectTypeList      []string   `json:"EffectTypeList"`
+	ExtraEffectID       []float64  `json:"ExtraEffectID"`
+	FuncType            string     `json:"FuncType"`
+	LimitRange          string     `json:"LimitRange"`
+	MagicUnitCategory   string     `json:"MagicUnitCategory"`
+	MagicUnitDesc       hash.Hash  `json:"MagicUnitDesc"`
+	MagicUnitID         float64    `json:"MagicUnitID"`
+	MagicUnitLevel      float64    `json:"MagicUnitLevel"`
+	MagicUnitMazeBuffID float64    `json:"MagicUnitMazeBuffID"`
+	MagicUnitSimpleDesc hash.Hash  `json:"MagicUnitSimpleDesc"`
+	MagicUnitType       string     `json:"MagicUnitType"`
+	SpecialType         string     `json:"SpecialType"`
+	StyleType           string     `json:"StyleType"`
+	UnitBasicPower      hash.Value `json:"UnitBasicPower"`
+	UnlockID            float64    `json:"UnlockID"`
 }
 type RogueMagicUnitAccessor struct {
 	_data []RogueMagicUnit

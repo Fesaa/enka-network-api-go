@@ -61,3 +61,11 @@ type StringValue struct {
 func (s StringValue) GetHash() string {
 	return s.StringValue
 }
+
+type Value struct {
+	Value float64 `json:"Value"`
+}
+
+func (v Value) GetHash() string {
+	return fmt.Sprint(v.Value)
+}

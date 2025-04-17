@@ -9,12 +9,12 @@ import (
 )
 
 type EvolveBuildCardConfig struct {
-	ID             float64         `json:"ID"`
-	InfluenceScope string          `json:"InfluenceScope"`
-	ItemIcon       string          `json:"ItemIcon"`
-	LvID           float64         `json:"LvID"`
-	ParamList      []hash.IntValue `json:"ParamList"`
-	Type           string          `json:"Type"`
+	ID             float64      `json:"ID"`
+	InfluenceScope string       `json:"InfluenceScope"`
+	ItemIcon       string       `json:"ItemIcon"`
+	LvID           float64      `json:"LvID"`
+	ParamList      []hash.Value `json:"ParamList"`
+	Type           string       `json:"Type"`
 }
 type EvolveBuildCardConfigAccessor struct {
 	_data         []EvolveBuildCardConfig

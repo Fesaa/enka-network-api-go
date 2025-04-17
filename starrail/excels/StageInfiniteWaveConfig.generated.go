@@ -9,13 +9,13 @@ import (
 )
 
 type StageInfiniteWaveConfig struct {
-	Ability              string          `json:"Ability"`
-	ClearPreviousAbility bool            `json:"ClearPreviousAbility"`
-	InfiniteWaveID       float64         `json:"InfiniteWaveID"`
-	MaxMonsterCount      float64         `json:"MaxMonsterCount"`
-	MaxTeammateCount     float64         `json:"MaxTeammateCount"`
-	MonsterGroupIDList   []float64       `json:"MonsterGroupIDList"`
-	ParamList            []hash.IntValue `json:"ParamList"`
+	Ability              string       `json:"Ability"`
+	ClearPreviousAbility bool         `json:"ClearPreviousAbility"`
+	InfiniteWaveID       float64      `json:"InfiniteWaveID"`
+	MaxMonsterCount      float64      `json:"MaxMonsterCount"`
+	MaxTeammateCount     float64      `json:"MaxTeammateCount"`
+	MonsterGroupIDList   []float64    `json:"MonsterGroupIDList"`
+	ParamList            []hash.Value `json:"ParamList"`
 }
 type StageInfiniteWaveConfigAccessor struct {
 	_data               []StageInfiniteWaveConfig

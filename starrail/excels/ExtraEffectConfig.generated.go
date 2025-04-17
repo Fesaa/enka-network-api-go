@@ -9,12 +9,12 @@ import (
 )
 
 type ExtraEffectConfig struct {
-	DescParamList       []hash.IntValue `json:"DescParamList"`
-	ExtraEffectDesc     hash.Hash       `json:"ExtraEffectDesc"`
-	ExtraEffectID       float64         `json:"ExtraEffectID"`
-	ExtraEffectIconPath string          `json:"ExtraEffectIconPath"`
-	ExtraEffectName     hash.Hash       `json:"ExtraEffectName"`
-	ExtraEffectType     float64         `json:"ExtraEffectType"`
+	DescParamList       []hash.Value `json:"DescParamList"`
+	ExtraEffectDesc     hash.Hash    `json:"ExtraEffectDesc"`
+	ExtraEffectID       float64      `json:"ExtraEffectID"`
+	ExtraEffectIconPath string       `json:"ExtraEffectIconPath"`
+	ExtraEffectName     hash.Hash    `json:"ExtraEffectName"`
+	ExtraEffectType     float64      `json:"ExtraEffectType"`
 }
 type ExtraEffectConfigAccessor struct {
 	_data              []ExtraEffectConfig

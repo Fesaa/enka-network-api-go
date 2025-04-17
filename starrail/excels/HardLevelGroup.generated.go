@@ -9,16 +9,16 @@ import (
 )
 
 type HardLevelGroup struct {
-	AttackRatio       hash.IntValue   `json:"AttackRatio"`
-	CombatPowerList   []hash.IntValue `json:"CombatPowerList"`
-	DefenceRatio      hash.IntValue   `json:"DefenceRatio"`
-	HPRatio           hash.IntValue   `json:"HPRatio"`
-	HardLevelGroup    float64         `json:"HardLevelGroup"`
-	Level             float64         `json:"Level"`
-	SpeedRatio        hash.IntValue   `json:"SpeedRatio"`
-	StanceRatio       hash.IntValue   `json:"StanceRatio"`
-	StatusProbability hash.IntValue   `json:"StatusProbability"`
-	StatusResistance  hash.IntValue   `json:"StatusResistance"`
+	AttackRatio       hash.Value   `json:"AttackRatio"`
+	CombatPowerList   []hash.Value `json:"CombatPowerList"`
+	DefenceRatio      hash.Value   `json:"DefenceRatio"`
+	HPRatio           hash.Value   `json:"HPRatio"`
+	HardLevelGroup    float64      `json:"HardLevelGroup"`
+	Level             float64      `json:"Level"`
+	SpeedRatio        hash.Value   `json:"SpeedRatio"`
+	StanceRatio       hash.Value   `json:"StanceRatio"`
+	StatusProbability hash.Value   `json:"StatusProbability"`
+	StatusResistance  hash.Value   `json:"StatusResistance"`
 }
 type HardLevelGroupAccessor struct {
 	_data []HardLevelGroup

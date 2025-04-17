@@ -9,16 +9,16 @@ import (
 )
 
 type RogueDLCBossDecay struct {
-	BossDecayComeFrom hash.Hash       `json:"BossDecayComeFrom"`
-	BossDecayDesc     hash.Hash       `json:"BossDecayDesc"`
-	BossDecayID       float64         `json:"BossDecayID"`
-	BossDecayName     hash.Hash       `json:"BossDecayName"`
-	BossEffectIcon    string          `json:"BossEffectIcon"`
-	DecayIcon         string          `json:"DecayIcon"`
-	DescParam         []hash.IntValue `json:"DescParam"`
-	EffectParamList   []float64       `json:"EffectParamList"`
-	EffectType        string          `json:"EffectType"`
-	ExtraDesc         []float64       `json:"ExtraDesc"`
+	BossDecayComeFrom hash.Hash    `json:"BossDecayComeFrom"`
+	BossDecayDesc     hash.Hash    `json:"BossDecayDesc"`
+	BossDecayID       float64      `json:"BossDecayID"`
+	BossDecayName     hash.Hash    `json:"BossDecayName"`
+	BossEffectIcon    string       `json:"BossEffectIcon"`
+	DecayIcon         string       `json:"DecayIcon"`
+	DescParam         []hash.Value `json:"DescParam"`
+	EffectParamList   []float64    `json:"EffectParamList"`
+	EffectType        string       `json:"EffectType"`
+	ExtraDesc         []float64    `json:"ExtraDesc"`
 }
 type RogueDLCBossDecayAccessor struct {
 	_data            []RogueDLCBossDecay

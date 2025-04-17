@@ -11,7 +11,7 @@ import (
 type RogueTournPermanentTalent struct {
 	Cost                []RogueTournPermanentTalentCost `json:"Cost"`
 	EffectDesc          hash.Hash                       `json:"EffectDesc"`
-	EffectDescParamList []hash.IntValue                 `json:"EffectDescParamList"`
+	EffectDescParamList []hash.Value                    `json:"EffectDescParamList"`
 	EffectTag           hash.Hash                       `json:"EffectTag"`
 	EffectTitle         hash.Hash                       `json:"EffectTitle"`
 	Icon                string                          `json:"Icon"`
