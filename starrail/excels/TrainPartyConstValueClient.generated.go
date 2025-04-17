@@ -3,21 +3,14 @@ excels
 
 import (
 	"github.com/Fesaa/enka-network-api-go/hash"
-	"encoding/json"
 	"net/http"
 	"io"
+	"encoding/json"
 )
 
 type TrainPartyConstValueClient struct {
-	ConstValueName string                          `json:"ConstValueName"`
-	Value          TrainPartyConstValueClientValue `json:"Value"`
-}
-type TrainPartyConstValueClientValue struct {
-	ArrayValue  []hash.StringValue                `json:"ArrayValue"`
-	FloatValue  json.Number                       `json:"FloatValue"`
-	IntValue    json.Number                       `json:"IntValue"`
-	MapValue    map[string]map[string]json.Number `json:"MapValue"`
-	StringValue string                            `json:"StringValue"`
+	ConstValueName string        `json:"ConstValueName"`
+	Value          hash.IntValue `json:"Value"`
 }
 type TrainPartyConstValueClientAccessor struct {
 	_data               []TrainPartyConstValueClient

@@ -57,37 +57,42 @@ func TestRelicExcels(t *testing.T) {
 
 	castoriceData := map[string]excels.AvatarSkillTreeConfig{}
 	for _, skillTree := range skillTrees {
-		if i, _ := skillTree.AvatarID.Int64(); i != 1407 {
+		if skillTree.AvatarID != 1407 {
 			continue
 		}
 
 		castoriceData[skillTree.Anchor] = skillTree
 	}
 
-	if i, _ := castoriceData["Point01"].PointID.Int64(); i != 1407001 {
+	if castoriceData["Point01"].PointID != 1407001 {
 		t.Errorf("Expected Basic(1407001) got %v", castoriceData["Point01"].PointID)
 		t.FailNow()
 	}
 
-	if i, _ := castoriceData["Point04"].PointID.Int64(); i != 1407004 {
+	if castoriceData["Point04"].PointID != 1407004 {
 		t.Errorf("Expected Talent(1407004) got %v", castoriceData["Point04"].PointID)
 		t.FailNow()
 	}
 
-	if i, _ := castoriceData["Point20"].PointID.Int64(); i != 1407302 {
+	if castoriceData["Point20"].PointID != 1407302 {
 		t.Errorf("Expected MemoTalent(1407302) got %v", castoriceData["Point20"].PointID)
 		t.FailNow()
 	}
 
-	if i, _ := castoriceData["Point08"].PointID.Int64(); i != 1407103 {
+	if castoriceData["Point08"].PointID != 1407103 {
 		t.Errorf("Expected Major3(1407103) got %v", castoriceData["Point08"].PointID)
 		t.FailNow()
 	}
 
 	relicAccessor := excels.RelicSetConfigAccessor{}
-	set, err := relicAccessor.BySetID("101")
+	set, err := relicAccessor.BySetID(101)
 	if err != nil {
 		t.Error(err)
+		t.FailNow()
+	}
+
+	if set.SetName.GetHash() != "17317659818484992751" {
+		t.Errorf("Expected 17317659818484992751 got %s", set.SetName.GetHash())
 		t.FailNow()
 	}
 
@@ -97,7 +102,7 @@ func TestRelicExcels(t *testing.T) {
 	}
 
 	relicSetItemAccessor := excels.RelicConfigAccessor{}
-	setItem, err := relicSetItemAccessor.ByID("31011")
+	setItem, err := relicSetItemAccessor.ByID(31011)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
