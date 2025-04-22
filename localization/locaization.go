@@ -49,7 +49,9 @@ func Init(logger zerolog.Logger, caches ...Cache) {
 	if len(caches) > 0 {
 		cache = caches[0]
 	} else {
-		cache = &diskCache{}
+		cache = &diskCache{
+			log: logger.With().Str("handler", "diskcache").Logger(),
+		}
 	}
 
 	l := Localization{
@@ -142,7 +144,7 @@ func (l *Localization) fetchJson(s string, url string) (*map[string]string, erro
 	}
 	defer func() {
 		l.log.Debug().Str("url", url).Msg("saving to cache")
-		if err, _ = l.cache.Save(cacheKey, data); err != nil {
+		if err = l.cache.Save(cacheKey, data); err != nil {
 			l.log.Warn().Str("cacheKey", cacheKey).Str("url", url).Msg("Failed to save to cache")
 		}
 	}()

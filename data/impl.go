@@ -1,6 +1,10 @@
 package data
 
-import "github.com/rs/zerolog"
+import (
+	"github.com/Fesaa/enka-network-api-go/localization"
+	"github.com/rs/zerolog"
+	"sync"
+)
 
 func New(log zerolog.Logger) (EnkaData, error) {
 	return newMemoryCache(log)
@@ -20,12 +24,32 @@ func (m *memoryCache) GenshinData() GenshinData {
 }
 
 func newMemoryCache(log zerolog.Logger) (*memoryCache, error) {
-	sr, err := newStarRail(log)
-	if err != nil {
-		return nil, err
+	wg := sync.WaitGroup{}
+
+	var (
+		sr  StarRailData
+		g   GenshinData
+		err error
+	)
+
+	if localization.LoadStarRail {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			sr, err = newStarRail(log)
+		}()
 	}
 
-	g, err := newGenshin(log)
+	if localization.LoadGenshin {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			g, err = newGenshin(log)
+		}()
+	}
+
+	wg.Wait()
+
 	if err != nil {
 		return nil, err
 	}

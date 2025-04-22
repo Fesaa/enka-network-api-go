@@ -1,6 +1,7 @@
 package localization
 
 import (
+	"github.com/rs/zerolog"
 	"io"
 	"os"
 	"path/filepath"
@@ -8,28 +9,24 @@ import (
 
 type Cache interface {
 	Load(s string) ([]byte, error)
-	Save(s string, data []byte) (error, bool)
+	Save(s string, data []byte) error
 }
 
-type diskCache struct{}
+type diskCache struct {
+	log zerolog.Logger
+}
 
 func (d *diskCache) Load(s string) ([]byte, error) {
-	return d.tryFromDisk(s)
-}
-
-func (d *diskCache) Save(s string, data []byte) (error, bool) {
-	return d.saveToDisk(s, data)
-}
-
-func (d *diskCache) tryFromDisk(s string) ([]byte, error) {
 	dir := os.Getenv("LOCALIZATION_DIR")
 	if dir == "" {
 		dir = os.TempDir()
 	}
 
 	cachePath := filepath.Join(dir, s)
+	d.log.Debug().Str("cachePath", cachePath).Msg("Trying to load from disk")
 	f, err := os.Open(cachePath)
 	if err != nil {
+		d.log.Debug().Err(err).Str("cachePath", cachePath).Msg("Failed to load from disk")
 		return nil, err
 	}
 
@@ -41,22 +38,25 @@ func (d *diskCache) tryFromDisk(s string) ([]byte, error) {
 	return data, nil
 }
 
-func (d *diskCache) saveToDisk(s string, data []byte) (error, bool) {
+func (d *diskCache) Save(s string, data []byte) error {
 	dir := os.Getenv("LOCALIZATION_DIR")
 	if dir == "" {
 		dir = os.TempDir()
 	}
 
 	cachePath := filepath.Join(dir, s)
+	d.log.Debug().Str("cachePath", cachePath).Msg("Trying to save to disk")
 	f, err := os.Create(cachePath)
 	if err != nil {
-		return err, false
+		d.log.Debug().Err(err).Str("cachePath", cachePath).Msg("Failed to save to disk")
+		return err
 	}
 
 	_, err = f.Write(data)
 	if err != nil {
-		return err, false
+		d.log.Debug().Err(err).Str("cachePath", cachePath).Msg("Failed to save to disk")
+		return err
 	}
 
-	return nil, true
+	return nil
 }
