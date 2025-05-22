@@ -9,6 +9,7 @@ import (
 )
 
 type TarotBookEnergy struct {
+	IsRepetitive bool      `json:"IsRepetitive"`
 	IsSilence    bool      `json:"IsSilence"`
 	SubmissionID float64   `json:"SubmissionID"`
 	Toast        hash.Hash `json:"Toast"`

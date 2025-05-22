@@ -19,6 +19,7 @@ type EvolveBuildShopConfig struct {
 	Name           hash.Hash                        `json:"Name"`
 	ParamList      []hash.Value                     `json:"ParamList"`
 	PriceList      []EvolveBuildShopConfigPriceList `json:"PriceList"`
+	Season         string                           `json:"Season"`
 	ShopDesc       hash.Hash                        `json:"ShopDesc"`
 	ShopType       string                           `json:"ShopType"`
 	TotalBuff      hash.Hash                        `json:"TotalBuff"`

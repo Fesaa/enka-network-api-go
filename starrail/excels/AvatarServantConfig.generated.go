@@ -34,7 +34,6 @@ type AvatarServantConfigAccessor struct {
 	_data                           []AvatarServantConfig
 	_dataActionServantHeadIconPath  map[string]AvatarServantConfig
 	_dataConfig                     map[string]AvatarServantConfig
-	_dataHPBase                     map[string]AvatarServantConfig
 	_dataHPInherit                  map[string]AvatarServantConfig
 	_dataHeadIcon                   map[string]AvatarServantConfig
 	_dataManikinJsonPath            map[string]AvatarServantConfig
@@ -78,7 +77,6 @@ func (a *AvatarServantConfigAccessor) Raw() ([]AvatarServantConfig, error) {
 func (a *AvatarServantConfigAccessor) GroupData() {
 	a._dataActionServantHeadIconPath = map[string]AvatarServantConfig{}
 	a._dataConfig = map[string]AvatarServantConfig{}
-	a._dataHPBase = map[string]AvatarServantConfig{}
 	a._dataHPInherit = map[string]AvatarServantConfig{}
 	a._dataHeadIcon = map[string]AvatarServantConfig{}
 	a._dataManikinJsonPath = map[string]AvatarServantConfig{}
@@ -93,7 +91,6 @@ func (a *AvatarServantConfigAccessor) GroupData() {
 	for _, d := range a._data {
 		a._dataActionServantHeadIconPath[d.ActionServantHeadIconPath] = d
 		a._dataConfig[d.Config] = d
-		a._dataHPBase[d.HPBase] = d
 		a._dataHPInherit[d.HPInherit] = d
 		a._dataHeadIcon[d.HeadIcon] = d
 		a._dataManikinJsonPath[d.ManikinJsonPath] = d
@@ -138,22 +135,6 @@ func (a *AvatarServantConfigAccessor) ByConfig(identifier string) (AvatarServant
 		a.GroupData()
 	}
 	return a._dataConfig[identifier], nil
-}
-
-// ByHPBase returns the AvatarServantConfig uniquely identified by HPBase
-//
-// Error is only non-nil if the source errors out
-func (a *AvatarServantConfigAccessor) ByHPBase(identifier string) (AvatarServantConfig, error) {
-	if a._dataHPBase == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return AvatarServantConfig{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataHPBase[identifier], nil
 }
 
 // ByHPInherit returns the AvatarServantConfig uniquely identified by HPInherit

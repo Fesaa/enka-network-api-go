@@ -9,6 +9,7 @@ import (
 
 type EvolveBuildTutorial struct {
 	ID            float64 `json:"ID"`
+	Season        string  `json:"Season"`
 	StageMergedID float64 `json:"StageMergedID"`
 	TutorialID    string  `json:"TutorialID"`
 	WeaponLevel   float64 `json:"WeaponLevel"`

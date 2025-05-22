@@ -15,7 +15,6 @@ type RogueTournCocoonConfig struct {
 	DropList             []float64                                 `json:"DropList"`
 	EventID              float64                                   `json:"EventID"`
 	ID                   float64                                   `json:"ID"`
-	MapEntranceID        float64                                   `json:"MapEntranceID"`
 	NpcMonsterID         float64                                   `json:"NpcMonsterID"`
 	PicPath              string                                    `json:"PicPath"`
 	RecommendDamageTypes []string                                  `json:"RecommendDamageTypes"`

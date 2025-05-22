@@ -20,9 +20,13 @@ type RogueTournTitanType struct {
 	TitanTitle                     hash.Hash `json:"TitanTitle"`
 }
 type RogueTournTitanTypeAccessor struct {
-	_data                     []RogueTournTitanType
-	_dataRogueTitanTalentIcon map[string]RogueTournTitanType
-	_dataRogueTitanType       map[string]RogueTournTitanType
+	_data                               []RogueTournTitanType
+	_dataRogueTitanAvatarRoundIconMid   map[string]RogueTournTitanType
+	_dataRogueTitanAvatarRoundIconSmall map[string]RogueTournTitanType
+	_dataRogueTitanCardIcon             map[string]RogueTournTitanType
+	_dataRogueTitanCardShadowIcon       map[string]RogueTournTitanType
+	_dataRogueTitanTalentIcon           map[string]RogueTournTitanType
+	_dataRogueTitanType                 map[string]RogueTournTitanType
 }
 
 // LoadData retrieves the data. Must be called before RogueTournTitanType.GroupData
@@ -53,12 +57,84 @@ func (a *RogueTournTitanTypeAccessor) Raw() ([]RogueTournTitanType, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RogueTournTitanTypeAccessor.LoadData to preload everything
 func (a *RogueTournTitanTypeAccessor) GroupData() {
+	a._dataRogueTitanAvatarRoundIconMid = map[string]RogueTournTitanType{}
+	a._dataRogueTitanAvatarRoundIconSmall = map[string]RogueTournTitanType{}
+	a._dataRogueTitanCardIcon = map[string]RogueTournTitanType{}
+	a._dataRogueTitanCardShadowIcon = map[string]RogueTournTitanType{}
 	a._dataRogueTitanTalentIcon = map[string]RogueTournTitanType{}
 	a._dataRogueTitanType = map[string]RogueTournTitanType{}
 	for _, d := range a._data {
+		a._dataRogueTitanAvatarRoundIconMid[d.RogueTitanAvatarRoundIconMid] = d
+		a._dataRogueTitanAvatarRoundIconSmall[d.RogueTitanAvatarRoundIconSmall] = d
+		a._dataRogueTitanCardIcon[d.RogueTitanCardIcon] = d
+		a._dataRogueTitanCardShadowIcon[d.RogueTitanCardShadowIcon] = d
 		a._dataRogueTitanTalentIcon[d.RogueTitanTalentIcon] = d
 		a._dataRogueTitanType[d.RogueTitanType] = d
 	}
+}
+
+// ByRogueTitanAvatarRoundIconMid returns the RogueTournTitanType uniquely identified by RogueTitanAvatarRoundIconMid
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournTitanTypeAccessor) ByRogueTitanAvatarRoundIconMid(identifier string) (RogueTournTitanType, error) {
+	if a._dataRogueTitanAvatarRoundIconMid == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournTitanType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueTitanAvatarRoundIconMid[identifier], nil
+}
+
+// ByRogueTitanAvatarRoundIconSmall returns the RogueTournTitanType uniquely identified by RogueTitanAvatarRoundIconSmall
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournTitanTypeAccessor) ByRogueTitanAvatarRoundIconSmall(identifier string) (RogueTournTitanType, error) {
+	if a._dataRogueTitanAvatarRoundIconSmall == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournTitanType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueTitanAvatarRoundIconSmall[identifier], nil
+}
+
+// ByRogueTitanCardIcon returns the RogueTournTitanType uniquely identified by RogueTitanCardIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournTitanTypeAccessor) ByRogueTitanCardIcon(identifier string) (RogueTournTitanType, error) {
+	if a._dataRogueTitanCardIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournTitanType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueTitanCardIcon[identifier], nil
+}
+
+// ByRogueTitanCardShadowIcon returns the RogueTournTitanType uniquely identified by RogueTitanCardShadowIcon
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournTitanTypeAccessor) ByRogueTitanCardShadowIcon(identifier string) (RogueTournTitanType, error) {
+	if a._dataRogueTitanCardShadowIcon == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournTitanType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataRogueTitanCardShadowIcon[identifier], nil
 }
 
 // ByRogueTitanTalentIcon returns the RogueTournTitanType uniquely identified by RogueTitanTalentIcon

@@ -9,14 +9,16 @@ import (
 )
 
 type RechargeConfig struct {
-	FirstCharge  float64   `json:"FirstCharge"`
-	GiftImage    string    `json:"GiftImage"`
-	GiftName     hash.Hash `json:"GiftName"`
-	GiftType     float64   `json:"GiftType"`
-	ListOrder    float64   `json:"ListOrder"`
-	NormalCharge float64   `json:"NormalCharge"`
-	ProductID    string    `json:"ProductID"`
-	TierID       string    `json:"TierID"`
+	FirstCharge           float64   `json:"FirstCharge"`
+	FirstRechangeConfirm  hash.Hash `json:"FirstRechangeConfirm"`
+	GiftImage             string    `json:"GiftImage"`
+	GiftName              hash.Hash `json:"GiftName"`
+	GiftType              float64   `json:"GiftType"`
+	ListOrder             float64   `json:"ListOrder"`
+	NormalCharge          float64   `json:"NormalCharge"`
+	NormalRechargeConfirm hash.Hash `json:"NormalRechargeConfirm"`
+	ProductID             string    `json:"ProductID"`
+	TierID                string    `json:"TierID"`
 }
 type RechargeConfigAccessor struct {
 	_data          []RechargeConfig

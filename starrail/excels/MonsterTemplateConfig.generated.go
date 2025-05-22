@@ -24,12 +24,10 @@ type MonsterTemplateConfig struct {
 	ManikinImagePath     string                                 `json:"ManikinImagePath"`
 	ManikinPrefabPath    string                                 `json:"ManikinPrefabPath"`
 	MinimumFatigueRatio  hash.Value                             `json:"MinimumFatigueRatio"`
-	MonsterBaseType      string                                 `json:"MonsterBaseType"`
 	MonsterCampID        float64                                `json:"MonsterCampID"`
 	MonsterName          hash.Hash                              `json:"MonsterName"`
 	MonsterTemplateID    float64                                `json:"MonsterTemplateID"`
 	NPCMonsterList       []float64                              `json:"NPCMonsterList"`
-	NatureID             float64                                `json:"NatureID"`
 	PrefabPath           string                                 `json:"PrefabPath"`
 	Rank                 string                                 `json:"Rank"`
 	RoundIconPath        string                                 `json:"RoundIconPath"`

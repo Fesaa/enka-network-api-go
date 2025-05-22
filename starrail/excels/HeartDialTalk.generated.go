@@ -11,6 +11,7 @@ import (
 type HeartDialTalk struct {
 	FloorIDList []float64 `json:"FloorIDList"`
 	ID          float64   `json:"ID"`
+	IsKaomoji   bool      `json:"IsKaomoji"`
 	SDFText     hash.Hash `json:"SDFText"`
 	VoiceID     float64   `json:"VoiceID"`
 }

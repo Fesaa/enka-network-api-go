@@ -11,6 +11,7 @@ type MazePuzzleOrigamiColony struct {
 	FinishQuestID   float64                               `json:"FinishQuestID"`
 	FloorID         float64                               `json:"FloorID"`
 	MaterialCost    []MazePuzzleOrigamiColonyMaterialCost `json:"MaterialCost"`
+	MirrorFloorID   float64                               `json:"MirrorFloorID"`
 	OrigamiColonyID float64                               `json:"OrigamiColonyID"`
 	TalkSentenceID  float64                               `json:"TalkSentenceID"`
 }

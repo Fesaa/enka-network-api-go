@@ -16,6 +16,7 @@ type RogueTournCollection struct {
 	IconPath             string    `json:"IconPath"`
 	ParamList            []float64 `json:"ParamList"`
 	PrefabPath           string    `json:"PrefabPath"`
+	SlotIconPath         string    `json:"SlotIconPath"`
 	UnlockID             float64   `json:"UnlockID"`
 }
 type RogueTournCollectionAccessor struct {
@@ -23,6 +24,7 @@ type RogueTournCollectionAccessor struct {
 	_dataCollectionID map[float64]RogueTournCollection
 	_dataIconPath     map[string]RogueTournCollection
 	_dataPrefabPath   map[string]RogueTournCollection
+	_dataSlotIconPath map[string]RogueTournCollection
 	_dataUnlockID     map[float64]RogueTournCollection
 }
 
@@ -57,11 +59,13 @@ func (a *RogueTournCollectionAccessor) GroupData() {
 	a._dataCollectionID = map[float64]RogueTournCollection{}
 	a._dataIconPath = map[string]RogueTournCollection{}
 	a._dataPrefabPath = map[string]RogueTournCollection{}
+	a._dataSlotIconPath = map[string]RogueTournCollection{}
 	a._dataUnlockID = map[float64]RogueTournCollection{}
 	for _, d := range a._data {
 		a._dataCollectionID[d.CollectionID] = d
 		a._dataIconPath[d.IconPath] = d
 		a._dataPrefabPath[d.PrefabPath] = d
+		a._dataSlotIconPath[d.SlotIconPath] = d
 		a._dataUnlockID[d.UnlockID] = d
 	}
 }
@@ -112,6 +116,22 @@ func (a *RogueTournCollectionAccessor) ByPrefabPath(identifier string) (RogueTou
 		a.GroupData()
 	}
 	return a._dataPrefabPath[identifier], nil
+}
+
+// BySlotIconPath returns the RogueTournCollection uniquely identified by SlotIconPath
+//
+// Error is only non-nil if the source errors out
+func (a *RogueTournCollectionAccessor) BySlotIconPath(identifier string) (RogueTournCollection, error) {
+	if a._dataSlotIconPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return RogueTournCollection{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSlotIconPath[identifier], nil
 }
 
 // ByUnlockID returns the RogueTournCollection uniquely identified by UnlockID

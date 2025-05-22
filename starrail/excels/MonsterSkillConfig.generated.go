@@ -9,8 +9,6 @@ import (
 )
 
 type MonsterSkillConfig struct {
-	AICD              float64      `json:"AI_CD"`
-	AIICD             float64      `json:"AI_ICD"`
 	AttackType        string       `json:"AttackType"`
 	DamageType        string       `json:"DamageType"`
 	DelayRatio        hash.Value   `json:"DelayRatio"`

@@ -19,7 +19,6 @@ type MonsterConfig struct {
 	DynamicValues           []interface{}                          `json:"DynamicValues"`
 	EliteGroup              float64                                `json:"EliteGroup"`
 	HPModifyRatio           hash.Value                             `json:"HPModifyRatio"`
-	HardLevelGroup          float64                                `json:"HardLevelGroup"`
 	MonsterID               float64                                `json:"MonsterID"`
 	MonsterIntroduction     hash.Hash                              `json:"MonsterIntroduction"`
 	MonsterName             hash.Hash                              `json:"MonsterName"`

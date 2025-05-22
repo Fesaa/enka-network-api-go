@@ -9,8 +9,8 @@ import (
 )
 
 type RogueTournConstClient struct {
-	ConstValueName string           `json:"ConstValueName"`
-	Value          hash.StringValue `json:"Value"`
+	ConstValueName string        `json:"ConstValueName"`
+	Value          hash.IntValue `json:"Value"`
 }
 type RogueTournConstClientAccessor struct {
 	_data               []RogueTournConstClient

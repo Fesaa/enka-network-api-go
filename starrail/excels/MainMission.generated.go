@@ -19,6 +19,7 @@ type MainMission struct {
 	MainMissionID         float64                 `json:"MainMissionID"`
 	MissionAdvance        float64                 `json:"MissionAdvance"`
 	MissionPack           float64                 `json:"MissionPack"`
+	MissionStoryEvent     float64                 `json:"MissionStoryEvent"`
 	Name                  hash.Hash               `json:"Name"`
 	NextMainMissionList   []interface{}           `json:"NextMainMissionList"`
 	NextTrackMainMission  float64                 `json:"NextTrackMainMission"`

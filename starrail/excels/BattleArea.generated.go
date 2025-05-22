@@ -8,13 +8,15 @@ import (
 )
 
 type BattleArea struct {
-	BattleAreaGroupID float64 `json:"BattleAreaGroupID"`
-	BattleAreaID      float64 `json:"BattleAreaID"`
-	FloorBattleAreaID float64 `json:"FloorBattleAreaID"`
-	FloorID           float64 `json:"FloorID"`
-	ID                float64 `json:"ID"`
-	IsLegacy          bool    `json:"IsLegacy"`
-	PlaneID           float64 `json:"PlaneID"`
+	BattleAreaGroupID  float64 `json:"BattleAreaGroupID"`
+	BattleAreaID       float64 `json:"BattleAreaID"`
+	FloorBattleAreaID  float64 `json:"FloorBattleAreaID"`
+	FloorID            float64 `json:"FloorID"`
+	ID                 float64 `json:"ID"`
+	IsLegacy           bool    `json:"IsLegacy"`
+	IsUseUnifiedConfig bool    `json:"IsUseUnifiedConfig"`
+	PlaneID            float64 `json:"PlaneID"`
+	UnifiedConfigID    float64 `json:"UnifiedConfigID"`
 }
 type BattleAreaAccessor struct {
 	_data   []BattleArea

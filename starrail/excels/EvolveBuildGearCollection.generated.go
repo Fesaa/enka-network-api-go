@@ -15,6 +15,7 @@ type EvolveBuildGearCollection struct {
 	ItemIcon         string    `json:"ItemIcon"`
 	LvMax            float64   `json:"LvMax"`
 	Name             hash.Hash `json:"Name"`
+	Season           string    `json:"Season"`
 	TagList          []float64 `json:"TagList"`
 	Type             string    `json:"Type"`
 	UnlockQuest      float64   `json:"UnlockQuest"`

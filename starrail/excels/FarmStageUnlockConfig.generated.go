@@ -8,14 +8,16 @@ import (
 )
 
 type FarmStageUnlockConfig struct {
-	FarmGachaIDList       []interface{} `json:"FarmGachaIDList"`
-	FarmType              string        `json:"FarmType"`
-	ID                    float64       `json:"ID"`
-	UIEnterBattleArea     float64       `json:"UIEnterBattleArea"`
-	UIEntranceBgPath      string        `json:"UIEntranceBgPath"`
-	UIEnviromentConfig    string        `json:"UIEnviromentConfig"`
-	UnlockWorldLevelEnd   float64       `json:"UnlockWorldLevelEnd"`
-	UnlockWorldLevelStart float64       `json:"UnlockWorldLevelStart"`
+	FarmGachaIDList                    []interface{} `json:"FarmGachaIDList"`
+	FarmType                           string        `json:"FarmType"`
+	ID                                 float64       `json:"ID"`
+	OpenInAdvanceLimitActivityModuleID float64       `json:"OpenInAdvanceLimitActivityModuleID"`
+	OpenInAdvanceLimitUnlockID         float64       `json:"OpenInAdvanceLimitUnlockID"`
+	UIEnterBattleArea                  float64       `json:"UIEnterBattleArea"`
+	UIEntranceBgPath                   string        `json:"UIEntranceBgPath"`
+	UIEnviromentConfig                 string        `json:"UIEnviromentConfig"`
+	UnlockWorldLevelEnd                float64       `json:"UnlockWorldLevelEnd"`
+	UnlockWorldLevelStart              float64       `json:"UnlockWorldLevelStart"`
 }
 type FarmStageUnlockConfigAccessor struct {
 	_data                 []FarmStageUnlockConfig

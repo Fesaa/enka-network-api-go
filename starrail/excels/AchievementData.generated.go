@@ -13,6 +13,7 @@ type AchievementData struct {
 	AchievementDescPS   hash.Hash    `json:"AchievementDescPS"`
 	AchievementID       float64      `json:"AchievementID"`
 	AchievementTitle    hash.Hash    `json:"AchievementTitle"`
+	AchievementTitlePS  hash.Hash    `json:"AchievementTitlePS"`
 	HideAchievementDesc hash.Hash    `json:"HideAchievementDesc"`
 	LinearQuestID       float64      `json:"LinearQuestID"`
 	PSTrophyID          string       `json:"PSTrophyID"`

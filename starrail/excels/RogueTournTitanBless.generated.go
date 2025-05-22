@@ -12,6 +12,7 @@ type RogueTournTitanBless struct {
 	BlessRatio                     float64   `json:"BlessRatio"`
 	ExtraEffectIDList              []float64 `json:"ExtraEffectIDList"`
 	MazeBuffID                     float64   `json:"MazeBuffID"`
+	SpeedUpRatio                   float64   `json:"SpeedUpRatio"`
 	TitanBlessID                   float64   `json:"TitanBlessID"`
 	TitanBlessLevel                float64   `json:"TitanBlessLevel"`
 	TitanType                      string    `json:"TitanType"`

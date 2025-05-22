@@ -13,8 +13,7 @@ type EvolveBuildReward struct {
 	RewardID     float64 `json:"RewardID"`
 }
 type EvolveBuildRewardAccessor struct {
-	_data         []EvolveBuildReward
-	_dataRewardID map[float64]EvolveBuildReward
+	_data []EvolveBuildReward
 }
 
 // LoadData retrieves the data. Must be called before EvolveBuildReward.GroupData
@@ -40,29 +39,4 @@ func (a *EvolveBuildRewardAccessor) Raw() ([]EvolveBuildReward, error) {
 		}
 	}
 	return a._data, nil
-}
-
-// GroupData groups the data by their unique ids.
-// Can be called manually in conjunction with EvolveBuildRewardAccessor.LoadData to preload everything
-func (a *EvolveBuildRewardAccessor) GroupData() {
-	a._dataRewardID = map[float64]EvolveBuildReward{}
-	for _, d := range a._data {
-		a._dataRewardID[d.RewardID] = d
-	}
-}
-
-// ByRewardID returns the EvolveBuildReward uniquely identified by RewardID
-//
-// Error is only non-nil if the source errors out
-func (a *EvolveBuildRewardAccessor) ByRewardID(identifier float64) (EvolveBuildReward, error) {
-	if a._dataRewardID == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return EvolveBuildReward{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataRewardID[identifier], nil
 }

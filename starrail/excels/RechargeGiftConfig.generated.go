@@ -14,7 +14,6 @@ type RechargeGiftConfig struct {
 }
 type RechargeGiftConfigAccessor struct {
 	_data         []RechargeGiftConfig
-	_dataDiscount map[float64]RechargeGiftConfig
 	_dataGiftType map[float64]RechargeGiftConfig
 }
 
@@ -46,28 +45,10 @@ func (a *RechargeGiftConfigAccessor) Raw() ([]RechargeGiftConfig, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with RechargeGiftConfigAccessor.LoadData to preload everything
 func (a *RechargeGiftConfigAccessor) GroupData() {
-	a._dataDiscount = map[float64]RechargeGiftConfig{}
 	a._dataGiftType = map[float64]RechargeGiftConfig{}
 	for _, d := range a._data {
-		a._dataDiscount[d.Discount] = d
 		a._dataGiftType[d.GiftType] = d
 	}
-}
-
-// ByDiscount returns the RechargeGiftConfig uniquely identified by Discount
-//
-// Error is only non-nil if the source errors out
-func (a *RechargeGiftConfigAccessor) ByDiscount(identifier float64) (RechargeGiftConfig, error) {
-	if a._dataDiscount == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return RechargeGiftConfig{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataDiscount[identifier], nil
 }
 
 // ByGiftType returns the RechargeGiftConfig uniquely identified by GiftType

@@ -14,6 +14,7 @@ type MazePuzzleOrigami struct {
 	GroupID            float64  `json:"GroupID"`
 	MainPropID         float64  `json:"MainPropID"`
 	MainPropStateList  []string `json:"MainPropStateList"`
+	MirrorGroupID      float64  `json:"MirrorGroupID"`
 	NpcGroupID         float64  `json:"NpcGroupID"`
 	NpcInstanceID      float64  `json:"NpcInstanceID"`
 	SubPropID          float64  `json:"SubPropID"`

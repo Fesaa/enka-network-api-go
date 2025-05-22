@@ -8,6 +8,7 @@ import (
 )
 
 type MazePuzzleDollyZoomTeleport struct {
+	DefaultComplete    float64 `json:"DefaultComplete"`
 	FloorID            float64 `json:"FloorID"`
 	GroupID            float64 `json:"GroupID"`
 	ID                 float64 `json:"ID"`

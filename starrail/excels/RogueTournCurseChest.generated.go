@@ -10,6 +10,7 @@ import (
 
 type RogueTournCurseChest struct {
 	ChestID            float64    `json:"ChestID"`
+	IconPath           string     `json:"IconPath"`
 	MainDescDisplayID  float64    `json:"MainDescDisplayID"`
 	MainTitleDisplayID float64    `json:"MainTitleDisplayID"`
 	ParamValue1        hash.Value `json:"ParamValue1"`
@@ -18,6 +19,7 @@ type RogueTournCurseChest struct {
 	ParamValue4        hash.Value `json:"ParamValue4"`
 	SubDescDisplayID   float64    `json:"SubDescDisplayID"`
 	SubTitleDisplayID  float64    `json:"SubTitleDisplayID"`
+	Type               string     `json:"Type"`
 }
 type RogueTournCurseChestAccessor struct {
 	_data        []RogueTournCurseChest

@@ -11,6 +11,7 @@ import (
 type EvolveBuildRaccoonTalk struct {
 	RaccoonPicPath string      `json:"RaccoonPicPath"`
 	RaccoonState   string      `json:"RaccoonState"`
+	Season         string      `json:"Season"`
 	TextmapList    []hash.Hash `json:"TextmapList"`
 }
 type EvolveBuildRaccoonTalkAccessor struct {

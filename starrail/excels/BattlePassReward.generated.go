@@ -9,7 +9,6 @@ import (
 
 type BattlePassReward struct {
 	ID         float64 `json:"ID"`
-	IsNew      bool    `json:"IsNew"`
 	NumShow    bool    `json:"NumShow"`
 	RewardIcon string  `json:"RewardIcon"`
 	RewardItem float64 `json:"RewardItem"`

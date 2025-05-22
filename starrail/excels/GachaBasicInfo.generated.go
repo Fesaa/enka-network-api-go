@@ -13,6 +13,7 @@ type GachaBasicInfo struct {
 	GachaID               float64   `json:"GachaID"`
 	GachaType             string    `json:"GachaType"`
 	PoolDesc              hash.Hash `json:"PoolDesc"`
+	PoolDescFTC           hash.Hash `json:"PoolDescFTC"`
 	PoolLabelIcon         string    `json:"PoolLabelIcon"`
 	PoolLabelIconSelected string    `json:"PoolLabelIconSelected"`
 	PoolName              hash.Hash `json:"PoolName"`

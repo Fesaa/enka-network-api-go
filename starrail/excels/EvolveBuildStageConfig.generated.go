@@ -11,7 +11,7 @@ import (
 type EvolveBuildStageConfig struct {
 	BuffTextFormat      hash.Hash                             `json:"BuffTextFormat"`
 	Difficulty          float64                               `json:"Difficulty"`
-	FirstWinReward      []float64                             `json:"FirstWinReward"`
+	FirstWinQuest       []interface{}                         `json:"FirstWinQuest"`
 	GearRecommendList   []float64                             `json:"GearRecommendList"`
 	InitialWeapon       []float64                             `json:"InitialWeapon"`
 	IntroID             float64                               `json:"IntroID"`
@@ -41,6 +41,7 @@ type EvolveBuildStageConfigRecommendList struct {
 }
 type EvolveBuildStageConfigAccessor struct {
 	_data                    []EvolveBuildStageConfig
+	_dataIntroID             map[float64]EvolveBuildStageConfig
 	_dataStageMergedID       map[float64]EvolveBuildStageConfig
 	_dataTeamBonusMazeBuffID map[float64]EvolveBuildStageConfig
 }
@@ -73,12 +74,30 @@ func (a *EvolveBuildStageConfigAccessor) Raw() ([]EvolveBuildStageConfig, error)
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with EvolveBuildStageConfigAccessor.LoadData to preload everything
 func (a *EvolveBuildStageConfigAccessor) GroupData() {
+	a._dataIntroID = map[float64]EvolveBuildStageConfig{}
 	a._dataStageMergedID = map[float64]EvolveBuildStageConfig{}
 	a._dataTeamBonusMazeBuffID = map[float64]EvolveBuildStageConfig{}
 	for _, d := range a._data {
+		a._dataIntroID[d.IntroID] = d
 		a._dataStageMergedID[d.StageMergedID] = d
 		a._dataTeamBonusMazeBuffID[d.TeamBonusMazeBuffID] = d
 	}
+}
+
+// ByIntroID returns the EvolveBuildStageConfig uniquely identified by IntroID
+//
+// Error is only non-nil if the source errors out
+func (a *EvolveBuildStageConfigAccessor) ByIntroID(identifier float64) (EvolveBuildStageConfig, error) {
+	if a._dataIntroID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return EvolveBuildStageConfig{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIntroID[identifier], nil
 }
 
 // ByStageMergedID returns the EvolveBuildStageConfig uniquely identified by StageMergedID
