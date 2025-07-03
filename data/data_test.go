@@ -61,7 +61,7 @@ func TestRelicExcels(t *testing.T) {
 			continue
 		}
 
-		castoriceData[skillTree.Anchor] = skillTree
+		castoriceData[skillTree.AnchorType] = skillTree
 	}
 
 	if castoriceData["Point01"].PointID != 1407001 {
