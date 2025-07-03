@@ -14,6 +14,7 @@ type MatchThreeConstValueCommon struct {
 }
 type MatchThreeConstValueCommonValue struct {
 	ArrayValue  []hash.IntValue `json:"ArrayValue"`
+	FloatValue  float64         `json:"FloatValue"`
 	IntValue    float64         `json:"IntValue"`
 	StringValue string          `json:"StringValue"`
 }

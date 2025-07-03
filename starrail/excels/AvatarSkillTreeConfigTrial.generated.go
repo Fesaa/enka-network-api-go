@@ -10,7 +10,7 @@ import (
 
 type AvatarSkillTreeConfigTrial struct {
 	AbilityName             string                                    `json:"AbilityName"`
-	Anchor                  string                                    `json:"Anchor"`
+	AnchorType              string                                    `json:"AnchorType"`
 	AvatarID                float64                                   `json:"AvatarID"`
 	AvatarLevelLimit        float64                                   `json:"AvatarLevelLimit"`
 	AvatarPromotionLimit    float64                                   `json:"AvatarPromotionLimit"`

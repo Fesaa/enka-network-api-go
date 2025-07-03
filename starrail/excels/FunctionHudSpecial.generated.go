@@ -9,18 +9,22 @@ import (
 )
 
 type FunctionHudSpecial struct {
-	ActivityModuleIDList []float64 `json:"ActivityModuleIDList"`
-	ControlRightHud      bool      `json:"ControlRightHud"`
-	FirstWorldText       string    `json:"FirstWorldText"`
-	ID                   float64   `json:"ID"`
-	IsLargeBtn           bool      `json:"IsLargeBtn"`
-	NotInScheduleToast   hash.Hash `json:"NotInScheduleToast"`
-	OverrideIconPath     string    `json:"OverrideIconPath"`
+	ActivityModuleIDList []float64                          `json:"ActivityModuleIDList"`
+	ControlRightHud      bool                               `json:"ControlRightHud"`
+	FirstWorldText       string                             `json:"FirstWorldText"`
+	HideConditions       []FunctionHudSpecialHideConditions `json:"HideConditions"`
+	ID                   float64                            `json:"ID"`
+	IsLargeBtn           bool                               `json:"IsLargeBtn"`
+	NotInScheduleToast   hash.Hash                          `json:"NotInScheduleToast"`
+	OverrideIconPath     string                             `json:"OverrideIconPath"`
+}
+type FunctionHudSpecialHideConditions struct {
+	Param string `json:"Param"`
+	Type  string `json:"Type"`
 }
 type FunctionHudSpecialAccessor struct {
-	_data               []FunctionHudSpecial
-	_dataFirstWorldText map[string]FunctionHudSpecial
-	_dataID             map[float64]FunctionHudSpecial
+	_data   []FunctionHudSpecial
+	_dataID map[float64]FunctionHudSpecial
 }
 
 // LoadData retrieves the data. Must be called before FunctionHudSpecial.GroupData
@@ -51,28 +55,10 @@ func (a *FunctionHudSpecialAccessor) Raw() ([]FunctionHudSpecial, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with FunctionHudSpecialAccessor.LoadData to preload everything
 func (a *FunctionHudSpecialAccessor) GroupData() {
-	a._dataFirstWorldText = map[string]FunctionHudSpecial{}
 	a._dataID = map[float64]FunctionHudSpecial{}
 	for _, d := range a._data {
-		a._dataFirstWorldText[d.FirstWorldText] = d
 		a._dataID[d.ID] = d
 	}
-}
-
-// ByFirstWorldText returns the FunctionHudSpecial uniquely identified by FirstWorldText
-//
-// Error is only non-nil if the source errors out
-func (a *FunctionHudSpecialAccessor) ByFirstWorldText(identifier string) (FunctionHudSpecial, error) {
-	if a._dataFirstWorldText == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return FunctionHudSpecial{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataFirstWorldText[identifier], nil
 }
 
 // ByID returns the FunctionHudSpecial uniquely identified by ID

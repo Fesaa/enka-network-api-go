@@ -9,14 +9,8 @@ import (
 )
 
 type TarotBookConstValue struct {
-	ConstValueName string                   `json:"ConstValueName"`
-	Value          TarotBookConstValueValue `json:"Value"`
-}
-type TarotBookConstValueValue struct {
-	ArrayValue  []hash.IntValue `json:"ArrayValue"`
-	FloatValue  float64         `json:"FloatValue"`
-	IntValue    float64         `json:"IntValue"`
-	StringValue string          `json:"StringValue"`
+	ConstValueName string        `json:"ConstValueName"`
+	Value          hash.IntValue `json:"Value"`
 }
 type TarotBookConstValueAccessor struct {
 	_data               []TarotBookConstValue

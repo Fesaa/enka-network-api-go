@@ -8,9 +8,10 @@ import (
 )
 
 type PlayerReturnRelic struct {
-	RelicLevel  float64 `json:"RelicLevel"`
-	RelicRarity string  `json:"RelicRarity"`
-	WorldLevel  float64 `json:"WorldLevel"`
+	IsRelicMatchMainAffix bool    `json:"IsRelicMatchMainAffix"`
+	RelicLevel            float64 `json:"RelicLevel"`
+	RelicRarity           string  `json:"RelicRarity"`
+	WorldLevel            float64 `json:"WorldLevel"`
 }
 type PlayerReturnRelicAccessor struct {
 	_data []PlayerReturnRelic

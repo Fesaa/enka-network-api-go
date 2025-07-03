@@ -9,7 +9,7 @@ import (
 
 type RogueShop struct {
 	RogueShopID float64 `json:"RogueShopID"`
-	StageID     float64 `json:"StageID"`
+	ShopType    float64 `json:"ShopType"`
 }
 type RogueShopAccessor struct {
 	_data            []RogueShop

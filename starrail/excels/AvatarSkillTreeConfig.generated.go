@@ -10,11 +10,12 @@ import (
 
 type AvatarSkillTreeConfig struct {
 	AbilityName             string                               `json:"AbilityName"`
-	Anchor                  string                               `json:"Anchor"`
+	AnchorType              string                               `json:"AnchorType"`
 	AvatarID                float64                              `json:"AvatarID"`
 	AvatarLevelLimit        float64                              `json:"AvatarLevelLimit"`
 	AvatarPromotionLimit    float64                              `json:"AvatarPromotionLimit"`
 	DefaultUnlock           bool                                 `json:"DefaultUnlock"`
+	EnhancedID              float64                              `json:"EnhancedID"`
 	ExtraEffectIDList       []float64                            `json:"ExtraEffectIDList"`
 	IconPath                string                               `json:"IconPath"`
 	Level                   float64                              `json:"Level"`

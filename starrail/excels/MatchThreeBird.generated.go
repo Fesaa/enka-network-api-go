@@ -26,11 +26,8 @@ type MatchThreeBird struct {
 	WinEmo      float64   `json:"WinEmo"`
 }
 type MatchThreeBirdAccessor struct {
-	_data          []MatchThreeBird
-	_dataBirdID    map[float64]MatchThreeBird
-	_dataIconPath  map[string]MatchThreeBird
-	_dataImagePath map[string]MatchThreeBird
-	_dataModelPath map[string]MatchThreeBird
+	_data       []MatchThreeBird
+	_dataBirdID map[float64]MatchThreeBird
 }
 
 // LoadData retrieves the data. Must be called before MatchThreeBird.GroupData
@@ -62,14 +59,8 @@ func (a *MatchThreeBirdAccessor) Raw() ([]MatchThreeBird, error) {
 // Can be called manually in conjunction with MatchThreeBirdAccessor.LoadData to preload everything
 func (a *MatchThreeBirdAccessor) GroupData() {
 	a._dataBirdID = map[float64]MatchThreeBird{}
-	a._dataIconPath = map[string]MatchThreeBird{}
-	a._dataImagePath = map[string]MatchThreeBird{}
-	a._dataModelPath = map[string]MatchThreeBird{}
 	for _, d := range a._data {
 		a._dataBirdID[d.BirdID] = d
-		a._dataIconPath[d.IconPath] = d
-		a._dataImagePath[d.ImagePath] = d
-		a._dataModelPath[d.ModelPath] = d
 	}
 }
 
@@ -87,52 +78,4 @@ func (a *MatchThreeBirdAccessor) ByBirdID(identifier float64) (MatchThreeBird, e
 		a.GroupData()
 	}
 	return a._dataBirdID[identifier], nil
-}
-
-// ByIconPath returns the MatchThreeBird uniquely identified by IconPath
-//
-// Error is only non-nil if the source errors out
-func (a *MatchThreeBirdAccessor) ByIconPath(identifier string) (MatchThreeBird, error) {
-	if a._dataIconPath == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return MatchThreeBird{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataIconPath[identifier], nil
-}
-
-// ByImagePath returns the MatchThreeBird uniquely identified by ImagePath
-//
-// Error is only non-nil if the source errors out
-func (a *MatchThreeBirdAccessor) ByImagePath(identifier string) (MatchThreeBird, error) {
-	if a._dataImagePath == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return MatchThreeBird{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataImagePath[identifier], nil
-}
-
-// ByModelPath returns the MatchThreeBird uniquely identified by ModelPath
-//
-// Error is only non-nil if the source errors out
-func (a *MatchThreeBirdAccessor) ByModelPath(identifier string) (MatchThreeBird, error) {
-	if a._dataModelPath == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return MatchThreeBird{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataModelPath[identifier], nil
 }

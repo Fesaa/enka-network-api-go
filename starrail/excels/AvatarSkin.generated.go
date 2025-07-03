@@ -18,19 +18,27 @@ type AvatarSkin struct {
 	AvatarDropOffset                   []float64     `json:"AvatarDropOffset"`
 	AvatarID                           float64       `json:"AvatarID"`
 	AvatarMiniIconPath                 string        `json:"AvatarMiniIconPath"`
+	AvatarNameOnDropSkin               hash.Hash     `json:"AvatarNameOnDropSkin"`
 	AvatarSelfShowOffset               []interface{} `json:"AvatarSelfShowOffset"`
 	AvatarSideIconPath                 string        `json:"AvatarSideIconPath"`
 	AvatarSkinName                     hash.Hash     `json:"AvatarSkinName"`
+	AvatarSkinSynopsis                 hash.Hash     `json:"AvatarSkinSynopsis"`
 	DefaultAvatarHeadIconPath          string        `json:"DefaultAvatarHeadIconPath"`
 	DefaultAvatarModelPath             string        `json:"DefaultAvatarModelPath"`
 	FreeStyleCharacterID               string        `json:"FreeStyleCharacterID"`
 	ID                                 float64       `json:"ID"`
+	IntroDataID                        float64       `json:"IntroDataID"`
 	PlayerCardID                       float64       `json:"PlayerCardID"`
+	PlayerCardTitleText                hash.Hash     `json:"PlayerCardTitleText"`
 	PlayerPrefabPath                   string        `json:"PlayerPrefabPath"`
+	ShopBgPath                         string        `json:"ShopBgPath"`
+	ShopRecommendTabBgPath             string        `json:"ShopRecommendTabBgPath"`
 	ShowType                           string        `json:"ShowType"`
 	SideAvatarHeadIconPath             string        `json:"SideAvatarHeadIconPath"`
+	SkinConfigPath                     string        `json:"SkinConfigPath"`
 	UIAvatarModelPath                  string        `json:"UIAvatarModelPath"`
 	UltraSkillCutInPrefabPath          string        `json:"UltraSkillCutInPrefabPath"`
+	VideoID                            float64       `json:"VideoID"`
 	WaitingAvatarHeadIconPath          string        `json:"WaitingAvatarHeadIconPath"`
 }
 type AvatarSkinAccessor struct {
@@ -47,10 +55,13 @@ type AvatarSkinAccessor struct {
 	_dataDefaultAvatarModelPath             map[string]AvatarSkin
 	_dataFreeStyleCharacterID               map[string]AvatarSkin
 	_dataID                                 map[float64]AvatarSkin
+	_dataIntroDataID                        map[float64]AvatarSkin
 	_dataPlayerCardID                       map[float64]AvatarSkin
 	_dataPlayerPrefabPath                   map[string]AvatarSkin
-	_dataShowType                           map[string]AvatarSkin
+	_dataShopBgPath                         map[string]AvatarSkin
+	_dataShopRecommendTabBgPath             map[string]AvatarSkin
 	_dataSideAvatarHeadIconPath             map[string]AvatarSkin
+	_dataSkinConfigPath                     map[string]AvatarSkin
 	_dataUIAvatarModelPath                  map[string]AvatarSkin
 	_dataUltraSkillCutInPrefabPath          map[string]AvatarSkin
 	_dataWaitingAvatarHeadIconPath          map[string]AvatarSkin
@@ -96,10 +107,13 @@ func (a *AvatarSkinAccessor) GroupData() {
 	a._dataDefaultAvatarModelPath = map[string]AvatarSkin{}
 	a._dataFreeStyleCharacterID = map[string]AvatarSkin{}
 	a._dataID = map[float64]AvatarSkin{}
+	a._dataIntroDataID = map[float64]AvatarSkin{}
 	a._dataPlayerCardID = map[float64]AvatarSkin{}
 	a._dataPlayerPrefabPath = map[string]AvatarSkin{}
-	a._dataShowType = map[string]AvatarSkin{}
+	a._dataShopBgPath = map[string]AvatarSkin{}
+	a._dataShopRecommendTabBgPath = map[string]AvatarSkin{}
 	a._dataSideAvatarHeadIconPath = map[string]AvatarSkin{}
+	a._dataSkinConfigPath = map[string]AvatarSkin{}
 	a._dataUIAvatarModelPath = map[string]AvatarSkin{}
 	a._dataUltraSkillCutInPrefabPath = map[string]AvatarSkin{}
 	a._dataWaitingAvatarHeadIconPath = map[string]AvatarSkin{}
@@ -116,10 +130,13 @@ func (a *AvatarSkinAccessor) GroupData() {
 		a._dataDefaultAvatarModelPath[d.DefaultAvatarModelPath] = d
 		a._dataFreeStyleCharacterID[d.FreeStyleCharacterID] = d
 		a._dataID[d.ID] = d
+		a._dataIntroDataID[d.IntroDataID] = d
 		a._dataPlayerCardID[d.PlayerCardID] = d
 		a._dataPlayerPrefabPath[d.PlayerPrefabPath] = d
-		a._dataShowType[d.ShowType] = d
+		a._dataShopBgPath[d.ShopBgPath] = d
+		a._dataShopRecommendTabBgPath[d.ShopRecommendTabBgPath] = d
 		a._dataSideAvatarHeadIconPath[d.SideAvatarHeadIconPath] = d
+		a._dataSkinConfigPath[d.SkinConfigPath] = d
 		a._dataUIAvatarModelPath[d.UIAvatarModelPath] = d
 		a._dataUltraSkillCutInPrefabPath[d.UltraSkillCutInPrefabPath] = d
 		a._dataWaitingAvatarHeadIconPath[d.WaitingAvatarHeadIconPath] = d
@@ -318,6 +335,22 @@ func (a *AvatarSkinAccessor) ByID(identifier float64) (AvatarSkin, error) {
 	return a._dataID[identifier], nil
 }
 
+// ByIntroDataID returns the AvatarSkin uniquely identified by IntroDataID
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByIntroDataID(identifier float64) (AvatarSkin, error) {
+	if a._dataIntroDataID == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataIntroDataID[identifier], nil
+}
+
 // ByPlayerCardID returns the AvatarSkin uniquely identified by PlayerCardID
 //
 // Error is only non-nil if the source errors out
@@ -350,11 +383,11 @@ func (a *AvatarSkinAccessor) ByPlayerPrefabPath(identifier string) (AvatarSkin, 
 	return a._dataPlayerPrefabPath[identifier], nil
 }
 
-// ByShowType returns the AvatarSkin uniquely identified by ShowType
+// ByShopBgPath returns the AvatarSkin uniquely identified by ShopBgPath
 //
 // Error is only non-nil if the source errors out
-func (a *AvatarSkinAccessor) ByShowType(identifier string) (AvatarSkin, error) {
-	if a._dataShowType == nil {
+func (a *AvatarSkinAccessor) ByShopBgPath(identifier string) (AvatarSkin, error) {
+	if a._dataShopBgPath == nil {
 		if a._data == nil {
 			err := a.LoadData()
 			if err != nil {
@@ -363,7 +396,23 @@ func (a *AvatarSkinAccessor) ByShowType(identifier string) (AvatarSkin, error) {
 		}
 		a.GroupData()
 	}
-	return a._dataShowType[identifier], nil
+	return a._dataShopBgPath[identifier], nil
+}
+
+// ByShopRecommendTabBgPath returns the AvatarSkin uniquely identified by ShopRecommendTabBgPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) ByShopRecommendTabBgPath(identifier string) (AvatarSkin, error) {
+	if a._dataShopRecommendTabBgPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataShopRecommendTabBgPath[identifier], nil
 }
 
 // BySideAvatarHeadIconPath returns the AvatarSkin uniquely identified by SideAvatarHeadIconPath
@@ -380,6 +429,22 @@ func (a *AvatarSkinAccessor) BySideAvatarHeadIconPath(identifier string) (Avatar
 		a.GroupData()
 	}
 	return a._dataSideAvatarHeadIconPath[identifier], nil
+}
+
+// BySkinConfigPath returns the AvatarSkin uniquely identified by SkinConfigPath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarSkinAccessor) BySkinConfigPath(identifier string) (AvatarSkin, error) {
+	if a._dataSkinConfigPath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarSkin{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataSkinConfigPath[identifier], nil
 }
 
 // ByUIAvatarModelPath returns the AvatarSkin uniquely identified by UIAvatarModelPath

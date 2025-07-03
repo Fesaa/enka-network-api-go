@@ -8,19 +8,21 @@ import (
 )
 
 type GachaShowToastData struct {
-	GachaID              float64 `json:"GachaID"`
-	LoopBGMState         string  `json:"LoopBGMState"`
-	LoopBGMandUIOpenTime float64 `json:"LoopBGMandUIOpenTime"`
-	LoopVideoID          float64 `json:"LoopVideoID"`
-	ShowVideoID          float64 `json:"ShowVideoID"`
+	GachaID           float64 `json:"GachaID"`
+	LoopBGMOpenTime   float64 `json:"LoopBGMOpenTime"`
+	LoopBGMState      string  `json:"LoopBGMState"`
+	LoopUIOpenTime    float64 `json:"LoopUIOpenTime"`
+	LoopVideoID       float64 `json:"LoopVideoID"`
+	ShowVideoID       float64 `json:"ShowVideoID"`
+	TransitionVideoID float64 `json:"TransitionVideoID"`
 }
 type GachaShowToastDataAccessor struct {
-	_data                     []GachaShowToastData
-	_dataGachaID              map[float64]GachaShowToastData
-	_dataLoopBGMState         map[string]GachaShowToastData
-	_dataLoopBGMandUIOpenTime map[float64]GachaShowToastData
-	_dataLoopVideoID          map[float64]GachaShowToastData
-	_dataShowVideoID          map[float64]GachaShowToastData
+	_data               []GachaShowToastData
+	_dataGachaID        map[float64]GachaShowToastData
+	_dataLoopBGMState   map[string]GachaShowToastData
+	_dataLoopUIOpenTime map[float64]GachaShowToastData
+	_dataLoopVideoID    map[float64]GachaShowToastData
+	_dataShowVideoID    map[float64]GachaShowToastData
 }
 
 // LoadData retrieves the data. Must be called before GachaShowToastData.GroupData
@@ -53,13 +55,13 @@ func (a *GachaShowToastDataAccessor) Raw() ([]GachaShowToastData, error) {
 func (a *GachaShowToastDataAccessor) GroupData() {
 	a._dataGachaID = map[float64]GachaShowToastData{}
 	a._dataLoopBGMState = map[string]GachaShowToastData{}
-	a._dataLoopBGMandUIOpenTime = map[float64]GachaShowToastData{}
+	a._dataLoopUIOpenTime = map[float64]GachaShowToastData{}
 	a._dataLoopVideoID = map[float64]GachaShowToastData{}
 	a._dataShowVideoID = map[float64]GachaShowToastData{}
 	for _, d := range a._data {
 		a._dataGachaID[d.GachaID] = d
 		a._dataLoopBGMState[d.LoopBGMState] = d
-		a._dataLoopBGMandUIOpenTime[d.LoopBGMandUIOpenTime] = d
+		a._dataLoopUIOpenTime[d.LoopUIOpenTime] = d
 		a._dataLoopVideoID[d.LoopVideoID] = d
 		a._dataShowVideoID[d.ShowVideoID] = d
 	}
@@ -97,11 +99,11 @@ func (a *GachaShowToastDataAccessor) ByLoopBGMState(identifier string) (GachaSho
 	return a._dataLoopBGMState[identifier], nil
 }
 
-// ByLoopBGMandUIOpenTime returns the GachaShowToastData uniquely identified by LoopBGMandUIOpenTime
+// ByLoopUIOpenTime returns the GachaShowToastData uniquely identified by LoopUIOpenTime
 //
 // Error is only non-nil if the source errors out
-func (a *GachaShowToastDataAccessor) ByLoopBGMandUIOpenTime(identifier float64) (GachaShowToastData, error) {
-	if a._dataLoopBGMandUIOpenTime == nil {
+func (a *GachaShowToastDataAccessor) ByLoopUIOpenTime(identifier float64) (GachaShowToastData, error) {
+	if a._dataLoopUIOpenTime == nil {
 		if a._data == nil {
 			err := a.LoadData()
 			if err != nil {
@@ -110,7 +112,7 @@ func (a *GachaShowToastDataAccessor) ByLoopBGMandUIOpenTime(identifier float64) 
 		}
 		a.GroupData()
 	}
-	return a._dataLoopBGMandUIOpenTime[identifier], nil
+	return a._dataLoopUIOpenTime[identifier], nil
 }
 
 // ByLoopVideoID returns the GachaShowToastData uniquely identified by LoopVideoID

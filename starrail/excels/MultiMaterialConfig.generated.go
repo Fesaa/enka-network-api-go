@@ -12,12 +12,12 @@ type MultiMaterialConfig struct {
 	ExchangeRare3 float64 `json:"ExchangeRare3"`
 	ExchangeRare4 float64 `json:"ExchangeRare4"`
 	ItemID        float64 `json:"ItemID"`
-	PurposeID     float64 `json:"PurposeID"`
+	ItemSubType   float64 `json:"ItemSubType"`
 }
 type MultiMaterialConfigAccessor struct {
-	_data          []MultiMaterialConfig
-	_dataItemID    map[float64]MultiMaterialConfig
-	_dataPurposeID map[float64]MultiMaterialConfig
+	_data            []MultiMaterialConfig
+	_dataItemID      map[float64]MultiMaterialConfig
+	_dataItemSubType map[float64]MultiMaterialConfig
 }
 
 // LoadData retrieves the data. Must be called before MultiMaterialConfig.GroupData
@@ -49,10 +49,10 @@ func (a *MultiMaterialConfigAccessor) Raw() ([]MultiMaterialConfig, error) {
 // Can be called manually in conjunction with MultiMaterialConfigAccessor.LoadData to preload everything
 func (a *MultiMaterialConfigAccessor) GroupData() {
 	a._dataItemID = map[float64]MultiMaterialConfig{}
-	a._dataPurposeID = map[float64]MultiMaterialConfig{}
+	a._dataItemSubType = map[float64]MultiMaterialConfig{}
 	for _, d := range a._data {
 		a._dataItemID[d.ItemID] = d
-		a._dataPurposeID[d.PurposeID] = d
+		a._dataItemSubType[d.ItemSubType] = d
 	}
 }
 
@@ -72,11 +72,11 @@ func (a *MultiMaterialConfigAccessor) ByItemID(identifier float64) (MultiMateria
 	return a._dataItemID[identifier], nil
 }
 
-// ByPurposeID returns the MultiMaterialConfig uniquely identified by PurposeID
+// ByItemSubType returns the MultiMaterialConfig uniquely identified by ItemSubType
 //
 // Error is only non-nil if the source errors out
-func (a *MultiMaterialConfigAccessor) ByPurposeID(identifier float64) (MultiMaterialConfig, error) {
-	if a._dataPurposeID == nil {
+func (a *MultiMaterialConfigAccessor) ByItemSubType(identifier float64) (MultiMaterialConfig, error) {
+	if a._dataItemSubType == nil {
 		if a._data == nil {
 			err := a.LoadData()
 			if err != nil {
@@ -85,5 +85,5 @@ func (a *MultiMaterialConfigAccessor) ByPurposeID(identifier float64) (MultiMate
 		}
 		a.GroupData()
 	}
-	return a._dataPurposeID[identifier], nil
+	return a._dataItemSubType[identifier], nil
 }

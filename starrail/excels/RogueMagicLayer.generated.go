@@ -8,9 +8,8 @@ import (
 )
 
 type RogueMagicLayer struct {
-	LayerID     float64 `json:"LayerID"`
-	LayerNameID float64 `json:"LayerNameID"`
-	LayerNumID  float64 `json:"LayerNumID"`
+	LayerID    float64 `json:"LayerID"`
+	LayerNumID float64 `json:"LayerNumID"`
 }
 type RogueMagicLayerAccessor struct {
 	_data        []RogueMagicLayer

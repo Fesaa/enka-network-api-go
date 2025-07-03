@@ -41,7 +41,6 @@ type ActivityAvatarConfig struct {
 	RankIDList                []float64     `json:"RankIDList"`
 	Rarity                    string        `json:"Rarity"`
 	Release                   bool          `json:"Release"`
-	RewardList                []interface{} `json:"RewardList"`
 	SPNeed                    hash.Value    `json:"SPNeed"`
 	SideAvatarHeadIconPath    string        `json:"SideAvatarHeadIconPath"`
 	SkillList                 []float64     `json:"SkillList"`

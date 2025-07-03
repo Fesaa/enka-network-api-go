@@ -26,6 +26,7 @@ type MonsterTemplateConfig struct {
 	MinimumFatigueRatio  hash.Value                             `json:"MinimumFatigueRatio"`
 	MonsterCampID        float64                                `json:"MonsterCampID"`
 	MonsterName          hash.Hash                              `json:"MonsterName"`
+	MonsterStrategy      []interface{}                          `json:"MonsterStrategy"`
 	MonsterTemplateID    float64                                `json:"MonsterTemplateID"`
 	NPCMonsterList       []float64                              `json:"NPCMonsterList"`
 	PrefabPath           string                                 `json:"PrefabPath"`

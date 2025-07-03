@@ -22,6 +22,7 @@ type MonsterTemplateUniqueConfig struct {
 	ManikinPrefabPath   string                                       `json:"ManikinPrefabPath"`
 	MinimumFatigueRatio hash.Value                                   `json:"MinimumFatigueRatio"`
 	MonsterName         hash.Hash                                    `json:"MonsterName"`
+	MonsterStrategy     []interface{}                                `json:"MonsterStrategy"`
 	MonsterTemplateID   float64                                      `json:"MonsterTemplateID"`
 	NPCMonsterList      []interface{}                                `json:"NPCMonsterList"`
 	PrefabPath          string                                       `json:"PrefabPath"`

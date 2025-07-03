@@ -9,17 +9,18 @@ import (
 )
 
 type MatchThreeSkill struct {
-	Desc              hash.Hash `json:"Desc"`
-	DescFigure        string    `json:"DescFigure"`
-	SkillChargedImg   string    `json:"SkillChargedImg"`
-	SkillID           float64   `json:"SkillID"`
-	SkillJson         string    `json:"SkillJson"`
-	SkillUnchangedImg string    `json:"SkillUnchangedImg"`
+	BirdSkillTrailEffectPath string    `json:"BirdSkillTrailEffectPath"`
+	Desc                     hash.Hash `json:"Desc"`
+	DescFigure               string    `json:"DescFigure"`
+	SkillChargedImg          string    `json:"SkillChargedImg"`
+	SkillID                  float64   `json:"SkillID"`
+	SkillJson                string    `json:"SkillJson"`
+	SkillUnchangedImg        string    `json:"SkillUnchangedImg"`
+	VideoID                  float64   `json:"VideoID"`
 }
 type MatchThreeSkillAccessor struct {
-	_data          []MatchThreeSkill
-	_dataSkillID   map[float64]MatchThreeSkill
-	_dataSkillJson map[string]MatchThreeSkill
+	_data        []MatchThreeSkill
+	_dataSkillID map[float64]MatchThreeSkill
 }
 
 // LoadData retrieves the data. Must be called before MatchThreeSkill.GroupData
@@ -51,10 +52,8 @@ func (a *MatchThreeSkillAccessor) Raw() ([]MatchThreeSkill, error) {
 // Can be called manually in conjunction with MatchThreeSkillAccessor.LoadData to preload everything
 func (a *MatchThreeSkillAccessor) GroupData() {
 	a._dataSkillID = map[float64]MatchThreeSkill{}
-	a._dataSkillJson = map[string]MatchThreeSkill{}
 	for _, d := range a._data {
 		a._dataSkillID[d.SkillID] = d
-		a._dataSkillJson[d.SkillJson] = d
 	}
 }
 
@@ -72,20 +71,4 @@ func (a *MatchThreeSkillAccessor) BySkillID(identifier float64) (MatchThreeSkill
 		a.GroupData()
 	}
 	return a._dataSkillID[identifier], nil
-}
-
-// BySkillJson returns the MatchThreeSkill uniquely identified by SkillJson
-//
-// Error is only non-nil if the source errors out
-func (a *MatchThreeSkillAccessor) BySkillJson(identifier string) (MatchThreeSkill, error) {
-	if a._dataSkillJson == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return MatchThreeSkill{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataSkillJson[identifier], nil
 }

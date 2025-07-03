@@ -10,6 +10,7 @@ import (
 
 type MatchThreeOpponent struct {
 	AIConfig     string    `json:"AIConfig"`
+	AILevel      float64   `json:"AILevel"`
 	IconPath     string    `json:"IconPath"`
 	ImagePath    string    `json:"ImagePath"`
 	Level        float64   `json:"Level"`
@@ -19,7 +20,6 @@ type MatchThreeOpponent struct {
 }
 type MatchThreeOpponentAccessor struct {
 	_data           []MatchThreeOpponent
-	_dataAIConfig   map[string]MatchThreeOpponent
 	_dataOpponentID map[float64]MatchThreeOpponent
 }
 
@@ -51,28 +51,10 @@ func (a *MatchThreeOpponentAccessor) Raw() ([]MatchThreeOpponent, error) {
 // GroupData groups the data by their unique ids.
 // Can be called manually in conjunction with MatchThreeOpponentAccessor.LoadData to preload everything
 func (a *MatchThreeOpponentAccessor) GroupData() {
-	a._dataAIConfig = map[string]MatchThreeOpponent{}
 	a._dataOpponentID = map[float64]MatchThreeOpponent{}
 	for _, d := range a._data {
-		a._dataAIConfig[d.AIConfig] = d
 		a._dataOpponentID[d.OpponentID] = d
 	}
-}
-
-// ByAIConfig returns the MatchThreeOpponent uniquely identified by AIConfig
-//
-// Error is only non-nil if the source errors out
-func (a *MatchThreeOpponentAccessor) ByAIConfig(identifier string) (MatchThreeOpponent, error) {
-	if a._dataAIConfig == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return MatchThreeOpponent{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataAIConfig[identifier], nil
 }
 
 // ByOpponentID returns the MatchThreeOpponent uniquely identified by OpponentID

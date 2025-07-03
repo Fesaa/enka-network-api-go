@@ -9,22 +9,24 @@ import (
 )
 
 type AvatarBaseType struct {
-	BaseTypeDesc          hash.Hash `json:"BaseTypeDesc"`
-	BaseTypeIcon          string    `json:"BaseTypeIcon"`
-	BaseTypeIconMiddle    string    `json:"BaseTypeIconMiddle"`
-	BaseTypeIconPathTalk  string    `json:"BaseTypeIconPathTalk"`
-	BaseTypeIconSmall     string    `json:"BaseTypeIconSmall"`
-	BaseTypeText          hash.Hash `json:"BaseTypeText"`
-	BgPath                string    `json:"BgPath"`
-	Equipment3DTgaPath    string    `json:"Equipment3DTgaPath"`
-	EquipmentLightMatPath string    `json:"EquipmentLightMatPath"`
-	FirstWordText         string    `json:"FirstWordText"`
-	ID                    string    `json:"ID"`
+	BaseTypeDesc               hash.Hash `json:"BaseTypeDesc"`
+	BaseTypeIcon               string    `json:"BaseTypeIcon"`
+	BaseTypeIconMiddle         string    `json:"BaseTypeIconMiddle"`
+	BaseTypeIconPathTalk       string    `json:"BaseTypeIconPathTalk"`
+	BaseTypeIconSmall          string    `json:"BaseTypeIconSmall"`
+	BaseTypeText               hash.Hash `json:"BaseTypeText"`
+	BgPath                     string    `json:"BgPath"`
+	Equipment3DTgaPath         string    `json:"Equipment3DTgaPath"`
+	EquipmentLightMatPath      string    `json:"EquipmentLightMatPath"`
+	FirstWordText              string    `json:"FirstWordText"`
+	ID                         string    `json:"ID"`
+	LightConeCardBackImagePath string    `json:"LightConeCardBackImagePath"`
 }
 type AvatarBaseTypeAccessor struct {
-	_data                   []AvatarBaseType
-	_dataBaseTypeIconMiddle map[string]AvatarBaseType
-	_dataFirstWordText      map[string]AvatarBaseType
+	_data                           []AvatarBaseType
+	_dataBaseTypeIconMiddle         map[string]AvatarBaseType
+	_dataFirstWordText              map[string]AvatarBaseType
+	_dataLightConeCardBackImagePath map[string]AvatarBaseType
 }
 
 // LoadData retrieves the data. Must be called before AvatarBaseType.GroupData
@@ -57,9 +59,11 @@ func (a *AvatarBaseTypeAccessor) Raw() ([]AvatarBaseType, error) {
 func (a *AvatarBaseTypeAccessor) GroupData() {
 	a._dataBaseTypeIconMiddle = map[string]AvatarBaseType{}
 	a._dataFirstWordText = map[string]AvatarBaseType{}
+	a._dataLightConeCardBackImagePath = map[string]AvatarBaseType{}
 	for _, d := range a._data {
 		a._dataBaseTypeIconMiddle[d.BaseTypeIconMiddle] = d
 		a._dataFirstWordText[d.FirstWordText] = d
+		a._dataLightConeCardBackImagePath[d.LightConeCardBackImagePath] = d
 	}
 }
 
@@ -93,4 +97,20 @@ func (a *AvatarBaseTypeAccessor) ByFirstWordText(identifier string) (AvatarBaseT
 		a.GroupData()
 	}
 	return a._dataFirstWordText[identifier], nil
+}
+
+// ByLightConeCardBackImagePath returns the AvatarBaseType uniquely identified by LightConeCardBackImagePath
+//
+// Error is only non-nil if the source errors out
+func (a *AvatarBaseTypeAccessor) ByLightConeCardBackImagePath(identifier string) (AvatarBaseType, error) {
+	if a._dataLightConeCardBackImagePath == nil {
+		if a._data == nil {
+			err := a.LoadData()
+			if err != nil {
+				return AvatarBaseType{}, err
+			}
+		}
+		a.GroupData()
+	}
+	return a._dataLightConeCardBackImagePath[identifier], nil
 }

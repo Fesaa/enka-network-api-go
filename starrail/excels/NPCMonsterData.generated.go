@@ -9,8 +9,6 @@ import (
 )
 
 type NPCMonsterData struct {
-	BoardShowList    []float64 `json:"BoardShowList"`
-	CharacterType    string    `json:"CharacterType"`
 	ConfigEntityPath string    `json:"ConfigEntityPath"`
 	DefaultAIPath    string    `json:"DefaultAIPath"`
 	ID               float64   `json:"ID"`
@@ -18,11 +16,9 @@ type NPCMonsterData struct {
 	JsonPath         string    `json:"JsonPath"`
 	MappingInfoID    float64   `json:"MappingInfoID"`
 	MiniMapIconType  float64   `json:"MiniMapIconType"`
-	NPCIconPath      string    `json:"NPCIconPath"`
 	NPCName          hash.Hash `json:"NPCName"`
 	PrototypeID      float64   `json:"PrototypeID"`
 	Rank             string    `json:"Rank"`
-	SubType          string    `json:"SubType"`
 }
 type NPCMonsterDataAccessor struct {
 	_data   []NPCMonsterData

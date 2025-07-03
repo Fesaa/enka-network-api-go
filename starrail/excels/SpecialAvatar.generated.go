@@ -12,7 +12,7 @@ type SpecialAvatar struct {
 	AnchorName             string        `json:"AnchorName"`
 	AvatarID               float64       `json:"AvatarID"`
 	CustomSkillTreeKey     string        `json:"CustomSkillTreeKey"`
-	DefaultAvatarModelPath string        `json:"DefaultAvatarModelPath"`
+	EnhancedID             float64       `json:"EnhancedID"`
 	EquipmentID            float64       `json:"EquipmentID"`
 	EquipmentLevel         float64       `json:"EquipmentLevel"`
 	EquipmentPromotion     float64       `json:"EquipmentPromotion"`

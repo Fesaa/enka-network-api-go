@@ -8,13 +8,15 @@ import (
 )
 
 type RecommendConfig struct {
-	GoodsID        []interface{} `json:"GoodsID"`
-	ID             float64       `json:"ID"`
-	ImagePath      string        `json:"ImagePath"`
-	NameText       string        `json:"NameText"`
-	Order          float64       `json:"Order"`
-	OrderAfterSell float64       `json:"OrderAfterSell"`
-	Type           float64       `json:"Type"`
+	ActivityModuleID float64   `json:"ActivityModuleID"`
+	GoodsID          []float64 `json:"GoodsID"`
+	HideAfterSell    bool      `json:"HideAfterSell"`
+	ID               float64   `json:"ID"`
+	ImagePath        string    `json:"ImagePath"`
+	NameText         string    `json:"NameText"`
+	Order            float64   `json:"Order"`
+	OrderAfterSell   float64   `json:"OrderAfterSell"`
+	Type             float64   `json:"Type"`
 }
 type RecommendConfigAccessor struct {
 	_data          []RecommendConfig

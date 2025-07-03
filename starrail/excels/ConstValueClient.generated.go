@@ -9,8 +9,16 @@ import (
 )
 
 type ConstValueClient struct {
-	ConstValueName string        `json:"ConstValueName"`
-	Value          hash.IntValue `json:"Value"`
+	ConstValueName string                `json:"ConstValueName"`
+	Value          ConstValueClientValue `json:"Value"`
+}
+type ConstValueClientValue struct {
+	ArrayValue  []hash.IntValue          `json:"ArrayValue"`
+	BoolValue   bool                     `json:"BoolValue"`
+	FloatValue  float64                  `json:"FloatValue"`
+	IntValue    float64                  `json:"IntValue"`
+	MapValue    map[string]hash.IntValue `json:"MapValue"`
+	StringValue string                   `json:"StringValue"`
 }
 type ConstValueClientAccessor struct {
 	_data               []ConstValueClient

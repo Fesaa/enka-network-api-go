@@ -8,11 +8,10 @@ import (
 )
 
 type StoryCharacter struct {
-	ConfigEntityPath    string `json:"ConfigEntityPath"`
-	IsSupportBakedMouth bool   `json:"IsSupportBakedMouth"`
-	JsonPath            string `json:"JsonPath"`
-	StoryCharacterID    string `json:"StoryCharacterID"`
-	SubType             string `json:"SubType"`
+	ConfigEntityPath string `json:"ConfigEntityPath"`
+	JsonPath         string `json:"JsonPath"`
+	StoryCharacterID string `json:"StoryCharacterID"`
+	SubType          string `json:"SubType"`
 }
 type StoryCharacterAccessor struct {
 	_data                 []StoryCharacter

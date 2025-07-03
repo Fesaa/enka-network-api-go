@@ -9,8 +9,8 @@ import (
 
 type GachaGroupData struct {
 	GachaIDList           []float64 `json:"GachaIDList"`
-	GachaType             string    `json:"GachaType"`
 	GroupID               float64   `json:"GroupID"`
+	GroupType             string    `json:"GroupType"`
 	PoolLabelIcon         string    `json:"PoolLabelIcon"`
 	PoolLabelIconSelected string    `json:"PoolLabelIconSelected"`
 }

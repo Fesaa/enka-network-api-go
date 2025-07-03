@@ -22,9 +22,8 @@ type ChatInviteConfig struct {
 	SendDesc       hash.Hash `json:"SendDesc"`
 }
 type ChatInviteConfigAccessor struct {
-	_data        []ChatInviteConfig
-	_dataID      map[float64]ChatInviteConfig
-	_dataPicPath map[string]ChatInviteConfig
+	_data   []ChatInviteConfig
+	_dataID map[float64]ChatInviteConfig
 }
 
 // LoadData retrieves the data. Must be called before ChatInviteConfig.GroupData
@@ -56,10 +55,8 @@ func (a *ChatInviteConfigAccessor) Raw() ([]ChatInviteConfig, error) {
 // Can be called manually in conjunction with ChatInviteConfigAccessor.LoadData to preload everything
 func (a *ChatInviteConfigAccessor) GroupData() {
 	a._dataID = map[float64]ChatInviteConfig{}
-	a._dataPicPath = map[string]ChatInviteConfig{}
 	for _, d := range a._data {
 		a._dataID[d.ID] = d
-		a._dataPicPath[d.PicPath] = d
 	}
 }
 
@@ -77,20 +74,4 @@ func (a *ChatInviteConfigAccessor) ByID(identifier float64) (ChatInviteConfig, e
 		a.GroupData()
 	}
 	return a._dataID[identifier], nil
-}
-
-// ByPicPath returns the ChatInviteConfig uniquely identified by PicPath
-//
-// Error is only non-nil if the source errors out
-func (a *ChatInviteConfigAccessor) ByPicPath(identifier string) (ChatInviteConfig, error) {
-	if a._dataPicPath == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return ChatInviteConfig{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataPicPath[identifier], nil
 }

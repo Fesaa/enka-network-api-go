@@ -269,6 +269,68 @@
       101307
     ]
   },
+  "1014" : {
+    "ActionAvatarHeadIconPath" : "SpriteOutput/AvatarIconTeam/1014B.png",
+    "AvatarBaseType" : "Warrior",
+    "AvatarCutinFrontImgPath" : "SpriteOutput/AvatarDrawCard/1014.png",
+    "AvatarFullName" : {
+      "Hash" : "8951245737780219460"
+    },
+    "AvatarName" : {
+      "Hash" : "11292532298779825003"
+    },
+    "AvatarSideIconPath" : "SpriteOutput/AvatarRoundIcon/1014.png",
+    "Element" : "Wind",
+    "RankIDList" : [
+      101401,
+      101402,
+      101403,
+      101404,
+      101405,
+      101406
+    ],
+    "Rarity" : 5,
+    "SkillList" : [
+      101401,
+      101402,
+      101403,
+      101404,
+      101406,
+      101407,
+      101408
+    ]
+  },
+  "1015" : {
+    "ActionAvatarHeadIconPath" : "SpriteOutput/AvatarIconTeam/1015B.png",
+    "AvatarBaseType" : "Rogue",
+    "AvatarCutinFrontImgPath" : "SpriteOutput/AvatarDrawCard/1015.png",
+    "AvatarFullName" : {
+      "Hash" : "1286075273557870370"
+    },
+    "AvatarName" : {
+      "Hash" : "18287682968624271100"
+    },
+    "AvatarSideIconPath" : "SpriteOutput/AvatarRoundIcon/1015.png",
+    "Element" : "Quantum",
+    "RankIDList" : [
+      101501,
+      101502,
+      101503,
+      101504,
+      101505,
+      101506
+    ],
+    "Rarity" : 5,
+    "SkillList" : [
+      101501,
+      101502,
+      101503,
+      101504,
+      101506,
+      101507,
+      101509
+    ]
+  },
   "1101" : {
     "ActionAvatarHeadIconPath" : "SpriteOutput/AvatarIconTeam/1101B.png",
     "AvatarBaseType" : "Shaman",
@@ -2010,6 +2072,40 @@
       140706,
       140707,
       140709
+    ]
+  },
+  "1408" : {
+    "ActionAvatarHeadIconPath" : "SpriteOutput/AvatarIconTeam/1408B.png",
+    "AvatarBaseType" : "Warrior",
+    "AvatarCutinFrontImgPath" : "SpriteOutput/AvatarDrawCard/1408.png",
+    "AvatarFullName" : {
+      "Hash" : "18130795695677949186"
+    },
+    "AvatarName" : {
+      "Hash" : "2073865627579588830"
+    },
+    "AvatarSideIconPath" : "SpriteOutput/AvatarRoundIcon/1408.png",
+    "Element" : "Physical",
+    "RankIDList" : [
+      140801,
+      140802,
+      140803,
+      140804,
+      140805,
+      140806
+    ],
+    "Rarity" : 5,
+    "SkillList" : [
+      140801,
+      140802,
+      140803,
+      140804,
+      140805,
+      140806,
+      140807,
+      140808,
+      140809,
+      140811
     ]
   },
   "1409" : {

@@ -8,6 +8,7 @@ import (
 )
 
 type ShopGoodsConfig struct {
+	ActivityModuleID      float64       `json:"ActivityModuleID"`
 	CurrencyCostList      []float64     `json:"CurrencyCostList"`
 	CurrencyList          []float64     `json:"CurrencyList"`
 	CycleDays             float64       `json:"CycleDays"`
@@ -34,9 +35,8 @@ type ShopGoodsConfig struct {
 	TagType               float64       `json:"TagType"`
 }
 type ShopGoodsConfigAccessor struct {
-	_data               []ShopGoodsConfig
-	_dataGoodsID        map[float64]ShopGoodsConfig
-	_dataScheduleDataID map[float64]ShopGoodsConfig
+	_data        []ShopGoodsConfig
+	_dataGoodsID map[float64]ShopGoodsConfig
 }
 
 // LoadData retrieves the data. Must be called before ShopGoodsConfig.GroupData
@@ -68,10 +68,8 @@ func (a *ShopGoodsConfigAccessor) Raw() ([]ShopGoodsConfig, error) {
 // Can be called manually in conjunction with ShopGoodsConfigAccessor.LoadData to preload everything
 func (a *ShopGoodsConfigAccessor) GroupData() {
 	a._dataGoodsID = map[float64]ShopGoodsConfig{}
-	a._dataScheduleDataID = map[float64]ShopGoodsConfig{}
 	for _, d := range a._data {
 		a._dataGoodsID[d.GoodsID] = d
-		a._dataScheduleDataID[d.ScheduleDataID] = d
 	}
 }
 
@@ -89,20 +87,4 @@ func (a *ShopGoodsConfigAccessor) ByGoodsID(identifier float64) (ShopGoodsConfig
 		a.GroupData()
 	}
 	return a._dataGoodsID[identifier], nil
-}
-
-// ByScheduleDataID returns the ShopGoodsConfig uniquely identified by ScheduleDataID
-//
-// Error is only non-nil if the source errors out
-func (a *ShopGoodsConfigAccessor) ByScheduleDataID(identifier float64) (ShopGoodsConfig, error) {
-	if a._dataScheduleDataID == nil {
-		if a._data == nil {
-			err := a.LoadData()
-			if err != nil {
-				return ShopGoodsConfig{}, err
-			}
-		}
-		a.GroupData()
-	}
-	return a._dataScheduleDataID[identifier], nil
 }

@@ -9,8 +9,14 @@ import (
 )
 
 type MatchThreeConstValueClient struct {
-	ConstValueName string        `json:"ConstValueName"`
-	Value          hash.IntValue `json:"Value"`
+	ConstValueName string                          `json:"ConstValueName"`
+	Value          MatchThreeConstValueClientValue `json:"Value"`
+}
+type MatchThreeConstValueClientValue struct {
+	ArrayValue  []hash.IntValue `json:"ArrayValue"`
+	FloatValue  float64         `json:"FloatValue"`
+	IntValue    float64         `json:"IntValue"`
+	StringValue string          `json:"StringValue"`
 }
 type MatchThreeConstValueClientAccessor struct {
 	_data               []MatchThreeConstValueClient
